@@ -26,10 +26,20 @@ class BuyerDashboardController extends Controller
         $this->userRepository = $userRepository;
         $this->MasterRepository = $MasterRepository;
         $this->BuyerDashboardRepository = $BuyerDashboardRepository;
+
     }
+    private function getAuthenticatedUserId() {
+        if (Auth::guard('web')->check()) {
+            return Auth::guard('web')->user()->id;
+        }
+        return null;
+    }
+    
 
     public function index(Request $request){
-        return view('front.user_dashboard.index');
+        $existing_inquiries= $this->BuyerDashboardRepository->get_all_existing_inquiries_by_user($this->getAuthenticatedUserId());
+        $group_wise_list =  $this->BuyerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        return view('front.user_dashboard.index', compact('group_wise_list', 'existing_inquiries'));
     }
     
 }
