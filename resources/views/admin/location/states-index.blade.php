@@ -6,10 +6,12 @@
         <div class="heading-row">
             <h3>Location (States)</h3>
             <div class="d-flex">
-                <!-- <a href="{{route('admin.legalstatus.create')}}" class="btn btn-add btn-sm">
+                <a href="{{route('admin.location.state.create')}}" class="btn btn-add btn-sm">
                     <i class="fa-solid fa-plus"></i>
-                    Add Legal Status
-                </a> -->
+                    Add State
+                </a>
+             
+
             </div>
         </div>
         <!-- <form action="" method="get" id="searchForm">
@@ -43,6 +45,7 @@
             <th>SL.</th>
             <th>States Name</th>
             <th>Cities</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody class="align-middle">
@@ -52,6 +55,9 @@
             <td> {{ $item->name }}</td>
             <td>
             <a href="{{ route('admin.location.cities.index', $item->id) }}" class="btn btn-sm btn-outline-primary">Cities</a>
+            </td>
+            <td>
+                <a href="{{ route('admin.location.state.edit', [$item->id,$item->country_id]) }}" class="btn btn-sm btn-outline-primary">Edit</a>
             </td>
             
         @empty
