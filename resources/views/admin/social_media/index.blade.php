@@ -40,7 +40,7 @@
     <thead>
         <tr>
             <th>SL.</th>
-            <th>Logo</th>
+            <th width="6%">Logo</th>
             <th>Title</th>
             <th>Link</th>
             <th>Action</th>
@@ -58,7 +58,7 @@
             <td>{{ $item->link }}</td>
             <td>
                 {{-- <button type="button" class="btn btn-view" title="View"><i class="fa-regular fa-eye"></i></button> --}}
-                <a href="{{route('admin.social_media.edit', $item->id)}}" class="btn btn-edit" title="Edit"><i class="fa-solid fa-pen"></i></a>
+                <a href="{{route('admin.social_media.edit', $item->id)}}" class="btn btn-edit" title="Edit">Edit</a>
                 <button type="button" class="btn btn-delete itemremove" data-id="{{$item->id}}" title="Delete"><i class="fa-regular fa-trash-can"></i></button>
             </td>
         </tr>

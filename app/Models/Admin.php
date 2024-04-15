@@ -14,5 +14,12 @@ class Admin extends Authenticatable
     public function isAdmin(){
         return true;
     }
-
+    function  getSellers(){
+        return $this->hasMany('App\Models\User', 'added_by','id');
+    }
+    
+    public function getRoleName()
+    {
+        return $this->belongsTo('App\Models\EmployeeRole','role');
+    }
 }

@@ -176,7 +176,7 @@
                     </form>
                 </div>
                 <div id="filterSuggestions"></div>
-                <a href="#" class="btn btn-cta btn-animated btn-start">
+                <a href="{{route('register')}}" class="btn btn-cta btn-animated btn-start">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <g clip-path="url(#clip0_221_2270)">
                         <path d="M8.4 12.5998C3.72 12.5998 0 16.3198 0 20.9998V22.1998H16.8V20.9998C16.8 16.3198 13.08 12.5998 8.4 12.5998ZM2.52 19.7998C3.12 17.0398 5.52 14.9998 8.4 14.9998C11.28 14.9998 13.68 17.0398 14.28 19.7998H2.52ZM8.4 11.3998C11.04 11.3998 13.2 9.23981 13.2 6.5998C13.2 3.9598 11.04 1.7998 8.4 1.7998C5.76 1.7998 3.6 3.9598 3.6 6.5998C3.6 9.23981 5.76 11.3998 8.4 11.3998ZM8.4 4.1998C9.72 4.1998 10.8 5.2798 10.8 6.5998C10.8 7.91981 9.72 8.9998 8.4 8.9998C7.08 8.9998 6 7.91981 6 6.5998C6 5.2798 7.08 4.1998 8.4 4.1998ZM22.32 7.1998L18.36 11.1598L16.44 9.35981L14.76 11.0398L18.36 14.6398L24 8.87981L22.32 7.1998Z" fill="white"/>
@@ -484,12 +484,12 @@
     @yield('script')
     
     <script>
-        // $(document).ready(function(){
-        //     // Hide the success message after 5 seconds (5000 milliseconds)
-        //     setTimeout(function() {
-        //         $('#successAlert').fadeOut('slow');
-        //     }, 3000);
-        // });
+         $(document).ready(function(){
+             // Hide the success message after 5 seconds (5000 milliseconds)
+             setTimeout(function() {
+                 $('#successAlert').fadeOut('slow');
+             }, 3000);
+         });
     </script>
 </body>
 </html>

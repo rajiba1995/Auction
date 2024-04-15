@@ -17,7 +17,7 @@
     <thead>
         <tr>
             <th>SL.</th>
-            <th width="10%">Image</th>
+            <th width="17%">Image</th>
             <th>Title</th>
             <th>Status</th>
             <th>Action</th>

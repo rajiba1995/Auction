@@ -13,6 +13,11 @@ use App\Models\Client;
 use App\Models\Feedback;
 use App\Models\SocialMedia;
 use App\Models\Business;
+use App\Models\City;
+use App\Models\State;
+use App\Models\EmployeeAttandance;
+use App\Models\Admin;
+use App\Models\User;
 use App\Models\LegalStatus;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
@@ -687,8 +692,122 @@ class MasterRepository implements MasterContract
      {
          $delete = LegalStatus::findOrFail($id);
          $delete->deleted_at = 0;
-         
          $delete->save();
          return $delete;
      }
+     //Location
+     public function getAllStates()
+     {
+         return State::orderBy('name')->paginate(20);
+     }
+     public function getAllCitiesByStateId($id)
+     {
+         return City::where('state_id', $id)->paginate(100);
+     }
+     public function getCityById($cityId,$stateId)
+     {
+         return City::where('state_id',$stateId)->findOrFail($cityId);
+     }
+     public function CreateLocationCity(array $data)
+     {
+         try {
+             $city = new City();
+             $collection = collect($data);
+             $city->name = $collection['name'];
+             $city->slug = slugGenerate($collection['name'], 'cities');
+             $city->state_id = $collection['state_id'];
+             $city->save();
+             return $city;
+         } catch (QueryException $exception) {
+             throw new InvalidArgumentException($exception->getMessage());
+         }
+     }
+     public function updateCityLocation(array $data)
+     {
+         try {
+             $collection = collect($data);
+             $city = City::where('state_id',$collection['state_id'])->findOrFail($collection['id']);
+             $city->name = $collection['name'];
+             $city->slug = slugGenerateUpdate($collection['name'],'cities',$collection['id']);
+             $city->state_id = $collection['state_id'];
+             $city->save();
+             return $city;
+         } catch (QueryException $exception) {
+             throw new InvalidArgumentException($exception->getMessage());
+         }
+     }
+
+    ///employee section 
+    //attandance
+    public function getEmployeeAttandanceById($id){
+    return  EmployeeAttandance::where('user_id',$id)->paginate(25);
+    }
+    public function getTodayAttendanceByEmpId($id){
+    return EmployeeAttandance::where('user_id', $id)
+        ->whereDate('login_time', today())
+        ->first();
+    }
+    public function getTodayLogoutAttendanceByEmpId($id){
+    return EmployeeAttandance::where('user_id', $id)
+        ->whereDate('logout_time', today())
+        ->first();
+    }
+    public function EmployeeLoggedStatusById($id){
+    return  Admin::findOrFail($id);
+    }
+
+
+    //sellers
+    public function getAllUsersByEmployeeId($id){
+    return  User::where('added_by',$id)->paginate();
+    }
+    public function GetUserById($id){
+    return User::findOrFail($id);
+    }
+    public function CreateSellers(array $data){
+
+    try {
+        $seller = new User();
+        $collection = collect($data);
+        $seller->name = $collection['fname']." ".$collection['lname'];
+        $seller->first_name = $collection['fname'];
+        $seller->last_name = $collection['lname'];
+        $seller->email = $collection['email'];
+        $seller->mobile = $collection['phone'];
+        $seller->business_name = $collection['business_name'];
+        $seller->password = Hash::make($collection['pass']);
+        $seller->status = 0;
+        $seller->added_by = $collection['emp_id'];
+        
+        
+
+        $seller->save();
+        return $seller;
+    } catch (QueryException $exception) {
+        throw new InvalidArgumentException($exception->getMessage());
+    }
+    }
+
+    public function UpdateSellers(array $data)
+    {
+
+    try {
+        $collection = collect($data);
+        $seller = User::findOrFail($collection['user_id']);
+        $seller->first_name = $collection['fname'];
+        $seller->last_name = $collection['lname'];
+        $seller->name = $collection['fname']." ".$collection['lname'];
+        $seller->email = $collection['email'];
+        $seller->mobile = $collection['phone'];
+        $seller->business_name = $collection['business_name'];
+
+        if (!empty($collection['pass'])) {
+                $seller->password = Hash::make($collection['pass']);
+            }
+        $seller->save();
+        return $seller;
+    } catch (QueryException $exception) {
+        throw new InvalidArgumentException($exception->getMessage());
+    }
+    }
 }

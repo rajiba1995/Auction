@@ -38,8 +38,7 @@
                                             <div class="docs">
                                                 <!-- <div class="container-fluid"> -->
                                                     <div class="row">
-                                                        {{-- {{dd($user_document)}} --}}
-                                                        @if($user_document->gst_file)
+                                                        @if($user_document && $user_document->gst_file)
                                                         <div class="col-xxl-4 col-md-6 col-12 doc-box">
                                                             <div class="inner-wrap">
                                                                 <div class="left-col">
@@ -64,7 +63,7 @@
                                                             </div>
                                                         </div>
                                                         @endif
-                                                        @if($user_document->pan_file)
+                                                        @if($user_document && $user_document->pan_file)
                                                             <div class="col-xxl-4 col-md-6 col-12 doc-box">
                                                                 <div class="inner-wrap">
                                                                     <div class="left-col">
@@ -90,7 +89,7 @@
                                                                 </div>
                                                             </div>
                                                         @endif
-                                                        @if($user_document->adhar_file)
+                                                        @if($user_document && $user_document->adhar_file)
                                                         <div class="col-xxl-4 col-md-6 col-12 doc-box">
                                                             <div class="inner-wrap">
                                                                 <div class="left-col">
@@ -116,7 +115,7 @@
                                                             </div>
                                                         </div>
                                                         @endif
-                                                        @if($user_document->trade_license_file)
+                                                        @if($user_document && $user_document->trade_license_file)
                                                         <div class="col-xxl-4 col-md-6 col-12 doc-box">
                                                             <div class="inner-wrap">
                                                                 <div class="left-col">
@@ -142,7 +141,7 @@
                                                             </div>
                                                         </div>
                                                         @endif
-                                                        @if($user_document->cancelled_cheque_file)
+                                                        @if($user_document && $user_document->cancelled_cheque_file)
                                                         <div class="col-xxl-4 col-md-6 col-12 doc-box">
                                                             <div class="inner-wrap">
                                                                 <div class="left-col">

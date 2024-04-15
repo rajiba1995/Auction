@@ -138,7 +138,8 @@ class AuctionGenerationController extends Controller
                 }
             }
             if($request->submit_type == "generate"){
-                return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry has been generated successfully.');
+                return redirect()->route('front.auction_inquiry_generation', ['inquiry_type' => 'existing-inquiry', 'inquiry_id' => $inquiry->inquiry_id])->with('success', 'Inquiry has been generated successfully.');
+
             }else{
                 return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry data has been saved successfully.');
             }

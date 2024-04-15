@@ -56,6 +56,9 @@
                             <input type="submit" value="Sign In" class="btn btn-primary">
                         </div>
                     </form>
+                    <div class="form-text text-end forgot-password">
+                        Are You Employee?<a href="{{ route('employee.login') }}" class="d-inline-block">Log In</a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -36,12 +36,14 @@
                 </div>
                 <div class="col-md-6 col-12 justify-content-end">
                     <div class="user-initial">
-                        JD
+                      <a href="{{ route('admin.profile') }}"><img src="{{ asset('frontend/assets/images/user.png')}}" alt="" srcset="" style="border-radius: 50%;"></a>
                     </div>
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                             <div>
-                                <label>John Doe</label>
+                                {{-- {{dd($admin)}}                       --}}
+                                {{-- <label>{{$admin->name}}</label> --}}
+                                <label>Admin</label>
                                 <label>Admin</label>
                             </div>
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

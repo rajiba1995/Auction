@@ -30,6 +30,8 @@ use App\Contracts\UserDetailsContract;
 
 use App\Repositories\ClientRepository;
 use App\Contracts\ClientContract;
+use App\Repositories\EmployeeDetailsRepository;
+use App\Contracts\EmployeeDetailsContract;
 use App\Models\Package;
 
 class RepositoryServiceProvider extends ServiceProvider{
@@ -43,6 +45,7 @@ class RepositoryServiceProvider extends ServiceProvider{
         BlogContract::class  =>  BlogRepository::class,
         PackageContract::class  =>  PackageRepository::class,
         UserDetailsContract::class  =>  UserDetailsRepository::class,
+        EmployeeDetailsContract::class  =>  EmployeeDetailsRepository::class,
     ];
     
     public function register()

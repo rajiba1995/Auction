@@ -18,9 +18,10 @@ class ClientMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (Auth::guard('client')->check()==true) {
-            return $next($request);
+            if (Auth::guard('client')->user()->type==2) {
+                return $next($request);
+            }
         }
-    
-        return redirect()->route('client.login');
+        return redirect()->route('employee.login');
     }
 }

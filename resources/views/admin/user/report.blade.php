@@ -6,8 +6,14 @@
 <div class="inner-content">
     <div class="report-table-box">
         <div class="heading-row">
-            <h3>Report List</h3>
-            <div class="d-flex">              
+            <h3>Reports List</h3>
+            <div class="d-flex">  
+                <a href="{{route('admin.user.block.status', $block_status->id)}}"><span class="btn-sm btn-status btn {{$block_status->block_status==0?"bg-success":"bg-dark text-light"}}">{{$block_status->block_status==0?"Unblock":"Blocked"}}</span></a>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="{{route('admin.user.index')}}" class="btn btn-primary btn-sm">
+                    <iconify-icon icon="icon-park-twotone:back"></iconify-icon>
+                    Back 
+                </a>            
             </div>
         </div>
             {{-- <form action="" method="get" id="searchForm">

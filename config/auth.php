@@ -50,11 +50,17 @@ return [
             'provider' => 'admins',
             'model' => App\Models\Admin::class,
         ],
+        // 'employee'=> [
+        //     'driver' => 'session',
+        //     'provider' => 'employee',
+        //     'model' => App\Models\Admin::class,
+        // ],
         'client' => [
             'driver' => 'session',
             'provider' => 'clients',
-            'model' => App\Models\Client::class,
+            'model' => App\Models\Admin::class,
         ],
+
     ],
 
     /*
@@ -86,11 +92,11 @@ return [
         ],
         'clients' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Client::class,
+            'model' => App\Models\Admin::class,
         ],
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
+        // 'employee' => [
+        //     'driver' => 'eloquent',
+        //     'table' => App\Models\Admin::class,
         // ],
     ],
 

@@ -45,8 +45,6 @@ class HomeController extends Controller
      */
     public function index()
     {       
-
-        
         $data = (object)[];
         $data->banners = Banner::orderBy('file_path', 'ASC')->paginate(20);
         // dd($data->banners);  

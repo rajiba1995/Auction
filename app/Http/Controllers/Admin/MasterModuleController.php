@@ -9,7 +9,8 @@ use App\Models\Collection;
 use App\Models\Category;
 use App\Models\Feeback;
 use App\Contracts\MasterContract;
-
+use Auth;
+use Illuminate\Validation\Rule;
 
 class MasterModuleController extends Controller
 {
@@ -631,4 +632,165 @@ class MasterModuleController extends Controller
              return redirect()->route('admin.legalstatus.index')->with('error', 'Something went wrong please try again!');
          }
      }
+
+     //Location 
+     public function LocationStatesIndex()
+     {
+         $data = $this->masterRepository->getAllStates();
+         return view('admin.location.states-index', compact('data'));
+     }
+     public function LocationCitiesIndex($id)
+     {  
+         $stateId = $id;
+         $data = $this->masterRepository->getAllCitiesByStateId($stateId);
+         return view('admin.location.cities-index', compact('data','stateId'));
+     }
+     public function LocationCityCreate($id)
+     {
+         $stateId = $id;
+         return view('admin.location.cities-create', compact('stateId'));
+     }
+     public function LocationCityStore(Request  $request)
+     {
+    //   dd($request->all());
+      $request->validate([
+        "name" => "required|unique:cities,name,NULL,id,state_id," . $request->state_id,
+        ], [
+        "name.required" => "Please enter city name.",
+        "name.unique" => "The city name is already taken for the selected state.",
+    ]);
+    $params = $request->except('_token');
+    $data = $this->masterRepository->CreateLocationCity($params);
+    if ($data) {
+        return redirect()->route('admin.location.cities.index', $request->state_id)->with('success', 'City has been successfully stored under this state!');
+    } else {
+        return redirect()->route('admin.location.city.create')->with('error', 'Something went wrong please try again!');
+    }
+     }
+     public function LocationCityEdit($cityId,$stateId)
+     {
+         $data = $this->masterRepository->getCityById($cityId,$stateId);
+         return view('admin.location.cities-edit', compact('data','stateId'));
+     }
+     public function LocationCityUpdate(Request  $request)
+     {
+        // dd($request->all());
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('cities')->where(function ($query) use ($request) {
+                    return $query->where('state_id', $request->state_id)
+                                 ->where('id', '!=', $request->id);
+                }),
+            ],
+        ], [
+            'name.required' => 'Please enter city name.',
+            'name.unique' => 'The city name is already taken for the selected state.',
+        ]);
+        $params = $request->except('_token');
+        $data = $this->masterRepository->updateCityLocation($params);
+        if ($data) {
+            return redirect()->route('admin.location.cities.index', $request->state_id)->with('success', 'City has been successfully updated!');
+        } else {
+            return redirect()->route('admin.location.city.edit', [$request->id,$request->state_id])->with('error', 'Something went wrong please try again!');
+        }
+     }
+
+
+
+     /// employee section start
+
+     //attandance
+     public function AttandanceIndex()
+     {   
+        $employeeId = Auth::guard('client')->user()->id;
+        $data = $this->masterRepository->getEmployeeAttandanceById($employeeId);
+        $today_login = $this->masterRepository->getTodayAttendanceByEmpId($employeeId);
+        $today_logout = $this->masterRepository->getTodayLogoutAttendanceByEmpId($employeeId);
+        $loggedStatus = $this->masterRepository->EmployeeLoggedStatusById($employeeId);
+
+        return view('employee.attandance.index',compact('data','loggedStatus', 'today_login', 'today_logout'));
+     }
+
+
+     //sellers
+     public function SellersIndex()
+     {
+        $employeeId =Auth::guard('client')->user()->id;    
+
+         $data = $this->masterRepository->getAllUsersByEmployeeId($employeeId);
+         return view('employee.sellers.index',compact('data'));
+     }
+     public function SellersCreate()
+     {
+        $employeeId =Auth::guard('client')->user();    
+            // dd($employeeId);
+        return view('employee.sellers.create',compact('employeeId'));
+     }
+     public function SellersStore(Request $request)
+     {
+        // dd($request->all());
+        $request->validate([
+            'fname' => 'required',
+            'lname' => 'required',
+            'email' => 'required|unique:users,email',
+            'phone' => 'required|digits:10|unique:users,mobile',
+            'business_name' => 'required',
+            'pass' => 'required|min:6|max:15'
+        ],[
+           'fname.required'=>"First Name is required",
+           'lname.required'=>"Last Name is required",
+           'email.required'=>"Email is required",  
+           'email.unique'=>"This email has already been taken.",  
+           'phone.required'=>"Phone number is required",  
+           'phone.digits'=>"Please put 10 digit  phone number.",   
+           'phone.unique'=>"This Phone number has already been used.",  
+           'business_name.required'=>"Business Name is required",  
+           'pass.required'=>"Password field is required",        
+           'pass.min'=>"Minimum 6 characters are allowed in password field.",                       
+           'pass.max'=>"Maximum 15 characters are allowed in password field.",                       
+        ]);
+        $params = $request->except('_token');
+        $data = $this->masterRepository->CreateSellers($params);
+        if ($data) {
+            return redirect()->route('employee.sellers.index')->with('success', 'Seller has been successfully Added!');
+        } else {
+            return redirect()->route('employee.sellers.create')->with('error', 'Something went wrong please try again!');
+        }  
+     }
+     public function SellersEdit($id){
+        $data = $this->masterRepository->GetUserById($id);
+        return view('employee.sellers.edit', compact('data'));
+     }
+     public function SellersUpdate(Request $request){
+        // dd($request->all());
+        $request->validate([
+            'fname' => 'required',
+            'lname' => 'required',
+            'email' => 'required|unique:users,email,' . $request->user_id,
+            'phone' => 'required|min:10|unique:users,mobile,' . $request->user_id,
+            'business_name' => 'required',
+            'pass' => 'nullable|min:6|max:15'
+        ],[
+           'fname.required'=>"First name is required",
+           'lname.required'=>"Last name is required",
+           'email.required'=>"Email is required",  
+           'email.unique'=>"This email has already been taken.",  
+           'phone.required'=>"Phone number is required",  
+           'phone.unique'=>"This Phone number has already been used.",          
+           'business_name.required'=>"Business Name is required",  
+           'pass.min'=>"Minimum 6 characters are allowed in password field.",                       
+           'pass.max'=>"Maximum 15 characters are allowed in password field.",                       
+        ]);
+        $params = $request->except('_token');
+        $data = $this->masterRepository->UpdateSellers($params);
+        if ($data) {
+            return redirect()->route('employee.sellers.index', $request->id)->with('success', 'Sellers data has been successfully updated!');
+        } else {
+            return redirect()->route('employee.sellers.edit', $request->id)->with('error', 'Something went wrong please try again!');
+        }
+     }
+
 }

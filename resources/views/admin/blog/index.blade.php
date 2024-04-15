@@ -22,7 +22,7 @@
             <th>Short Desc</th>
             <th>Long Desc</th>
             <th>Status</th>
-            <th>Action</th>
+            <th width="8%">Action</th>
         </tr>
     </thead>
     <tbody class="align-middle">

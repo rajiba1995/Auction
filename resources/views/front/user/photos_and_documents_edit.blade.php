@@ -182,7 +182,7 @@
                                                 <div class="col-lg-4 col-12">
                                                     <div class="form-group">
                                                         <label class="form-label">IFSC Code</label>
-                                                        <input type="text" name="ifsc_code" class="form-control {{$user_document->ifsc_code?"border-red":"border-danger"}}" value="{{$user_document?$user_document->ifsc_code:old('ifsc_code')}}">
+                                                        <input type="text" name="ifsc_code" class="form-control {{$user_document && $user_document->ifsc_code?"border-red":"border-danger"}}" value="{{$user_document?$user_document->ifsc_code:old('ifsc_code')}}">
                                                         @error('ifsc_code')<span class="text-danger" role="alert"> <strong>{{ $message }}</strong> </span>
                                                         @enderror
                                                     </div>
@@ -203,7 +203,7 @@
                                                 <div class="col-lg-7 col-12">
                                                     <div class="form-group">
                                                         <label class="form-label">Additional Document</label>
-                                                        <input type="text" class="form-control {{$user_document->gst_number?"border-red":"border-danger"}}" name="additional_documents[]">
+                                                        <input type="text" class="form-control {{$user_document && $user_document->gst_number?"border-red":"border-danger"}}" name="additional_documents[]">
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-1 col-12">

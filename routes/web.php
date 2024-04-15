@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminAuth\{LoginController};
 use App\Http\Controllers\User\{UserController, AuctionGenerationController, BuyerDashboardController};
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\{AdminController, VendorController, InspectorController, ClientController,MasterModuleController,BlogController,PackageController,UserDetailsController,WebsiteSettingController};
+use App\Http\Controllers\Admin\{AdminController, VendorController, InspectorController, ClientController,MasterModuleController,BlogController,PackageController,UserDetailsController,WebsiteSettingController,EmployeeDetailsController};
 use App\Http\Controllers\HomeController;
 require __DIR__.'/auth.php';
 /*
@@ -93,9 +93,41 @@ Route::get('admin/login', [LoginController::class, 'showLoginForm'])->name('admi
 Route::post('admin/login', [LoginController::class, 'adminlogin'])->name('admin.login.check');
 Route::get('admin/logout', [LoginController::class, 'adminlogout'])->name('admin.logout');
 
+//Employee login  routes
+// Route::redirect('/', '/employee/login');
+Route::get('employee/login', [LoginController::class, 'showEmployeeLoginForm'])->name('employee.login');
+Route::post('employee/login', [LoginController::class, 'employeelogin'])->name('employee.login.check');
+Route::get('employee/logout', [LoginController::class, 'employeelogout'])->name('employee.logout');
+Route::get('employee/attendance/login', [LoginController::class, 'employeeAttendanceLogin'])->name('employee.attendance.login');
+Route::get('employee/attendance/logout', [LoginController::class, 'employeeAttendanceLogout'])->name('employee.attendance.logout');
+
+//employee
+Route::group(['middleware' => 'client', 'prefix' => 'employee'], function () {
+    Route::get('/dashboard', [AdminController::class, 'EmployeeDashboard'])->name('employee.dashboard');
+        Route::group(['prefix'  =>   'master'], function() {
+            //attandance
+            Route::group(['prefix'  =>   'attandance'], function() {
+                Route::get('', [MasterModuleController::class, 'AttandanceIndex'])->name('employee.attandance.index');
+            });
+            Route::group(['prefix'  =>   'sellers'], function() {
+                Route::get('', [MasterModuleController::class, 'SellersIndex'])->name('employee.sellers.index');
+                Route::get('/create', [MasterModuleController::class, 'SellersCreate'])->name('employee.sellers.create');
+                Route::post('/store', [MasterModuleController::class, 'SellersStore'])->name('employee.sellers.store');
+                Route::get('/edit/{id}', [MasterModuleController::class, 'SellersEdit'])->name('employee.sellers.edit');
+                Route::post('/update', [MasterModuleController::class, 'SellersUpdate'])->name('employee.sellers.update');
+            });
+
+        });
+
+
+});
+
 
 Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/profile', [AdminController::class, 'adminProfile'])->name('admin.profile');
+    Route::get('/edit', [AdminController::class, 'adminEdit'])->name('admin.edit');
+    Route::post('/edit', [AdminController::class, 'adminUpdate'])->name('admin.update');
 
         Route::group(['prefix'  =>   'master'], function() {
         // Banner Management
@@ -237,8 +269,44 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     Route::get('/report/view/{id}', [UserDetailsController::class, 'UserReportView'])->name('admin.user.report');
     Route::get('/report/status/{id}', [UserDetailsController::class, 'UserReportStatus'])->name('admin.user.report.status');
     Route::get('/document/status', [UserDetailsController::class, 'UserDocumentStatus'])->name('admin.user.document.status');
+    Route::get('/user/block-status/{id}', [UserDetailsController::class, 'UserBlockStatus'])->name('admin.user.block.status');
+    Route::get('/export', [UserDetailsController::class, 'UserDetailsExport'])->name('admin.user.details.export');
+    Route::get('/status/{id}', [UserDetailsController::class, 'UserStatus'])->name('admin.user.status');
 });
-         //WebSite Settings
+//employee details
+Route::group(['prefix'  =>   'employee'], function() {
+    Route::get('', [EmployeeDetailsController::class, 'EmployeeDetailsIndex'])->name('admin.employee.index');
+    Route::get('/sellers/{id}', [EmployeeDetailsController::class, 'SellersIndexThroughEmployee'])->name('admin.employee.sellers');
+    Route::get('/attendance/{id}', [EmployeeDetailsController::class, 'AttendanceIndexOfEmployee'])->name('admin.employee.attandance');
+    Route::get('/create', [EmployeeDetailsController::class, 'EmployeeCreate'])->name('admin.employee.create');
+    Route::post('/store', [EmployeeDetailsController::class, 'EmployeeStore'])->name('admin.employee.store');
+    Route::get('/status/{id}', [EmployeeDetailsController::class, 'EmployeeStatus'])->name('admin.employee.status');
+    Route::get('/edit/{id}', [EmployeeDetailsController::class, 'EmployeeEdit'])->name('admin.employee.edit');
+    Route::post('/update', [EmployeeDetailsController::class, 'EmployeeUpdate'])->name('admin.employee.update');
+    Route::get('/delete/{id}', [EmployeeDetailsController::class, 'EmployeeDelete'])->name('admin.employee.delete');
+    Route::get('/export', [EmployeeDetailsController::class, 'EmployeeDetailsExport'])->name('admin.employee.details.export');
+});
+// Role
+Route::group(['prefix'  =>   'role'], function() {
+    Route::get('', [EmployeeDetailsController::class, 'RoleIndex'])->name('admin.role.index');
+    Route::get('/create', [EmployeeDetailsController::class, 'RoleCreate'])->name('admin.role.create');
+    Route::post('/store', [EmployeeDetailsController::class, 'RoleStore'])->name('admin.role.store');
+    Route::get('/edit/{id}', [EmployeeDetailsController::class, 'RoleEdit'])->name('admin.role.edit');
+    Route::post('/update', [EmployeeDetailsController::class, 'RoleUpdate'])->name('admin.role.update');
+    Route::get('/delete/{id}', [EmployeeDetailsController::class, 'RoleDelete'])->name('admin.role.delete');
+    Route::get('/status/{id}', [EmployeeDetailsController::class, 'RoleStatus'])->name('admin.role.status');
+
+});
+// Location
+Route::group(['prefix'  =>   'location'], function() {
+    Route::get('', [MasterModuleController::class, 'LocationStatesIndex'])->name('admin.location.states.index');
+    Route::get('/cities/{id}', [MasterModuleController::class, 'LocationCitiesIndex'])->name('admin.location.cities.index');
+    Route::get('/city/create/{id}', [MasterModuleController::class, 'LocationCityCreate'])->name('admin.location.city.create');
+    Route::post('/city/store', [MasterModuleController::class, 'LocationCityStore'])->name('admin.location.city.store');
+    Route::get('/city/edit/{cityId}/{stateId}', [MasterModuleController::class, 'LocationCityEdit'])->name('admin.location.city.edit');
+    Route::post('/city/update', [MasterModuleController::class, 'LocationCityUpdate'])->name('admin.location.city.update');
+
+});
  
 });
 

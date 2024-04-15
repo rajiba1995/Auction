@@ -21,8 +21,8 @@
             <th width="10%">Logo</th>
             <th>Customer Name</th>
             <th>Designation</th>
-            <th>Company Name</th>
-            <th width="20%">Message</th>
+            <th width="15%">Company Name</th>
+            <th width="25%">Message</th>
             <th>Status</th>
             <th>Action</th>
         </tr>

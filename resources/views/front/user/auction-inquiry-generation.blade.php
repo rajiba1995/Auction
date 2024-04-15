@@ -4,6 +4,9 @@
     .btn-green{
         line-height: 0 !important;
     }
+    .message_li{
+        list-style-type: none;
+    }
 </style>
 <div class="main">
     <div class="inner-page">
@@ -24,6 +27,20 @@
                                     <span>Inquiry Id : {{$existing_inquiry->inquiry_id}}</span>
                                 </div>
                                 @endif
+                                <ul>
+                                    <li id="message_li"> 
+                                        @if (session('success'))
+                                            <div class="alert alert-success" id="successAlert">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+                                        @if (session('warning'))
+                                            <div class="alert alert-warning" id="successAlert">
+                                                {{ session('warning') }}
+                                            </div>
+                                        @endif
+                                    </li>
+                                </ul>
                                 <h4 class="color-red text-center">Title</h4>
                                 <div class="row input-row">
                                     <div class="offset-lg-3 col-lg-6 col-12">
