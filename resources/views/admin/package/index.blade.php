@@ -42,7 +42,7 @@
             <th>SL.</th>
             <th>Name</th>
             <th>Type</th>
-            <th>Price ( &#8377; )</th>
+            <th>Price</th>
             <th>Description</th>
             <th>Status</th>
             <th>Action</th>
@@ -54,7 +54,7 @@
             <td> {{ $data->firstItem() + $loop->index }}</td>
             <td>{{ $item->package_name }}</td>
             <td>{{ $item->package_type }}</td>
-            <td>{{ $item->package_price }}</td>
+            <td>{{ $item->package_prefix }} {{ $item->package_price }}</td>
             <td>{!! $item->package_description !!}</td>
             <td>
                 <a href="{{route('admin.package.status', $item->id)}}"><span class="btn-sm btn-status btn {{$item->status==1?"bg-success":"bg-danger"}}">{{$item->status==1?"Active":"Inactive"}}</span></a>

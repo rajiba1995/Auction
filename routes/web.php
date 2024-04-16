@@ -49,6 +49,8 @@ Route::get('/clear-cache', function() {
             
             Route::get('/payment-management', [UserController::class, 'payment_management'])->name('user.payment_management');
             Route::get('/settings', [UserController::class, 'settings'])->name('user.settings');
+            Route::get('/transaction', [UserController::class, 'transaction'])->name('user.transaction');
+            Route::post('/transaction/purchase', [UserController::class, 'purchase'])->name('user.purchase.transaction');
             Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
             Route::get('/profile/edit', [UserController::class, 'ProfileEdit'])->name('user.profile.edit');
             Route::post('/profile/update', [UserController::class, 'ProfileUpdate'])->name('user.profile.update');

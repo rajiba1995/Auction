@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Contracts\UserDetailsContract;
 // use App\Models\Admin;
 use App\Models\User;
+use App\Models\MyBadge;
 use App\Models\UserDocument;
 use App\Models\SellerReport;
 
@@ -114,6 +115,10 @@ class UserDetailsRepository implements UserDetailsContract
         return User::findOrFail($id);
 
     }
+    public function getAllBadgesByUserId($id){
+       return MyBadge::where('user_id',$id)->get();
+    }
+ 
 
 
 }

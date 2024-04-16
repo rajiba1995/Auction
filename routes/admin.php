@@ -7,7 +7,7 @@ use App\Http\Controllers\AdminAuth\{LoginController};
 use App\Http\Controllers\User\{UserController, AuctionGenerationController, BuyerDashboardController};
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Admin\{AdminController, VendorController, InspectorController, ClientController,MasterModuleController,BlogController,PackageController,UserDetailsController,WebsiteSettingController,EmployeeDetailsController};
+use App\Http\Controllers\Admin\{AdminController, VendorController, InspectorController, ClientController,MasterModuleController,BlogController,PackageController,UserDetailsController,WebsiteSettingController,EmployeeDetailsController,PaymentManageMentController};
 use App\Http\Controllers\HomeController;
 
 Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
@@ -200,13 +200,13 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
       // Payment
       Route::group(['prefix'  =>   'payment-management'], function() {
         Route::group(['prefix'  =>   'badge'], function() {
-            Route::get('', [MasterModuleController::class, 'BadgeIndex'])->name('admin.badge.index');
-            Route::get('/create', [MasterModuleController::class, 'BadgeCreate'])->name('admin.badge.create');
-            Route::post('/store', [MasterModuleController::class, 'BadgeStore'])->name('admin.badge.store');
-            Route::get('/status/{id}', [MasterModuleController::class, 'BadgeStatus'])->name('admin.badge.status');
-            Route::get('/delete/{id}', [MasterModuleController::class, 'BadgeDelete'])->name('admin.badge.delete');
-            Route::get('/edit/{id}', [MasterModuleController::class, 'BadgeEdit'])->name('admin.badge.edit');
-            Route::post('/update', [MasterModuleController::class, 'BadgeUpdate'])->name('admin.badge.update');
+            Route::get('', [PaymentManageMentController::class, 'BadgeIndex'])->name('admin.badge.index');
+            Route::get('/create', [PaymentManageMentController::class, 'BadgeCreate'])->name('admin.badge.create');
+            Route::post('/store', [PaymentManageMentController::class, 'BadgeStore'])->name('admin.badge.store');
+            Route::get('/status/{id}', [PaymentManageMentController::class, 'BadgeStatus'])->name('admin.badge.status');
+            Route::get('/delete/{id}', [PaymentManageMentController::class, 'BadgeDelete'])->name('admin.badge.delete');
+            Route::get('/edit/{id}', [PaymentManageMentController::class, 'BadgeEdit'])->name('admin.badge.edit');
+            Route::post('/update', [PaymentManageMentController::class, 'BadgeUpdate'])->name('admin.badge.update');
 
         });
     });

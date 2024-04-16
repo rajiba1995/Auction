@@ -33,6 +33,7 @@ class PackageController extends Controller
              'package_name' => 'required|max:255',
              'package_type' => 'required',
              'package_price' => 'required',
+             'package_prefix' => 'required',
              'package_description' => 'required',
          ]);
          $params = $request->except('_token');
@@ -61,6 +62,7 @@ class PackageController extends Controller
             'package_name' => 'required|max:255',
             //  'package_type' => 'required',
              'package_price' => 'required',
+             'package_prefix' => 'required',
              'package_description' => 'required',
  
          ]);

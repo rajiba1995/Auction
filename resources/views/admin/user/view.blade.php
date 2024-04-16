@@ -99,7 +99,7 @@
                     <div class="card-body">
                         
                         <div class="container-fluid">
-                            <p>PERSONAL DETAILS</p>
+                            <p><strong>PERSONAL DETAILS</strong></p>
                             <div class="row">
                                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
                                     <label>User ID:</label>
@@ -155,7 +155,7 @@
                                     <p>{{$data->legal_status}}</p>
                                 </div>
                             </div>
-                            <p>IMAGES</p>
+                            <p><strong>Images</strong></p>
                             <div class="row">
                                 @foreach($AllImages as $item)
                                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
@@ -163,10 +163,44 @@
                                 </div>
                                 @endforeach
                             </div>
-                          
+                            <strong>Badges Section</strong>
+                            <table class="table">
+                                <thead>
+                                    <tr class="align-middle">
+                                        <th>SL.</th>
+                                        <th width="6%">Logo</th>
+                                        <th>Badges Name</th>
+                                        <th>Short Description</th>
+                                        <th>Long Description</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                              <tbody class="align-middle"> 
+                                    @forelse ($badges as $key =>$badge)
+                                    @if($badge->getBadgeDetails)
+                                    <tr>
+                                        <td> {{ $key+1 }}</td>
+                                        <td><img src="{{ $badge->getBadgeDetails->logo ? asset($badge->getBadgeDetails->logo) : asset('frontend/assets/images/user.png') }}" alt="No-Image" height="100px" width="100px" class="img-thumbnail" srcset=""/></td>
+                                        <td> {{ $badge->getBadgeDetails->title }}</td>      
+                                        <td> {{ Str::limit($badge->getBadgeDetails->short_desc,200) }}</td>      
+                                        <td> {{ Str::limit($badge->getBadgeDetails->long_desc,200) }}</td>      
+    
+                                        <td> {{ $badge->getBadgeDetails->price_prefix }} {{ $badge->getBadgeDetails->price }}</td>      
+                                    </tr>
+                                    @endif
+                                     @empty
+                                    <tr>
+                                        <td colspan="100%" class="text-center">No records found</td>
+                                    </tr> 
+                                    @endforelse
+                            
+                                </tbody>
+                            </table>
                         </div>
                         
                     </div>
+         
+
             </div>
         </div>
     </div>

@@ -6,6 +6,10 @@ use App\Models\Notification;
 use App\Models\Business;
 use App\Models\LegalStatus;
 use App\Models\UserImage;
+use App\Models\Package;
+use App\Models\MyBadge;
+use App\Models\Transaction;
+use App\Models\Badge;
 use App\Models\UserDocument;
 use Illuminate\Http\UploadedFile;
 use App\Contracts\UserContract;
@@ -306,5 +310,26 @@ class UserRepository implements UserContract
     public function getAllLegalStatus(){
         return LegalStatus::where('status',1)->where('deleted_at',1)->get();
 
+    }
+    public function getUserAllPackages(){
+        return Package::get();
+     }
+    public function getAllBadgesById($id){
+        return MyBadge::where('user_id',$id)->get('badge_id');
+     }
+    public function getAllBadges($myBadges){
+        if(isset($myBadges)){
+            return Badge::whereNotIn('id',$myBadges)->where('type', '!=', 0)->get();
+        }else{
+            return Badge::where('type', '!=', 0)->get();
+        }
+       
+    }
+    
+    //transaction
+    
+    public function getAllTransactionByUserId($id){
+       return Transaction::where('user_id',$id)->paginate(20);
+       
     }
 }
