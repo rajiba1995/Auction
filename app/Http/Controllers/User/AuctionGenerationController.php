@@ -40,16 +40,25 @@ class AuctionGenerationController extends Controller
         $all_category = $this->MasterRepository->getAllActiveCollections();
         $user = $this->AuthCheck();
         $inquiry_id = "";
+        $watch_list_data = [];
         $existing_inquiry = [];
         if($request->inquiry_type=="existing-inquiry"){
             $inquiry_id = $request->inquiry_id;
-            $existing_inquiry = Inquiry::where('inquiry_id', $inquiry_id)->first();
+            $existing_inquiry = Inquiry::with('ParticipantsData')->where('inquiry_id', $inquiry_id)->first();
         }
         if($request->group && $request->inquiry_type){
             try {
                 $id = Crypt::decrypt($request->group);
                 $watch_list_data = WatchList::with('SellerData')->where('group_id', $id)->get();
                 return view('front.user.auction-inquiry-generation', compact('existing_inquiry', 'user','watch_list_data', 'inquiry_id', 'all_category'));
+            } catch ( DecryptException $e) {
+                return abort(404);
+            }
+        }elseif($request->inquiry_type=="saved-inquiry"){
+            try{
+                $inquiry_id = Crypt::decrypt($request->inquiry_id);
+                $existing_inquiry = Inquiry::with('ParticipantsData')->where('id', $inquiry_id)->first();
+                return view('front.user.auction-inquiry-generation', compact('user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry'));
             } catch ( DecryptException $e) {
                 return abort(404);
             }

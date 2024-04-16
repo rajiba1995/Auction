@@ -8,7 +8,7 @@
         <div class="heading-row">
             <h3>Reports List</h3>
             <div class="d-flex">  
-                <a href="{{route('admin.user.block.status', $block_status->id)}}"><span class="btn-sm btn-status btn {{$block_status->block_status==0?"bg-success":"bg-dark text-light"}}">{{$block_status->block_status==0?"Unblock":"Blocked"}}</span></a>
+                <a href="{{route('admin.user.block.status', $block_status->id)}}"><span class="btn-status btn {{$block_status->block_status==0?"bg-success":"bg-danger text-dark"}}">{{$block_status->block_status==0?"Unblock":"Blocked"}}</span></a>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <a href="{{route('admin.user.index')}}" class="btn btn-primary btn-sm">
                     <iconify-icon icon="icon-park-twotone:back"></iconify-icon>

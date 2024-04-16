@@ -62,4 +62,40 @@ function genAutoIncreNoYearWiseInquiry($length=4,$table='inquiries',$year,$month
     
     return $year.''.$month.''.$number;
 }
+
+//cities
+if (!function_exists('slugGenerateForCity')) {
+    function slugGenerateForCity($title, $table) {
+        $slug = Str::slug($title, '-');
+        $slugExistCount = DB::table($table)->where('name', $title)->count();
+        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+        return $slug;
+    }
+}
+if (!function_exists('slugGenerateUpdateForCity')) {
+    function slugGenerateUpdateForCity($title, $table, $productId) {
+        $slug = Str::slug($title, '-');
+        $slugExistCount = DB::table($table)->where('name', $title)->where('id', '!=', $productId)->count();
+        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+        return $slug;
+    }
+}
+//State
+if (!function_exists('slugGenerateForState')) {
+    function slugGenerateForState($title, $table) {
+        $slug = Str::slug($title, '-');
+        $slugExistCount = DB::table($table)->where('name', $title)->count();
+        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+        return $slug;
+    }
+}
+if (!function_exists('slugGenerateUpdateForState')) {
+    function slugGenerateUpdateForState($title, $table, $productId) {
+        $slug = Str::slug($title, '-');
+        $slugExistCount = DB::table($table)->where('name', $title)->where('id', '!=', $productId)->count();
+        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+        return $slug;
+    }
+}
+
 ?>

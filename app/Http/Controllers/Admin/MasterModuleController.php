@@ -698,6 +698,74 @@ class MasterModuleController extends Controller
         }
      }
 
+     //State
+     public function LocationStateCreate()
+     {
+          //  $countryId = 1;
+         return view('admin.location.state-create');
+     }
+
+     public function LocationStateStore(Request $request){
+        // dd($request->all());
+        $request->validate([
+            'name'=>'required|unique:states,name',
+        ],
+            [
+        
+            "name.required" => "Please enter State name.",
+            "name.unique" => "The State name is already taken for the selected Country.",
+        ]);
+
+        $params = $request->except('_token');
+    $data = $this->masterRepository->CreateLocationState($params);
+    if ($data) {
+        return redirect()->route('admin.location.states.index')->with('success', 'States has been successfully stored under this Country!');
+    } else {
+        return redirect()->route('admin.location.state.create')->with('error', 'Something went wrong please try again!');
+    }
+     }
+
+
+     public function LocationStateEdit($stateId,$countryId){
+        $data = $this->masterRepository->getStateById($stateId,$countryId);
+        return view('admin.location.state-edit', compact('data','countryId'));
+     }
+
+     public function  LocationStateUpdate(Request $request){
+        // dd($request->all());
+        $request->validate([
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('states')->where(function ($query) use ($request) {
+                    return $query->where('country_id', $request->country_id)
+                                 ->where('id', '!=', $request->id);
+                }),
+            ],
+        ], [
+            'name.required' => 'Please enter state name.',
+            'name.unique' => 'The State name is already taken for the selected Country.',
+        ]);
+
+        $params = $request->except('_token');
+        $data = $this->masterRepository->updateStateLocation($params);
+        if ($data) {
+            return redirect()->route('admin.location.states.index')->with('success', 'State has been successfully updated!');
+        } else {
+            return redirect()->route('admin.location.state.edit', [$request->id,$request->country_id])->with('error', 'Something went wrong please try again!');
+        }
+     }
+
+
+
+        
+
+
+
+  
+
+
 
 
      /// employee section start
@@ -792,5 +860,106 @@ class MasterModuleController extends Controller
             return redirect()->route('employee.sellers.edit', $request->id)->with('error', 'Something went wrong please try again!');
         }
      }
+
+
+
+     //payment section 
+
+     // badge
+     public function BadgeIndex()
+     {
+         $data = $this->masterRepository->getAllBadges();
+         return view('admin.badge.index',compact('data'));
+     }
+     public function BadgeCreate()
+     {
+         return view('admin.badge.create');
+     }
+
+     public function  BadgeStore(Request $request){
+  
+           // dd($request->all());
+           $request->validate([
+                'title'=>'required| unique:badges,title',
+                'logo' => 'required|image|dimensions:width=64,height=64',
+                'short_desc'=>'required',
+                'long_desc'=>'required',
+                'price'=>'required',
+                'price_prefix'=>'required',
+
+           ],[
+            'title.required'=>"Title is required",
+
+            'title.unique'=>"Title has already been taken.",
+            'logo.image' => 'The file must be an image.',
+            'logo.required' => 'The file must be required.',
+            'logo.dimensions' => 'The image must be 64px width and 64px height.',
+            'short_desc.required'=>"Short Description is required",  
+            'long_desc.unique'=>"Long Description is required",   
+            'price.required'=>"Phone number is required",  
+            'price_prefix.required'=>"Currency type is required",    
+           ]);
+           $params = $request->except('_token');
+           $data = $this->masterRepository->CreateBadge($params);
+           if ($data) {
+               return redirect()->route('admin.badge.index')->with('success', 'Badge has been successfully Added!');
+           } else {
+               return redirect()->route('admin.badge.create')->with('error', 'Something went wrong please try again!');
+           }  
+        }
+
+       
+    public function BadgeEdit($id){
+        $data = $this->masterRepository->GetBadgeById($id);
+        return view('admin.badge.edit', compact('data'));
+    }
+
+    public function BadgeUpdate(Request $request)
+    {
+      
+            $request->validate([
+                'title'=>'required', Rule::unique('badges', 'title')->ignore($request->id),
+                'short_desc'=>'required',
+                'long_desc'=>'required',
+                'price'=>'required',
+                'price_prefix'=>'required',
+                'logo' => 'nullable|image|dimensions:width=64,height=64',
+            ], [
+                
+                'title.required'=>"Title is required",
+                'title.unique'=>"Title has already been taken.",
+                'logo.image' => 'The file must be an image.',
+                'logo.required' => 'The file must be required.',
+                'logo.dimensions' => 'The image must be 64px width and 64px height.',
+                'short_desc.required'=>"Short Description is required",  
+                'long_desc.unique'=>"Long Description is required",   
+                'price.required'=>"Phone number is required",  
+                'price_prefix.required'=>"Currency type is required",    
+            ]);
+        
+        
+        $params = $request->except('_token');
+        $data = $this->masterRepository->updateBadge($params);
+        if ($data) {
+            return redirect()->route('admin.badge.index')->with('success', 'Data has been successfully updated!');
+        } else {
+            return redirect()->route('admin.badge.edit',$request->id)->with('error', 'Something went wrong please try again!');
+        }
+    }
+     
+    public function BadgeStatus($id)
+    {
+        $data = $this->masterRepository->StatusBadge($id);
+        return redirect()->back();
+    }
+
+    public function BadgeDelete($id){
+        $data = $this->masterRepository->deleteBadge($id);
+        if ($data) {
+            return redirect()->route('admin.badge.index')->with('success', 'Badge has been Deleted Successfully!');
+        } else {
+            return redirect()->route('admin.badge.index')->with('error', 'Something went wrong please try again!');
+        }
+    }
 
 }

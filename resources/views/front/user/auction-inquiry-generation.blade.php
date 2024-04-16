@@ -22,24 +22,26 @@
                                 @csrf
                                 <input type="hidden" name="inquiry_id" value="{{$existing_inquiry?$existing_inquiry->inquiry_id:""}}">
                                 <input type="hidden" name="created_by" value="{{$user->id}}">
-                                @if($existing_inquiry)
+                                @if($existing_inquiry && $existing_inquiry->inquiry_id)
                                 <div class="inquiry-id-row">
                                     <span>Inquiry Id : {{$existing_inquiry->inquiry_id}}</span>
                                 </div>
                                 @endif
                                 <ul>
-                                    <li id="message_li"> 
-                                        @if (session('success'))
-                                            <div class="alert alert-success" id="successAlert">
-                                                {{ session('success') }}
-                                            </div>
-                                        @endif
-                                        @if (session('warning'))
-                                            <div class="alert alert-warning" id="successAlert">
-                                                {{ session('warning') }}
-                                            </div>
-                                        @endif
-                                    </li>
+                                    @if (session('success') || session('warning'))
+                                        <li id="message_li"> 
+                                            @if (session('success'))
+                                                <div class="alert alert-success" id="successAlert">
+                                                    {{ session('success') }}
+                                                </div>
+                                            @endif
+                                            @if (session('warning'))
+                                                <div class="alert alert-warning" id="successAlert">
+                                                    {{ session('warning') }}
+                                                </div>
+                                            @endif
+                                        </li>
+                                    @endif
                                 </ul>
                                 <h4 class="color-red text-center">Title</h4>
                                 <div class="row input-row">
@@ -171,7 +173,31 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                @if(!empty($existing_inquiry) && count($existing_inquiry->ParticipantsData) > 0)
+                                <div class="row input-row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label">Existing Participants*</label>
+                                            <div class="participants-block border-red">
+                                                @foreach ($existing_inquiry->ParticipantsData as $key=>$item)
+                                                    <label class="participant" id="exist_participant{{$item}}">
+                                                        @if($item->SellerData)
+                                                            <input type="hidden" name="exist_participant[]" value="{{$item->SellerData->id}}">
+                                                        @endif
+                                                        {{$item->SellerData && $item->SellerData->business_name ?$item->SellerData->business_name:""}}
+                                                        <span class="remove" data-id="{{$item->id}}">
+                                                            <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13.3636 3.7738L4.66797 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M4.66797 3.7738L13.3636 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                        </span>
+                                                    </label>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
                                 <div class="add-invite-row">
                                     <button type="button" class="btn btn-add-invite">
                                         <svg width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">

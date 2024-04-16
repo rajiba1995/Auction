@@ -18,7 +18,7 @@ class UserDetailsRepository implements UserDetailsContract
 {
     public function getAllUsers()
     {
-        return User::orderBy('name', 'ASC')->paginate(20);
+        return User::with('UserDocumentData')->orderBy('name', 'ASC')->paginate(20);
     }
     public function getUserDetailsById(int $id)
     {
@@ -66,7 +66,7 @@ class UserDetailsRepository implements UserDetailsContract
                       ->where('created_at', '<=', date("Y-m-d 23:59:59",strtotime($endDate)));
             });
         }
-        return $data = $query->latest('id')->paginate(25);
+        return $data = $query->with('UserDocumentData')->latest('id')->paginate(25);
     }
     public function StatusUserDocument($request){
         if($request->type=='additional_doc'){

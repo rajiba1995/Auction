@@ -83,8 +83,9 @@ Route::get('/clear-cache', function() {
         Route::post('/auction-inquiry-generation/store', [AuctionGenerationController::class, 'auction_inquiry_generation_store'])->name('front.auction_inquiry_generation_store');
 
         // Buyer Dashboard
-        Route::group(['prefix'  =>   'buyer-dashboard'], function() {
-            Route::get('', [BuyerDashboardController::class, 'index'])->name('user_buyer_dashboard');
+        Route::group(['prefix'  =>   'buyer'], function() {
+            Route::get('/groups', [BuyerDashboardController::class, 'index'])->name('user_buyer_dashboard');
+            Route::get('/saved-inquiries', [BuyerDashboardController::class, 'saved_inquiries'])->name('buyer_saved_inquiries');
         });
     });
 // Admin login routes

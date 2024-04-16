@@ -45,6 +45,21 @@
     </thead>
     <tbody class="align-middle">
         @forelse ($data as $key =>$item)
+        @php
+        if ($item->UserDocumentData && 
+                $item->UserDocumentData->gst_status != 1 && 
+                $item->UserDocumentData->pan_status != 1 && 
+                $item->UserDocumentData->adhar_status != 1 && 
+                $item->UserDocumentData->trade_license_status != 1 && 
+                $item->UserDocumentData->cancelled_cheque_status != 1) {
+                    $doc_color = "danger";
+            } else {
+                $doc_color = "primary";
+            }
+            if(empty($item->UserDocumentData)){
+                $doc_color = "danger";
+            }
+        @endphp
         <tr>
             <td> {{ $key+1 }}</td>
             <td><img src="{{ $item->image ? asset($item->image) : asset('frontend/assets/images/user.png') }}" alt="No-Image" height="100px" width="100px" class="img-thumbnail" srcset=""/></td>
@@ -55,15 +70,16 @@
             <td>
                 {{-- <a href="{{route('admin.banner.edit', $item->id)}}" class="btn btn-edit" title="Edit"><i class="fa-solid fa-pen"></i></a> --}}
                 <a href="{{route('admin.user.view', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Profile</a>               
-                <a href="{{route('admin.user.document.view', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Documents</a>
-                <a href="{{route('admin.user.report', $item->id)}}" class="btn btn-sm btn-outline-danger" title="View">Reports</a>
+                <a href="{{route('admin.user.document.view', $item->id)}}" class="btn btn-sm btn-outline-{{$doc_color}}" title="View">Documents</a>
+                <a href="{{route('admin.user.report', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Reports</a>
                 {{-- <button type="button" class="btn btn-delete itemremove" data-id="{{$item->id}}" title="Delete"><i class="fa-regular fa-trash-can"></i></button> --}}
             </td>
 
             <td>
             <a href="{{route('admin.user.status', $item->id)}}"><span class="btn-sm btn-status btn {{$item->status==1?"bg-success":"bg-danger"}}">{{$item->status==1?"Active":"Inactive"}}</span></a>
-
-                <span class="btn-sm btn-status btn {{$item->block_status==0?"bg-primary text-light":"bg-dark text-light"}}">{{ $item->block_status==0?"Unblock":"Blocked" }}
+                @if($item->block_status==1)
+                 <span class="btn-sm btn-status btn btn btn-sm btn-outline-danger">Blocked
+                @endif
             </td>
             
         </tr>

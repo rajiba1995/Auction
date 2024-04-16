@@ -24,5 +24,8 @@ class BuyerDashboardRepository implements BuyerDashboardContract{
     public function group_wise_inquiries_by_user($id){
         return GroupWatchList::orderBy('group_name', 'ASC')->where('created_by',$id)->get();
     }
+    public function saved_inquiries_by_user($id){
+        return Inquiry::where('created_by',$id)->where('inquiry_id', null)->get();
+    }
     
 }

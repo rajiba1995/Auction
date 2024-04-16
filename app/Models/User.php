@@ -76,4 +76,8 @@ class User extends Authenticatable implements JWTSubject{
     function  getEmployeeName(){
         return $this->belongsTo('App\Models\admin', 'added_by');
     }
+    public function UserDocumentData(){
+        return $this->hasOne('App\Models\UserDocument','user_id','id');
+    }
+    
 }

@@ -96,6 +96,21 @@
       </div>
     </div> 
     <div class="accordion-item">
+      <a href="javascript:void(0)" class="accordion-button {{ (request()->is('admin/payment-management*')) ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse6">
+        <i class="fa-solid fa-indian-rupee-sign"></i>
+        Payment Management
+        <img src="{{asset('admin/assets/images/up-arrow-black.png')}}" alt="arrow" class="indicator i-black">
+        <img src="{{asset('admin/assets/images/up-arrow-white.png')}}" alt="arrow" class="indicator i-white">
+      </a>
+      <div class="accordion-collapse collapse {{ (request()->is('admin/payment-management/badge*')) ? 'show' : '' }}" id="collapse6" data-bs-parent="#menusAccordion">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link {{ (request()->is('admin/payment-management/badge*')) ? 'active' : '' }}" aria-current="page" href="{{route('admin.badge.index')}}">Badge List</a>
+          </li>
+        </ul>
+      </div>
+    </div> 
+    <div class="accordion-item">
       <a href="javascript:void(0)" class="accordion-button {{ (request()->is('admin/setting*')) ? 'active' : '' }} " data-bs-toggle="collapse" data-bs-target="#collapse3">
         <i class="fa-solid fa-gear"></i>
         Settings

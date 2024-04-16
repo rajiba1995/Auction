@@ -41,5 +41,10 @@ class BuyerDashboardController extends Controller
         $group_wise_list =  $this->BuyerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
         return view('front.user_dashboard.index', compact('group_wise_list', 'existing_inquiries'));
     }
+
+    public function saved_inquiries(Request $request){
+        $saved_inquiries =  $this->BuyerDashboardRepository->saved_inquiries_by_user($this->getAuthenticatedUserId());
+        return view('front.user_dashboard.saved_inquireis', compact('saved_inquiries'));
+    }
     
 }
