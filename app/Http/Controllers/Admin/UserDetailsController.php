@@ -38,7 +38,8 @@ class UserDetailsController extends Controller
     {
         $data = $this->userDetailsRepository->getUserDetailsById($id);
         $AllImages = $this->userDetailsRepository->getAllUsersImages($id);
-        return view('admin.user.view', compact('data', 'AllImages'));
+        $badges = $this->userDetailsRepository->getAllBadgesByUserId($id);
+        return view('admin.user.view', compact('data', 'AllImages','badges'));
     }
     public function UserDocumentView(int $id)
     { 
@@ -153,4 +154,6 @@ class UserDetailsController extends Controller
 
         }
     }
+
+
 }

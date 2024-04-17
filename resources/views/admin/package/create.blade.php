@@ -35,6 +35,11 @@
                         @error('package_price')<div class="text-danger">{{ $message }}</div>@enderror                       
                     </div>
                     <div class="form-wrap mb-3">
+                    <label for="">Package Prefix</label>
+                        <input type="text" class="form-control" name="package_prefix" id="package_prefix" value="{{old('package_prefix')}}">
+                        @error('package_prefix')<div class="text-danger">{{ $message }}</div>@enderror                       
+                    </div>
+                    <div class="form-wrap mb-3">
                     <label for="">Package Description</label>
                         <textarea class="form-control" name="package_description" id="package_description">{{old('package_description')}}</textarea>
                         @error('package_description')<div class="text-danger">{{ $message }}</div>@enderror                       

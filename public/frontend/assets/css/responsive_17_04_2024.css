@@ -206,9 +206,6 @@
     header.logged .btn-dashboard {
         margin-left: auto;
     }
-    header .dashboard-dropdown {
-        margin-left: auto;
-    }
     .home-banner-slider {
         height: 300px;
     }
@@ -445,10 +442,6 @@
     header.logged .btn-dashboard {
         order: 7;
         margin-left: 0;
-    }
-    header .dashboard-dropdown {
-        order: 7;
-        margin-left: 0
     }
     header.logged .helpdesk {
         order: 8;
@@ -952,10 +945,6 @@
     header.logged .btn-dashboard {
         width: 84px;
         padding: 0 12px;
-    }
-    header .dashboard-dropdown .dropdown-toggle {
-        width: 84px;
-        padding: 0 12px; 
     }
     header.logged .menu-cta {
         font-size: 11px;

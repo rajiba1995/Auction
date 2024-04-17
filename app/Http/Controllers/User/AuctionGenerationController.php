@@ -58,6 +58,7 @@ class AuctionGenerationController extends Controller
             try{
                 $inquiry_id = Crypt::decrypt($request->inquiry_id);
                 $existing_inquiry = Inquiry::with('ParticipantsData')->where('id', $inquiry_id)->first();
+                $watch_list_data = WatchList::with('SellerData')->where('group_id', null)->where('buyer_id', $user->id)->get();
                 return view('front.user.auction-inquiry-generation', compact('user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry'));
             } catch ( DecryptException $e) {
                 return abort(404);
@@ -77,6 +78,7 @@ class AuctionGenerationController extends Controller
     }
 
     public function auction_inquiry_generation_store(Request $request){
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'start_date' => 'required|date',
@@ -91,23 +93,29 @@ class AuctionGenerationController extends Controller
             'minimum_quote_amount' => 'required|numeric',
             'maximum_quote_amount' => 'required|numeric',
         ]);
-    
+       
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
         try {
-            $inquiry_id = $request->inquiry_id?$request->inquiry_id:"";
-            $inquiry = Inquiry::where('inquiry_id', $inquiry_id) ->first();
-
+            
+            $inquiry_id = $request->saved_inquiry_id?$request->saved_inquiry_id:"";
+           
+            $inquiry = Inquiry::where('id', $inquiry_id)->first();
             if(empty($inquiry)){
                 $inquiry = new Inquiry;
                 if($request->submit_type == "generate"){
                     $order_no = genAutoIncreNoYearWiseInquiry(8,'inquiries',date('Y'),date('m'));
                     $inquiry->inquiry_id = $order_no;
                 }
+            }else{
+                if($request->submit_type == "generate"){
+                    $order_no = genAutoIncreNoYearWiseInquiry(8,'inquiries',date('Y'),date('m'));
+                    $inquiry->inquiry_id = $order_no;
+                }
             }
             $inquiry->created_by = $request->created_by;
-            $inquiry->title = $request->title;
+            $inquiry->title = ucwords($request->title);
             $inquiry->slug = slugGenerate($request->title, 'inquiries');
             $inquiry->start_date = $request->start_date;
             $inquiry->start_time = $request->start_time;
@@ -134,20 +142,20 @@ class AuctionGenerationController extends Controller
             $inquiry->location_type =$request->auctionfrom;
             $inquiry->save();
 
-            if($inquiry && count($request->participant) > 0){
+            if($inquiry && isset($request->participant) && count($request->participant) > 0){
                 foreach($request->participant as $key => $item){
-                    InquiryParticipant::where('inquiry_id', $inquiry->id)->delete();
-                    $fetch = InquiryParticipant::where('user_id', $item)->where('inquiry_id', $inquiry->id)->first();
-                    if(empty($fetch)){
+                    $exist_participants = InquiryParticipant::where('inquiry_id', $inquiry->id)->where('user_id', $item)->get();
+                    if(count($exist_participants)==0){
                         $participant = new InquiryParticipant;
                         $participant->inquiry_id = $inquiry->id;
                         $participant->user_id = $item;
                         $participant->save();
                     }
+                  
                 }
             }
             if($request->submit_type == "generate"){
-                return redirect()->route('front.auction_inquiry_generation', ['inquiry_type' => 'existing-inquiry', 'inquiry_id' => $inquiry->inquiry_id])->with('success', 'Inquiry has been generated successfully.');
+                return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry has been generated successfully.');
 
             }else{
                 return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry data has been saved successfully.');
@@ -156,6 +164,11 @@ class AuctionGenerationController extends Controller
             // dd($e->getMessage());
             return abort(404);
         }
+    }
+
+    public function auction_participants_delete(Request $request){
+        InquiryParticipant::destroy($request->id);
+        return response()->json(['status'=>200]);  
     }
     
     

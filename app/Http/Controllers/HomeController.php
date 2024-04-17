@@ -87,7 +87,7 @@ class HomeController extends Controller
             ->pluck('user_id')
             ->toArray());
             $authUserId = Auth::guard('web')->check() ? Auth::guard('web')->user()->id : null;
-            $data = User::whereIn('id', $User_products)
+            $data = User::with('MyBadgeData')->whereIn('id', $User_products)
             ->where('id', '!=', $authUserId)
             ->get();
             $groupWatchList = GroupWatchList::where('created_by',$authUserId)->get();

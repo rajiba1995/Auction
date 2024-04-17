@@ -1773,16 +1773,29 @@
 @endsection
 @section('script')
 <script>
+
     $(document).ready(function(){
         $('#group_wies_search').keyup(function(){
             var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
             $('.item').show();
+            var found = false; // Flag to track if any items are found
             $('.item').each(function() {
                 var inquiry_title = $(this).find('.inquiry_title').text().toLowerCase(); // Get location text and convert to lowercase
                 if (inquiry_title.indexOf(selectedValue) === -1) {
                     $(this).hide(); // Hide the item if location doesn't match
+                } else {
+                    found = true; // Set the flag to true if at least one item is found
                 }
             });
+            if (!found) {
+                $('#noDataAlert').remove(); // Remove the alert if items are found
+                var append = `<div class="alert alert-danger" id="noDataAlert" role="alert">
+                No data found
+                </div>`;
+                $('.dashboard-groups').append(append);
+            } else {
+                $('#noDataAlert').remove(); // Remove the alert if items are found
+            }
         });
     });
 </script>

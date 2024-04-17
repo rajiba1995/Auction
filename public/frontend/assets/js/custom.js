@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-   
 
     $("input[name='auctionfrom']").click(function() {
         var inputval = $(this).val();
@@ -199,6 +198,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     $("#filterSelectedEndDate").on("click", function() {
         $("#filterEndDate").datepicker("show");
+    });
+
+    $(".read-more span").on("click", function() {
+        if($(this).parent().parent().find("p").hasClass("hidden")) {
+            $(this).parent().parent().find("p").removeClass("hidden");
+            $(this).text("read less");
+        } else {
+            $(this).parent().parent().find("p").addClass("hidden");
+            $(this).text("read more");
+        }
+    });
+    
+    $(".see-more span").on("click", function() {
+        if($(this).parent().parent().find("ul.participant-data-list").hasClass("hidden")) {
+            $(this).parent().parent().find("ul.participant-data-list").removeClass("hidden");
+            $(this).text("see less");
+        } else {
+            $(this).parent().parent().find("ul.participant-data-list").addClass("hidden");
+            $(this).text("see more");
+        }
     });
 
 });

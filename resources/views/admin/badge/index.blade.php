@@ -34,7 +34,7 @@
         @forelse ($data as $key =>$item)
         <tr>
             <td> {{ $data->firstItem() + $loop->index }}</td>
-            <td><img src="{{asset($item->logo)}}" alt="" width="85px" class="img-thumbnail" ></td>
+            <td><img src="{{asset($item->logo)}}" alt="" width="50px" class="img-thumbnail" ></td>
             <td> {{ $item->title }}</td>
             <td>
                 @if($item->type == 0)

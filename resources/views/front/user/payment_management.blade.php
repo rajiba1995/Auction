@@ -24,74 +24,22 @@
                                             <h3>Credit Packages</h3>
                                             <div class="packages">
                                                 <div class="row">
+                                                    @foreach ($packages as $item)
                                                     <div class="col-xxl-3 col-md-6 col-12 package-col">
                                                         <div class="packages-card">
                                                             <div class="card-header bg-gradient-free">
-                                                                <h4>Free</h4>
-                                                                <p>INR 5,400 / monthly</p>
+                                                                <h4>{{$item->package_name}}</h4>
+                                                                <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
                                                             </div>
                                                             <div class="card-body">
-                                                                <p>It is a long established fact that</p>
-                                                                <p>Lorem Ipsum is that it has Lorem Ipsum is that</p>
-                                                                <p>Lorem Ipsum is that Lorem Ipsum is that it has</p>
-                                                                <p>Lorem Ipsum is that it has a more-or-less</p>
+                                                                <p>{!! $item->package_description !!}</p>                                                    
                                                             </div>
                                                             <div class="card-footer bg-gradient-free">
                                                                 <a href="#" class="btn btn-animated btn-cta bg-free">Buy Now</a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xxl-3 col-md-6 col-12 package-col">
-                                                        <div class="packages-card">
-                                                            <div class="card-header bg-gradient-individual">
-                                                                <h4>Individual</h4>
-                                                                <p>INR 5,400 / monthly</p>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <p>It is a long established fact that</p>
-                                                                <p>Lorem Ipsum is that it has Lorem Ipsum is that</p>
-                                                                <p>Lorem Ipsum is that Lorem Ipsum is that it has</p>
-                                                                <p>Lorem Ipsum is that it has a more-or-less</p>
-                                                            </div>
-                                                            <div class="card-footer bg-gradient-individual">
-                                                                <a href="#" class="btn btn-animated btn-cta bg-individual">Buy Now</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xxl-3 col-md-6 col-12 package-col">
-                                                        <div class="packages-card">
-                                                            <div class="card-header bg-gradient-business">
-                                                                <h4>Individual</h4>
-                                                                <p>INR 5,400 / monthly</p>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <p>It is a long established fact that</p>
-                                                                <p>Lorem Ipsum is that it has Lorem Ipsum is that</p>
-                                                                <p>Lorem Ipsum is that Lorem Ipsum is that it has</p>
-                                                                <p>Lorem Ipsum is that it has a more-or-less</p>
-                                                            </div>
-                                                            <div class="card-footer bg-gradient-business">
-                                                                <a href="#" class="btn btn-animated btn-cta bg-business">Buy Now</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xxl-3 col-md-6 col-12 package-col">
-                                                        <div class="packages-card">
-                                                            <div class="card-header bg-gradient-premium">
-                                                                <h4>Individual</h4>
-                                                                <p>INR 5,400 / monthly</p>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <p>It is a long established fact that</p>
-                                                                <p>Lorem Ipsum is that it has Lorem Ipsum is that</p>
-                                                                <p>Lorem Ipsum is that Lorem Ipsum is that it has</p>
-                                                                <p>Lorem Ipsum is that it has a more-or-less</p>
-                                                            </div>
-                                                            <div class="card-footer bg-gradient-premium">
-                                                                <a href="#" class="btn btn-animated btn-cta bg-premium">Buy Now</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
@@ -108,7 +56,7 @@
                                         <div class="inner">
                                             <h3>Badges</h3>
                                             <div class="badges">
-                                                <h5>Unpaid Badges</h5>
+                                                <h5>My Badges</h5>
                                                 <div class="table-responsive">
                                                     <table class="table badges-data-table">
                                                         <thead>
@@ -119,56 +67,55 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            @foreach ($myBadges as $item)
+                                                            @if($item->getBadgeDetails)
                                                             <tr>
                                                                 <td>
                                                                     <div class="badge">
                                                                         <div class="img">
-                                                                            <img src="assets/images/verified-badge.png" alt="">
+                                                                            <img src="{{ asset($item->getBadgeDetails->logo) }}" width="30px" alt="">
                                                                         </div>
                                                                         <div class="name">
-                                                                            <label class="color-verified">Verified</label>
+                                                                            @php
+                                                                            $typeLabels = [
+                                                                                0 => ['class' => 'color-verified', 'text' => ''],
+                                                                                1 => ['class' => 'color-featured-basic', 'text' => 'Basic'],
+                                                                                2 => ['class' => 'color-featured-intermediate', 'text' => 'Intermediate'],
+                                                                                3 => ['class' => 'color-featured-advanced', 'text' => 'Advance']
+                                                                            ];
+                                                                        @endphp
+                                                                        
+                                                                        <label class="{{ $typeLabels[$item->getBadgeDetails->type]['class'] }}">
+                                                                            {{ ucwords($item->getBadgeDetails->title) }}
+                                                                        </label>
+                                                                        
+                                                                        @if ($typeLabels[$item->getBadgeDetails->type]['text'] !== '')
+                                                                            <span>{{ $typeLabels[$item->getBadgeDetails->type]['text'] }}</span>
+                                                                        @endif
+                                                                        
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+                                                                        {{$item->getBadgeDetails->short_desc}}
                                                                     </p>
                                                                 </td>
                                                                 <td>
                                                                     <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
+                                                                        {{$item->getBadgeDetails->long_desc}}
                                                                     </p>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="badge">
-                                                                        <div class="img">
-                                                                            <img src="assets/images/trusted-badge.png" alt="">
-                                                                        </div>
-                                                                        <div class="name">
-                                                                            <label class="color-trusted">Trusted</label>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
-                                                                    </p>
-                                                                </td>
-                                                                <td>
-                                                                    <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.
-                                                                    </p>
-                                                                </td>
-                                                            </tr>
+                                                            @endif
+                                                            @endforeach
+                                                           
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                             <div class="badges">
-                                                <h5>Unpaid Badges</h5>
+                                                <h5>Paid Badges</h5>
                                                 <div class="table-responsive">
                                                     <table class="table badges-data-table">
                                                         <thead>
@@ -180,87 +127,45 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            @foreach ($allBadges as $item)
                                                             <tr>
                                                                 <td>
                                                                     <div class="badge">
                                                                         <div class="img">
-                                                                            <img src="assets/images/featured-basic.png" alt="">
+                                                                            <img src="{{asset($item->logo) }}" alt="" width="50px">
                                                                         </div>
                                                                         <div class="name">
-                                                                            <label class="color-featured-basic">Featured</label>
-                                                                            <span>Basic</span>
+                                                                            @php
+                                                                            $typeLabels = [
+                                                                                1 => ['class' => 'color-featured-basic', 'text' => 'Basic'],
+                                                                                2 => ['class' => 'color-featured-intermediate', 'text' => 'Intermediate'],
+                                                                                3 => ['class' => 'color-featured-advanced', 'text' => 'Advance']
+                                                                            ];
+                                                                        @endphp
+                                                                        
+                                                                        <label class="{{ $typeLabels[$item->type]['class'] }}">{{ ucwords($item->title) }}</label>
+                                                                        <span>{{ $typeLabels[$item->type]['text'] }}</span>
+                                                                        
                                                                         </div>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form,
+                                                                        {{ Str::limit($item->short_desc,200) }}
                                                                     </p>
                                                                 </td>
                                                                 <td>
                                                                     <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, but the majority have 
+                                                                        {{ Str::limit($item->long_desc,200) }}
                                                                     </p>
                                                                 </td>
                                                                 <td class="price-td">
-                                                                    <label class="price-label">INR - 1500</label>
-                                                                    <a href="" class="btn btn-animated btn-yellow btn-cta">Buy Now</a>
+                                                                    <label class="price-label">{{ $item->price_prefix }} - {{ $item->price }}</label>
+                                                                    <a href="#"  class="btn btn-animated btn-yellow btn-cta purchase" data-badge_id="{{$item->id}}" data-amount={{ $item->price }}>Buy Now</a>
                                                                 </td>
                                                             </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="badge">
-                                                                        <div class="img">
-                                                                            <img src="assets/images/featured-intermediate.png" alt="">
-                                                                        </div>
-                                                                        <div class="name">
-                                                                            <label class="color-featured-intermediate">Featured</label>
-                                                                            <span>Intermediate</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, 
-                                                                    </p>
-                                                                </td>
-                                                                <td>
-                                                                    <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-                                                                    </p>
-                                                                </td>
-                                                                <td class="price-td">
-                                                                    <label class="price-label">INR - 1500</label>
-                                                                    <a href="" class="btn btn-animated btn-yellow btn-cta">Buy Now</a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>
-                                                                    <div class="badge">
-                                                                        <div class="img">
-                                                                            <img src="assets/images/featured-advanced.png" alt="">
-                                                                        </div>
-                                                                        <div class="name">
-                                                                            <label class="color-featured-advanced">Featured</label>
-                                                                            <span>Advanced</span>
-                                                                        </div>
-                                                                    </div>
-                                                                </td>
-                                                                <td>
-                                                                    <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, 
-                                                                    </p>
-                                                                </td>
-                                                                <td>
-                                                                    <p>
-                                                                        There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration
-                                                                    </p>
-                                                                </td>
-                                                                <td class="price-td">
-                                                                    <label class="price-label">INR - 1500</label>
-                                                                    <a href="" class="btn btn-animated btn-yellow btn-cta">Buy Now</a>
-                                                                </td>
-                                                            </tr>
+                                                            @endforeach
+                                                            
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -279,6 +184,52 @@
 </div>
 @endsection
 @section('script')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+            $('.purchase').on("click", function() {
+                var badge_id = $(this).data('badge_id');             // console.log(id); 
+                var badge_amount = $(this).data('amount');             // console.log(id); 
+                Swal.fire({
+                title: "Are You Sure to Purchase it?",
+                text: "Purchase this Badge?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Purchase it!'
+                }).then((result) => {
+                if (result.isConfirmed) {
+                    var csrfToken = "{{csrf_token()}}";
+                    $.ajax({
+                        type: 'POST',
+                        url: '{{ route("user.purchase.transaction") }}',
+                        data: {
+                            '_token' : csrfToken ,
+                            'id' : badge_id,
+                            'amount' : badge_amount,
+                        },
+                        success: function(response) {
+                            if(response.status==200){
+                                Swal.fire({
+                                    title: 'Success!',
+                                    text: 'Your Badge Successfully Purchased.',
+                                    icon: 'success',
+                                });
+                                    location.reload();
+                            }
+                        },
+                        // error: function(xhr, status, error) {
+                        //     console.error(xhr.responseText);
+                        // }
+                    });
+                }
+            });
+        });
+    
+        
+               
+</script>
+
 <script>
     $(document).ready(function() {
 
@@ -338,3 +289,4 @@
     });
 </script>
 @endsection
+

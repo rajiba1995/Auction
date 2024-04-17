@@ -10,10 +10,12 @@
     <link rel="stylesheet" href="{{asset('frontend/assets/css/swiper-bundle.min.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/assets/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('frontend/assets/css/responsive.css')}}">
-
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 
     
     
@@ -46,7 +48,16 @@
                     </div>
                 
                 <div id="filterSuggestions"></div>
-                <a herf="{{route('user.profile')}}" class="btn btn-cta btn-animated btn-dashboard">Dashboard</a>
+                {{-- <a herf="{{route('user.profile')}}" class="btn btn-cta btn-animated btn-dashboard">Dashboard</a> --}}
+                <div class="dropdown dashboard-dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Dashboard
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{route('user_buyer_dashboard')}}">Buyer</a></li>
+                      <li><a class="dropdown-item" href="#">Supplier</a></li>
+                    </ul>
+                  </div>
                 <a href="" class="menu-cta helpdesk">
                     <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_726_1406)">

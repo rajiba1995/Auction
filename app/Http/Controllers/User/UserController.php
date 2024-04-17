@@ -11,15 +11,19 @@ use App\Contracts\BuyerDashboardContract;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\WatchList;
+use App\Models\MyBadge;
 use App\Models\GroupWatchList;
 use App\Models\UserImage;
 use App\Models\SellerReport;
+use App\Models\Transaction;
 use App\Models\UserDocument;
 use App\Models\Collection;
 use App\Models\UserAdditionalDocument;
 use App\Models\RequirementConsumption;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Exception;
+
 
 class UserController extends Controller{
 
@@ -475,12 +479,23 @@ class UserController extends Controller{
     }
     public function payment_management(){
         $data = $this->AuthCheck();
-        return view('front.user.payment_management', compact('data'));
+        $packages = $this->userRepository->getUserAllPackages();
+        $myBadges = $this->userRepository->getAllBadgesById($data->id);
+        $allBadges = $this->userRepository->getAllBadges($myBadges);
+        return view('front.user.payment_management', compact('data','packages','myBadges','allBadges'));
     }
     public function settings(){
         $data = $this->AuthCheck();
         return view('front.user.settings', compact('data'));
     }
+
+    public function transaction(){
+        $data = $this->AuthCheck();
+        $transactions = $this->userRepository->getAllTransactionByUserId($data->id);
+        return view('front.user.transaction',compact('data','transactions'));
+    }
+
+
     public function MyWatchlist(Request $request){
         $data = $this->AuthCheck();
         $group_slug = $request->group ? $request->group : '';
@@ -756,5 +771,32 @@ class UserController extends Controller{
         }else{
             return redirect()->route('user.watchlist')->with('warning', 'Group not found in your panel. Please enter a valid group name.');
         }
+    }
+    public function purchase(Request $request){
+        // dd($request->all());
+        try {
+            $data = $this->AuthCheck();
+            // Create a new transaction
+            $transaction = new Transaction();
+            $transaction->user_id = $data->id;
+            $transaction->unique_id = rand(10000000, 9999999);
+            $transaction->transaction_type = 1;
+            $transaction->transaction_id = rand(10000000, 9999999);
+            $transaction->purpose = 'Purchase Badge'.','.$request->id;
+            $transaction->amount = $request->amount;
+            $transaction->transaction_source = "phonePe";
+            $transaction->save();
+            // Create a new MyBadge
+
+            $myBadge = new MyBadge();
+            $myBadge->user_id = $data->id;
+            $myBadge->badge_id = $request->id;
+            $myBadge->save();
+            // Return success response
+            return response()->json(['status' => 200]);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        
     }
 }

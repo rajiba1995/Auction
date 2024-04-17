@@ -99,18 +99,24 @@
                                 <div class="content-holder">
                                     <div class="approvals">
                                         <ul>
-                                            <li>
-                                                <img src="{{asset('frontend/assets/images/verified.png')}}" alt="">
-                                                <div class="infotip"><span>It is a long established fact</span></div>
-                                            </li>
-                                            <li>
+                                            @if(count($item->MyBadgeData)>0)
+                                                @foreach ($item->MyBadgeData as $item_badge)
+                                                    @if($item_badge->getBadgeDetails)
+                                                        <li>
+                                                            <img src="{{asset($item_badge->getBadgeDetails->logo)}}" alt="" width="20px"> <span class="text-sm info" style="margin-bottom:0px;">{{ucwords($item_badge->getBadgeDetails->title)}}</span>
+                                                            <div class="infotip"><span>{{ Str::limit($item_badge->getBadgeDetails->short_desc, 50) }}</span></div>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            @endif
+                                            {{-- <li>
                                                 <img src="{{asset('frontend/assets/images/trusted.png')}}" alt="">
                                                 <div class="infotip"><span>It is a long established fact</span></div>
                                             </li>
                                             <li>
                                                 <img src="{{asset('frontend/assets/images/featured.png')}}" alt="">
                                                 <div class="infotip"><span>It is a long established fact</span></div>
-                                            </li>
+                                            </li> --}}
                                         </ul>
                                     </div>
                                     <div class="name">{{$item->business_name}}</div>

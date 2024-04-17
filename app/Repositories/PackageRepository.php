@@ -37,6 +37,7 @@ class PackageRepository implements PackageContract
          $package->package_name = $collection['package_name'];
          $package->package_type = $collection['package_type'];
          $package->package_price = $collection['package_price'];
+         $package->package_prefix = $collection['package_prefix'];
          $package->package_description = $collection['package_description'];
 
          $package->save();
@@ -66,6 +67,7 @@ class PackageRepository implements PackageContract
          $package->package_name = $collection['package_name'];
          $package->package_type = $collection['package_type'];
          $package->package_price = $collection['package_price'];
+         $package->package_prefix = $collection['package_prefix'];
          $package->package_description = $collection['package_description'];
          $package->save();
          return $package;

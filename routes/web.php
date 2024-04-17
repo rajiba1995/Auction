@@ -49,6 +49,8 @@ Route::get('/clear-cache', function() {
             
             Route::get('/payment-management', [UserController::class, 'payment_management'])->name('user.payment_management');
             Route::get('/settings', [UserController::class, 'settings'])->name('user.settings');
+            Route::get('/transaction', [UserController::class, 'transaction'])->name('user.transaction');
+            Route::post('/transaction/purchase', [UserController::class, 'purchase'])->name('user.purchase.transaction');
             Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
             Route::get('/profile/edit', [UserController::class, 'ProfileEdit'])->name('user.profile.edit');
             Route::post('/profile/update', [UserController::class, 'ProfileUpdate'])->name('user.profile.update');
@@ -81,6 +83,7 @@ Route::get('/clear-cache', function() {
         // Inquiry Generation
         Route::get('/auction-inquiry-generation', [AuctionGenerationController::class, 'auction_inquiry_generation'])->name('front.auction_inquiry_generation');
         Route::post('/auction-inquiry-generation/store', [AuctionGenerationController::class, 'auction_inquiry_generation_store'])->name('front.auction_inquiry_generation_store');
+        Route::get('/auction-inquiry-generation/participants/delete', [AuctionGenerationController::class, 'auction_participants_delete'])->name('front.auction_participants_delete');
 
         // Buyer Dashboard
         Route::group(['prefix'  =>   'buyer'], function() {

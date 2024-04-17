@@ -21,6 +21,7 @@
                             <form action="{{route('front.auction_inquiry_generation_store')}}" class="auction-requirement-form" method="POST" enctype="multipart/form-data" id="auction_requirement_form">
                                 @csrf
                                 <input type="hidden" name="inquiry_id" value="{{$existing_inquiry?$existing_inquiry->inquiry_id:""}}">
+                                <input type="hidden" name="saved_inquiry_id" value="{{$existing_inquiry?$existing_inquiry->id:""}}">
                                 <input type="hidden" name="created_by" value="{{$user->id}}">
                                 @if($existing_inquiry && $existing_inquiry->inquiry_id)
                                 <div class="inquiry-id-row">
@@ -147,32 +148,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="row input-row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label class="form-label">Participants*</label>
-                                            <div class="participants-block border-red">
-                                                @if(count($watch_list_data)>0)
-                                                    @foreach ($watch_list_data as $item)
-                                                        <label class="participant" id="participant{{$item}}">
-                                                            @if($item->SellerData)
-                                                                <input type="hidden" name="participant[]" value="{{$item->SellerData->id}}">
-                                                            @endif
-                                                            {{$item->SellerData && $item->SellerData->business_name ?$item->SellerData->business_name:""}}
-                                                            <span class="remove" data-id="{{$item->id}}">
-                                                                <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M13.3636 3.7738L4.66797 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                    <path d="M4.66797 3.7738L13.3636 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                </svg>
-                                                            </span>
-                                                        </label>
-                                                    @endforeach
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 @if(!empty($existing_inquiry) && count($existing_inquiry->ParticipantsData) > 0)
                                 <div class="row input-row">
                                     <div class="col-12">
@@ -185,7 +160,32 @@
                                                             <input type="hidden" name="exist_participant[]" value="{{$item->SellerData->id}}">
                                                         @endif
                                                         {{$item->SellerData && $item->SellerData->business_name ?$item->SellerData->business_name:""}}
-                                                        <span class="remove" data-id="{{$item->id}}">
+                                                        <span class="Exist_remove remove" data-id="{{$item->id}}">
+                                                            <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M13.3636 3.7738L4.66797 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M4.66797 3.7738L13.3636 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                        </span>
+                                                    </label>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+                                @if(count($watch_list_data)>0)
+                                <div class="row input-row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label class="form-label">New Participants*</label>
+                                            <div class="participants-block border-red">
+                                                @foreach ($watch_list_data as $item)
+                                                    <label class="participant" id="participant{{$item}}">
+                                                        @if($item->SellerData)
+                                                            <input type="hidden" name="participant[]" value="{{$item->SellerData->id}}">
+                                                        @endif
+                                                        {{$item->SellerData && $item->SellerData->business_name ?$item->SellerData->business_name:""}}
+                                                        <span class="remove Exist_remove2" data-id="{{$item->id}}">
                                                             <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M13.3636 3.7738L4.66797 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                                 <path d="M4.66797 3.7738L13.3636 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -232,7 +232,7 @@
                                         Invite Participants from Outside
                                     </button>
                                 </div>
-
+                               
                                 <div class="row input-row">
                                     <div class="col-lg-6 col-12">
                                         <div class="form-group">
@@ -270,7 +270,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="closedauction" class="modal-custom-radio">
-                                                <input type="radio" name="auction_type" id="closedauction" value="close-dauction" {{ ($existing_inquiry && $existing_inquiry->inquiry_type == "close-dauction") || (old('auction_type') == "close-dauction") ? "checked" : "" }}>
+                                                <input type="radio" name="auction_type" id="closedauction" value="close-auction" {{ ($existing_inquiry && $existing_inquiry->inquiry_type == "close-auction") || (old('auction_type') == "close-auction") ? "checked" : "" }}>
                                                 <span class="checkmark">
                                                     <span class="checkedmark"></span>
                                                 </span>
@@ -337,7 +337,11 @@
                                 <div class="form-save-row">
                                     <button type="submit" class="btn btn-animated btn-green btn-save" data-value="save">Save Inquiry</button>
                                 </div>
-                                @if(empty($existing_inquiry))
+                                @if($existing_inquiry && !$existing_inquiry->inquiry_id)
+                                    <div class="form-submit-row">
+                                        <button type="submit" class="btn btn-animated btn-submit" data-value="generate">GENERATE INQUIRY</button>
+                                    </div>
+                                @elseif(empty($existing_inquiry))
                                     <div class="form-submit-row">
                                         <button type="submit" class="btn btn-animated btn-submit" data-value="generate">GENERATE INQUIRY</button>
                                     </div>
@@ -363,7 +367,7 @@
             $('#submit_type').val(submitType); 
             // Set the value of the hidden input field based on the clicked button
             var closedauction = $('input[name="auction_type"]:checked').val();
-            if (closedauction == "close-dauction") {
+            if (closedauction == "close-auction") {
                 Swal.fire({
                     title: "Warning!",
                     text: "Credit will be used!",
@@ -390,45 +394,85 @@
     });
 
     $(document).ready(function () {
-    $('.remove').click(function () {
-        var itemId = $(this).data('id');
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ route("user.single_watchlist.delete") }}',
-                    data: {
-                        id:itemId
-                    },
-                    success: function(response) {
-                        if(response.status==200){
-                            Swal.fire({
-                                title: "Success!",
-                                text: "Participant has been deleted successfully!",
-                                icon: "success"
-                            });
-                            setTimeout(function() {
-                                // Reload the page
-                                location.reload();
-                            }, 1000);
+        $('.Exist_remove2').click(function () {
+            var itemId = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ route("user.single_watchlist.delete") }}',
+                        data: {
+                            id:itemId
+                        },
+                        success: function(response) {
+                            if(response.status==200){
+                                Swal.fire({
+                                    title: "Success!",
+                                    text: "Participant has been deleted successfully!",
+                                    icon: "success"
+                                });
+                                setTimeout(function() {
+                                    // Reload the page
+                                    location.reload();
+                                }, 1000);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
+                    });
+                }
+            });
         });
     });
-});
+    $(document).ready(function () {
+        $('.Exist_remove').click(function () {
+            var itemId = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ route("front.auction_participants_delete") }}',
+                        data: {
+                            id:itemId
+                        },
+                        success: function(response) {
+                            if(response.status==200){
+                                Swal.fire({
+                                    title: "Success!",
+                                    text: "Participant has been deleted successfully!",
+                                    icon: "success"
+                                });
+                                setTimeout(function() {
+                                    // Reload the page
+                                    location.reload();
+                                }, 1000);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    });
 $(document).ready(function() {
     $('select[name="category"]').change(function(){
         var selectedCategory = $(this).val();

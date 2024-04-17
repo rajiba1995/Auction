@@ -28,6 +28,9 @@ use App\Contracts\PackageContract;
 use App\Repositories\UserDetailsRepository;
 use App\Contracts\UserDetailsContract;
 
+use App\Repositories\PaymentManageMentRepository;
+use App\Contracts\PaymentManageMentContract;
+
 use App\Repositories\ClientRepository;
 use App\Contracts\ClientContract;
 use App\Repositories\EmployeeDetailsRepository;
@@ -46,6 +49,7 @@ class RepositoryServiceProvider extends ServiceProvider{
         PackageContract::class  =>  PackageRepository::class,
         UserDetailsContract::class  =>  UserDetailsRepository::class,
         EmployeeDetailsContract::class  =>  EmployeeDetailsRepository::class,
+        PaymentManageMentContract::class  =>  PaymentManageMentRepository::class,
     ];
     
     public function register()
