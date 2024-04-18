@@ -22,6 +22,7 @@ use App\Models\User;
 use App\Models\LegalStatus;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Hash;
 
 
 
@@ -220,6 +221,10 @@ class MasterRepository implements MasterContract
     public function CollectionWiseCategoryData($data)
     {
         return Category::latest()->where('deleted_at', 1)->where('status', 1)->where('collection_id', $data)->get();
+    }
+    public function StateWiseCityData($data)
+    {
+        return City::latest()->where('state_id', $data)->get();
     }
     public function CollectionWiseCategoryDataByTitle($data)
     {
@@ -809,6 +814,7 @@ class MasterRepository implements MasterContract
         $seller->email = $collection['email'];
         $seller->mobile = $collection['phone'];
         $seller->business_name = $collection['business_name'];
+        $seller->slug_business_name =slugGenerateForBusinessName($collection['business_name'],'users');
         $seller->password = Hash::make($collection['pass']);
         $seller->status = 0;
         $seller->added_by = $collection['emp_id'];
@@ -834,6 +840,7 @@ class MasterRepository implements MasterContract
         $seller->email = $collection['email'];
         $seller->mobile = $collection['phone'];
         $seller->business_name = $collection['business_name'];
+        // $seller->slug_business_name = slugGenerateUpdateForBusinessName($collection['business_name'],'users',$collection['user_id']);
 
         if (!empty($collection['pass'])) {
                 $seller->password = Hash::make($collection['pass']);

@@ -153,6 +153,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::get('', [UserDetailsController::class, 'UserDetailsIndex'])->name('admin.user.index');
         Route::get('/view/{id}', [UserDetailsController::class, 'UserDetailsView'])->name('admin.user.view');
         Route::get('/document/view/{id}', [UserDetailsController::class, 'UserDocumentView'])->name('admin.user.document.view');
+        Route::get('/transaction/view/{id}', [UserDetailsController::class, 'UserTransactionView'])->name('admin.user.transaction.view');
         Route::get('/report/view/{id}', [UserDetailsController::class, 'UserReportView'])->name('admin.user.report');
         Route::get('/report/status/{id}', [UserDetailsController::class, 'UserReportStatus'])->name('admin.user.report.status');
         Route::get('/document/status', [UserDetailsController::class, 'UserDocumentStatus'])->name('admin.user.document.status');
@@ -196,6 +197,8 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::post('/state/store', [MasterModuleController::class, 'LocationStateStore'])->name('admin.location.state.store');
         Route::get('/state/edit/{stateId}/{countryId}', [MasterModuleController::class, 'LocationStateEdit'])->name('admin.location.state.edit');
         Route::post('/state/update', [MasterModuleController::class, 'LocationStateUpdate'])->name('admin.location.state.update');
+        // Route::get('/all-cities', [MasterModuleController::class, 'AllCity'])->name('admin.location.all.city.index');
+        // Route::get('/all-cities-update', [MasterModuleController::class, 'AllCityUpdate'])->name('all.city.update');
     });
       // Payment
       Route::group(['prefix'  =>   'payment-management'], function() {

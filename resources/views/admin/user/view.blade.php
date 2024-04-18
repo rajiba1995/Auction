@@ -173,6 +173,8 @@
                                         <th>Short Description</th>
                                         <th>Long Description</th>
                                         <th>Price</th>
+                                        <th>Date</th>
+                                        
                                     </tr>
                                 </thead>
                               <tbody class="align-middle"> 
@@ -186,6 +188,7 @@
                                         <td> {{ Str::limit($badge->getBadgeDetails->long_desc,200) }}</td>      
     
                                         <td> {{ $badge->getBadgeDetails->price_prefix }} {{ $badge->getBadgeDetails->price }}</td>      
+                                        <td> {{ $badge->created_at->format('d-M-Y') }}</td>      
                                     </tr>
                                     @endif
                                      @empty

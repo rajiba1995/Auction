@@ -13,6 +13,8 @@ use App\Models\Product;
 use App\Models\Collection;
 use App\Models\Category;
 use App\Models\User;
+use App\Models\State;
+use App\Models\City;
 use Illuminate\Support\Str;
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,10 +56,25 @@ class AppServiceProvider extends ServiceProvider
             // Category
             $UserTableExists = Schema::hasTable('users');
             if ($UserTableExists) {
-                $User_city = User::whereNotNull('city')->groupBy('city')->pluck('city')->toArray();
+                $userCities = User::whereNotNull('city')->groupBy('city')->pluck('city')->toArray();
                 $User_state = User::whereNotNull('state')->groupBy('state')->pluck('state')->toArray();
+                $cityNames = [];
+                foreach ($userCities as $cityId) {
+                    $city = City::find($cityId);
+                    if ($city) {
+                        $cityNames[] = $city->name;
+                    }
+                }
+                $stateNames = [];
+                foreach ($User_state as $stateId) {
+                    $state = State::find($stateId);
+                    if ($state) {
+                        $stateNames[] = $state->name;
+                    }
+                }
+                
             }
-            $allLocation = array_merge($User_city, $User_state);
+            $allLocation = array_merge($cityNames, $stateNames);
             $allTitles = array_merge($products, $collections, $categories);
             view()->share('global_filter_location', $allLocation);
             view()->share('global_filter_data', $allTitles);

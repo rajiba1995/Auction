@@ -52,7 +52,6 @@ class RegisteredUserController extends Controller
         return redirect(RouteServiceProvider::HOME);
     }
     public function RegisterCheck(Request $request){
-        // dd($request->all());
         $User = User::where('email', $request->email)->orWhere('mobile', $request->phone)->first();
         if($User){
             return response()->json(['status'=>500]);

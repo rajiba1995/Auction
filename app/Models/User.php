@@ -76,8 +76,13 @@ class User extends Authenticatable implements JWTSubject{
     function  getEmployeeName(){
         return $this->belongsTo('App\Models\admin', 'added_by');
     }
-    // public function getUserBadgeDetails()
-    // {
-    //     return $this->belongsTo('App\Models\Badge','badge_id','id');
-    // }
+    public function UserDocumentData(){
+        return $this->hasOne('App\Models\UserDocument','user_id','id');
+    }
+    function  StateData(){
+        return $this->belongsTo('App\Models\State', 'state');
+    }
+    function  CityData(){
+        return $this->belongsTo('App\Models\City', 'city');
+    }
 }

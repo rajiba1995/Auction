@@ -17,6 +17,7 @@
                             <div class="tab-content">
                                 <div class="tab-content-wrapper">
                                     <div class="top-content-bar">
+                                        <h5 class="text-light">My Transaction History</h5>
                                         <a href="{{route('user.settings')}}" class="btn btn-normal btn-cta"><i class="fa-solid fa-backward"></i>                                              
                                         Back
                                         </a>
@@ -26,10 +27,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>SL.</th>
-                                                    <th>unique_no</th>          
+                                                    <th>Unique Number</th>          
                                                     <th>Mode</th>
                                                     <th>Purpose</th>
-                                                    <th>Amount</th>
+                                                    <th>Price</th>
                                                     <th>Transaction Id</th>
                                                     <th>Transaction Source</th>
                                                     <th>Date</th>
@@ -40,12 +41,12 @@
                                                 <tr>
                                                     <td> {{ $key+1 }}</td>
                                                     <td> {{ $item->unique_id }}</td>
-                                                    <td> {{ $item->transaction_type }}</td>
+                                                    <td> {{ $item->transaction_type == 1?'Online':'Offline'}}</td>
                                                     <td> {{ $item->purpose }}</td>
                                                     <td> {{ $item->amount }}</td>
-                                                    <td> {{ $item->transaction_id }}</td>
+                                                    <td> {{ $item->transaction_id??"NULL" }}</td>
                                                     <td> {{ $item->transaction_source }}</td>
-                                                    <td> {{ $item->created_at->format('d-m-Y') }}</td>
+                                                    <td> {{ $item->created_at->format('d-M-Y') }}</td>
                                                 </tr>
                                                 @empty
                                                 <tr>

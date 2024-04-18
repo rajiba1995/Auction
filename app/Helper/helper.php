@@ -68,7 +68,7 @@ if (!function_exists('slugGenerateForCity')) {
     function slugGenerateForCity($title, $table) {
         $slug = Str::slug($title, '-');
         $slugExistCount = DB::table($table)->where('name', $title)->count();
-        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount);
         return $slug;
     }
 }
@@ -97,5 +97,31 @@ if (!function_exists('slugGenerateUpdateForState')) {
         return $slug;
     }
 }
+
+
+//Business_name_slug
+if (!function_exists('slugGenerateForBusinessName')) {
+    function slugGenerateForBusinessName($title, $table) {
+        $slug = Str::slug($title, '-');
+        $slugExistCount = DB::table($table)->where('business_name', $title)->count();
+        if ($slugExistCount > 0) $slug = $slug . '-' . ($slugExistCount + 1);
+        return $slug;
+    }
+}
+if (!function_exists('slugGenerateUpdateForBusinessName')) {
+    function slugGenerateUpdateForBusinessName($title, $table, $productId) {
+        $slug = Str::slug($title, '-');
+        $originalSlug = $slug;
+        $slugExistCount = DB::table($table)->where('business_name', $title)->where('id', '!=', $productId)->count();
+        while ($slugExistCount > 0) {
+            $slug = $originalSlug . '-' . ++$slugExistCount;
+            // Check if the new slug exists
+            $slugExistCount = DB::table($table)->where('slug_business_name', $slug)->count();
+        }
+
+        return $slug;
+    }
+    }
+
 
 ?>
