@@ -2,7 +2,6 @@
 @section('section')
 <div class="main">
     <div class="inner-page">
-
         <div class="profile-page-wrapper">
             <div class="container-fluid">
                 <div class="row">

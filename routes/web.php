@@ -84,6 +84,7 @@ Route::get('/clear-cache', function() {
         // Inquiry Generation
         Route::get('/auction-inquiry-generation', [AuctionGenerationController::class, 'auction_inquiry_generation'])->name('front.auction_inquiry_generation');
         Route::post('/auction-inquiry-generation/store', [AuctionGenerationController::class, 'auction_inquiry_generation_store'])->name('front.auction_inquiry_generation_store');
+        Route::get('/auction-inquiry-generation/participants/delete', [AuctionGenerationController::class, 'auction_participants_delete'])->name('front.auction_participants_delete');
 
         // Buyer Dashboard
         Route::group(['prefix'  =>   'buyer'], function() {
@@ -112,10 +113,13 @@ Route::get('employee/attendance/logout', [LoginController::class, 'employeeAtten
 require 'employee.php';
 require 'admin.php';
 
-// User Module
+// Search User Module
 Route::get('/user/make_slug', [HomeController::class, 'UserGlobalMakeSlug'])->name('user.global.make_slug');
 Route::get('/{location}/{keyword}', [HomeController::class, 'UserGlobalFilter'])->name('user.global.filter');
 Route::get('/profile/{location}/{keyword}', [HomeController::class, 'UserProfileFetch'])->name('user.profile.fetch');
+Route::get('/rating-and-reviews/{location}/{keyword}', [HomeController::class, 'UserReviewAndRating'])->name('user.profile.review_and_rating');
+Route::get('/rating-and-reviews/write/{location}/{keyword}', [HomeController::class, 'UserReviewAndRatingWrite'])->name('user.profile.review_and_rating.write');
+Route::post('/rating-and-reviews/write/submit', [HomeController::class, 'UserReviewAndRatingWriteSubmit'])->name('user.profile.review_and_rating.submit');
 Route::get('/photos-and-documents/{location}/{keyword}', [HomeController::class, 'UserPhotoAndDocument'])->name('user.profile.photos_and_documents');
 Route::get('/product-and-service/{location}/{keyword}', [HomeController::class, 'UserProductService'])->name('user.profile.product_and_service');
 

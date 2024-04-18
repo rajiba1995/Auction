@@ -13,6 +13,9 @@ use App\Models\Client;
 use App\Models\Feedback;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SocialMedia;
+use App\Models\State;
+use App\Models\ReviewRating;
+use App\Models\City;
 use App\Models\User;
 use App\Models\Blog;
 use Illuminate\Support\Str;
@@ -69,8 +72,12 @@ class HomeController extends Controller
     public function UserGlobalFilter($old_location, $old_keyword){
         $location = str_replace('-', ' ', $old_location);
         $keyword = str_replace('-', ' ', $old_keyword);
-        $userIds = User::where('state', $location)
-            ->orWhere('city', $location)
+        $exist_state = "";
+        $exist_city = "";
+        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $userIds = User::where('state', $exist_state)
+            ->orWhere('city', $exist_city)
             ->pluck('id')
             ->toArray();
 
@@ -87,7 +94,7 @@ class HomeController extends Controller
             ->pluck('user_id')
             ->toArray());
             $authUserId = Auth::guard('web')->check() ? Auth::guard('web')->user()->id : null;
-            $data = User::whereIn('id', $User_products)
+            $data = User::with('MyBadgeData')->whereIn('id', $User_products)
             ->where('id', '!=', $authUserId)
             ->get();
             $groupWatchList = GroupWatchList::where('created_by',$authUserId)->get();
@@ -113,9 +120,13 @@ class HomeController extends Controller
     public function UserProfileFetch($location, $keyword){
         $location = str_replace('-', ' ', $location);
         $keyword = str_replace('-', ' ', $keyword);
-        $data = User::where(function($query) use ($location) {
-            $query->where('state', $location)
-                  ->orWhere('city', $location);
+        $exist_state = "";
+        $exist_city = "";
+        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
+            $query->where('state', $exist_state)
+                  ->orWhere('city', $exist_city);
         })
         ->where('business_name', $keyword)
         ->first();
@@ -126,16 +137,88 @@ class HomeController extends Controller
             return redirect()->back();
         }
     }   
-    public function UserPhotoAndDocument($location, $keyword){
-        $location = str_replace('-', ' ', $location);
-        $keyword = str_replace('-', ' ', $keyword);
-        $data = User::where(function($query) use ($location) {
+    public function UserReviewAndRating($old_location, $old_keyword){
+        $location = str_replace('-', ' ', $old_location);
+        $keyword = str_replace('-', ' ', $old_keyword);
+        $exist_state = "";
+        $exist_city = "";
+        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
             $query->where('state', $location)
                   ->orWhere('city', $location);
         })
         ->where('business_name', $keyword)
         ->first();
+        if($data){
+            $review_rating = $this->userRepository->getUserAllReviewRating($data->id);
+            $asBuyer = $this->userRepository->asBuyer($data->id);
+            $asBuyerRatingPoint = $this->userRepository->asBuyerRatingPoint($data->id);
+            $asSeller = $this->userRepository->asSeller($data->id);
+            $asSellerRatingPoint = $this->userRepository->asSellerRatingPoint($data->id);
+            return view('front.user.rating', compact('old_location','old_keyword','data', 'review_rating','asBuyer', 'asSeller','asBuyerRatingPoint','asSellerRatingPoint'));
+        }else{
+            return redirect()->back();
+        }
+    }   
+    public function UserReviewAndRatingWrite($location, $keyword){
+        $location = str_replace('-', ' ', $location);
+        $keyword = str_replace('-', ' ', $keyword);
+        $exist_state = "";
+        $exist_city = "";
+        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
+            $query->where('state', $location)
+                  ->orWhere('city', $location);
+        })
+        ->where('business_name', $keyword)
+        ->first();
+        return view('front.user.review_rating_form',compact('data'));
+    }   
+    public function UserReviewAndRatingWriteSubmit(Request $request){
+    //    dd($request->all());
+       $authUserId = Auth::guard('web')->check() ? Auth::guard('web')->user()->id : null;
+       if($request->rateas==1){
+        $rating = new ReviewRating();
+        $rating->type = $request->rateas;
+        $rating->user_id =$authUserId;
+        $rating->rated_on =$request->rated_on_id;
+        $rating->on_time_delivery_rating =$request->on_time_delivery;
+        $rating->right_product_rating =$request->right_product;
+        $rating->post_delivery_service_rating =$request->post_delivery_service;
+        $rating->comment =$request->buyer_message;
+        $rating->save();
+       }else{
+        $rating = new ReviewRating();
+        $rating->type = $request->rateas;
+        $rating->user_id =$authUserId;
+        $rating->rated_on =$request->rated_on_id;
+        $rating->on_time_payment_rating =$request->on_time_payment;
+        $rating->delivery_cooperation_rating =$request->post_delivery_cooperation;
+        $rating->genuiness_rating =$request->genuiness;
+        $rating->comment =$request->seller_message;
+        $rating->save();  
+       }
+        
+      return redirect()->back();
+    }
+    
 
+  
+    public function UserPhotoAndDocument($location, $keyword){
+        $location = str_replace('-', ' ', $location);
+        $keyword = str_replace('-', ' ', $keyword);
+        $exist_state = "";
+        $exist_city = "";
+        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
+            $query->where('state', $location)
+                  ->orWhere('city', $location);
+        })
+        ->where('business_name', $keyword)
+        ->first();
         if($data){
             $AllImages = $this->userRepository->getUserAllImages($data->id);
             $user_document = $this->userRepository->getUserAllData($data->id);
@@ -147,7 +230,11 @@ class HomeController extends Controller
     public function UserProductService($location, $keyword){
         $location = str_replace('-', ' ', $location);
         $keyword = str_replace('-', ' ', $keyword);
-        $data = User::where(function($query) use ($location) {
+        $exist_state = "";
+        $exist_city = "";
+        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
             $query->where('state', $location)
                   ->orWhere('city', $location);
         })

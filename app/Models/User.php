@@ -73,6 +73,9 @@ class User extends Authenticatable implements JWTSubject{
     public function UserProductData(){
         return $this->hasMany('App\Models\Product','user_id','id');
     }
+    public function MyBadgeData(){
+        return $this->hasMany('App\Models\MyBadge','user_id','id');
+    }
     function  getEmployeeName(){
         return $this->belongsTo('App\Models\admin', 'added_by');
     }

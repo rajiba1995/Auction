@@ -6,6 +6,7 @@ use App\Models\Notification;
 use App\Models\Business;
 use App\Models\LegalStatus;
 use App\Models\UserImage;
+use App\Models\ReviewRating;
 use App\Models\Package;
 use App\Models\MyBadge;
 use App\Models\Transaction;
@@ -309,7 +310,7 @@ class UserRepository implements UserContract
         return Business::where('status',1)->where('deleted_at',1)->get();
 
     }
-    //business
+    //legal status
     public function getAllLegalStatus(){
         return LegalStatus::where('status',1)->where('deleted_at',1)->get();
 
@@ -341,6 +342,28 @@ class UserRepository implements UserContract
     
     public function getAllTransactionByUserId($id){
        return Transaction::where('user_id',$id)->paginate(20);
+       
+    }
+    public function getUserAllReviewRating($id){
+       return ReviewRating::where('rated_on',$id)->paginate(20);
+       
+    }
+    public function asBuyer($id){
+       return ReviewRating::where('rated_on',$id)->where('type',2)->count();
+       
+    }
+    public function asBuyerRatingPoint($id){
+        return ReviewRating::where('rated_on',$id)->where('type',2)->sum('overall_rating');
+        // dd($data);
+       
+    }
+    public function asSeller($id){
+       return ReviewRating::where('rated_on',$id)->where('type',1)->count();
+       
+    }
+    public function asSellerRatingPoint($id){
+       return ReviewRating::where('rated_on',$id)->where('type',1)->sum('overall_rating');
+    //    dd($data);
        
     }
 }

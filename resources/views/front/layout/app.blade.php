@@ -50,7 +50,16 @@
                     </div>
                 
                 <div id="filterSuggestions"></div>
-                <a herf="{{route('user.profile')}}" class="btn btn-cta btn-animated btn-dashboard">Dashboard</a>
+                {{-- <a herf="{{route('user.profile')}}" class="btn btn-cta btn-animated btn-dashboard">Dashboard</a> --}}
+                <div class="dropdown dashboard-dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Dashboard
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{route('user_buyer_dashboard')}}">Buyer</a></li>
+                      <li><a class="dropdown-item" href="#">Supplier</a></li>
+                    </ul>
+                  </div>
                 <a href="" class="menu-cta helpdesk">
                     <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g clip-path="url(#clip0_726_1406)">

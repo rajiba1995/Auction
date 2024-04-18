@@ -4,6 +4,9 @@
     #group_list .search-bar{
         max-width: unset !important;
     }
+    .show2{
+        display: block !important;
+    }
 </style>
 <div class="main">
     <div class="inner-page">
@@ -166,6 +169,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <ul class="dashboard-groups">
+                                    {{-- {{dd($group_wise_list)}} --}}
                                     @foreach ($group_wise_list as $item)
                                         @php
                                             $SellerList = GetSellerByGroupId($item->id);
@@ -176,9 +180,9 @@
                                             </div>
                                             <div class="group-name"> <span class="group_name">{{ucwords($item->group_name)}}</span> ({{count($SellerList)}})</div>
                                             <a href="{{route('user.watchlist.my_watchlist_by_group', $item->slug)}}" class="btn btn-animated btn-view bg-green">Open</a>
-                                            <a href="#" class="btn btn-animated btn-yellow btn-inquiry" data-bs-toggle="modal" data-bs-target="#sendToInquiryModal">Start Inquiry</a>
+                                            <a href="#" class="btn btn-animated btn-yellow btn-inquiry" data-bs-toggle="modal" data-bs-target="#sendToInquiryModal{{$item->id}}">Start Inquiry</a>
 
-                                            <div class="modal fade send-to-modal" id="sendToInquiryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal fade send-to-modal" id="sendToInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -189,32 +193,31 @@
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="col-xl-6 col-12">
-                                                                            <label for="sendInquiry" class="modal-custom-radio">
-                                                                                <input type="radio" name="inquiry_type" id="sendInquiry" value="new-inquiry" checked>
+                                                                            <label for="sendInquiry{{$item->id}}" class="modal-custom-radio">
+                                                                                <input type="radio" name="inquiry_type" id="sendInquiry{{$item->id}}" value="new-inquiry" data-id="{{$item->id}}" checked>
                                                                                 <span class="checkmark">
                                                                                     <span class="checkedmark"></span>
                                                                                 </span>
                                                                                 <div class="radio-text">
-                                                                                    <label for="sendInquiry">New Inquiry</label>
+                                                                                    <label for="sendInquiry{{$item->id}}">New Inquiry</label>
                                                                                     <span>Generate a new auction inquiry</span>
                                                                                 </div>
                                                                             </label>
                                                                         </div>
                                                                         <div class="col-xl-6 col-12">
-                                                                            <label for="sendInquiryExisting" class="modal-custom-radio">
-                                                                                <input type="radio" name="inquiry_type" id="sendInquiryExisting" value="existing-inquiry">
+                                                                            <label for="sendInquiryExisting{{$item->id}}" class="modal-custom-radio">
+                                                                                <input type="radio" name="inquiry_type" id="sendInquiryExisting{{$item->id}}" value="existing-inquiry" data-id="{{$item->id}}">
                                                                                 <span class="checkmark">
                                                                                     <span class="checkedmark"></span>
                                                                                 </span>
                                                                                 <div class="radio-text">
-                                                                                    <label for="sendInquiryExisting">Existing Inquiry</label>
+                                                                                    <label for="sendInquiryExisting{{$item->id}}">Existing Inquiry</label>
                                                                                     <span>Send to previously generated auction inquiry</span>
                                                                                 </div>
                                                                             </label>
                                                                         </div>
                                                                     </div>
-                                            
-                                                                    <div id="inquiryoptions">
+                                                                    <div id="inquiryoptions{{$item->id}}" style="display: none">
                                                                         <h5>Select Inquiry</h5>
                                                                         <div class="dropdown watchlistgroups">
                                                                             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -222,6 +225,7 @@
                                                                                 <img src="{{asset('frontend/assets/images/chevron-down.png')}}" alt="">
                                                                                 <select name="inquiry_id" class="form-control">
                                                                                     @if(count($existing_inquiries)>0)
+                                                                                    <option value="" selected hidden>select inquiry..</option>
                                                                                         @foreach ($existing_inquiries as $eitem)
                                                                                         <option value="{{$eitem->inquiry_id}}">{{$eitem->inquiry_id}}</option>
                                                                                         @endforeach
@@ -234,7 +238,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <input type="hidden" name="group" value="{{Crypt::encrypt($item->id)}}">
-                                                                    <button type="submit" class="btn btn-animated btn-submit w-100">Submit</button>
+                                                                    <button type="submit" class="btn btn-animated btn-submit w-100">Submit </button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -261,13 +265,36 @@
         $('#group_wies_search').keyup(function(){
             var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
             $('.item').show();
+            var found = false; // Flag to track if any items are found
             $('.item').each(function() {
                 var group_name = $(this).find('.group_name').text().toLowerCase(); // Get location text and convert to lowercase
                 if (group_name.indexOf(selectedValue) === -1) {
                     $(this).hide(); // Hide the item if location doesn't match
+                } else {
+                    found = true; // Set the flag to true if at least one item is found
                 }
             });
+            if (!found) {
+                $('#noDataAlert').remove(); // Remove the alert if items are found
+                var append = `<div class="alert alert-danger" id="noDataAlert" role="alert">
+                No data found
+                </div>`;
+                $('.dashboard-groups').append(append);
+            } else {
+                $('#noDataAlert').remove(); // Remove the alert if items are found
+            }
         });
     });
+    $("input[name='inquiry_type']").click(function() {
+        var inputval = $(this).val();
+        var id = $(this).attr('data-id');
+        if(inputval == "existing-inquiry") {
+            $("#inquiryoptions"+id).show();
+        } else {
+            $("#inquiryoptions"+id).hide();
+        }
+    });
+
+
 </script>
 @endsection
