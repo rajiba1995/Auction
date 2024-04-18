@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Banner;
 use App\Models\Collection;
+use App\Models\City;
 use App\Models\Category;
 use App\Models\Feeback;
 use App\Contracts\MasterContract;
@@ -758,16 +759,7 @@ class MasterModuleController extends Controller
      }
 
 
-
-        
-
-
-
-  
-
-
-
-
+     
      /// employee section start
 
      //attandance

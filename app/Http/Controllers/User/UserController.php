@@ -53,8 +53,10 @@ class UserController extends Controller{
         $data = $this->AuthCheck();
         $business_data = $this->userRepository->getAllBusiness();
         $legal_status_data = $this->userRepository->getAllLegalStatus();
-        // dd($business_data);
-        return view('front.user.profile_update', compact('data','business_data','legal_status_data'));
+        $states = $this->userRepository->getAllStates();
+        $cities = $this->userRepository->getAllCities();
+        // dd($states);
+        return view('front.user.profile_update', compact('data','business_data','legal_status_data','states','cities'));
     }
     public function ProfileUpdate(Request $request){
         // dd($request->all());
@@ -798,5 +800,10 @@ class UserController extends Controller{
             return response()->json(['error' => $e->getMessage()], 500);
         }
         
+    }
+
+    public function StateWiseCity(Request $request){
+        $data = $this->MasterRepository->StateWiseCityData($request->state);
+        return response()->json(["status"=>200, 'data'=>$data]);
     }
 }

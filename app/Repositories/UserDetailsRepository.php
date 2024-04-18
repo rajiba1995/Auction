@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\MyBadge;
 use App\Models\UserDocument;
 use App\Models\SellerReport;
+use App\Models\Transaction;
 
 use App\Models\UserImage;
 use App\Models\UserAdditionalDocument;
@@ -118,7 +119,31 @@ class UserDetailsRepository implements UserDetailsContract
     public function getAllBadgesByUserId($id){
        return MyBadge::where('user_id',$id)->get();
     }
- 
+    
+    public function getUserAllTransactionById($id){
+       return Transaction::where('user_id',$id)->paginate(20);
+    }
+    
+    public function getSearchUsersTransaction($keyword,$startDate,$endDate)
+    {
+        $query = Transaction::query();
 
+        $query->when($keyword, function ($query) use ($keyword) {
+            $query->where('unique_id', 'like', '%' . $keyword . '%')
+            ->orWhere('purpose', 'like', '%' . $keyword . '%')
+            ->orWhere('amount', 'like', '%' . $keyword . '%')
+            ->orWhere('transaction_id', 'like', '%' . $keyword . '%')
+            ->orWhere('transaction_source', 'like', '%' . $keyword . '%');
+            // ->orWhere('', 'like', '%' . $keyword . '%');
+        });
+        if (!is_null($startDate) && !is_null($endDate)) {
+      
+            $query->when($startDate && $endDate, function($query) use ($startDate, $endDate) {
+                $query->where('created_at', '>=', $startDate." 00:00:00")
+                      ->where('created_at', '<=', date("Y-m-d 23:59:59",strtotime($endDate)));
+            });
+        }
+        return $data = $query->latest('id')->paginate(25);
+    }
 
 }

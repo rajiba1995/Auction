@@ -53,6 +53,7 @@ Route::get('/clear-cache', function() {
             Route::post('/transaction/purchase', [UserController::class, 'purchase'])->name('user.purchase.transaction');
             Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
             Route::get('/profile/edit', [UserController::class, 'ProfileEdit'])->name('user.profile.edit');
+            Route::get('/state_wise_city', [UserController::class, 'StateWiseCity'])->name('user.state_wise_city');
             Route::post('/profile/update', [UserController::class, 'ProfileUpdate'])->name('user.profile.update');
             Route::get('/product-and-service', [UserController::class, 'ProductAndService'])->name('user.product_and_service');
             Route::get('/collection_wise_category', [UserController::class, 'CollectionWiseCategory'])->name('user.collection_wise_category');

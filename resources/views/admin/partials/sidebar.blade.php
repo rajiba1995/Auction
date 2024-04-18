@@ -97,7 +97,7 @@
     </div> 
     <div class="accordion-item">
       <a href="javascript:void(0)" class="accordion-button {{ (request()->is('admin/payment-management*')) ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse6">
-        <i class="fa-solid fa-indian-rupee-sign"></i>
+        <i class="fa-solid fa-money-bill-1-wave"></i>
         Payment Management
         <img src="{{asset('admin/assets/images/up-arrow-black.png')}}" alt="arrow" class="indicator i-black">
         <img src="{{asset('admin/assets/images/up-arrow-white.png')}}" alt="arrow" class="indicator i-white">

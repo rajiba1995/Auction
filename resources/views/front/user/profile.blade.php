@@ -24,6 +24,13 @@
                                             <a href="{{route('user.profile.edit')}}" class="btn btn-normal btn-cta">Edit Basic Information</a>
                                             @endif
                                         </div>
+                                        <div class="m-2">
+                                            @if (session('success'))
+                                                <div class="alert alert-success" id="message_div">
+                                                    {{ session('success') }}
+                                                </div>
+                                            @endif
+                                        </div>
                                         <div class="content-box">
                                             <div class="basic-info-banner">
                                                 <img src="{{asset('frontend/assets/images/basic-info-banner.png')}}" alt="">

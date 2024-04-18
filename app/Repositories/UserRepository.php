@@ -9,6 +9,8 @@ use App\Models\UserImage;
 use App\Models\Package;
 use App\Models\MyBadge;
 use App\Models\Transaction;
+use App\Models\State;
+use App\Models\City;
 use App\Models\Badge;
 use App\Models\UserDocument;
 use Illuminate\Http\UploadedFile;
@@ -116,6 +118,7 @@ class UserRepository implements UserContract
         $user->short_bio = $collection['short_bio'];
         $user->email = $collection['email'];
         $user->business_name = $collection['business_name'];
+        $user->slug_business_name = slugGenerateUpdateForBusinessName( $collection['business_name'],'users',$collection['id']);
         $user->business_type = $collection['business_type'];
         $user->address = $collection['address'];
         $user->city = $collection['city'];
@@ -323,6 +326,14 @@ class UserRepository implements UserContract
         }else{
             return Badge::where('type', '!=', 0)->get();
         }
+       
+    }
+    public function getAllStates(){
+       return State::all();
+       
+    }
+    public function getAllCities(){
+       return City::all();
        
     }
     

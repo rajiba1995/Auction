@@ -155,5 +155,18 @@ class UserDetailsController extends Controller
         }
     }
 
+    public function UserTransactionView(Request $request,int $id)
+    { 
+        $startDate = $request->start_date ?? '';
+        $endDate = $request->end_date ?? '';
+        $keyword = $request->keyword ?? '';
+        if (!empty($keyword) || !empty($startDate) || !empty($endDate)) {  
+            $data = $this->userDetailsRepository->getSearchUsersTransaction($keyword,$startDate,$endDate);
+            }else{
+            $data = $this->userDetailsRepository->getUserAllTransactionById($id);
+            }
+        return view('admin.user.userTransaction', compact('data','id'));
+    }
+
 
 }

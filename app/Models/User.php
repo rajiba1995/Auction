@@ -82,5 +82,10 @@ class User extends Authenticatable implements JWTSubject{
     public function UserDocumentData(){
         return $this->hasOne('App\Models\UserDocument','user_id','id');
     }
-    
+    function  StateData(){
+        return $this->belongsTo('App\Models\State', 'state');
+    }
+    function  CityData(){
+        return $this->belongsTo('App\Models\City', 'city');
+    }
 }
