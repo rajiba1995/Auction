@@ -146,7 +146,7 @@
                                                                 <select class="form-control border-red" name="business_type">
                                                                     <option selected disabled>Select Business</option>
                                                                     @foreach ( $business_data as $item )
-                                                                    <option value="{{ $item->name }}" {{$data->business_type == $item->name?"selected":""}}>{{ $item->name }}</option>
+                                                                    <option value="{{ $item->name }}" {{ old('business_type',$data->business_type) == $item->name?"selected":""}}>{{ $item->name }}</option>
                                                                 @endforeach
                                                                 </select>
                                                                 @error('business_type')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>@enderror

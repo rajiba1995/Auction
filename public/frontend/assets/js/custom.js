@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // });
 
     var homeBannerSwiper = new Swiper(".home-banner-slider", {
-        slidesPerView: 1, 
+        slidesPerView: 1,
         spaceBetween: 0,
         // effect: 'fade',
         loop: true,
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     var tutorialsSlider = new Swiper(".tutorials-slider", {
-        slidesPerView: 2, 
+        slidesPerView: 2,
         spaceBetween: 20,
         loop: true,
         autoplay: {
@@ -43,9 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
         },
     });
 
-    
+
     var brandsSwiper = new Swiper(".brands-slider", {
-        slidesPerView: 6, 
+        slidesPerView: 6,
         spaceBetween: 40,
         loop: true,
         autoplay: {
@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     var customerSayingSwiper = new Swiper(".customer-saying-slider", {
-        slidesPerView: 1, 
+        slidesPerView: 1,
         spaceBetween: 0,
         navigation: {
             nextEl: ".customer-swiper-button-next",
@@ -74,9 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
         },
     });
 
-    $("input[name='sendwatchlist']").click(function() {
+    $("input[name='sendwatchlist']").click(function () {
         var inputval = $(this).val();
-        if(inputval == "sendwatchlistgroup") {
+        if (inputval == "sendwatchlistgroup") {
             $("#watchlistoptions").addClass('show');
             $("#single_watchlist_div").hide();
         } else {
@@ -85,17 +85,17 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    $("input[name='sendinquirylist']").click(function() {
+    $("input[name='sendinquirylist']").click(function () {
         var inputval = $(this).val();
-        if(inputval == "sendinquiryexisting") {
+        if (inputval == "sendinquiryexisting") {
             $("#inquiryoptions").addClass('show');
         } else {
             $("#inquiryoptions").removeClass('show');
         }
     });
-    $("input[name='inquiry_type']").click(function() {
+    $("input[name='inquiry_type']").click(function () {
         var inputval = $(this).val();
-        if(inputval == "existing-inquiry") {
+        if (inputval == "existing-inquiry") {
             $("#inquiryoptions").addClass('show');
         } else {
             $("#inquiryoptions").removeClass('show');
@@ -103,69 +103,69 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    $("input[name='auctionfrom']").click(function() {
+    $("input[name='auctionfrom']").click(function () {
         var inputval = $(this).val();
-        if(inputval == "region") {
+        if (inputval == "region") {
             $("#selectRegion").addClass('show');
         } else {
             $("#selectRegion").removeClass('show');
         }
     });
 
-    $(".solid-stars").each(function(){
+    $(".solid-stars").each(function () {
         var ratingValue = $(this).data("rating");
         var solidStarsWidth = ((Number(ratingValue) / 5) * 100);
         $(this).css("width", solidStarsWidth + "%");
     });
 
-    $("input[name='rateas']").click(function() {
+    $("input[name='rateas']").click(function () {
         var inputval = $(this).val();
-        if(inputval == "asauctioneer") {
+        if (inputval == 1) {
             $("#ratingInputsBidder").removeClass('show');
             $("#ratingInputsAuctioneer").addClass('show');
-        } else if(inputval == "asbidder") {
+        } else if (inputval == 2) {
             $("#ratingInputsAuctioneer").removeClass('show');
             $("#ratingInputsBidder").addClass('show');
         }
     });
 
-    $("input[name='prodserv']").click(function() {
+    $("input[name='prodserv']").click(function () {
         var inputval = $(this).val();
-        if(inputval == "productdetails") {
+        if (inputval == "productdetails") {
             $("#serviceInputs").removeClass('show');
             $("#productInputs").addClass('show');
-        } else if(inputval == "servicedetails") {
+        } else if (inputval == "servicedetails") {
             $("#productInputs").removeClass('show');
             $("#serviceInputs").addClass('show');
         }
     });
 
-    $("input[name='consumption']").click(function() {
+    $("input[name='consumption']").click(function () {
         var inputval = $(this).val();
-        if(inputval == "daily") {
+        if (inputval == "daily") {
             $("#yearlyConsumptionInputs").removeClass('show');
             $("#dailyConsumptionInputs").addClass('show');
-        } else if(inputval == "yearly") {
+        } else if (inputval == "yearly") {
             $("#dailyConsumptionInputs").removeClass('show');
             $("#yearlyConsumptionInputs").addClass('show');
         }
     });
 
-    $("#sidebarOpener").on("click", function() {
+    $("#sidebarOpener").on("click", function () {
         $(".sidebar-toggler").hide();
         $("#profileSidebar").addClass("show");
     });
 
-    $("#sidebarClose").on("click", function() {
+    $("#sidebarClose").on("click", function () {
         $(".sidebar-toggler").show();
         $("#profileSidebar").removeClass("show");
     });
 
-    $("input[name='allotrate']").click(function() {
+    $("input[name='allotrate']").click(function () {
         var inputval = $(this).val();
-        if(inputval == "yes") {
+        if (inputval == "yes") {
             $("#allotAmount").prop('disabled', true);
-        } else if(inputval == "no") {
+        } else if (inputval == "no") {
             $("#allotAmount").prop('disabled', false);
         }
     });
@@ -175,33 +175,33 @@ document.addEventListener("DOMContentLoaded", () => {
     $("#filterStartDate").datepicker({
         defaultDate: currentDate,
         dateFormat: "d M, yy",
-        onSelect: function(dateText) {
+        onSelect: function (dateText) {
             $("#filterSelectedStartDate").text(dateText);
         }
     });
 
     $("#filterSelectedStartDate").text($.datepicker.formatDate("d M, yy", currentDate));
 
-    $("#filterSelectedStartDate").on("click", function() {
+    $("#filterSelectedStartDate").on("click", function () {
         $("#filterStartDate").datepicker("show");
     });
 
     $("#filterEndDate").datepicker({
         defaultDate: currentDate,
         dateFormat: "d M, yy",
-        onSelect: function(dateText) {
+        onSelect: function (dateText) {
             $("#filterSelectedEndDate").text(dateText);
         }
     });
 
     $("#filterSelectedEndDate").text($.datepicker.formatDate("d M, yy", currentDate));
 
-    $("#filterSelectedEndDate").on("click", function() {
+    $("#filterSelectedEndDate").on("click", function () {
         $("#filterEndDate").datepicker("show");
     });
 
-    $(".read-more span").on("click", function() {
-        if($(this).parent().parent().find("p").hasClass("hidden")) {
+    $(".read-more span").on("click", function () {
+        if ($(this).parent().parent().find("p").hasClass("hidden")) {
             $(this).parent().parent().find("p").removeClass("hidden");
             $(this).text("read less");
         } else {
@@ -209,9 +209,9 @@ document.addEventListener("DOMContentLoaded", () => {
             $(this).text("read more");
         }
     });
-    
-    $(".see-more span").on("click", function() {
-        if($(this).parent().parent().find("ul.participant-data-list").hasClass("hidden")) {
+
+    $(".see-more span").on("click", function () {
+        if ($(this).parent().parent().find("ul.participant-data-list").hasClass("hidden")) {
             $(this).parent().parent().find("ul.participant-data-list").removeClass("hidden");
             $(this).text("see less");
         } else {
@@ -246,19 +246,19 @@ function giveRating(element, n) {
         allChilds[i].className = "star " + cls;
     }
 }
-$("form").submit(function() {
+$("form").submit(function () {
     // Disable the submit button
     $("button[type='submit']").prop("disabled", true);
 
     // Enable the submit button after 5 seconds
-    setTimeout(function() {
+    setTimeout(function () {
         $("button[type='submit']").prop("disabled", false);
     }, 3000); // 5000 milliseconds = 5 seconds
 });
 
-$("form :input").change(function() {
+$("form :input").change(function () {
     $("button[type='submit']").prop("disabled", false);
 });
-$("form select").change(function() {
+$("form select").change(function () {
     $("button[type='submit']").prop("disabled", false);
 });
