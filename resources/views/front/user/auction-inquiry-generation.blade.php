@@ -256,7 +256,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="openauction" class="modal-custom-radio">
-                                                <input type="radio" name="auction_type" id="openauction" value="open-auction" {{ ($existing_inquiry && $existing_inquiry->inquiry_type == "open-auction") || (old('auction_type') == "open-auction") ? "checked" : "" }}>
+                                                <input type="radio" name="auction_type" id="openauction" value="open auction" {{ ($existing_inquiry && $existing_inquiry->inquiry_type == "open auction") || (old('auction_type') == "open auction") ? "checked" : "" }}>
                                                 <span class="checkmark">
                                                     <span class="checkedmark"></span>
                                                 </span>
@@ -270,7 +270,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="closedauction" class="modal-custom-radio">
-                                                <input type="radio" name="auction_type" id="closedauction" value="close-auction" {{ ($existing_inquiry && $existing_inquiry->inquiry_type == "close-auction") || (old('auction_type') == "close-auction") ? "checked" : "" }}>
+                                                <input type="radio" name="auction_type" id="closedauction" value="close auction" {{ ($existing_inquiry && $existing_inquiry->inquiry_type == "close auction") || (old('auction_type') == "close auction") ? "checked" : "" }}>
                                                 <span class="checkmark">
                                                     <span class="checkedmark"></span>
                                                 </span>
@@ -284,7 +284,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row input-row open-auction-options {{ ($existing_inquiry && $existing_inquiry->inquiry_type == "open-auction") || (old('auction_type') == "open-auction") ? "show" : "" }}" id="openAuctionOptions">
+                                <div class="row input-row open-auction-options {{ ($existing_inquiry && $existing_inquiry->inquiry_type == "open auction") || (old('auction_type') == "open auction") ? "show" : "" }}" id="openAuctionOptions">
                                     <div class="col-lg-4 col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="fromcountry" class="modal-custom-radio">
@@ -367,7 +367,7 @@
             $('#submit_type').val(submitType); 
             // Set the value of the hidden input field based on the clicked button
             var closedauction = $('input[name="auction_type"]:checked').val();
-            if (closedauction == "close-auction") {
+            if (closedauction == "close auction") {
                 Swal.fire({
                     title: "Warning!",
                     text: "Credit will be used!",
@@ -385,7 +385,7 @@
     });
      $("input[name='auction_type']").click(function() {
             var inputval = $(this).val();
-            if(inputval == "open-auction") {
+            if(inputval == "open auction") {
                 $("#openAuctionOptions").addClass('show');
                
             } else {

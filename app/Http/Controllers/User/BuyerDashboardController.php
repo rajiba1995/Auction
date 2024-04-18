@@ -46,5 +46,9 @@ class BuyerDashboardController extends Controller
         $saved_inquiries =  $this->BuyerDashboardRepository->saved_inquiries_by_user($this->getAuthenticatedUserId());
         return view('front.user_dashboard.saved_inquireis', compact('saved_inquiries'));
     }
+    public function live_inquiries(Request $request){
+        $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
+        return view('front.user_dashboard.live_inquireis', compact('live_inquiries'));
+    }
     
 }

@@ -98,10 +98,9 @@ class AuctionGenerationController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
         try {
-            
             $inquiry_id = $request->saved_inquiry_id?$request->saved_inquiry_id:"";
-           
             $inquiry = Inquiry::where('id', $inquiry_id)->first();
+          
             if(empty($inquiry)){
                 $inquiry = new Inquiry;
                 if($request->submit_type == "generate"){
@@ -114,6 +113,7 @@ class AuctionGenerationController extends Controller
                     $inquiry->inquiry_id = $order_no;
                 }
             }
+             
             $inquiry->created_by = $request->created_by;
             $inquiry->title = ucwords($request->title);
             $inquiry->slug = slugGenerate($request->title, 'inquiries');
@@ -130,7 +130,7 @@ class AuctionGenerationController extends Controller
             $inquiry->minimum_quote_amount = $request->minimum_quote_amount;
            
             $inquiry->maximum_quote_amount = $request->maximum_quote_amount;
-            $inquiry->inquiry_type = $request->auction_type;
+            $inquiry->inquiry_type = $request->auction_type?$request->auction_type:$inquiry->inquiry_type;
     
             if($request->auctionfrom == "region"){
                 $inquiry->location = $request->region; 
@@ -141,7 +141,7 @@ class AuctionGenerationController extends Controller
             }
             $inquiry->location_type =$request->auctionfrom;
             $inquiry->save();
-
+            // dd($request->all());
             if($inquiry && isset($request->participant) && count($request->participant) > 0){
                 foreach($request->participant as $key => $item){
                     $exist_participants = InquiryParticipant::where('inquiry_id', $inquiry->id)->where('user_id', $item)->get();
@@ -162,8 +162,8 @@ class AuctionGenerationController extends Controller
             }
         } catch (\Exception $e) {
             // dd($e->getMessage());
-            return abort(404);
-        }
+             return abort(404);
+         }
     }
 
     public function auction_participants_delete(Request $request){

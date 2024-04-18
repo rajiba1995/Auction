@@ -121,7 +121,11 @@ if (!function_exists('slugGenerateUpdateForBusinessName')) {
 
         return $slug;
     }
-    }
-
-
-?>
+}
+function calculateSecondsRemaining($targetDateTime){
+    $currentDateTime = date("Y-m-d H:i:s");
+    $currentTimestamp = strtotime($currentDateTime);
+    $targetTimestamp = strtotime($targetDateTime);
+    $difference = $targetTimestamp - $currentTimestamp;
+    return max(0, $difference);
+}

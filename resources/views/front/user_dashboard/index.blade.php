@@ -65,7 +65,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="liveinquiries-tab" data-bs-toggle="tab" data-bs-target="#liveinquiries" type="button" role="tab" aria-controls="liveinquiries" aria-selected="false">
+                                    <a href="{{route('buyer_live_inquiries')}}" class="nav-link {{ (request()->is('buyer/live-inquiries*')) ? 'active' : '' }}" id="liveinquiries-tab">
                                         Live Inquiries
                                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g clip-path="url(#clip0_1151_262)">
@@ -78,7 +78,7 @@
                                             </clipPath>
                                             </defs>
                                         </svg>                                                
-                                    </button>
+                                    </a>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="pendingresults-tab" data-bs-toggle="tab" data-bs-target="#pendingresults" type="button" role="tab" aria-controls="pendingresults" aria-selected="false">

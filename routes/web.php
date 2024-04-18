@@ -90,6 +90,7 @@ Route::get('/clear-cache', function() {
         Route::group(['prefix'  =>   'buyer'], function() {
             Route::get('/groups', [BuyerDashboardController::class, 'index'])->name('user_buyer_dashboard');
             Route::get('/saved-inquiries', [BuyerDashboardController::class, 'saved_inquiries'])->name('buyer_saved_inquiries');
+            Route::get('/live-inquiries', [BuyerDashboardController::class, 'live_inquiries'])->name('buyer_live_inquiries');
         });
     });
 // Admin login routes
