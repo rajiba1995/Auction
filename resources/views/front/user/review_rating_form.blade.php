@@ -17,6 +17,7 @@
                             <div class="tab-content">
                                 <div class="tab-content-wrapper">
                                     <div class="top-content-bar"><h2 class="text-light">WRITE A REVIEW</h2></div>
+                                    <div class="content-box">
                                     <div class="inner">
                                         <form action="{{ route('user.profile.review_and_rating.submit') }}" class="input-form" method="POST" enctype="multipart/form-data">
                                           @csrf
@@ -306,6 +307,7 @@
                                             </div>
                                             <input type="hidden" name="rated_on_id" value="{{$data->id}}">
                                         </form>
+                                    </div>
                                     </div>
                                 </div>
                             </div>

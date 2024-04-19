@@ -181,26 +181,28 @@ class HomeController extends Controller
        $authUserId = Auth::guard('web')->check() ? Auth::guard('web')->user()->id : null;
        if($request->rateas==1){
         $rating = new ReviewRating();
-        $rating->type = $request->rateas;
         $rating->user_id =$authUserId;
-        $rating->rated_on =$request->rated_on_id;
-        $rating->on_time_delivery_rating =$request->on_time_delivery;
-        $rating->right_product_rating =$request->right_product;
-        $rating->post_delivery_service_rating =$request->post_delivery_service;
-        $rating->comment =$request->buyer_message;
-        $rating->save();
-       }else{
-        $rating = new ReviewRating();
-        $rating->type = $request->rateas;
-        $rating->user_id =$authUserId;
+        $rating->type = 2;  //as a own  supplier, rated on buyer
         $rating->rated_on =$request->rated_on_id;
         $rating->on_time_payment_rating =$request->on_time_payment;
         $rating->delivery_cooperation_rating =$request->post_delivery_cooperation;
         $rating->genuiness_rating =$request->genuiness;
+        $rating->overall_rating=($request->on_time_payment+$request->post_delivery_cooperation+$request->genuiness)/3;
+        $rating->comment =$request->buyer_message;
+        $rating->save();
+       }else{
+        $rating = new ReviewRating();
+        $rating->user_id =$authUserId;
+        $rating->type = 1;  //as a own buyer , rated on supplier
+        $rating->rated_on =$request->rated_on_id;
+        $rating->on_time_delivery_rating =$request->on_time_delivery;
+        $rating->right_product_rating =$request->right_product;
+        $rating->post_delivery_service_rating =$request->post_delivery_service;
+        $rating->overall_rating=($request->on_time_delivery+$request->right_product+$request->post_delivery_service)/3;
         $rating->comment =$request->seller_message;
         $rating->save();  
        }
-        
+        //worn on sweet alert after review done
       return redirect()->back();
     }
     

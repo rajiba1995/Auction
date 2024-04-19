@@ -100,7 +100,7 @@ class AuctionGenerationController extends Controller
         try {
             $inquiry_id = $request->saved_inquiry_id?$request->saved_inquiry_id:"";
             $inquiry = Inquiry::where('id', $inquiry_id)->first();
-          
+            // dd($request->all());
             if(empty($inquiry)){
                 $inquiry = new Inquiry;
                 if($request->submit_type == "generate"){
@@ -108,7 +108,7 @@ class AuctionGenerationController extends Controller
                     $inquiry->inquiry_id = $order_no;
                 }
             }else{
-                if($request->submit_type == "generate"){
+                if($request->submit_type == "generate" && $inquiry->inquiry_id==null){
                     $order_no = genAutoIncreNoYearWiseInquiry(8,'inquiries',date('Y'),date('m'));
                     $inquiry->inquiry_id = $order_no;
                 }
