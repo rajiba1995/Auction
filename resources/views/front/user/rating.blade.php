@@ -19,15 +19,16 @@
                                     <div class="top-content-bar"></div>
                                     <div class="content-box">
                                         <div class="inner">
-                                            {{-- {{dd($review_rating)}} --}}
                                             <h3>Review Summary</h3>
-
                                             <div class="review-desc-box">
                                                 <h3>Overall Rating</h3>
                                                 <div class="rating-display-box">
                                                     <div class="left-col">
+                                                        @if($asSellerRatingPoint> 0)
                                                         <div class="rating-value">{{ number_format(round((($asSellerRatingPoint / $asSeller) + ($asBuyerRatingPoint / $asBuyer)) / 2, 2), 1) }}</div>
-
+                                                        @else
+                                                        <div class="rating-value">0</div>
+                                                        @endif
 
                                                         <div class="rating-star-values">
                                                             <ul class="rating-stars blank-stars">
@@ -118,7 +119,11 @@
                                                 <h3>Rated as Supplier</h3>
                                                 <div class="rating-display-box">
                                                     <div class="left-col">
-                                                        <div class="rating-value">{{$asSellerRatingPoint / $asSeller}}</div>
+                                                        @if ($asSellerRatingPoint >0)
+                                                        <div class="rating-value">{{number_format(round($asSellerRatingPoint / $asSeller),1)}}</div>
+                                                        @else
+                                                        <div class="rating-value">0</div>                                                    
+                                                        @endif
                                                         <div class="rating-star-values">
                                                             <ul class="rating-stars blank-stars">
                                                                 <li>
@@ -208,7 +213,11 @@
                                                 <h3>Rated as Buyer</h3>
                                                 <div class="rating-display-box">
                                                     <div class="left-col">
-                                                        <div class="rating-value">{{$asBuyerRatingPoint / $asBuyer}}</div>
+                                                        @if ($asBuyerRatingPoint>0)
+                                                        <div class="rating-value">{{number_format(round($asBuyerRatingPoint / $asBuyer),1),1}}</div>
+                                                        @else
+                                                        <div class="rating-value">0</div>
+                                                        @endif
                                                         <div class="rating-star-values">
                                                             <ul class="rating-stars blank-stars">
                                                                 <li>
