@@ -11,4 +11,7 @@ class InquiryParticipant extends Model{
     public function SellerData(){
         return $this->belongsTo('App\Models\User','user_id','id');
     }
+    public function InquriesData(){
+        return $this->belongsTo('App\Models\Inquiry','inquiry_id','id');
+    }
 }

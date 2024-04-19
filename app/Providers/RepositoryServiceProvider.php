@@ -10,6 +10,9 @@ use App\Contracts\VendorContract;
 use App\Repositories\BuyerDashboardRepository;
 use App\Contracts\BuyerDashboardContract;
 
+use App\Repositories\SellerDashboardRepository;
+use App\Contracts\SellerDashboardContract;
+
 use App\Repositories\UserRepository;
 use App\Contracts\UserContract;
 
@@ -41,6 +44,7 @@ class RepositoryServiceProvider extends ServiceProvider{
     protected $repositories = [
         VendorContract::class  =>  VendorRepository::class,
         BuyerDashboardContract::class  =>  BuyerDashboardRepository::class,
+        SellerDashboardContract::class  =>  SellerDashboardRepository::class,
         UserContract::class  =>  UserRepository::class,
         JobContract::class  =>  JobRepository::class,
         ClientContract::class  =>  ClientRepository::class,

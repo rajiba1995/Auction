@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\{RegisteredUserController};
 use App\Http\Controllers\AdminAuth\{LoginController};
-use App\Http\Controllers\User\{UserController, AuctionGenerationController, BuyerDashboardController};
+use App\Http\Controllers\User\{UserController, AuctionGenerationController, BuyerDashboardController,SellerDashboardController};
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\{AdminController, VendorController, InspectorController, ClientController,MasterModuleController,BlogController,PackageController,UserDetailsController,WebsiteSettingController,EmployeeDetailsController};
@@ -91,6 +91,12 @@ Route::get('/clear-cache', function() {
             Route::get('/groups', [BuyerDashboardController::class, 'index'])->name('user_buyer_dashboard');
             Route::get('/saved-inquiries', [BuyerDashboardController::class, 'saved_inquiries'])->name('buyer_saved_inquiries');
             Route::get('/live-inquiries', [BuyerDashboardController::class, 'live_inquiries'])->name('buyer_live_inquiries');
+        });
+        // Seller Dashboard
+        Route::group(['prefix'  =>   'seller'], function() {
+            Route::get('/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
+            Route::get('/all-inquiries', [SellerDashboardController::class, 'all_inquiries'])->name('seller_all_inquiries');
+            Route::get('/live-inquiries', [SellerDashboardController::class, 'live_inquiries'])->name('seller_live_inquiries');
         });
     });
 // Admin login routes

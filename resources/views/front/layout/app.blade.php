@@ -57,7 +57,7 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{route('user_buyer_dashboard')}}">Buyer</a></li>
-                      <li><a class="dropdown-item" href="#">Supplier</a></li>
+                      <li><a class="dropdown-item" href="{{route('user_seller_dashboard')}}">Supplier</a></li>
                     </ul>
                   </div>
                 <a href="" class="menu-cta helpdesk">

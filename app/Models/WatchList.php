@@ -11,4 +11,9 @@ class WatchList extends Model{
     public function SellerData(){
         return $this->belongsTo('App\Models\User','seller_id','id');
     }
+    
+    public function GroupWacthListData(){
+        return $this->belongsTo('App\Models\GroupWatchList','group_id','id');
+    }
+    
 }

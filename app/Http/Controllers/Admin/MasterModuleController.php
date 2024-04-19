@@ -635,15 +635,25 @@ class MasterModuleController extends Controller
      }
 
      //Location 
-     public function LocationStatesIndex()
-     {
-         $data = $this->masterRepository->getAllStates();
+     public function LocationStatesIndex(Request $request)
+     {  
+        $keyword = $request->keyword ?? '';
+        if (!empty($keyword)){
+            $data = $this->masterRepository->getSearchState($keyword);
+        }else{       
+            $data = $this->masterRepository->getAllStates();
+        }
          return view('admin.location.states-index', compact('data'));
      }
-     public function LocationCitiesIndex($id)
+     public function LocationCitiesIndex(Request $request ,$id)
      {  
          $stateId = $id;
-         $data = $this->masterRepository->getAllCitiesByStateId($stateId);
+         $keyword = $request->keyword ?? '';
+         if (!empty($keyword)){
+            $data = $this->masterRepository->getSearchCity($keyword, $stateId);
+        }else{  
+            $data = $this->masterRepository->getAllCitiesByStateId($stateId);
+            }
          return view('admin.location.cities-index', compact('data','stateId'));
      }
      public function LocationCityCreate($id)

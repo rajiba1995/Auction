@@ -706,9 +706,27 @@ class MasterRepository implements MasterContract
      {
          return State::orderBy('name')->paginate(20);
      }
+     public function getSearchState($keyword)
+     {
+        $query = State::query();      
+        $query->when($keyword, function ($query) use ($keyword) {
+            $query->where('name', 'like', '%' . $keyword . '%');       
+        });
+        return $data = $query->latest('id')->paginate(25);
+
+
+     }
      public function getAllCitiesByStateId($id)
      {
          return City::where('state_id', $id)->paginate(100);
+     }
+     public function getSearchCity($keyword, $stateId)
+     {
+        $query = City::query();      
+        $query->when($keyword, function ($query) use ($keyword,$stateId) {
+            $query->where('name', 'like', '%' . $keyword . '%')->where('state_id',$stateId);       
+        });
+        return $data = $query->latest('id')->paginate(25);
      }
      public function getCityById($cityId,$stateId)
      {
