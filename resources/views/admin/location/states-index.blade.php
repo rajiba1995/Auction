@@ -5,6 +5,19 @@
     <div class="report-table-box">
         <div class="heading-row">
             <h3>Location (States)</h3>
+            <form action="" method="get" id="searchForm">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-auto col-12">
+                            <input type="text" name="keyword" placeholder="Search State.."  value="{{request()->input('keyword')??""}}" class="w-100"/>
+                        </div>
+                        <div class="col-lg-auto col-12 text-end">
+                            <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+                            <a href="{{ route('admin.location.states.index') }}" class="btn btn-danger btn-sm"><i class="fa-solid fa-xmark"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div class="d-flex">
                 <a href="{{route('admin.location.state.create')}}" class="btn btn-add btn-sm">
                     <i class="fa-solid fa-plus"></i>
@@ -14,29 +27,7 @@
 
             </div>
         </div>
-        <!-- <form action="" method="get" id="searchForm">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-auto col-12">
-                        <input type="text" name="name" placeholder="Name..." value="{{request()->input('name')??""}}" class="w-100"/>
-    </div>
-    <div class="col-lg-auto col-12">
-        <input type="text" name="email" placeholder="Email..." value="{{request()->query('email')}}" class="w-100" />
-    </div>
-    <div class="col-lg-auto col-12">
-        <select name="status" class="form-control" class="w-100">
-            <option value="all" selected>All Statuses</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-        </select>
-    </div>
-    <div class="col-lg-auto col-12 text-end">
-        <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
-        <a href="" class="btn btn-danger btn-sm"><i class="fa-solid fa-rotate"></i></a>
-    </div>
-</div>
-</div>
-</form> -->
+     
 
 
 <table class="table">

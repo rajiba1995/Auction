@@ -12,7 +12,7 @@
                 </a>       
             </div>
         </div>
-            <form action="" method="get" id="searchForm">
+            <form action="" method="get" id="">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-lg-auto col-12">

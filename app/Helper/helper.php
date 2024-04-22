@@ -8,9 +8,11 @@ use App\Models\Product;
 use App\Models\Blog;
 use App\Models\State;
 use App\Models\City;
+use App\Models\InquirySellerQuotes;
 use App\Models\WatchList;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Illuminate\Support\Facades\DB;
 
 
 if (!function_exists('GetSellerByGroupId')) {
@@ -170,4 +172,29 @@ function getState($id){
     } else {
         return false;
     }
+}
+function getAllSellerQuotes($id){
+    $data = DB::table('inquiry_seller_quotes AS iq')
+    ->select('iq.*', 'users.name', 'users.id', 'users.country_code', 'users.mobile', 'users.business_name')
+    ->join(DB::raw('(SELECT seller_id, MAX(quotes) AS max_quotes
+                    FROM inquiry_seller_quotes
+                    WHERE inquiry_id = '.$id.'
+                    GROUP BY seller_id) AS subquery'), function($join) {
+        $join->on('iq.seller_id', '=', 'subquery.seller_id')
+             ->on('iq.quotes', '=', 'subquery.max_quotes');
+    })
+    ->join('users', 'iq.seller_id', '=', 'users.id')
+    ->where('iq.inquiry_id', '=', $id)
+    ->orderBy('iq.quotes', 'DESC')->limit(10)
+    ->get();
+    // dd($data);
+    if($data){
+        return $data;
+    }else{
+        return false;
+    }
+}
+
+function get_last_three_quotes($inquiry_id, $seller_id){
+   return InquirySellerQuotes::latest()->where('inquiry_id', $inquiry_id)->where('seller_id', $seller_id)->take(3)->get();
 }
