@@ -6,6 +6,8 @@ use App\Models\Career;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Blog;
+use App\Models\State;
+use App\Models\City;
 use App\Models\WatchList;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -128,4 +130,44 @@ function calculateSecondsRemaining($targetDateTime){
     $targetTimestamp = strtotime($targetDateTime);
     $difference = $targetTimestamp - $currentTimestamp;
     return max(0, $difference);
+}
+function calculateEndSecondsRemaining($targetDateTime){
+    $currentDateTime = date("Y-m-d H:i:s");
+    $currentTimestamp = strtotime($currentDateTime);
+    $targetTimestamp = strtotime($targetDateTime);
+    $difference = $currentTimestamp-$targetTimestamp;
+    return max(0, $difference);
+}
+function getCity($id){
+    // Retrieve the city record from the database based on the provided ID
+    $city = City::where('id', $id)->first();
+
+    // Check if a city record was found
+    if($city){
+        // If a city record was found, return its name
+        return $city->name;
+    } else {
+        // If no city record was found, return false
+        return false;
+    }
+}
+function getCitySlug($id){
+    // Retrieve the city record from the database based on the provided ID
+    $city = City::where('id', $id)->first();
+    // Check if a city record was found
+    if($city->slug){
+        // If a city record was found, return its name
+        return $city->slug;
+    } else {
+        // If no city record was found, return false
+        return  Str::slug($city->name, '-');
+    }
+}
+function getState($id){
+    $State = State::where('id', $id)->first();
+    if($State){
+        return $State->name;
+    } else {
+        return false;
+    }
 }

@@ -150,7 +150,7 @@
                                                 <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
                                             @if($item->SellerData->address)
-                                                {{$item->SellerData->address}}, {{$item->SellerData->city}}, {{$item->SellerData->state}}
+                                                {{$item->SellerData->address}}, {{getCity($item->SellerData?$item->SellerData->city:"")}}, {{getState($item->SellerData?$item->SellerData->state:"")}}
                                             @endif
                                         </div>
                                         <div class="info">
@@ -166,10 +166,10 @@
                                     </div>
                                     <div class="cta">
                                         @php
-                                                $business_name_slug = Str::slug($item->SellerData->business_name, '-');
-                                                $seller_location = Str::slug($item->SellerData->city, '-');
+                                            // $business_name_slug = Str::slug($item->SellerData->business_name, '-');
+                                            $seller_location = getCitySlug($item->SellerData?$item->SellerData->city:"");
                                         @endphp
-                                      <a href="{{route('user.profile.fetch', [$seller_location,$business_name_slug])}}" class="btn btn-cta btn-normal">View Profile</a>
+                                      <a href="{{route('user.profile.fetch', [$seller_location,$item->SellerData->slug_business_name])}}" class="btn btn-cta btn-normal">View Profile</a>
                                         <button type="button" class="btn btn-cta btn-animated btn-yellow">Previously Worked</button>
                                     </div>
                                 </div>
@@ -289,10 +289,10 @@
                                     </div>
                                     <div class="cta">
                                         @php
-                                                $business_name_slug = Str::slug($item->SellerData->business_name, '-');
-                                                $seller_location = Str::slug($item->SellerData->city, '-');
+                                                // $business_name_slug = Str::slug($item->SellerData->business_name, '-');
+                                                $seller_location = getCitySlug($item->SellerData?$item->SellerData->city:"");
                                         @endphp
-                                      <a href="{{route('user.profile.fetch', [$seller_location,$business_name_slug])}}" class="btn btn-cta btn-normal">View Profile</a>
+                                      <a href="{{route('user.profile.fetch', [$seller_location,$item->SellerData->slug_business_name])}}" class="btn btn-cta btn-normal">View Profile</a>
                                         <button type="button" class="btn btn-cta btn-animated btn-yellow">Previously Worked</button>
                                     </div>
                                 </div>

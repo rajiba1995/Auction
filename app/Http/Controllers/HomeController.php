@@ -17,6 +17,7 @@ use App\Models\State;
 use App\Models\ReviewRating;
 use App\Models\City;
 use App\Models\User;
+use App\Models\RequirementConsumption;
 use App\Models\Blog;
 use Illuminate\Support\Str;
 use App\Contracts\UserContract;
@@ -117,38 +118,38 @@ class HomeController extends Controller
             return view('front.filter', compact('data', 'location', 'keyword', 'old_location', 'old_keyword', 'categories','groupWatchList'));
     }
 
-    public function UserProfileFetch($location, $keyword){
-        $location = str_replace('-', ' ', $location);
-        $keyword = str_replace('-', ' ', $keyword);
+    public function UserProfileFetch($location, $slug_keyword){
+        // $location = str_replace('-', ' ', $location);
+        // $keyword = str_replace('-', ' ', $keyword);
         $exist_state = "";
         $exist_city = "";
-        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
-        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_state = State::where('slug', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('slug', 'like', '%' . $location . '%')->value('id');
         $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
             $query->where('state', $exist_state)
                   ->orWhere('city', $exist_city);
         })
-        ->where('business_name', $keyword)
+        ->where('slug_business_name', $slug_keyword)
         ->first();
 
         if($data){
-            return view('front.user.profile', compact('data', 'location', 'keyword'));
+            return view('front.user.profile', compact('data', 'location', 'slug_keyword'));
         }else{
             return redirect()->back();
         }
     }   
     public function UserReviewAndRating($old_location, $old_keyword){
-        $location = str_replace('-', ' ', $old_location);
-        $keyword = str_replace('-', ' ', $old_keyword);
+        // $location = str_replace('-', ' ', $old_location);
+        // $keyword = str_replace('-', ' ', $old_keyword);
         $exist_state = "";
         $exist_city = "";
-        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
-        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
-        $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
-            $query->where('state', $location)
-                  ->orWhere('city', $location);
+        $exist_state = State::where('slug', 'like', '%' . $old_location . '%')->value('id');
+        $exist_city = City::where('slug', 'like', '%' . $old_location . '%')->value('id');
+        $data = User::where(function($query) use ($exist_state, $exist_city) {
+            $query->where('state', $exist_state)
+                  ->orWhere('city', $exist_city);
         })
-        ->where('business_name', $keyword)
+        ->where('slug_business_name', $old_keyword)
         ->first();
         if($data){
             $review_rating = $this->userRepository->getUserAllReviewRating($data->id);
@@ -161,18 +162,18 @@ class HomeController extends Controller
             return redirect()->back();
         }
     }   
-    public function UserReviewAndRatingWrite($location, $keyword){
-        $location = str_replace('-', ' ', $location);
-        $keyword = str_replace('-', ' ', $keyword);
+    public function UserReviewAndRatingWrite($location, $slug_keyword){
+        // $location = str_replace('-', ' ', $location);
+        // $keyword = str_replace('-', ' ', $keyword);
         $exist_state = "";
         $exist_city = "";
-        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
-        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_state = State::where('slug', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('slug', 'like', '%' . $location . '%')->value('id');
         $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
-            $query->where('state', $location)
-                  ->orWhere('city', $location);
+            $query->where('state', $exist_state)
+                  ->orWhere('city', $exist_city);
         })
-        ->where('business_name', $keyword)
+        ->where('slug_business_name', $slug_keyword)
         ->first();
         return view('front.user.review_rating_form',compact('data'));
     }   
@@ -209,17 +210,17 @@ class HomeController extends Controller
 
   
     public function UserPhotoAndDocument($location, $keyword){
-        $location = str_replace('-', ' ', $location);
-        $keyword = str_replace('-', ' ', $keyword);
+        // $location = str_replace('-', ' ', $location);
+        // $keyword = str_replace('-', ' ', $keyword);
         $exist_state = "";
         $exist_city = "";
-        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
-        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_state = State::where('slug', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('slug', 'like', '%' . $location . '%')->value('id');
         $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
-            $query->where('state', $location)
-                  ->orWhere('city', $location);
+            $query->where('state', $exist_state)
+                  ->orWhere('city', $exist_city);
         })
-        ->where('business_name', $keyword)
+        ->where('slug_business_name', $keyword)
         ->first();
         if($data){
             $AllImages = $this->userRepository->getUserAllImages($data->id);
@@ -230,21 +231,39 @@ class HomeController extends Controller
         }
     }   
     public function UserProductService($location, $keyword){
-        $location = str_replace('-', ' ', $location);
-        $keyword = str_replace('-', ' ', $keyword);
+        // $location = str_replace('-', ' ', $location);
+        // $keyword = str_replace('-', ' ', $keyword);
         $exist_state = "";
         $exist_city = "";
-        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
-        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_state = State::where('slug', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('slug', 'like', '%' . $location . '%')->value('id');
         $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
-            $query->where('state', $location)
-                  ->orWhere('city', $location);
+            $query->where('state', $exist_state)
+                  ->orWhere('city', $exist_city);
         })
-        ->where('business_name', $keyword)
+        ->where('slug_business_name', $keyword)
         ->first();
         if($data){
             $Product = Product::where('user_id', $data->id)->get();
             return view('front.user.product_and_service', compact('Product', 'data'));
+        }else{
+            return redirect()->back();
+        }
+    }   
+    public function RequirementsAndConsumption($location, $keyword){
+        $exist_state = "";
+        $exist_city = "";
+        $exist_state = State::where('slug', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('slug', 'like', '%' . $location . '%')->value('id');
+        $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
+            $query->where('state', $exist_state)
+                  ->orWhere('city', $exist_city);
+        })
+        ->where('slug_business_name', $keyword)
+        ->first();
+        if($data){
+            $consumption = RequirementConsumption::where('user_id', $data->id)->get();
+            return view('front.user.requirement_consumption', compact('consumption', 'data'));
         }else{
             return redirect()->back();
         }

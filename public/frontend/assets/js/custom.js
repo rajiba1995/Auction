@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     //         }
     //     });
     // });
-
+    
     var homeBannerSwiper = new Swiper(".home-banner-slider", {
         slidesPerView: 1,
         spaceBetween: 0,
@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     var currentDate = new Date();
 
-    $("#filterStartDate").datepicker({
+    /*$("#filterStartDate").datepicker({
         defaultDate: currentDate,
         dateFormat: "d M, yy",
         onSelect: function (dateText) {
@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     $("#filterSelectedEndDate").on("click", function () {
         $("#filterEndDate").datepicker("show");
-    });
+    });*/
 
     $(".read-more span").on("click", function () {
         if ($(this).parent().parent().find("p").hasClass("hidden")) {

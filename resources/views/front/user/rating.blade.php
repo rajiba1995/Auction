@@ -313,7 +313,6 @@
                                     <div class="content-box">
                                         <div class="inner">
                                         @foreach ( $review_rating as $item )
-                                            
                                             <div class="reviews-box">
                                                 <div class="top-row">
                                                     <div class="left-col">

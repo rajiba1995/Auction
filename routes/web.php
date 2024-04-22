@@ -91,13 +91,16 @@ Route::get('/clear-cache', function() {
             Route::get('/groups', [BuyerDashboardController::class, 'index'])->name('user_buyer_dashboard');
             Route::get('/saved-inquiries', [BuyerDashboardController::class, 'saved_inquiries'])->name('buyer_saved_inquiries');
             Route::get('/live-inquiries', [BuyerDashboardController::class, 'live_inquiries'])->name('buyer_live_inquiries');
+            Route::get('/live-inquiries-fetch-ajax', [BuyerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('buyer_live_inquiries_by_ajax');
         });
+
         // Seller Dashboard
         Route::group(['prefix'  =>   'seller'], function() {
             Route::get('/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
             Route::get('/all-inquiries', [SellerDashboardController::class, 'all_inquiries'])->name('seller_all_inquiries');
             Route::get('/live-inquiries', [SellerDashboardController::class, 'live_inquiries'])->name('seller_live_inquiries');
         });
+
     });
 // Admin login routes
 // Route::redirect('/', '/admin/login');
@@ -129,5 +132,6 @@ Route::get('/rating-and-reviews/write/{location}/{keyword}', [HomeController::cl
 Route::post('/rating-and-reviews/write/submit', [HomeController::class, 'UserReviewAndRatingWriteSubmit'])->name('user.profile.review_and_rating.submit');
 Route::get('/photos-and-documents/{location}/{keyword}', [HomeController::class, 'UserPhotoAndDocument'])->name('user.profile.photos_and_documents');
 Route::get('/product-and-service/{location}/{keyword}', [HomeController::class, 'UserProductService'])->name('user.profile.product_and_service');
+Route::get('/requirements-and-consumption/{location}/{keyword}', [HomeController::class, 'RequirementsAndConsumption'])->name('user.profile.requirements_and_consumption');
 
 Auth::routes();

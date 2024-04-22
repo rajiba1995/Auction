@@ -1,6 +1,5 @@
 @extends('front.layout.app')
 @section('location', $location)
-@section('keyword', $keyword)
 @section('section')
 <div class="main">
     <div class="inner-page">

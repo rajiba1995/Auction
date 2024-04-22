@@ -17,7 +17,7 @@
                             <div class="tab-content">
                                 @if (Auth::guard('web')->check() && Auth::guard('web')->user()->id==$data->id)
                                 <div class="tab-pane {{ (request()->is('my/product-and-service*')) ? 'active' : '' }}" id="productsServices" role="tabpanel" aria-labelledby="productsServices-tab" tabindex="0">
-                                    @else
+                                @else
                                 <div class="tab-pane {{ (request()->is('product-and-service/*')) ? 'active' : '' }}" id="productsServices" role="tabpanel" aria-labelledby="productsServices-tab" tabindex="0">
                                     @endif
                                     <div class="tab-content-wrapper">
