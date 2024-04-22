@@ -99,6 +99,9 @@ Route::get('/clear-cache', function() {
             Route::get('/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
             Route::get('/all-inquiries', [SellerDashboardController::class, 'all_inquiries'])->name('seller_all_inquiries');
             Route::get('/live-inquiries', [SellerDashboardController::class, 'live_inquiries'])->name('seller_live_inquiries');
+            Route::get('/pending-inquiries', [SellerDashboardController::class, 'pending_inquiries'])->name('seller_pending_inquiries');
+            Route::get('/confirmed-inquiries', [SellerDashboardController::class, 'confirmed_inquiries'])->name('seller_confirmed_inquiries');
+            Route::get('/history-inquiries', [SellerDashboardController::class, 'history_inquiries'])->name('seller_history_inquiries');
         });
 
     });

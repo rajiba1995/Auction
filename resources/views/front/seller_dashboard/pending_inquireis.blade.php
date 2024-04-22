@@ -153,132 +153,187 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="tab-content dashboard-tab-content">
-                
-                    <div class="tab-pane fade show active" id="allinquiries" role="tabpanel" aria-labelledby="allinquiries-tab" tabindex="0">
-                        <div class="container">
+                    <div class="tab-pane fade show active" id="pendingresults" role="tabpanel" aria-labelledby="pendingresults-tab" tabindex="0">
+                        <div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="table-responsive inquiry-tables">
-                                        <table class="table table-striped inquiry-wrapper-table all-inquiry-wrapper-table">
+                                        <table class="table inquiry-wrapper-table">
                                             <thead>
                                                 <tr>
                                                     <th class="input-th input-id-th">Id</th>
                                                     <th class="input-th input-title-th">Title</th>
                                                     <th class="input-th input-details-th">Details</th>
+                                                    <th class="input-th input-buyer-th">Buyer</th>
                                                     <th class="input-th input-location-th">Location</th>
                                                     <th class="input-th input-start-date-th"><span>Start date &amp; time</span></th>
                                                     <th class="input-th input-end-date-th"><span>End date &amp; time</span></th>
                                                     <th class="input-th min-quote-th">Min Quote</th>
                                                     <th class="input-th max-quote-th">Max Quote</th>
-                                                    <th class="input-th other-actions-th"></th>
+                                                    <th class="output-th quotes-supplier-th">Quotes</th>
+                                                    <th class="output-th comments-th">Comments &amp; Files</th>
+                                                    <th class="output-th other-actions-th">&nbsp;</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if($all_inquery)
-                                                @foreach ( $all_inquery as  $item ) 
-                                                @if($item->InquriesData->inquiry_id !== null)
                                                 <tr>
-                                                    <td class="input-id-td">{{ $item->InquriesData->inquiry_id}}</td>
-                                                    <td class="input-title-td">{{ ucfirst($item->InquriesData->title) }}</td>
-                                                    <td class="input-details-td">
-                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal" class="btn btn-view">View</a>
+                                                    <td class="input-table-column" colspan="9">
+                                                        <table class="table input-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="input-id-td">156897</td>
+                                                                    <td class="input-title-td">Transport Service</td>
+                                                                    <td class="input-details-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal" class="btn btn-view">View</a>
+                                                                    </td>
+                                                                    <td class="input-buyer-td">
+                                                                        Mahesh Gupta <strong>+911234567891</strong>
+                                                                    </td>
+                                                                    <td class="input-location-td">Delhi</td>
+                                                                    <td class="input-start-date-td">25 jan, 2024</td>
+                                                                    <td class="input-end-date-td">28 jan, 2024</td>
+                                                                    <td class="min-quote-td">2,00,000</td>
+                                                                    <td class="max-quote-td">3,00,000</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="7" class="note-td">
+                                                                        <div class="note-wrap">
+                                                                            <h3>Notepad</h3>
+                                                                            <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
+                                                                            <button type="button" class="btn btn-animated bg-green">Save</button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </td>
-                                                    <td class="input-location-td">{{ ucfirst($item->InquriesData->location) }}</td>
-                                                    <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->InquriesData->start_date)) }} {{ date('g:i A', strtotime($item->InquriesData->start_time)) }}</td>
-                                                    <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->InquriesData->end_date)) }} {{ date('g:i A', strtotime($item->InquriesData->end_time)) }}</td>
-                                                    <td class="min-quote-td">{{number_format($item->InquriesData->minimum_quote_amount,2, '.',',')}}</td>
-                                                    <td class="max-quote-td">{{number_format($item->InquriesData->maximum_quote_amount,2, '.',',')}}</td></td>
-                                                    <td class="other-actions-td">
-                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_startQuotingModal{{$item->id}}" class="btn btn-yellow btn-allot-offline">
-                                                            <img src="{{ asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
-                                                            Start Quoting
-                                                        </a>
-                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_cancelInquiryModal{{$item->id}}" class="btn btn-red btn-cancel-inquiry">
-                                                            <img src="{{ asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
-                                                            Reject Inquiry
-                                                        </a>
+                                                    <td class="output-table-column" colspan="2">
+                                                        <table class="table output-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="quotes-supplier-td">
+                                                                        <div class="quote">
+                                                                            <input type="text" class="quote-amount" value="₹ 3500" disabled>
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
+                                                                                <img src="assets/images/arrow-up-right.png" alt="">
+                                                                            </a>
+                                                                            <div class="quote-diff">Quote Difference: 200</div>
+                                                                            <div class="level">L1</div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="comments-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addCommentModal" class="btn btn-view btn-view-comment">
+                                                                            <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M1.3 9C0.9425 9 0.636458 8.90208 0.381875 8.70625C0.127292 8.51042 0 8.275 0 8V1C0 0.725 0.127292 0.489583 0.381875 0.29375C0.636458 0.0979167 0.9425 0 1.3 0H10.4C10.7575 0 11.0635 0.0979167 11.3181 0.29375C11.5727 0.489583 11.7 0.725 11.7 1V4.35C11.4942 4.275 11.2829 4.21042 11.0662 4.15625C10.8496 4.10208 10.6275 4.0625 10.4 4.0375V1H1.3V8H5.2325C5.265 8.18333 5.31646 8.35833 5.38687 8.525C5.45729 8.69167 5.54125 8.85 5.63875 9H1.3ZM1.3 7.5V8V1V4.0375V4V7.5ZM2.6 7H5.24875C5.28125 6.825 5.33271 6.65417 5.40312 6.4875C5.47354 6.32083 5.55208 6.15833 5.63875 6H2.6V7ZM2.6 5H6.565C6.91167 4.75 7.29896 4.54167 7.72687 4.375C8.15479 4.20833 8.6125 4.09583 9.1 4.0375V4H2.6V5ZM2.6 3H9.1V2H2.6V3ZM9.75 10C8.85083 10 8.08437 9.75625 7.45062 9.26875C6.81687 8.78125 6.5 8.19167 6.5 7.5C6.5 6.80833 6.81687 6.21875 7.45062 5.73125C8.08437 5.24375 8.85083 5 9.75 5C10.6492 5 11.4156 5.24375 12.0494 5.73125C12.6831 6.21875 13 6.80833 13 7.5C13 8.19167 12.6831 8.78125 12.0494 9.26875C11.4156 9.75625 10.6492 10 9.75 10ZM9.425 9H10.075V7.75H11.7V7.25H10.075V6H9.425V7.25H7.8V7.75H9.425V9Z" fill="#0076D7"/>
+                                                                            </svg>                                                                                
+                                                                            Add Comment
+                                                                        </a>
+                                                                        <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                            <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M9.16634 11.875H10.833V9.26562L12.1663 10.2656L13.333 9.375L9.99967 6.875L6.66634 9.375L7.85384 10.25L9.16634 9.26562V11.875ZM4.99967 13.75C4.54134 13.75 4.14898 13.6276 3.82259 13.3828C3.4962 13.138 3.33301 12.8438 3.33301 12.5V2.5C3.33301 2.15625 3.4962 1.86198 3.82259 1.61719C4.14898 1.3724 4.54134 1.25 4.99967 1.25H11.6663L16.6663 5V12.5C16.6663 12.8438 16.5031 13.138 16.1768 13.3828C15.8504 13.6276 15.458 13.75 14.9997 13.75H4.99967ZM10.833 5.625V2.5H4.99967V12.5H14.9997V5.625H10.833Z" fill="#FFB800"/>
+                                                                            </svg>                                                                    
+                                                                            Send File
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td class="actions-table-column">
+                                                        <table class="table actions-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="other-actions-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#cancelInquiryModal" class="btn btn-red btn-cancel-inquiry">
+                                                                            <img src="assets/images/white-circle-cross.png" alt="Cancel">
+                                                                            Reject Inquiry
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </td>
                                                 </tr>
-                                                {{-- start Quotting model --}}
-                                                <div class="modal fade allot-rate-modal start-quoting-modal" id="all_startQuotingModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <h4 class="content-heading">Credit will be used</h4>
-                                                                <div class="bottom-cta-row">
-                                                                    <button type="button" class="btn btn-proceed">Proceed</button>
-                                                                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- reject Quoting modal --}}
-                                                <div class="modal fade allot-rate-modal cancel-inquiry" id="all_cancelInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                
-                                                                <div class="container-fluid">
-                                                                    <div class="row">
-                                                                        <div class="col-12">
-                                                                            <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
+                                                <tr>
+                                                    <td class="input-table-column" colspan="9">
+                                                        <table class="table input-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="input-id-td">156897</td>
+                                                                    <td class="input-title-td">Transport Service</td>
+                                                                    <td class="input-details-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal" class="btn btn-view">View</a>
+                                                                    </td>
+                                                                    <td class="input-buyer-td">
+                                                                        Mahesh Gupta <strong>+911234567891</strong>
+                                                                    </td>
+                                                                    <td class="input-location-td">Delhi</td>
+                                                                    <td class="input-start-date-td">25 jan, 2024</td>
+                                                                    <td class="input-end-date-td">28 jan, 2024</td>
+                                                                    <td class="min-quote-td">2,00,000</td>
+                                                                    <td class="max-quote-td">3,00,000</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="7" class="note-td">
+                                                                        <div class="note-wrap">
+                                                                            <h3>Notepad</h3>
+                                                                            <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
+                                                                            <button type="button" class="btn btn-animated bg-green">Save</button>
                                                                         </div>
-                                                                        <div class="col-md-6 col-sm-4 col-6">
-                                                                            <label for="cancelInquiryYes" class="modal-custom-radio">
-                                                                                <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
-                                                                                <span class="checkmark">
-                                                                                    <span class="checkedmark"></span>
-                                                                                </span>
-                                                                                <div class="radio-text">
-                                                                                    <label>Yes</label>
-                                                                                </div>
-                                                                            </label>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td class="output-table-column" colspan="2">
+                                                        <table class="table output-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="quotes-supplier-td">
+                                                                        <div class="quote">
+                                                                            <input type="text" class="quote-amount" value="₹ 3500" disabled>
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
+                                                                                <img src="assets/images/arrow-up-right.png" alt="">
+                                                                            </a>
+                                                                            <div class="quote-diff">Quote Difference: 200</div>
+                                                                            <div class="level">L1</div>
                                                                         </div>
-                                                                        <div class="col-md-6 col-sm-4 col-6">
-                                                                            <label for="cancelInquiryNo" class="modal-custom-radio">
-                                                                                <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
-                                                                                <span class="checkmark">
-                                                                                    <span class="checkedmark"></span>
-                                                                                </span>
-                                                                                <div class="radio-text">
-                                                                                    <label>No</label>
-                                                                                </div>
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row mt-3">
-                                                                        <div class="col-12">
-                                                                            <h4 class="content-heading">Select a Reason*</h4>
-                                                                            <select class="form-control">
-                                                                                <option selected disabled>Select</option>
-                                                                                <option value="">Withdrawn by Buyer</option>
-                                                                                <option value="">Product/Service out of stock/no longer available</option>
-                                                                                <option value="">Duplicate Inquiry</option>
-                                                                                <option value="">Not Interested Anymore</option>
-                                                                                <option value="">My Reason is not listed here</option>
-                                                                            </select>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                                <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endif
-                                                @endforeach
-                                                @endif
-                                                
+                                                                    </td>
+                                                                    <td class="comments-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addCommentModal" class="btn btn-view btn-view-comment">
+                                                                            <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M1.3 9C0.9425 9 0.636458 8.90208 0.381875 8.70625C0.127292 8.51042 0 8.275 0 8V1C0 0.725 0.127292 0.489583 0.381875 0.29375C0.636458 0.0979167 0.9425 0 1.3 0H10.4C10.7575 0 11.0635 0.0979167 11.3181 0.29375C11.5727 0.489583 11.7 0.725 11.7 1V4.35C11.4942 4.275 11.2829 4.21042 11.0662 4.15625C10.8496 4.10208 10.6275 4.0625 10.4 4.0375V1H1.3V8H5.2325C5.265 8.18333 5.31646 8.35833 5.38687 8.525C5.45729 8.69167 5.54125 8.85 5.63875 9H1.3ZM1.3 7.5V8V1V4.0375V4V7.5ZM2.6 7H5.24875C5.28125 6.825 5.33271 6.65417 5.40312 6.4875C5.47354 6.32083 5.55208 6.15833 5.63875 6H2.6V7ZM2.6 5H6.565C6.91167 4.75 7.29896 4.54167 7.72687 4.375C8.15479 4.20833 8.6125 4.09583 9.1 4.0375V4H2.6V5ZM2.6 3H9.1V2H2.6V3ZM9.75 10C8.85083 10 8.08437 9.75625 7.45062 9.26875C6.81687 8.78125 6.5 8.19167 6.5 7.5C6.5 6.80833 6.81687 6.21875 7.45062 5.73125C8.08437 5.24375 8.85083 5 9.75 5C10.6492 5 11.4156 5.24375 12.0494 5.73125C12.6831 6.21875 13 6.80833 13 7.5C13 8.19167 12.6831 8.78125 12.0494 9.26875C11.4156 9.75625 10.6492 10 9.75 10ZM9.425 9H10.075V7.75H11.7V7.25H10.075V6H9.425V7.25H7.8V7.75H9.425V9Z" fill="#0076D7"/>
+                                                                            </svg>                                                                                
+                                                                            Add Comment
+                                                                        </a>
+                                                                        <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                            <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M9.16634 11.875H10.833V9.26562L12.1663 10.2656L13.333 9.375L9.99967 6.875L6.66634 9.375L7.85384 10.25L9.16634 9.26562V11.875ZM4.99967 13.75C4.54134 13.75 4.14898 13.6276 3.82259 13.3828C3.4962 13.138 3.33301 12.8438 3.33301 12.5V2.5C3.33301 2.15625 3.4962 1.86198 3.82259 1.61719C4.14898 1.3724 4.54134 1.25 4.99967 1.25H11.6663L16.6663 5V12.5C16.6663 12.8438 16.5031 13.138 16.1768 13.3828C15.8504 13.6276 15.458 13.75 14.9997 13.75H4.99967ZM10.833 5.625V2.5H4.99967V12.5H14.9997V5.625H10.833Z" fill="#FFB800"/>
+                                                                            </svg>                                                                    
+                                                                            Send File
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td class="actions-table-column">
+                                                        <table class="table actions-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="other-actions-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#cancelInquiryModal" class="btn btn-red btn-cancel-inquiry">
+                                                                            <img src="assets/images/white-circle-cross.png" alt="Cancel">
+                                                                            Reject Inquiry
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>
@@ -286,7 +341,6 @@
                             </div>
                         </div>
                     </div>
-               
                 </div>
                 
             </section>

@@ -72,7 +72,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="pendingresults-tab" data-bs-toggle="tab" data-bs-target="#pendingresults" type="button" role="tab" aria-controls="pendingresults" aria-selected="false">
+                                        <a  href="{{ route('seller_pending_inquiries') }}" class="nav-link {{ (request()->is('seller/pending-inquiries*')) ? 'active' : '' }}" id="pendingresults-tab">
                                             Pending Results
                                             <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_1151_279)">
@@ -86,10 +86,10 @@
                                                 </clipPath>
                                                 </defs>
                                             </svg>                                                
-                                        </button>
+                                        </a>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="confirmed-tab" data-bs-toggle="tab" data-bs-target="#confirmed" type="button" role="tab" aria-controls="confirmed" aria-selected="false">
+                                        <a  href="{{ route('seller_confirmed_inquiries') }}" class="nav-link {{ (request()->is('seller/confirmed-inquiries*')) ? 'active' : '' }}" id="confirmed-tab">
                                             Confirmed
                                             <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_1151_284)">
@@ -102,10 +102,10 @@
                                                 </clipPath>
                                                 </defs>
                                             </svg>                                                
-                                        </button>
+                                        </a>
                                     </li>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button" role="tab" aria-controls="history" aria-selected="false">
+                                        <a  href="{{ route('seller_history_inquiries') }}" class="nav-link {{ (request()->is('seller/history-inquiries*')) ? 'active' : '' }}" id="history-tab">
                                             History
                                             <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_1151_288)">
@@ -120,7 +120,7 @@
                                                 </clipPath>
                                                 </defs>
                                             </svg>                                                                                             
-                                        </button>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -172,11 +172,11 @@
                                             <li class="data-row">
                                                 <div class="groups-td">
                                                     <img src="{{asset('frontend/assets/images/group.png')}}" alt="Group">
-                                                    {{$item->GroupWacthListData->group_name}}
+                                                    {{ ucfirst($item->GroupWacthListData->group_name) }}
                                                 </div>
-                                                <div class="created-by-business-name-td">{{$item->SellerData->business_name}}</div>
-                                                <div class="created-by-name-td">{{$item->SellerData->name}}</div>
-                                                <div class="phone-number-td">{{$item->SellerData->mobile}}</div>
+                                                <div class="created-by-business-name-td">{{ ucfirst($item->SellerData->business_name) }}</div>
+                                                <div class="created-by-name-td">{{ ucfirst($item->SellerData->name) }}</div>
+                                                <div class="phone-number-td">{{$item->SellerData->country_code}}-{{$item->SellerData->mobile}}</div>
                                             </li>
                                             @endif
                                             @endforeach                                         

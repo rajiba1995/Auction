@@ -42,14 +42,26 @@ class SellerDashboardController extends Controller
     }
     public function all_inquiries(Request $request){
         $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
-        // dd($all_participant_inquiries);
-        // $all_inquery =$this->SellerDashboardRepository->all_inquiries_of_seller($all_participant_inquiries[0]->inquiry_id);
-        // dd($all_inquery);
         return view('front.seller_dashboard.all_inquireis',compact('all_inquery'));
     }
     public function live_inquiries(Request $request){
-        // $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
-        // dd('hi');   
-        return view('front.seller_dashboard.live_inquireis');
+        $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        // dd($live_inquiries);   
+        return view('front.seller_dashboard.live_inquireis', compact('live_inquiries'));
+    }
+    public function pending_inquiries(Request $request){
+        // $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        // // dd($live_inquiries);   
+        return view('front.seller_dashboard.pending_inquireis');
+    }
+    public function confirmed_inquiries(Request $request){
+        // $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        // dd('confirmed');   
+        return view('front.seller_dashboard.confirmed_inquireis');
+    }
+    public function history_inquiries(Request $request){
+        // $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        // dd('history');   
+        return view('front.seller_dashboard.history_inquireis');
     }
 }
