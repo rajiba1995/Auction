@@ -214,9 +214,7 @@
                                                                 stroke-linejoin="round" />
                                                         </svg>
                                                         @if($item->SellerData && $item->SellerData->address)
-                                                            {{ $item->SellerData->address }},
-                                                            {{ $item->SellerData->city }},
-                                                            {{ $item->SellerData->state }}
+                                                        {{$item->SellerData->address}}, {{getCity($item->SellerData?$item->SellerData->city:"")}}, {{getState($item->SellerData?$item->SellerData->state:"")}}
                                                         @endif
                                                     </div>
                                                     <div class="info">
@@ -231,17 +229,17 @@
                                                             $mobile =
                                                             $item->SellerData && $item->SellerData->mobile?$item->SellerData->mobile:"xxx";
                                                             $maskedNumber = substr_replace($mobile, 'xxxxxxxx', 0, -3);
-                                                            $business_name_slug = optional($item->SellerData)->business_name
-                                                            ? Str::slug($item->SellerData->business_name, '-') : '';
+                                                            // $business_name_slug = optional($item->SellerData)->business_name
+                                                            // ? Str::slug($item->SellerData->business_name, '-') : '';
                                                             if($item->SellerData){
-                                                                $seller_city = Str::slug($item->SellerData->city, '-');
+                                                                $seller_city = getCitySlug($item->SellerData?$item->SellerData->city:"");
                                                             }
                                                         @endphp
                                                         +91-{{ $maskedNumber }}
 
                                                     </div>
                                                     <div class="cta">
-                                                        <a href="{{ route('user.profile.fetch', [$seller_city,$business_name_slug]) }}"
+                                                        <a href="{{ route('user.profile.fetch', [$seller_city,$item->SellerData->slug_business_name]) }}"
                                                             class="btn btn-cta btn-normal">View Profile</a>
                                                     </div>
                                                     <div class="cta logged-cta">

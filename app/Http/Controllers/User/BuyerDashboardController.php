@@ -11,6 +11,7 @@ use App\Contracts\MasterContract;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Encryption\DecryptException;
 
@@ -34,7 +35,6 @@ class BuyerDashboardController extends Controller
         }
         return null;
     }
-    
 
     public function index(Request $request){
         $existing_inquiries= $this->BuyerDashboardRepository->get_all_existing_inquiries_by_user($this->getAuthenticatedUserId());
@@ -49,6 +49,71 @@ class BuyerDashboardController extends Controller
     public function live_inquiries(Request $request){
         $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
         return view('front.user_dashboard.live_inquireis', compact('live_inquiries'));
+    }
+
+    public function live_inquiries_fetch_ajax(){
+        $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
+        $inquiries = [];
+        if(count($live_inquiries)>0){
+            foreach ($live_inquiries as $key => $value) {
+                $all_inquiries = [];
+                $all_inquiries['id'] = $value->id;
+                $all_inquiries['inquiry_id'] = $value->inquiry_id;
+                $all_inquiries['created_by'] = $value->BuyerData->name;
+                $all_inquiries['title'] = $value->title;
+                $all_inquiries['start_date_time'] = $value->start_date.' '.$value->start_time;
+                $startDateTime = Carbon::parse($value->end_date . ' ' . $value->end_time)->timezone(env('APP_TIMEZONE'));
+                $endDateTime = Carbon::now();
+                
+                if ($startDateTime > $endDateTime) {
+                    $endRemainingTime = $endDateTime->diff($startDateTime);
+                    $days = $endRemainingTime->days;
+                    $hours = $endRemainingTime->h;
+                    $minutes = $endRemainingTime->i;
+                    $seconds = $endRemainingTime->s;
+                    
+                    $all_inquiries['start_remaining_time'] = "Start IN: $days d $hours h $minutes m $seconds s";
+                } else {
+                    $all_inquiries['start_remaining_time'] =null;
+                }
+               
+                
+                $all_inquiries['end_date_time'] = $value->end_date.' '.$value->end_time;
+                $startDateTime = Carbon::now();
+                $endDateTime = Carbon::parse($value->end_date . ' ' . $value->end_time)->timezone(env('APP_TIMEZONE'));
+                
+                if ($startDateTime > $endDateTime) {
+                    $endRemainingTime = $endDateTime->diff($startDateTime);
+                    $days = $endRemainingTime->days;
+                    $hours = $endRemainingTime->h;
+                    $minutes = $endRemainingTime->i;
+                    $seconds = $endRemainingTime->s;
+                    
+                    $all_inquiries['end_remaining_time'] = "End IN: $days d $hours h $minutes m $seconds s";
+                } else {
+                    $all_inquiries['end_remaining_time'] =null;
+                }
+                $all_inquiries['category'] = $value->category;
+                $all_inquiries['sub_category'] = $value->sub_category;
+                $all_inquiries['description'] = $value->description;
+                $all_inquiries['execution_date'] = $value->execution_date;
+                $all_inquiries['quotes_per_participants'] = $value->quotes_per_participants;
+                $all_inquiries['minimum_quote_amount'] = $value->minimum_quote_amount;
+                $all_inquiries['maximum_quote_amount'] = $value->maximum_quote_amount;
+                $all_inquiries['inquiry_type'] = $value->inquiry_type;
+                $all_inquiries['inquiry_amount'] = $value->inquiry_amount;
+                $all_inquiries['location'] = $value->location;
+                $all_inquiries['status'] = $value->status;
+
+                if($value->ParticipantsData){
+                    foreach($value->ParticipantsData as $k =>$item){
+                        $all_inquiries['participants'][]= $item->SellerData->name;
+                    }
+                }
+                $inquiries[] = $all_inquiries;
+             }
+        }
+        dd($inquiries);
     }
     
 }

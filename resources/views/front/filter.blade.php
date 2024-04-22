@@ -166,7 +166,7 @@
                                             <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
                                         @if($item->address)
-                                        {{$item->address}}, {{$item->city}}, {{$item->state}}
+                                        {{$item->address}}, {{$item->StateData->name}}, {{$item->CityData->name}}
                                         @endif
                                     </div>
                                     <div class="info">
@@ -249,10 +249,10 @@
                                         @else
                                         <a class="btn btn-cta btn-animated" href="{{ route('login') }}">send to watchlist</a>
                                         @endif
-                                        @php
+                                        {{-- @php
                                              $business_name_slug = Str::slug($item->business_name, '-');
-                                        @endphp
-                                        <a href="{{route('user.profile.fetch', [$old_location,$business_name_slug])}}" class="btn btn-cta btn-normal">View Profile</a>
+                                        @endphp --}}
+                                        <a href="{{route('user.profile.fetch', [$old_location,$item->slug_business_name])}}" class="btn btn-cta btn-normal">View Profile</a>
                                     </div>
                                     <div class="cta logged-cta">
                                         @if(Auth::guard('web')->check())

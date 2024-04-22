@@ -28,7 +28,7 @@
         <header class="logged">
             <div class="header-inner">
                 <div class="brand">
-                    <a href="{{asset('')}}">
+                    <a href="#" class="rajib">
                         <img src="{{asset('frontend/assets/images/logo.png')}}" alt="">
                     </a>
                 </div>
@@ -376,11 +376,11 @@
     <script src="{{asset('frontend/assets/js/bootstrap.bundle.min.js')}}"></script>
     <script src="{{asset('frontend/assets/js/swiper-bundle.min.js')}}"></script>
     <script src="{{asset('frontend/assets/js/chart.min.js')}}"></script>
-    <script src="{{asset('frontend/assets/js/custom.js')}}"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
-
     @yield('script')
+    <script src="{{asset('frontend/assets/js/custom.js')}}"></script>
     <script>
         $('#global_form_submit').on('click', function() {
              var location = $('#stateInput').val();

@@ -148,6 +148,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                @php
+                                    $SellerData = [];
+                                @endphp
                                 @if(!empty($existing_inquiry) && count($existing_inquiry->ParticipantsData) > 0)
                                 <div class="row input-row">
                                     <div class="col-12">
@@ -155,6 +158,9 @@
                                             <label class="form-label">Existing Participants*</label>
                                             <div class="participants-block border-red">
                                                 @foreach ($existing_inquiry->ParticipantsData as $key=>$item)
+                                                    @php
+                                                        $SellerData[] = $item->SellerData->id;
+                                                    @endphp
                                                     <label class="participant" id="exist_participant{{$item}}">
                                                         @if($item->SellerData)
                                                             <input type="hidden" name="exist_participant[]" value="{{$item->SellerData->id}}">
@@ -180,6 +186,8 @@
                                             <label class="form-label">New Participants*</label>
                                             <div class="participants-block border-red">
                                                 @foreach ($watch_list_data as $item)
+                                                {{-- {{dd($SellerData)}} --}}
+                                                @if(!in_array($item->SellerData->id,$SellerData))
                                                     <label class="participant" id="participant{{$item}}">
                                                         @if($item->SellerData)
                                                             <input type="hidden" name="participant[]" value="{{$item->SellerData->id}}">
@@ -192,6 +200,7 @@
                                                             </svg>
                                                         </span>
                                                     </label>
+                                                    @endif
                                                 @endforeach
                                             </div>
                                         </div>

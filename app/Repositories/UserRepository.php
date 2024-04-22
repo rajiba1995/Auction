@@ -345,7 +345,7 @@ class UserRepository implements UserContract
        
     }
     public function getUserAllReviewRating($id){
-       return ReviewRating::where('rated_on',$id)->paginate(20);
+       return ReviewRating::orderBy('id', 'DESC')->where('rated_on',$id)->limit(10)->get();
        
     }
     public function asBuyer($id){

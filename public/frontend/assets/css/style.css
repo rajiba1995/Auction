@@ -2808,7 +2808,7 @@ form input[type="date"]::-webkit-calendar-picker-indicator {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 226px;
+    /* width: 226px; */
     height: 37px;
     background-color: #CFE9FF;
     border-radius: 50px;
@@ -4245,22 +4245,23 @@ td.output-table-column{
     border: none;
 }
 .input-table td {
+    word-break: break-all;
     padding: 11px 16px;
 }
 .input-id-td,
 .input-id-th {
-    min-width: 73px;
-    max-width: 73px;
+    min-width: 95px;
+    max-width: 95px;
 }
 .input-title-td,
 .input-title-th {
-    min-width: 93px;
-    max-width: 93px;
+    min-width: 115px;
+    max-width: 115px;
 }
 .input-details-td,
 .input-details-th {
-    min-width: 92px;
-    max-width: 92px;
+    min-width: 220px;
+    max-width: 220px;
 }
 .inquiry-wrapper-table .btn-view {
     display: flex;
@@ -4347,7 +4348,7 @@ td.output-table-column{
     max-width: 103px;
 }
 .input-start-date-td {
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 }
 .input-end-date-td,
 .input-end-date-th {
@@ -4355,7 +4356,7 @@ td.output-table-column{
     max-width: 103px;
 }
 .input-end-date-td {
-    white-space: nowrap;
+   /* white-space: nowrap;*/
 }
 .min-quote-td,
 .min-quote-th {
