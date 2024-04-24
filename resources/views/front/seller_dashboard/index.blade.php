@@ -129,7 +129,7 @@
                             <div class="col-lg-12 col-12" id="group_list">
                                 <div class="search-bar">
                                     <form>
-                                        <input type="search" name="" placeholder="Search for Service, Category, Location, etc">
+                                        <input type="search" name="" placeholder="Search by group name..." id="group_wies_search">
                                         <button type="submit" class="btn-search btn-animated">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
@@ -172,7 +172,7 @@
                                             <li class="data-row">
                                                 <div class="groups-td">
                                                     <img src="{{asset('frontend/assets/images/group.png')}}" alt="Group">
-                                                    {{ ucfirst($item->GroupWacthListData->group_name) }}
+                                                    <span class="group_name">{{ ucfirst($item->GroupWacthListData->group_name) }}</span>
                                                 </div>
                                                 <div class="created-by-business-name-td">{{ ucfirst($item->SellerData->business_name) }}</div>
                                                 <div class="created-by-name-td">{{ ucfirst($item->SellerData->name) }}</div>
@@ -199,9 +199,9 @@
         $(document).ready(function(){
             $('#group_wies_search').keyup(function(){
                 var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
-                $('.item').show();
+                $('.data-row').show();
                 var found = false; // Flag to track if any items are found
-                $('.item').each(function() {
+                $('.data-row').each(function() {
                     var group_name = $(this).find('.group_name').text().toLowerCase(); // Get location text and convert to lowercase
                     if (group_name.indexOf(selectedValue) === -1) {
                         $(this).hide(); // Hide the item if location doesn't match
@@ -218,6 +218,9 @@
                 } else {
                     $('#noDataAlert').remove(); // Remove the alert if items are found
                 }
+                       // Update the count of visible groups
+                        // var visibleCount = $('.data-row:visible').length;
+                        // $('.groups-th').text(`Groups(${visibleCount})`);
             });
         });
         $("input[name='inquiry_type']").click(function() {

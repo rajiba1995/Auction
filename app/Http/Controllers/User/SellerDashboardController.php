@@ -52,8 +52,8 @@ class SellerDashboardController extends Controller
         return view('front.seller_dashboard.pending_inquireis',compact('pending_inquiries'));
     }
     public function confirmed_inquiries(Request $request){
-        $confirmed_inquiries =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller();   
-        return view('front.seller_dashboard.confirmed_inquireis','confirmed_inquiries');
+        $confirmed_inquiries =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller();  
+        return view('front.seller_dashboard.confirmed_inquireis', compact('confirmed_inquiries'));
     }
     public function history_inquiries(Request $request){
         // $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
