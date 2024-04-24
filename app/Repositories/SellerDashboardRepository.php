@@ -28,7 +28,6 @@ class SellerDashboardRepository implements SellerDashboardContract{
         return InquiryParticipant::where('user_id',$id)->get();
     }
     public function all_inquiries_of_seller($id){
-        // dd($id);
         return Inquiry::where('id',$id)->get();
     }
     public function live_inquiries_by_seller(){
@@ -64,4 +63,73 @@ class SellerDashboardRepository implements SellerDashboardContract{
         ->where('inquiry_participants.user_id', $this->getAuthenticatedUserId())
         ->get();
     }
+    public function pending_inquiries_by_seller(){
+        return Inquiry::with('buyerData')
+        ->select(
+            'inquiries.inquiry_id',
+            'inquiries.created_by',
+            'inquiries.title',
+            'inquiries.slug',
+            'inquiries.start_date',
+            'inquiries.start_time',
+            'inquiries.end_date',
+            'inquiries.end_time',
+            'inquiries.category',
+            'inquiries.sub_category',
+            'inquiries.description',
+            'inquiries.execution_date',
+            'inquiries.quotes_per_participants',
+            'inquiries.minimum_quote_amount',
+            'inquiries.maximum_quote_amount',
+            'inquiries.inquiry_type',
+            'inquiries.inquiry_amount',
+            'inquiries.location',
+            'inquiries.location_type',
+            'inquiries.status',
+            'inquiries.buyer_note',
+            'inquiries.created_at',
+            'inquiries.updated_at'
+        )
+        ->where('inquiries.inquiry_id', '!=', null)
+        ->where('inquiries.status', 2)
+        ->join('inquiry_participants', 'inquiries.id', '=', 'inquiry_participants.inquiry_id')
+        ->where('inquiry_participants.user_id', $this->getAuthenticatedUserId())
+        ->get();
+    }
+    public function confirmed_inquiries_by_seller(){
+        return Inquiry::with('buyerData')
+        ->select(
+            'inquiries.inquiry_id',
+            'inquiries.created_by',
+            'inquiries.title',
+            'inquiries.slug',
+            'inquiries.start_date',
+            'inquiries.start_time',
+            'inquiries.end_date',
+            'inquiries.end_time',
+            'inquiries.category',
+            'inquiries.sub_category',
+            'inquiries.description',
+            'inquiries.execution_date',
+            'inquiries.quotes_per_participants',
+            'inquiries.minimum_quote_amount',
+            'inquiries.maximum_quote_amount',
+            'inquiries.inquiry_type',
+            'inquiries.inquiry_amount',
+            'inquiries.location',
+            'inquiries.location_type',
+            'inquiries.status',
+            'inquiries.buyer_note',
+            'inquiries.created_at',
+            'inquiries.updated_at'
+        )
+        ->where('inquiries.inquiry_id', '!=', null)
+        ->where('inquiries.status', 3)
+        ->join('inquiry_participants', 'inquiries.id', '=', 'inquiry_participants.inquiry_id')
+        ->where('inquiry_participants.user_id', $this->getAuthenticatedUserId())
+        ->get();
+    }
+
+
+    
 }

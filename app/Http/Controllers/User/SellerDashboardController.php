@@ -36,7 +36,6 @@ class SellerDashboardController extends Controller
     }
 
     public function index(Request $request){
-        // $existing_inquiries= $this->BuyerDashboardRepository->get_all_existing_inquiries_by_user($this->getAuthenticatedUserId());
         $group_wise_list =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
         return view('front.seller_dashboard.index',compact('group_wise_list'));
     }
@@ -45,19 +44,16 @@ class SellerDashboardController extends Controller
         return view('front.seller_dashboard.all_inquireis',compact('all_inquery'));
     }
     public function live_inquiries(Request $request){
-        $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
-        // dd($live_inquiries);   
+        $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();   
         return view('front.seller_dashboard.live_inquireis', compact('live_inquiries'));
     }
     public function pending_inquiries(Request $request){
-        // $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
-        // // dd($live_inquiries);   
-        return view('front.seller_dashboard.pending_inquireis');
+        $pending_inquiries =  $this->SellerDashboardRepository->pending_inquiries_by_seller();   
+        return view('front.seller_dashboard.pending_inquireis',compact('pending_inquiries'));
     }
     public function confirmed_inquiries(Request $request){
-        // $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
-        // dd('confirmed');   
-        return view('front.seller_dashboard.confirmed_inquireis');
+        $confirmed_inquiries =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller();   
+        return view('front.seller_dashboard.confirmed_inquireis','confirmed_inquiries');
     }
     public function history_inquiries(Request $request){
         // $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
