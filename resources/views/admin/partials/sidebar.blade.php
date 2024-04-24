@@ -111,6 +111,21 @@
       </div>
     </div> 
     <div class="accordion-item">
+      <a href="javascript:void(0)" class="accordion-button {{ (request()->is('admin/inquiry-management*')) ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse7">
+        <i class="fa-solid fa-chart-simple"></i>
+        Inquiry Management
+        <img src="{{asset('admin/assets/images/up-arrow-black.png')}}" alt="arrow" class="indicator i-black">
+        <img src="{{asset('admin/assets/images/up-arrow-white.png')}}" alt="arrow" class="indicator i-white">
+      </a>
+      <div class="accordion-collapse collapse {{ (request()->is('admin/inquiry-management/inquiry*')) ? 'show' : '' }}" id="collapse7" data-bs-parent="#menusAccordion">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link {{ (request()->is('admin/inquiry-management/inquiry*')) ? 'active' : '' }}" aria-current="page" href="{{route('admin.inquiry.index')}}">Inquiry</a>
+          </li>
+        </ul>
+      </div>
+    </div> 
+    <div class="accordion-item">
       <a href="javascript:void(0)" class="accordion-button {{ (request()->is('admin/setting*')) ? 'active' : '' }} " data-bs-toggle="collapse" data-bs-target="#collapse3">
         <i class="fa-solid fa-gear"></i>
         Settings

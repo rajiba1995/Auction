@@ -10,7 +10,8 @@ use Auth;
 
 
 
-class EmployeeDetailsController extends Controller{
+class EmployeeDetailsController extends Controller
+{
     protected $employeeDetailsRepository;
 
     public function __construct(EmployeeDetailsContract $employeeDetailsRepository)
