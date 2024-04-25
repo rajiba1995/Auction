@@ -48,6 +48,7 @@ Route::get('/clear-cache', function() {
             Route::post('/photos-and-documents/update', [UserController::class, 'photos_and_documents_update'])->name('user.photos_and_documents_update');
             
             Route::get('/payment-management', [UserController::class, 'payment_management'])->name('user.payment_management');
+            Route::post('/package/payment-management', [UserController::class, 'package_payment_management'])->name('user.package_payment_management');
             Route::get('/settings', [UserController::class, 'settings'])->name('user.settings');
             Route::get('/transaction', [UserController::class, 'transaction'])->name('user.transaction');
             Route::post('/transaction/purchase', [UserController::class, 'purchase'])->name('user.purchase.transaction');

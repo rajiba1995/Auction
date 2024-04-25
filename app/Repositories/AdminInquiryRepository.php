@@ -50,7 +50,7 @@ class AdminInquiryRepository implements AdminInquiryContract
 
     public function getSearchInquriesByStatus($status)
     {
-        return Inquiry::where([['status', 'LIKE', '%' . $status . '%']])->paginate(20);   
+        return Inquiry::where([['status', 'LIKE', '%' . $status . '%']])->where('inquiry_id','!=',null)->paginate(20);   
 
     }
 }

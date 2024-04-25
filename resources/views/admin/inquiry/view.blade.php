@@ -87,8 +87,6 @@
                     <div class="card-header">
                         <div class="row mb-3">
                             <div class="col-md-12 text-right d-flex justify-content-between">
-                                {{-- <h3 class="text-primary"><strong>USER-></strong>{{$data->name}}'s Details</h3> --}}
-
                                 <a href="{{route('admin.inquiry.index')}}" class="btn btn-primary btn-sm">
                                     <iconify-icon icon="icon-park-twotone:back"></iconify-icon>
                                     Back 

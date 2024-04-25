@@ -79,16 +79,35 @@
                                                         <div class="cta-row">
                                                             <a href="#">
                                                                 <span>Current Package</span>
-                                                                {{-- <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt=""> --}}
-                                                                 <h5>Premium ?? Gold</h5> 
-                                                            </a>
-                                                            
+                                                                @if($package)
+                                                                    @if($package->getPackageDetails)
+                                                                 <h5>{{$package->getPackageDetails->package_name}}</h5> 
+                                                                    @endif
+                                                                 @else
+                                                                 <h5>No Package Availabe Yet!</h5>   
+                                                                @endif
+                                                            </a>       
+                                                        </div>
+                                                        <div class="cta-row">
+                                                            <a href="#">
+                                                                <span>Expiry Date</span>
+                                                                @if($package)
+                                                                <h5>{{ date('d M, Y H:i:s A', strtotime($package->expiry_date)) }}</h5>
+                                                                 @else
+                                                                 <h5>###</h5>   
+                                                                @endif
+                                                            </a>       
                                                         </div>
                                                         <div class="cta-row">
                                                             <a href="#">
                                                                 <span>Available Balance</span>
-                                                                <h5> &#8377; 9876 </h5>
-                                                                {{-- <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt=""> --}}
+                                                                @if($walletBalance)
+                                                                 
+                                                                <h5>&#8377; {{$walletBalance->current_amount}}</h5>
+                                                                  
+                                                                @else
+                                                                <h5>0.00</h5>   
+                                                               @endif
                                                             </a>
                                                         </div>
                                                         <div class="cta-row">

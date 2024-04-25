@@ -19,6 +19,20 @@
                                     <div class="top-content-bar">
                                         <a href="#" class="btn btn-animated btn-yellow btn-cta btn-download">Download Invoice</a>
                                     </div>
+                                    <div class="m-2">
+                                        @if (session('success'))
+                                            <div class="alert alert-success" id="message_div">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="m-2">
+                                        @if (session('error'))
+                                            <div class="alert alert-danger" id="message_div">
+                                                {{ session('error') }}
+                                            </div>
+                                        @endif
+                                    </div>
                                     <div class="content-box bg-gray-1">
                                         <div class="inner">
                                             <h3>Credit Packages</h3>
@@ -27,16 +41,23 @@
                                                     @foreach ($packages as $item)
                                                     <div class="col-xxl-3 col-md-6 col-12 package-col">
                                                         <div class="packages-card">
-                                                            <div class="card-header bg-gradient-free">
-                                                                <h4>{{$item->package_name}}</h4>
-                                                                <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <p>{!! $item->package_description !!}</p>                                                    
-                                                            </div>
-                                                            <div class="card-footer bg-gradient-free">
-                                                                <a href="#" class="btn btn-animated btn-cta bg-free">Buy Now</a>
-                                                            </div>
+                                                            <form method="post" action="{{ route('user.package_payment_management') }}">
+                                                                @csrf
+                                                                <input type="hidden" name="package_id" value="{{$item->id}}">
+                                                                <input type="hidden" name="package_value" value="{{$item->package_price}}">
+                                                                <input type="hidden" name="package_duration" value="{{$item->package_type}}">
+                                                                <input type="hidden" name="package_name" value="{{$item->package_name}}">
+                                                                <div class="card-header bg-gradient-free">
+                                                                    <h4>{{$item->package_name}}</h4>
+                                                                    <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <p>{!! $item->package_description !!}</p>                                                    
+                                                                </div>
+                                                                <div class="card-footer bg-gradient-free">
+                                                                    <button type="submit" class="btn btn-animated btn-cta bg-free">Buy Now</button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                     @endforeach
@@ -44,6 +65,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div class="content-box bg-gray-1">
                                         <div class="inner">
                                             <h3>Credit Usages</h3>
