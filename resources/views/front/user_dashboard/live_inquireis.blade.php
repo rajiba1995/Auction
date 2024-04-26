@@ -546,7 +546,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h3 class="content-heading">{{$value->business_name}}</h3>
+                <h3 class="content-heading"></h3>
                 <div class="quotes-list-wrapper">
                     Quotes: 
                     <ul class="quotes-list" id="allQuotesModal_data">
@@ -885,27 +885,5 @@
         });
     });
 </script>
-{{-- @foreach($live_inquiries as $item)
-    <script>
-    // $(document).ready(function() {
-    //     var item= "{{$itemData->id}}";
-    //     var secondsRemaining = <?php echo calculateSecondsRemaining($itemData->start_date . ' ' . $itemData->start_time); ?>;
-    //     var interval = setInterval(function() {
-    //         var days = Math.floor(secondsRemaining / (60 * 60 * 24));
-    //         var hours = Math.floor((secondsRemaining % (60 * 60 * 24)) / (60 * 60));
-    //         var minutes = Math.floor((secondsRemaining % (60 * 60)) / 60);
-    //         var seconds = Math.floor(secondsRemaining % 60);
-
-    //         $("#countdown"+item).html("Start IN: " + days + "d " + hours + "h: " + minutes + "m: " + seconds + "s");
-    //         if (secondsRemaining <= 0) {
-    //             clearInterval(interval);
-    //             $("#countdown"+item).html("Timer expired");
-    //         } else {
-    //             secondsRemaining--;
-    //         }
-    //     }, 1000);
-    // });
-    </script>
-    @endforeach --}}
 
 @endsection

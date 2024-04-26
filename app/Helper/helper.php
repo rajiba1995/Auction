@@ -198,3 +198,6 @@ function getAllSellerQuotes($id){
 function get_last_three_quotes($inquiry_id, $seller_id){
    return InquirySellerQuotes::latest()->where('inquiry_id', $inquiry_id)->where('seller_id', $seller_id)->take(3)->get();
 }
+function get_inquiry_seller_quotes($seller_id, $inquiry_id){
+    return InquirySellerQuotes::where('inquiry_id', $inquiry_id)->where('seller_id', $seller_id)->first();
+}

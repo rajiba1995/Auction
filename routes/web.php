@@ -48,6 +48,7 @@ Route::get('/clear-cache', function() {
             Route::post('/photos-and-documents/update', [UserController::class, 'photos_and_documents_update'])->name('user.photos_and_documents_update');
             
             Route::get('/payment-management', [UserController::class, 'payment_management'])->name('user.payment_management');
+            Route::post('/package/payment-management', [UserController::class, 'package_payment_management'])->name('user.package_payment_management');
             Route::get('/settings', [UserController::class, 'settings'])->name('user.settings');
             Route::get('/transaction', [UserController::class, 'transaction'])->name('user.transaction');
             Route::post('/transaction/purchase', [UserController::class, 'purchase'])->name('user.purchase.transaction');
@@ -98,6 +99,11 @@ Route::get('/clear-cache', function() {
             Route::get('/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
             Route::get('/all-inquiries', [SellerDashboardController::class, 'all_inquiries'])->name('seller_all_inquiries');
             Route::get('/live-inquiries', [SellerDashboardController::class, 'live_inquiries'])->name('seller_live_inquiries');
+            Route::get('/pending-inquiries', [SellerDashboardController::class, 'pending_inquiries'])->name('seller_pending_inquiries');
+            Route::get('/confirmed-inquiries', [SellerDashboardController::class, 'confirmed_inquiries'])->name('seller_confirmed_inquiries');
+            Route::get('/history-inquiries', [SellerDashboardController::class, 'history_inquiries'])->name('seller_history_inquiries');
+            Route::post('/start-quotes', [SellerDashboardController::class, 'seller_start_quotes'])->name('seller_start_quotes');
+            Route::get('/live-inquiries-fetch-ajax', [SellerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('seller_live_inquiries_by_ajax');
         });
     });
 // Admin login routes

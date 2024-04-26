@@ -18,8 +18,8 @@
                         <div class="col-12">
                             <div class="inner-wrap">
                                 <ul>
-                                    <li><a href="{{asset('')}}">Home</a></li>
-                                    <li>&nbsp;>&nbsp;<a href="{{route('user_seller_dashboard')}}">Supplier Dashboard</a></span></li>
+                                    <li>Home</li>
+                                    <li>&nbsp;>&nbsp;Supplier Dashboard</span></li>
                                 </ul>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
                             <div class="col-lg-12 col-12" id="group_list">
                                 <div class="search-bar">
                                     <form>
-                                        <input type="search" name="" placeholder="Search by group name..." id="group_wies_search">
+                                        <input type="search" name="" placeholder="Search for Service, Category, Location, etc">
                                         <button type="submit" class="btn-search btn-animated">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
@@ -155,35 +155,173 @@
                 </div>
 
                 <div class="tab-content dashboard-tab-content">
-                    <div class="tab-pane fade show active" id="groups" role="tabpanel" aria-labelledby="groups-tab" tabindex="0">
-                        <div class="container">
+                    <div class="tab-pane fade show active" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab" tabindex="0">
+                        <div class="container-fluid">
                             <div class="row">
                                 <div class="col-12">
-                                    <div class="table-responsive">
-                                        <ul class="supplier-groups-table">
-                                            <li class="heading-row">
-                                                <div class="groups-th">Groups (<span id="group_count">{{count($group_wise_list)}}</span>)</div>
-                                                <div class="created-by-business-name-th">Buyer(Business Name)</div>
-                                                <div class="created-by-name-th">Buyer(Name)</div>
-                                                <div class="phone-number-th">Phone Number</div>
-                                            </li>
-                                            @foreach ( $group_wise_list as $item ) 
-                                            <li class="data-row">
-                                                <div class="groups-td">
-                                                    <img src="{{asset('frontend/assets/images/group.png')}}" alt="Group">
-                                                    <span class="group_name">{{ ucfirst($item->group_name) }}</span>
-                                                </div>
-                                               {{-- {{ dd($item)}} --}}
-                                                <div class="created-by-business-name-td">{{ ucfirst($item->business_name) }}</div>
-                                                <div class="created-by-name-td">{{ ucfirst($item->buyer_name) }}</div>
-                                                <div class="phone-number-td">{{$item->country_code}}-{{$item->mobile}}</div>
-                                            </li>
-                                            @endforeach                                         
-                                        </ul>
+                                    <div class="table-responsive inquiry-tables">
+                                        <table class="table inquiry-wrapper-table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="input-th input-id-th">Id</th>
+                                                    <th class="input-th input-title-th">Title</th>
+                                                    <th class="input-th input-details-th">Details</th>
+                                                    <th class="input-th input-buyer-th">Buyer</th>
+                                                    <th class="input-th input-location-th">Location</th>
+                                                    <th class="input-th input-start-date-th"><span>Start date &amp; time</span></th>
+                                                    <th class="input-th input-end-date-th"><span>End date &amp; time</span></th>
+                                                    <th class="input-th min-quote-th">Min Quote</th>
+                                                    <th class="input-th max-quote-th">Max Quote</th>
+                                                    <th class="output-th quotes-supplier-th">Quotes</th>
+                                                    <th class="output-th comments-th">Comments &amp; Files</th>
+                                                    <th class="output-th other-actions-th">&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if($confirmed_inquiries)
+                                                    @foreach ($confirmed_inquiries as $item) 
+                                                        <tr>
+                                                            <td class="input-table-column" colspan="9">
+                                                                <table class="table input-table">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="input-id-td">{{$item->inquiry_id}}</td>
+                                                                            <td class="input-title-td">{{$item->title}}</td>
+                                                                            <td class="input-details-td">
+                                                                                {{-- <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal" class="btn btn-view">View</a> --}}
+                                                                                <ul class="input-data-list">
+                                                                                    <li>
+                                                                                        <label>Inquiry Type</label>
+                                                                                        <p>{{$item->inquiry_type}}</p>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>Category</label>
+                                                                                        <p>{{ucfirst($item->category)}}</p>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>Sub-Category</label>
+                                                                                        <p>{{ucfirst($item->sub_category)}}</p>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>Description of the Service</label>
+                                                                                        <p class="hidden">{{ucfirst($item->description)}}</p>
+                                                                                        <div class="read-more"><span>read more</span></div>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>Date of execution of the task</label>
+                                                                                        <p>25 jan, 2024</p>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>No of Quotes per Participants</label>
+                                                                                        <p>{{$item->quotes_per_participants}}</p>
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </td>
+                                                                            <td class="input-buyer-td">
+                                                                                {{ ucfirst($item->BuyerData->name) }} <strong>{{ $item->BuyerData->country_code}}-{{ $item->BuyerData->mobile}}</strong>
+                                                                            </td>
+                                                                            <td class="input-location-td">{{$item->location}}</td>
+                                                                            <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
+                                                                            <td class="input-end-date-td">{{ date('d M, Y', strtotime($item->end_date)) }} {{ date('g:i A', strtotime($item->end_time)) }}</td>
+                                                                            <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.', ',')}}</td>
+                                                                            <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.', ',')}}</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="7" class="note-td">
+                                                                                <div class="note-wrap">
+                                                                                    <h3>Notepad</h3>
+                                                                                    <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
+                                                                                    <button type="button" class="btn btn-animated bg-green">Save</button>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                            <td class="output-table-column" colspan="2">
+                                                                <table class="table output-table">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="quotes-supplier-td">
+                                                                                <div class="quote">
+                                                                                    <input type="text" class="quote-amount" value="₹ 3500" disabled>
+                                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
+                                                                                        <img src="assets/images/arrow-up-right.png" alt="">
+                                                                                    </a>
+                                                                                    <div class="quote-diff">Quote Difference: 200</div>
+                                                                                    <div class="level">L1</div>
+                                                                                </div>
+                                                                            </td>
+                                                                            <td class="comments-td">
+                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#Confirm_CommentModal{{$item->id}}" class="btn btn-view btn-view-comment">
+                                                                                    <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path d="M1.3 9C0.9425 9 0.636458 8.90208 0.381875 8.70625C0.127292 8.51042 0 8.275 0 8V1C0 0.725 0.127292 0.489583 0.381875 0.29375C0.636458 0.0979167 0.9425 0 1.3 0H10.4C10.7575 0 11.0635 0.0979167 11.3181 0.29375C11.5727 0.489583 11.7 0.725 11.7 1V4.35C11.4942 4.275 11.2829 4.21042 11.0662 4.15625C10.8496 4.10208 10.6275 4.0625 10.4 4.0375V1H1.3V8H5.2325C5.265 8.18333 5.31646 8.35833 5.38687 8.525C5.45729 8.69167 5.54125 8.85 5.63875 9H1.3ZM1.3 7.5V8V1V4.0375V4V7.5ZM2.6 7H5.24875C5.28125 6.825 5.33271 6.65417 5.40312 6.4875C5.47354 6.32083 5.55208 6.15833 5.63875 6H2.6V7ZM2.6 5H6.565C6.91167 4.75 7.29896 4.54167 7.72687 4.375C8.15479 4.20833 8.6125 4.09583 9.1 4.0375V4H2.6V5ZM2.6 3H9.1V2H2.6V3ZM9.75 10C8.85083 10 8.08437 9.75625 7.45062 9.26875C6.81687 8.78125 6.5 8.19167 6.5 7.5C6.5 6.80833 6.81687 6.21875 7.45062 5.73125C8.08437 5.24375 8.85083 5 9.75 5C10.6492 5 11.4156 5.24375 12.0494 5.73125C12.6831 6.21875 13 6.80833 13 7.5C13 8.19167 12.6831 8.78125 12.0494 9.26875C11.4156 9.75625 10.6492 10 9.75 10ZM9.425 9H10.075V7.75H11.7V7.25H10.075V6H9.425V7.25H7.8V7.75H9.425V9Z" fill="#0076D7"/>
+                                                                                    </svg>                                                                                
+                                                                                    Add Comment
+                                                                                </a>
+                                                                                <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                                    <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path d="M9.16634 11.875H10.833V9.26562L12.1663 10.2656L13.333 9.375L9.99967 6.875L6.66634 9.375L7.85384 10.25L9.16634 9.26562V11.875ZM4.99967 13.75C4.54134 13.75 4.14898 13.6276 3.82259 13.3828C3.4962 13.138 3.33301 12.8438 3.33301 12.5V2.5C3.33301 2.15625 3.4962 1.86198 3.82259 1.61719C4.14898 1.3724 4.54134 1.25 4.99967 1.25H11.6663L16.6663 5V12.5C16.6663 12.8438 16.5031 13.138 16.1768 13.3828C15.8504 13.6276 15.458 13.75 14.9997 13.75H4.99967ZM10.833 5.625V2.5H4.99967V12.5H14.9997V5.625H10.833Z" fill="#FFB800"/>
+                                                                                    </svg>                                                                   
+                                                                                    Send File
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                            <td class="actions-table-column">
+                                                                <table class="table actions-table">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td class="other-actions-td">
+                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#cancelInquiryModal" class="btn btn-red btn-cancel-inquiry">
+                                                                                    <img src="assets/images/white-circle-cross.png" alt="Cancel">
+                                                                                    Reject Inquiry
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td class="other-actions-td">
+                                                                                <a href="javascript:void(0)" class="btn btn-yellow bill-download">
+                                                                                    <img src="assets/images/upload.png" alt="Download">
+                                                                                    Upload Bill
+                                                                                </a>
+                                                                                <div class="billing-date-time">24 Jan 2024 12.30 pm</div>
+                                                                                <a href="javascript:void(0)" class="btn btn-green rate-your-buyer">
+                                                                                    Rate your Buyer
+                                                                                </a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+
+                                                        {{--confirm add comment modal --}}
+                                                        <div class="modal fade add-comment-modal" id="Confirm_CommentModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <h3 class="content-heading">Add your comment</h3>
+                                                                        <textarea class="form-control" placeholder="Write here"></textarea>
+                                                                        <button type="button" class="btn btn-animated btn-add-comment">Submit</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        </div>   
+                        </div>
                     </div>
                 </div>
                 
@@ -198,19 +336,16 @@
         $(document).ready(function(){
             $('#group_wies_search').keyup(function(){
                 var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
-                $('.data-row').show();
+                $('.item').show();
                 var found = false; // Flag to track if any items are found
-                var count = 0;
-                $('.data-row').each(function() {
+                $('.item').each(function() {
                     var group_name = $(this).find('.group_name').text().toLowerCase(); // Get location text and convert to lowercase
                     if (group_name.indexOf(selectedValue) === -1) {
                         $(this).hide(); // Hide the item if location doesn't match
                     } else {
-                        count+=1;
                         found = true; // Set the flag to true if at least one item is found
                     }
                 });
-                $('#group_count').text(count);
                 if (!found) {
                     $('#noDataAlert').remove(); // Remove the alert if items are found
                     var append = `<div class="alert alert-danger" id="noDataAlert" role="alert">
@@ -220,9 +355,6 @@
                 } else {
                     $('#noDataAlert').remove(); // Remove the alert if items are found
                 }
-                       // Update the count of visible groups
-                        // var visibleCount = $('.data-row:visible').length;
-                        // $('.groups-th').text(`Groups(${visibleCount})`);
             });
         });
         $("input[name='inquiry_type']").click(function() {

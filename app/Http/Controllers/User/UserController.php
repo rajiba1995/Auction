@@ -12,6 +12,9 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\WatchList;
 use App\Models\MyBadge;
+use App\Models\MyWallet;
+use App\Models\MyPackage;
+use App\Models\Package;
 use App\Models\GroupWatchList;
 use App\Models\UserImage;
 use App\Models\SellerReport;
@@ -23,7 +26,7 @@ use App\Models\RequirementConsumption;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Exception;
-
+use Carbon\Carbon;
 
 class UserController extends Controller{
 
@@ -486,9 +489,83 @@ class UserController extends Controller{
         $allBadges = $this->userRepository->getAllBadges($myBadges);
         return view('front.user.payment_management', compact('data','packages','myBadges','allBadges'));
     }
+    public function package_payment_management(Request $request){
+        try {
+             $data = $this->AuthCheck();
+            // Start a database transaction
+            DB::beginTransaction();
+            if ($request->package_duration == 'Monthly') {
+                // Set expiry date 30 days later from today
+                $expiryDate = Carbon::now()->addDays(30);
+            } elseif ($request->package_duration == 'Yearly') {
+                // Set expiry date 365 days later from today
+                $expiryDate = Carbon::now()->addDays(365);
+            }
+             // Check if a package with the same package ID and expiry date exists with the expiry date on or after today's date and time
+            $existingPackage = MyPackage::where('package_id', $request->package_id)
+            ->where('expiry_date', '>=', Carbon::now()) // Check if expiry date is on or after today's date and time
+            ->where('user_id', $data->id)
+            ->latest()->first();
+
+
+            if ($existingPackage) {
+                // Handle the case where a package with the same package ID and expiry date exists with the expiry date on or after today's date and time
+                // For example, you can return a response indicating that the package already exists
+                // return response()->json(['message' => 'A package with the same package and expiry date exists with the expiry date on or after today\'s date and time.']);
+                return redirect()->route('user.payment_management')->with('error', 'You Already purchased this Package');  
+            }
+            $my_package = new MyPackage();
+            $my_package->package_id = $request->package_id;
+            $my_package->user_id = $data->id;
+            $my_package->purchase_amount = $request->package_value;    
+            $my_package->expiry_date = $expiryDate;
+            $my_package->save();
+
+
+
+           // Retrieve the latest wallet record for the user
+            $latest_wallet = MyWallet::where('user_id', $data->id)->latest()->first();
+            // dd($latest_wallet);
+            // Calculate the current balance based on the latest wallet record
+            $current_balance = $latest_wallet ? $latest_wallet->current_amount : 0;
+            // dd($current_balance);
+
+
+            $my_wallet = new MyWallet();
+            $my_wallet->user_id = $data->id;
+            $my_wallet->credit_amount = $request->package_value;
+            $my_wallet->debit_amount = 0.00;
+            $my_wallet->current_amount = $current_balance +  $request->package_value;
+            $my_wallet->save();
+
+
+            $transaction = new Transaction();
+            $transaction->user_id = $data->id;
+            $transaction->unique_id = rand(10000000, 99999999); // Adjusted range for 8-digit number
+            $transaction->transaction_type = 1;
+            $transaction->transaction_id = rand(10000000, 99999999); // Adjusted range for 8-digit number
+            $transaction->purpose = $request->package_name.' Package';
+            $transaction->amount = $request->package_value;
+            $transaction->transaction_source = "phonePe";
+            $transaction->save();
+            
+
+            DB::commit();
+            
+                 return redirect()->route('user.payment_management')->with('success', 'Package has been successfully purchased');  
+            } catch (\Exception $e) {
+                // Rollback the transaction and handle the exception
+                DB::rollBack();
+                return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+            }
+            
+       
+    }
     public function settings(){
         $data = $this->AuthCheck();
-        return view('front.user.settings', compact('data'));
+        $package = MyPackage::where('user_id',$data->id)->latest()->first();
+        $walletBalance = MyWallet::where(["user_id"=>$data->id])->latest()->first();
+        return view('front.user.settings', compact('data','package','walletBalance'));
     }
 
     public function transaction(){

@@ -34,6 +34,9 @@ use App\Contracts\UserDetailsContract;
 use App\Repositories\PaymentManageMentRepository;
 use App\Contracts\PaymentManageMentContract;
 
+use App\Repositories\AdminInquiryRepository;
+use App\Contracts\AdminInquiryContract;
+
 use App\Repositories\ClientRepository;
 use App\Contracts\ClientContract;
 use App\Repositories\EmployeeDetailsRepository;
@@ -54,6 +57,7 @@ class RepositoryServiceProvider extends ServiceProvider{
         UserDetailsContract::class  =>  UserDetailsRepository::class,
         EmployeeDetailsContract::class  =>  EmployeeDetailsRepository::class,
         PaymentManageMentContract::class  =>  PaymentManageMentRepository::class,
+        AdminInquiryContract::class  =>  AdminInquiryRepository::class,
     ];
     
     public function register()

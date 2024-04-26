@@ -203,9 +203,16 @@ class MasterModuleController extends Controller
     {
         // dd($request->all());    
         $request->validate([
-            'title' => 'required|max:255',
+            'title' => 'required|max:255|unique:categories,title,NULL,id,collection_id,' . $request->collection,
             'collection' => 'required',
             'image' => 'required|mimes:jpeg,jepg,gif,webp,png',
+        ], [
+            'title.required' => 'The title field is required.',
+            'title.max' => 'The title may not be greater than 255 characters.',
+            'title.unique' => 'The title has already been taken for this Category.',
+            'collection.required' => 'The collection field is required.',
+            'image.required' => 'The image field is required.',
+            'image.mimes' => 'The image must be a file of type: jpeg, jpg, gif, webp, png.',
         ]);
         $params = $request->except('_token');
         $data = $this->masterRepository->CreateCategory($params);
@@ -230,10 +237,20 @@ class MasterModuleController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'title' => 'required|max:255',
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('categories')->where(function ($query) use ($request) {
+                    return $query->where('collection_id', $request->collection)
+                                 ->where('id', '!=', $request->id);
+                }),
+            ],
             // 'collection' => 'required',
             'image' => 'mimes:jpeg,jepg,gif,webp,png',
 
+        ],[
+            'title.unique' => 'The Sub-Category name is already taken for the selected Category.',
         ]);
         $params = $request->except('_token');
         $data = $this->masterRepository->updateCategory($params);
