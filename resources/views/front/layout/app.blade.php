@@ -393,7 +393,7 @@
              // Check if location is empty
              if(location.trim().length === 0){
                  $('.location-bar').css('border', '1px solid red');
-                 return; // Stop further execution
+                 return; // Stop further execution  
              }
              
              // Check if keyword is empty

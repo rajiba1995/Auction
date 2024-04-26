@@ -44,7 +44,7 @@ class AdminInquiryRepository implements AdminInquiryContract
             });
         }
 
-        return $data = $query->latest('id')->paginate(25);
+        return $data = $query->where('inquiry_id','!=',null)->latest('id')->paginate(25);
         
     }
 

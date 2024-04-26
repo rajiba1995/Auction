@@ -17,6 +17,13 @@
                             <div class="tab-content">
                                 <div class="tab-content-wrapper">
                                     <div class="top-content-bar"></div>
+                                    <div class="m-2">
+                                        @if (session('success'))
+                                            <div class="alert alert-success" id="message_div">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+                                    </div>
                                     <div class="content-box">
                                         <div class="inner">
                                             <div class="settings-cta-box">
@@ -24,7 +31,7 @@
                                                     <div class="col">
                                                         <h5>Account Settings</h5>
                                                         <div class="cta-row">
-                                                            <a href="#">
+                                                            <a href="{{ route('user.change_password')}}">
                                                                 <span>Change Password</span>
                                                                 <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt="">
                                                             </a>

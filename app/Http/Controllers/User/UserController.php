@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\WatchList;
 use App\Models\MyBadge;
+use App\Models\User;
 use App\Models\MyWallet;
 use App\Models\MyPackage;
 use App\Models\Package;
@@ -27,6 +28,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Exception;
 use Carbon\Carbon;
+use Hash;
 
 class UserController extends Controller{
 
@@ -572,6 +574,37 @@ class UserController extends Controller{
         $data = $this->AuthCheck();
         $transactions = $this->userRepository->getAllTransactionByUserId($data->id);
         return view('front.user.transaction',compact('data','transactions'));
+    }
+    public function changePassword(){
+        $data = $this->AuthCheck();
+        return view('front.user.change_password',compact('data'));
+    }
+    public function changePasswordUpdate(Request $request){
+        $data = $this->AuthCheck();
+        // dd($data);
+        $rules = [
+            'password' => 'required|min:6|max:12',
+            'confirm_password' => 'required_with:password|same:password',
+        ];
+    
+        $customMessages = [
+            'password.required' => 'The password field is required.',
+            'password.min' => 'The password should be at least 6 characters long.',
+            'password.max' => 'The password should not exceed 12 characters.',
+            'confirm_password.required_with' => 'The confirm password field is required when password is present.',
+            'confirm_password.same' => 'The confirm password must match the password.',
+        ];
+        
+            // Validate the data
+            $validator = Validator::make($request->all(), $rules, $customMessages);
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }else{
+                $user = User::findOrFail($data->id);
+                $user->password=Hash::make($request->password);
+                $user->save();
+                return redirect()->route('user.settings')->with('success', 'Your profile data updated successfully');
+            }
     }
 
 
