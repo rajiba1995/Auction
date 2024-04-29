@@ -94,7 +94,7 @@ class BuyerDashboardController extends Controller
                     $inquiries = Inquiry::findOrFail($value->id);
                     $inquiries->status = 2;
                     $inquiries->save();
-                    $all_inquiries['end_remaining_time'] =null;
+                    $all_inquiries['end_remaining_time'] ="";
                 }
                 $all_inquiries['category'] = $value->category;
                 $all_inquiries['sub_category'] = $value->sub_category;
@@ -134,6 +134,9 @@ class BuyerDashboardController extends Controller
                             foreach(get_last_three_quotes($itemk->inquiry_id,$itemk->seller_id) as $qItem){
                                 $seller['last_three_quotes'][]=$qItem->quotes; 
                             }
+                            $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
+                            $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
+                            $seller['seller_comments_data'] = $SellerCommentsData;
                             $seller_data[]= $seller;
                         }
                     }

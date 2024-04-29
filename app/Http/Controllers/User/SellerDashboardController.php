@@ -9,6 +9,7 @@ use App\Contracts\UserContract;
 use App\Contracts\SellerDashboardContract;
 use App\Contracts\MasterContract;
 use App\Models\InquirySellerQuotes;
+use App\Models\InquirySellerComments;
 use App\Models\Inquiry;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
@@ -44,7 +45,6 @@ class SellerDashboardController extends Controller
     }
     public function all_inquiries(Request $request){
         $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
-        // DD($all_inquery);
         return view('front.seller_dashboard.all_inquireis',compact('all_inquery'));
     }
     public function live_inquiries(Request $request){
@@ -94,7 +94,7 @@ class SellerDashboardController extends Controller
                         $store = Inquiry::where('id', $value->id)->first();
                         $store->status = 2;
                         $store->save();
-                        $all_inquiries['end_remaining_time'] =null;
+                        $all_inquiries['end_remaining_time'] ="";
                     }
                     $all_inquiries['category'] = $value->category;
                     $all_inquiries['sub_category'] = $value->sub_category;
@@ -136,13 +136,15 @@ class SellerDashboardController extends Controller
                         $count++; 
                         if ($count >= 1) { // Check if the count is 2 or more
                             // Calculate the quote difference dynamically between the last index and the item before the last index
-                            $quote_difference = $array[count($array) - 1] - $array[count($array) - 2];
+                            $quote_difference = abs($array[count($array) - 1] - $array[count($array) - 2]);
                             break; // Exit the loop once the condition is met
                         }
                     }
+                    // Assuming $all_inquiries['my_last_three_quotes'] is an array
+                    $all_inquiries['my_last_three_quotes'] = array_reverse($all_inquiries['my_last_three_quotes']);
                     $all_inquiries['quote_difference'] = $quote_difference;
 
-                    $all_inquiries['left_quotes'] = $value->quotes_per_participants - count($all_inquiries['my_last_three_quotes']);
+                    $all_inquiries['left_quotes'] = $value->quotes_per_participants - get_my_all_quotes($value->id,$value->my_id);
 
                     $inquiries[] = $all_inquiries;
                 }
@@ -243,15 +245,16 @@ class SellerDashboardController extends Controller
                         $count++; 
                         if ($count >= 1) { // Check if the count is 2 or more
                             // Calculate the quote difference dynamically between the last index and the item before the last index
-                            $quote_difference = $array[count($array) - 1] - $array[count($array) - 2];
+                            $quote_difference = abs($array[count($array) - 1] - $array[count($array) - 2]);
 
                             break; // Exit the loop once the condition is met
                         }
                     }
+                    $all_inquiries['my_last_three_quotes'] = array_reverse($all_inquiries['my_last_three_quotes']);
                     $all_inquiries['quote_difference'] = $quote_difference;
                     $all_inquiries['last_quotes'] = $last_quotes;
 
-                    $all_inquiries['left_quotes'] = $value->quotes_per_participants - count($all_inquiries['my_last_three_quotes']);
+                    $all_inquiries['left_quotes'] = $value->quotes_per_participants - get_my_all_quotes($value->id,$value->my_id);
                     $inquiries[] = $all_inquiries;
                 }
             }
@@ -274,5 +277,30 @@ class SellerDashboardController extends Controller
         $store->quotes = 500;
         $store->save();
         return redirect()->route('seller_live_inquiries');
+    }
+
+    public function new_quote_now(Request $request){
+        $store = new InquirySellerQuotes;
+        $store->inquiry_id = $request->inquiry_id;
+        $store->seller_id = $this->getAuthenticatedUserId();
+        $store->quotes = $request->new_quote;
+        $store->save();
+        if($store){
+            return response()->json(['status'=>200]);
+        }else{
+            return response()->json(['status'=>400]);
+        }
+    }
+    public function seller_new_comment(Request $request){
+        $store = new InquirySellerComments;
+        $store->inquiry_id = $request->inquiry_id;
+        $store->seller_id = $this->getAuthenticatedUserId();
+        $store->comments = $request->new_comment;
+        $store->save();
+        if($store){
+            return response()->json(['status'=>200]);
+        }else{
+            return response()->json(['status'=>400]);
+        }
     }
 }

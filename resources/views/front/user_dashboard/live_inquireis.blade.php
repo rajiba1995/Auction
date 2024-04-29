@@ -269,7 +269,7 @@
                                                                             </div>
                                                                         </td>
                                                                         <td class="comments-td">
-                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
                                                                             <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
                                                                                 <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                                     <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
@@ -462,19 +462,14 @@
 
 
 
-<div class="modal fade view-comment-modal" id="viewCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade view-comment-modal viewCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <h3 class="content-heading">Comments from Shree Krishna Enterprise</h3>
-                <div class="comment-wrapper">
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-                </div>
+            <div class="modal-body" id="viewCommentModal">
+                
             </div>
         </div>
     </div>
@@ -550,9 +545,6 @@
                 <div class="quotes-list-wrapper">
                     Quotes: 
                     <ul class="quotes-list" id="allQuotesModal_data">
-                        {{-- @foreach (get_last_three_quotes($item->id,$value->seller_id) as $itemValue)
-                            <li>{{$itemValue->quotes}}</li>  
-                        @endforeach --}}
                     </ul>
                 </div>
             </div>
@@ -651,6 +643,10 @@
     function allQuotesModal(id){
         var data = $('#allQuotesModal_data'+id).html();
         $('#allQuotesModal_data').html(data);
+    }
+    function allCommentModal(id){
+        var data = $('#viewCommentModal'+id).html();
+        $('#viewCommentModal').html(data);
     }
     function formatDate(dateString) {
         var date = new Date(dateString);
@@ -807,7 +803,26 @@
                                         '</div>' +
                                         '</td>' +
                                         '<td class="comments-td">' +
-                                        '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>' +
+                                        '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".viewCommentModal" class="btn btn-view btn-view-comment" onclick="allCommentModal(' + value.id + ')">View Comment</a>' +
+                                        '<div class="modal fade view-comment-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
+                                            '<div class="modal-dialog">'+
+                                                '<div class="modal-content">'+
+                                                    '<div class="modal-header">'+
+                                                        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
+                                                    '</div>'+
+                                                    '<div class="modal-body" id="viewCommentModal' + value.id + '">'+
+                                                        '<h3 class="content-heading">Comments from '+ value.business_name.substr(0, 50) +'</h3>'+
+                                                        '<div class="comment-wrapper" id="viewCommentModalData' + value.id + '">';
+                                                            if (value.seller_comments_data) {
+                                                                $.each(value.seller_comments_data, function(k, val) {
+                                                                    htmlString +='<p>'+val.comments+'</p>';
+                                                                });
+                                                            }
+                                                        htmlString +='</div>'+
+                                                    '</div>'+
+                                                '</div>'+
+                                            '</div>'+
+                                        '</div>'+
                                         '<a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">' +
                                         '<svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">' +
                                         '<path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>' +

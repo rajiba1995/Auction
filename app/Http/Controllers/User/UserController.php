@@ -388,7 +388,14 @@ class UserController extends Controller{
     }
     public function RatingAndReview(){
         $data = $this->AuthCheck();
-        return view('front.user.rating', compact('data'));
+        $review_rating = $this->userRepository->getUserAllReviewRating($data->id);
+        $asBuyer = $this->userRepository->asBuyer($data->id);
+        $asBuyerRatingPoint = $this->userRepository->asBuyerRatingPoint($data->id);
+        $asSeller = $this->userRepository->asSeller($data->id);
+        $asSellerRatingPoint = $this->userRepository->asSellerRatingPoint($data->id);
+        $old_location="";
+        $old_keyword="";
+        return view('front.user.rating', compact('data','old_location','old_keyword','review_rating','asBuyer', 'asSeller','asBuyerRatingPoint','asSellerRatingPoint'));
     }
     public function RConsumption(){ 
         $data = $this->AuthCheck();

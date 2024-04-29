@@ -302,10 +302,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            @if($old_location && $old_keyword)
                                             <div class="review-cta-row">
                                                 <a href="{{ route('user.profile.review_and_rating.write',[$old_location, $old_keyword])}}" class="btn btn-animated btn-yellow btn-cta">Write a review</a>
                                             </div>
+                                            @elseif($$old_location=$old_keyword="")
+                                            @endif
 
                                         </div>
                                     </div>

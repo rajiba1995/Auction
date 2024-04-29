@@ -33,8 +33,7 @@ Route::get('/clear-cache', function() {
 
     Route::group(['middleware' => 'auth'], function () {
         Route::prefix('my')->group(function () {
-            Route::get('/rating-and-reviews', [UserController::class, 'RatingAndReview'])->name('user.rating_and_reviews');
-            
+            Route::get('/rating-and-reviews', [UserController::class, 'RatingAndReview'])->name('user.rating_and_reviews');        
             Route::get('/requirements-and-consumption', [UserController::class, 'RConsumption'])->name('user.requirements_and_consumption');
             Route::get('/requirements-and-consumption/add', [UserController::class, 'RConsumptionAdd'])->name('user.requirements_and_consumption.add');
             Route::post('/requirements-and-consumption/store', [UserController::class, 'RConsumptionStore'])->name('user.requirements_and_consumption.store');
@@ -106,6 +105,8 @@ Route::get('/clear-cache', function() {
             Route::get('/history-inquiries', [SellerDashboardController::class, 'history_inquiries'])->name('seller_history_inquiries');
             Route::post('/start-quotes', [SellerDashboardController::class, 'seller_start_quotes'])->name('seller_start_quotes');
             Route::get('/live-inquiries-fetch-ajax', [SellerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('seller_live_inquiries_by_ajax');
+            Route::post('/new-quote-now', [SellerDashboardController::class, 'new_quote_now'])->name('seller_new_quote_now');
+            Route::post('/seller-new-comment', [SellerDashboardController::class, 'seller_new_comment'])->name('seller_new_comment');
         });
     });
 // Admin login routes

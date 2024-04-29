@@ -249,10 +249,13 @@
                                                                 <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.',',')}}</td>
                                                                 <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.',',')}}</td></td>
                                                                 <td class="other-actions-td">
+                                                                    @if(valid_live_time($item->start_date.' '.$item->start_time, $item->end_date.' '.$item->end_time))
                                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_startQuotingModal{{$item->id}}" class="btn btn-yellow btn-allot-offline">
                                                                         <img src="{{ asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
                                                                         Start Quoting
                                                                     </a>
+                                                                    @endif
+
                                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_cancelInquiryModal{{$item->id}}" class="btn btn-red btn-cancel-inquiry">
                                                                         <img src="{{ asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
                                                                         Reject Inquiry
