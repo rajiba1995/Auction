@@ -89,7 +89,7 @@ class AuctionGenerationController extends Controller
             'sub_category' => 'required',
             // 'description' => 'nullable|string',
             'execution_date' => 'required|date',
-            'quotes_per_participants' => 'required|numeric',
+            'quotes_per_participants' => 'required|numeric',    
             'minimum_quote_amount' => 'required|numeric',
             'maximum_quote_amount' => 'required|numeric',
         ]);
