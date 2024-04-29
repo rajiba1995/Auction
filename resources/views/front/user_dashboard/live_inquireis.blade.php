@@ -175,7 +175,7 @@
                                                 <th class="output-th other-actions-th">&nbsp;</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="append_live_inquiries">
+                                        <tbody id="inquiries_data_append">
                                             @foreach($live_inquiries as $item)
                                             <tr>
                                                 <td class="input-table-column" colspan="8">
@@ -232,7 +232,7 @@
                                                                 <td colspan="8" class="note-td">
                                                                     <div class="note-wrap">
                                                                         <h3>Notepad</h3>
-                                                                        <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
+                                                                        <textarea class="form-control note-textarea"></textarea>
                                                                         <button type="button" class="btn btn-animated bg-green">Save</button>
                                                                     </div>
                                                                 </td>
@@ -243,105 +243,70 @@
                                                 <td class="output-table-column" colspan="6">
                                                     <table class="table output-table">
                                                         <tbody>
-                                                            <tr>
-                                                                <td class="invited-partitipants-td">20/{{count($item->ParticipantsData)}}</td>
-                                                                <td class="suppliers-td">
-                                                                    <div class="supplier">
-                                                                        <p>Shree Krishna Enterprise</p>
-                                                                        <p>Mahesh Gupta</p>
-                                                                        <a href="javascript:void();">+911234567891</a>
-                                                                        <label>L1</label>
+                                                            @php
+                                                                $getAllSellerQuotes = getAllSellerQuotes($item->id);
+                                                            @endphp
+                                                             @if(count($getAllSellerQuotes)>0)
+                                                                @foreach($getAllSellerQuotes as $key =>$value)
+                                                                    <tr>
+                                                                        @if($key==0)
+                                                                            <td class="invited-partitipants-td" rowspan="{{count($getAllSellerQuotes)}}">{{count($item->ParticipantsData)}}/{{count($getAllSellerQuotes)}}</td>
+                                                                        @endif
+                                                                        <td class="suppliers-td">
+                                                                            <div class="supplier">
+                                                                                <p>{{Str::limit($value->business_name, 50)}}</p>
+                                                                                <p>{{$value->name}}</p>
+                                                                                <a href="javascript:void();">{{$value->country_code}}{{$value->mobile}}</a>
+                                                                                <label>L{{$key+1}}</label>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="quotes-td">
+                                                                            <div class="quote">
+                                                                                {{$value->quotes}}
+                                                                                <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target=".allQuotesModal" onclick="allQuotesModal({{$value->id}})">
+                                                                                    <img src="{{asset('frontend/assets/images/arrow-up-right.png')}}" alt="">
+                                                                                </a>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td class="comments-td">
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
+                                                                            <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                                <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                    <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
+                                                                                </svg>                                                                    
+                                                                                Download File
+                                                                            </a>
+                                                                        </td>
+                                                                        <td class="timer-td">
+                                                                            <p id="countdown{{$item->id}}"></p>
+                                                                            {{-- <p id="countdown{{$item->id}}">Ends in: {{$secondsRemaining}}</p> --}}
+                                                                        </td>
+                                                                        <td class="actions-td">
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allotRateModal" class="btn btn-yellow btn-allot">Allot</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <div class="modal fade all-quotes-modal" id="allQuotesModal{{$value->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                </div>
+                                                                                <div class="modal-body">
+                                                                                    <h3 class="content-heading">{{$value->business_name}}</h3>
+                                                                                    <div class="quotes-list-wrapper">
+                                                                                        Quotes: 
+                                                                                        <ul class="quotes-list" id="allQuotesModal_data{{$value->id}}">
+                                                                                            @foreach (get_last_three_quotes($item->id,$value->seller_id) as $itemValue)
+                                                                                                <li>{{$itemValue->quotes}}</li>  
+                                                                                            @endforeach
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                </td>
-                                                                <td class="quotes-td">
-                                                                    <div class="quote">
-                                                                        2000
-                                                                        <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
-                                                                            <img src="assets/images/arrow-up-right.png" alt="">
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="comments-td">
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
-                                                                    <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
-                                                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                            <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
-                                                                        </svg>                                                                    
-                                                                        Download File
-                                                                    </a>
-                                                                </td>
-                                                                <td class="timer-td">
-                                                                    <p id="countdown{{$item->id}}"></p>
-                                                                    {{-- <p id="countdown{{$item->id}}">Ends in: {{$secondsRemaining}}</p> --}}
-                                                                </td>
-                                                                <td class="actions-td">
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allotRateModal" class="btn btn-yellow btn-allot">Allot</a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="invited-partitipants-td"></td>
-                                                                <td class="suppliers-td">
-                                                                    <div class="supplier">
-                                                                        <p>Shree Krishna Enterprise</p>
-                                                                        <p>Mahesh Gupta</p>
-                                                                        <a href="javascript:void();">+911234567891</a>
-                                                                        <label>L1</label>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="quotes-td">
-                                                                    <div class="quote">
-                                                                        2000
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
-                                                                            <img src="assets/images/arrow-up-right.png" alt="">
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="comments-td">
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
-                                                                    <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
-                                                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                            <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
-                                                                        </svg>                                                                    
-                                                                        Download File
-                                                                    </a>
-                                                                </td>
-                                                                <td class="timer-td"></td>
-                                                                <td class="actions-td">
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#startAllotModal" class="btn btn-yellow btn-allot">Allot</a>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="invited-partitipants-td"></td>
-                                                                <td class="suppliers-td">
-                                                                    <div class="supplier">
-                                                                        <p>Shree Krishna Enterprise</p>
-                                                                        <p>Mahesh Gupta</p>
-                                                                        <a href="javascript:void();">+911234567891</a>
-                                                                        <label>L1</label>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="quotes-td">
-                                                                    <div class="quote">
-                                                                        2000
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
-                                                                            <img src="assets/images/arrow-up-right.png" alt="">
-                                                                        </a>
-                                                                    </div>
-                                                                </td>
-                                                                <td class="comments-td">
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
-                                                                    <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
-                                                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                            <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
-                                                                        </svg>                                                                    
-                                                                        Download File
-                                                                    </a>
-                                                                </td>
-                                                                <td class="timer-td"></td>
-                                                                <td class="actions-td">
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#startAllotModal" class="btn btn-yellow btn-allot">Allot</a>
-                                                                </td>
-                                                            </tr>
+                                                                @endforeach
+                                                            @endif
                                                         </tbody>
                                                     </table>
                                                 </td>
@@ -351,11 +316,11 @@
                                                             <tr>
                                                                 <td class="other-actions-td">
                                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allotOfflineModal" class="btn btn-yellow btn-allot-offline">
-                                                                        <img src="assets/images/green-circle-tick.png" alt="Allot Offline">
+                                                                        <img src="{{asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
                                                                         Allot Offline
                                                                     </a>
                                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#cancelInquiryModal" class="btn btn-red btn-cancel-inquiry">
-                                                                        <img src="assets/images/white-circle-cross.png" alt="Cancel">
+                                                                        <img src="{{asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
                                                                         Cancel Inquiry
                                                                     </a>
                                                                 </td>
@@ -495,26 +460,7 @@
     </div>
 </div>
 
-<div class="modal fade all-quotes-modal" id="allQuotesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <h3 class="content-heading">Shree Krishna Enterprise</h3>
-                <div class="quotes-list-wrapper">
-                    Quotes: 
-                    <ul class="quotes-list">
-                        <li>300000</li>
-                        <li>290000</li>
-                        <li>200000</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div class="modal fade view-comment-modal" id="viewCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -589,6 +535,26 @@
                     <input type="text" class="form-control">
                 </div>
                 <button type="button" class="btn btn-animated btn-submit w-75">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade all-quotes-modal allQuotesModal"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3 class="content-heading"></h3>
+                <div class="quotes-list-wrapper">
+                    Quotes: 
+                    <ul class="quotes-list" id="allQuotesModal_data">
+                        {{-- @foreach (get_last_three_quotes($item->id,$value->seller_id) as $itemValue)
+                            <li>{{$itemValue->quotes}}</li>  
+                        @endforeach --}}
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -682,6 +648,27 @@
 @endsection
 @section('script')
 <script>
+    function allQuotesModal(id){
+        var data = $('#allQuotesModal_data'+id).html();
+        $('#allQuotesModal_data').html(data);
+    }
+    function formatDate(dateString) {
+        var date = new Date(dateString);
+        var day = date.getDate();
+        var month = date.toLocaleString('en-us', { month: 'short' });
+        var year = date.getFullYear();
+        return day + ' ' + month + ', ' + year;
+    }
+    function formatCurrency(amount) {
+        // Convert the amount to a number and ensure it's not NaN
+        amount = Number(amount);
+        if (isNaN(amount)) {
+            return "Invalid Amount";
+        }
+
+        // Format the number with two decimal places and commas for thousands separator
+        return amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
 
     $(document).ready(function(){
         $('#group_wies_search').keyup(function(){
@@ -709,43 +696,194 @@
     });
 
     $(document).ready(function() {
-        $(".rajib").on("click", function () {
+        $('.rajib').on('click', function() {
         // setInterval(function() {
             $.ajax({
                 url: "{{route('buyer_live_inquiries_by_ajax')}}",
                 method: "GET",
                 success: function(response) {
-                    // Handle successful response
+                if(response.status==200){
+                    $('#inquiries_data_append').html('');
+                    $.each(response.data, function(index, item) {
+                        var participantHtml = '';
+                        if(item.inquiry_type=="close auction"){
+                           
+                            $.each(item.participants, function(key, participant) {
+                                participantHtml += '<li>' + (key + 1) + '. ' + participant + '</li>';
+                            });
+
+                            var noParticipantHtml = '<li>' +
+                                '<div class="alert alert-warning" role="alert">No participant found.</div>' +
+                                '</li>';
+                        }else{
+                            var noParticipantHtml = '<li></li>';
+                        }
+                       
+
+                       var htmlString = '<tr>'+
+                            '<td class="input-table-column" colspan="8">' +
+                            '<table class="table input-table">' +
+                            '<tbody>' +
+                            '<tr>' +
+                            '<td class="input-id-td">' + item.inquiry_id + '</td>' +
+                            '<td class="input-title-td">' + item.title + '</td>' +
+                            '<td class="input-details-td">' +
+                            '<ul class="input-data-list">' +
+                            '<li>' +
+                            '<label>Inquiry Type</label>' +
+                            '<p>' + item.inquiry_type + '</p>' +
+                            '</li>' +
+                            '<li>' +
+                            '<label>Category</label>' +
+                            '<p>' + item.category + '</p>' +
+                            '</li>' +
+                            '<li>' +
+                            '<label>Description of the Service</label>' +
+                            '<p class="hidden">' + (item.description ? item.description : '') + '</p>' +
+                            '<div class="read-more"><span>read more</span></div>' +
+                            '</li>' +
+                            '<li>' +
+                            '<label>Date of execution of the task</label>' +
+                            '<p>' + formatDate(item.execution_date) + '</p>' +
+                            '</li>' +
+                            '<li>' +
+                            '<label>No of Quotes per Participants</label>' +
+                            '<p>' + item.quotes_per_participants + '</p>' +
+                            '</li>' +
+                            '</ul>' +
+                            '</td>' +
+                            '<td class="input-participants-td">' +
+                            '<ul class="input-data-list participant-data-list hidden">' +
+                            (participantHtml !== '' ? participantHtml : noParticipantHtml) +
+                            '</ul>';
+                            if (item.inquiry_type=="close auction") {
+                                htmlString +='<div class="see-more"><span>see more</span></div>';
+                            }
+                            htmlString +='</td>' +
+                            '<td class="input-start-date-td">' + item.start_date_time + '</td>' +
+                            '<td class="input-end-date-td">' + item.end_date_time + '</td>' +
+                            '<td class="min-quote-td">' + formatCurrency(item.minimum_quote_amount) + '</td>' +
+                            '<td class="max-quote-td">' + formatCurrency(item.maximum_quote_amount) + '</td>' +
+                            '</tr>' +
+                            '<tr>' +
+                            '<td colspan="8" class="note-td">' +
+                            '<div class="note-wrap">' +
+                            '<h3>Notepad</h3>' +
+                            '<textarea class="form-control note-textarea"></textarea>' +
+                            '<button type="button" class="btn btn-animated bg-green">Save</button>' +
+                            '</div>' +
+                            '</td>' +
+                            '</tr>' +
+                            '</tbody>' +
+                            '</table>' +
+                            '</td>' +
+                            '<td class="output-table-column" colspan="6">' +
+                            '<table class="table output-table">' +
+                            '<tbody>';
+                            if (item.seller_data.length > 0) {
+                                $.each(item.seller_data, function(key, value) {
+                                    htmlString += '<tr>';
+                                        if(key==0){
+                                            if (item.inquiry_type=="close auction") {
+                                            htmlString += '<td class="invited-partitipants-td" rowspan="'+item.participants_count+'">'+item.invted_participants_count+'/'+item.participants_count+'</td>';
+                                            }else{
+                                                htmlString += '<td class="invited-partitipants-td" rowspan="'+item.participants_count+'">'+item.participants_count+'</td>';
+                                            }
+                                        }
+                                        htmlString += '<td class="suppliers-td">' +
+                                        '<div class="supplier">' +
+                                        '<p>' + value.business_name.substr(0, 50) + '</p>' +
+                                        '<p>' + value.name + '</p>' +
+                                        '<a href="javascript:void();">' + value.country_code + value.mobile + '</a>' +
+                                        '<label>L' + (key + 1) + '</label>' +
+                                        '</div>' +
+                                        '</td>' +
+                                        '<td class="quotes-td">' +
+                                        '<div class="quote">' +
+                                        formatCurrency(value.quotes) +
+                                        '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".allQuotesModal" onclick="allQuotesModal(' + value.id + ')">' +
+                                        '<img src="{{asset("frontend/assets/images/arrow-up-right.png")}}" alt="">' +
+                                        '</a>' +
+                                        '</div>' +
+                                        '</td>' +
+                                        '<td class="comments-td">' +
+                                        '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>' +
+                                        '<a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">' +
+                                        '<svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+                                        '<path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>' +
+                                        '</svg>' +
+                                        'Download File' +
+                                        '</a>' +
+                                        '</td>';
+                                            if(key==0){
+                                                htmlString += '<td class="timer-td" rowspan="'+item.invted_participants_count+'">';
+                                                if(item.start_remaining_time){
+                                                    htmlString += '<p id="countdown' + item.id + '">'+item.start_remaining_time+'</p>';
+                                                }else{
+                                                    htmlString += '<p id="countdown' + item.id + '">'+item.end_remaining_time+'</p>';
+                                                }
+                                                htmlString += '</td>';
+                                            }
+                                        htmlString +='<td class="actions-td">' +
+                                        '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allotRateModal" class="btn btn-yellow btn-allot">Allot</a>' +
+                                        '</td>' +
+                                        '</tr>' +
+                                        '<div class="modal fade all-quotes-modal" id="allQuotesModal' + value.id + '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
+                                        '<div class="modal-dialog">' +
+                                        '<div class="modal-content">' +
+                                        '<div class="modal-header">' +
+                                        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>' +
+                                        '</div>' +
+                                        '<div class="modal-body">' +
+                                        '<h3 class="content-heading">' + value.business_name + '</h3>' +
+                                        '<div class="quotes-list-wrapper">' +
+                                        'Quotes: ' +
+                                        '<ul class="quotes-list" id="allQuotesModal_data' + value.id + '">';
+                                            $.each(value.last_three_quotes, function(key, quote) {
+                                                htmlString += '<li>' + formatCurrency(quote) + '</li>';
+                                            });
+
+                                    htmlString += '</ul>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>' +
+                                        '</div>';
+                                });
+                            }
+
+                        htmlString += '</tbody>' +
+                            '</table>' +
+                            '</td>' +
+                            '<td class="actions-table-column">' +
+                            '<table class="table actions-table">' +
+                            '<tbody>' +
+                            '<tr>' +
+                            '<td class="other-actions-td">' +
+                            '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allotOfflineModal" class="btn btn-yellow btn-allot-offline">' +
+                            '<img src="{{asset("frontend/assets/images/green-circle-tick.png")}}" alt="Allot Offline">' +
+                            'Allot Offline' +
+                            '</a>' +
+                            '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#cancelInquiryModal" class="btn btn-red btn-cancel-inquiry">' +
+                            '<img src="{{asset("frontend/assets/images/white-circle-cross.png")}}" alt="Cancel">' +
+                            'Cancel Inquiry' +
+                            '</a>' +
+                            '</td>' +
+                            '</tr>';
+
+                        $('#inquiries_data_append').append(htmlString);
+                    });
+                }else{
+
+                }
                 },
                 error: function(xhr, status, error) {
                     // Handle errors
                 }
             });
+        // }, 1000); // 1000 milliseconds = 1 second
         });
-        // }, 10000); // 1000 milliseconds = 1 second
     });
 </script>
-{{-- @foreach($live_inquiries as $item)
-    <script>
-    // $(document).ready(function() {
-    //     var item= "{{$itemData->id}}";
-    //     var secondsRemaining = <?php echo calculateSecondsRemaining($itemData->start_date . ' ' . $itemData->start_time); ?>;
-    //     var interval = setInterval(function() {
-    //         var days = Math.floor(secondsRemaining / (60 * 60 * 24));
-    //         var hours = Math.floor((secondsRemaining % (60 * 60 * 24)) / (60 * 60));
-    //         var minutes = Math.floor((secondsRemaining % (60 * 60)) / 60);
-    //         var seconds = Math.floor(secondsRemaining % 60);
-
-    //         $("#countdown"+item).html("Start IN: " + days + "d " + hours + "h: " + minutes + "m: " + seconds + "s");
-    //         if (secondsRemaining <= 0) {
-    //             clearInterval(interval);
-    //             $("#countdown"+item).html("Timer expired");
-    //         } else {
-    //             secondsRemaining--;
-    //         }
-    //     }, 1000);
-    // });
-    </script>
-    @endforeach --}}
 
 @endsection

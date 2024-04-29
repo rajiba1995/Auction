@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Contracts\UserContract;
 use App\Contracts\BuyerDashboardContract;
 use App\Contracts\MasterContract;
+use App\Models\Inquiry;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
@@ -56,13 +57,14 @@ class BuyerDashboardController extends Controller
         $inquiries = [];
         if(count($live_inquiries)>0){
             foreach ($live_inquiries as $key => $value) {
+                $seller_data = [];
                 $all_inquiries = [];
                 $all_inquiries['id'] = $value->id;
                 $all_inquiries['inquiry_id'] = $value->inquiry_id;
                 $all_inquiries['created_by'] = $value->BuyerData->name;
                 $all_inquiries['title'] = $value->title;
-                $all_inquiries['start_date_time'] = $value->start_date.' '.$value->start_time;
-                $startDateTime = Carbon::parse($value->end_date . ' ' . $value->end_time)->timezone(env('APP_TIMEZONE'));
+                $all_inquiries['start_date_time'] = date('d M, Y h:i A', strtotime($value->start_date.' '.$value->start_time));
+                $startDateTime = Carbon::parse($value->start_date . ' ' . $value->start_time)->timezone(env('APP_TIMEZONE'));
                 $endDateTime = Carbon::now();
                 
                 if ($startDateTime > $endDateTime) {
@@ -77,20 +79,21 @@ class BuyerDashboardController extends Controller
                     $all_inquiries['start_remaining_time'] =null;
                 }
                
-                
-                $all_inquiries['end_date_time'] = $value->end_date.' '.$value->end_time;
+                $all_inquiries['end_date_time'] = date('d M, Y h:i A', strtotime($value->end_date.' '.$value->end_time));
                 $startDateTime = Carbon::now();
                 $endDateTime = Carbon::parse($value->end_date . ' ' . $value->end_time)->timezone(env('APP_TIMEZONE'));
                 
-                if ($startDateTime > $endDateTime) {
+                if ($startDateTime < $endDateTime) {
                     $endRemainingTime = $endDateTime->diff($startDateTime);
                     $days = $endRemainingTime->days;
                     $hours = $endRemainingTime->h;
                     $minutes = $endRemainingTime->i;
                     $seconds = $endRemainingTime->s;
-                    
                     $all_inquiries['end_remaining_time'] = "End IN: $days d $hours h $minutes m $seconds s";
                 } else {
+                    $inquiries = Inquiry::findOrFail($value->id);
+                    $inquiries->status = 2;
+                    $inquiries->save();
                     $all_inquiries['end_remaining_time'] =null;
                 }
                 $all_inquiries['category'] = $value->category;
@@ -107,13 +110,44 @@ class BuyerDashboardController extends Controller
 
                 if($value->ParticipantsData){
                     foreach($value->ParticipantsData as $k =>$item){
-                        $all_inquiries['participants'][]= $item->SellerData->name;
+                        $all_inquiries['participants'][]= $item->SellerData->business_name;
+                        if($item->status==1){
+                            $all_inquiries['invted_participants'][]= $item->SellerData->business_name;
+                        }
                     }
                 }
+                $all_inquiries['invted_participants_count'] = count($all_inquiries['participants']);
+                $getAllSellerQuotes = getAllSellerQuotes($value->id);
+                $all_inquiries['participants_count'] = count($all_inquiries['invted_participants']);
+                    if(count($getAllSellerQuotes)>0){
+                        foreach($getAllSellerQuotes as $k =>$itemk){
+                            $seller = [];
+                            $seller['id'] = $itemk->id;
+                            $seller['inquiry_id'] = $itemk->inquiry_id;
+                            $seller['seller_id'] = $itemk->seller_id;
+                            $seller['quotes'] = $itemk->quotes;
+                            $seller['name'] = $itemk->name;
+                            $seller['country_code'] = $itemk->country_code;
+                            $seller['mobile'] = $itemk->mobile;
+                            $seller['business_name'] = $itemk->business_name;
+                            $seller['last_three_quotes'] = [];
+                            foreach(get_last_three_quotes($itemk->inquiry_id,$itemk->seller_id) as $qItem){
+                                $seller['last_three_quotes'][]=$qItem->quotes; 
+                            }
+                            $seller_data[]= $seller;
+                        }
+                    }
+                    $all_inquiries['seller_data'] = $seller_data;
+                
                 $inquiries[] = $all_inquiries;
-             }
+            }
         }
-        dd($inquiries);
+        // dd($inquiries);
+        if(count($inquiries)>0){
+            return response()->json(['status'=>200, 'data'=>$inquiries]);
+        }else{
+            return response()->json(['status'=>400]);
+        }
     }
     
 }

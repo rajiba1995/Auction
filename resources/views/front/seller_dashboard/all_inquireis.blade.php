@@ -8,18 +8,16 @@
         display: block !important;
     }
 </style>
-
     <div class="main">
         <div class="inner-page">
-
             <div class="breadcrumb">
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
                             <div class="inner-wrap">
                                 <ul>
-                                    <li>Home</li>
-                                    <li>&nbsp;>&nbsp;Supplier Dashboard</span></li>
+                                    <li><a href="{{asset('')}}">Home</a></li>
+                                    <li>&nbsp;>&nbsp;<a href="{{route('user_seller_dashboard')}}">Supplier Dashboard</a></span></li>
                                 </ul>
                             </div>
                         </div>
@@ -129,7 +127,7 @@
                             <div class="col-lg-12 col-12" id="group_list">
                                 <div class="search-bar">
                                     <form>
-                                        <input type="search" name="" placeholder="Search for Service, Category, Location, etc">
+                                        <input type="search" name="" placeholder="Search by inquiry id.." id="group_wies_search">
                                         <button type="submit" class="btn-search btn-animated">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
@@ -176,107 +174,172 @@
                                             </thead>
                                             <tbody>
                                                 @if($all_inquery)
-                                                @foreach ( $all_inquery as  $item ) 
-                                                @if($item->InquriesData->inquiry_id !== null)
-                                                <tr>
-                                                    <td class="input-id-td">{{ $item->InquriesData->inquiry_id}}</td>
-                                                    <td class="input-title-td">{{ ucfirst($item->InquriesData->title) }}</td>
-                                                    <td class="input-details-td">
-                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal" class="btn btn-view">View</a>
-                                                    </td>
-                                                    <td class="input-location-td">{{ ucfirst($item->InquriesData->location) }}</td>
-                                                    <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->InquriesData->start_date)) }} {{ date('g:i A', strtotime($item->InquriesData->start_time)) }}</td>
-                                                    <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->InquriesData->end_date)) }} {{ date('g:i A', strtotime($item->InquriesData->end_time)) }}</td>
-                                                    <td class="min-quote-td">{{number_format($item->InquriesData->minimum_quote_amount,2, '.',',')}}</td>
-                                                    <td class="max-quote-td">{{number_format($item->InquriesData->maximum_quote_amount,2, '.',',')}}</td></td>
-                                                    <td class="other-actions-td">
-                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_startQuotingModal{{$item->id}}" class="btn btn-yellow btn-allot-offline">
-                                                            <img src="{{ asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
-                                                            Start Quoting
-                                                        </a>
-                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_cancelInquiryModal{{$item->id}}" class="btn btn-red btn-cancel-inquiry">
-                                                            <img src="{{ asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
-                                                            Reject Inquiry
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                                {{-- start Quotting model --}}
-                                                <div class="modal fade allot-rate-modal start-quoting-modal" id="all_startQuotingModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <h4 class="content-heading">Credit will be used</h4>
-                                                                <div class="bottom-cta-row">
-                                                                    <button type="button" class="btn btn-proceed">Proceed</button>
-                                                                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {{-- reject Quoting modal --}}
-                                                <div class="modal fade allot-rate-modal cancel-inquiry" id="all_cancelInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                
-                                                                <div class="container-fluid">
-                                                                    <div class="row">
-                                                                        <div class="col-12">
-                                                                            <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
-                                                                        </div>
-                                                                        <div class="col-md-6 col-sm-4 col-6">
-                                                                            <label for="cancelInquiryYes" class="modal-custom-radio">
-                                                                                <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
-                                                                                <span class="checkmark">
-                                                                                    <span class="checkedmark"></span>
-                                                                                </span>
-                                                                                <div class="radio-text">
-                                                                                    <label>Yes</label>
+                                                    @foreach ( $all_inquery as  $item)
+                                                        @if(empty(get_inquiry_seller_quotes($item->my_id, $item->id)))
+                                                            <tr class="data-row">
+                                                                <td class="input-id-td"><span class="inquiry_id">{{$item->inquiry_id}}</span></td>
+                                                                <td class="input-title-td"> <span class="inquiry_title">{{ ucfirst($item->title) }}</span></td>
+                                                                <td class="input-details-td">
+                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal{{$item->id}}" class="btn btn-view">View</a>
+                                                                    <div class="modal fade buyer-details-modal" id="buyerDetailsModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                        <div class="modal-dialog">
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                                 </div>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div class="col-md-6 col-sm-4 col-6">
-                                                                            <label for="cancelInquiryNo" class="modal-custom-radio">
-                                                                                <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
-                                                                                <span class="checkmark">
-                                                                                    <span class="checkedmark"></span>
-                                                                                </span>
-                                                                                <div class="radio-text">
-                                                                                    <label>No</label>
+                                                                                <div class="modal-body">
+                                                                                    <div class="buyer-details">
+                                                                                        <div class="row info-row">
+                                                                                            <div class="col-sm-6 col-12">
+                                                                                                <label>Inquiry Type</label>
+                                                                                            </div>
+                                                                                            <div class="col-sm-6 col-12">
+                                                                                                <p>{{$item->inquiry_type}}</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        
+                                                                                        <div class="row info-row">
+                                                                                            <div class="col-sm-6 col-12">
+                                                                                                <label>Category</label>
+                                                                                            </div>
+                                                                                            <div class="col-sm-6 col-12">
+                                                                                                <p>Category name</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="row info-row">
+                                                                                            <div class="col-12">
+                                                                                                <label>Description of the Service</label>
+                                                                                                <p class="pt-1">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        {{-- <div class="row info-row">
+                                                                                            <div class="col-12">
+                                                                                                <div class="photos">
+                                                                                                    <div class="photo"><img src="assets/images/female-car-dealer-giving-keys-young-couple-2.png" alt=""></div>
+                                                                                                    <div class="photo"><img src="assets/images/female-car-dealer-giving-keys-young-couple-2.png" alt=""></div>
+                                                                                                    <div class="photo"><img src="assets/images/female-car-dealer-giving-keys-young-couple-2.png" alt=""></div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div> --}}
+                                                                                        <div class="row info-row">
+                                                                                            <div class="col-sm-6 col-12">
+                                                                                                <label>Date of execution of the task</label>
+                                                                                            </div>
+                                                                                            <div class="col-sm-6 col-12">
+                                                                                                <p>{{ date('d M, Y', strtotime($item->execution_date)) }} </p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="row info-row">
+                                                                                            <div class="col-sm-6 col-12">
+                                                                                                <label>No of Quotes per Participants</label>
+                                                                                            </div>
+                                                                                            <div class="col-sm-6 col-12">
+                                                                                                <p>{{$item->quotes_per_participants}}</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </label>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="row mt-3">
-                                                                        <div class="col-12">
-                                                                            <h4 class="content-heading">Select a Reason*</h4>
-                                                                            <select class="form-control">
-                                                                                <option selected disabled>Select</option>
-                                                                                <option value="">Withdrawn by Buyer</option>
-                                                                                <option value="">Product/Service out of stock/no longer available</option>
-                                                                                <option value="">Duplicate Inquiry</option>
-                                                                                <option value="">Not Interested Anymore</option>
-                                                                                <option value="">My Reason is not listed here</option>
-                                                                            </select>
+                                                                </td>
+                                                                <td class="input-location-td">{{ ucfirst($item->location) }}</td>
+                                                                <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
+                                                                <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->end_date)) }} {{ date('g:i A', strtotime($item->end_time)) }}</td>
+                                                                <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.',',')}}</td>
+                                                                <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.',',')}}</td></td>
+                                                                <td class="other-actions-td">
+                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_startQuotingModal{{$item->id}}" class="btn btn-yellow btn-allot-offline">
+                                                                        <img src="{{ asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
+                                                                        Start Quoting
+                                                                    </a>
+                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_cancelInquiryModal{{$item->id}}" class="btn btn-red btn-cancel-inquiry">
+                                                                        <img src="{{ asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
+                                                                        Reject Inquiry
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                            {{-- start Quotting model --}}
+                                                            <div class="modal fade allot-rate-modal start-quoting-modal" id="all_startQuotingModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form action="{{route('seller_start_quotes')}}" method="POST">
+                                                                                @csrf
+                                                                                <input type="hidden" name="inquiry_id" value="{{$item->id}}">
+                                                                                <input type="hidden" name="seller_id" value="{{$item->my_id}}">
+                                                                                <h4 class="content-heading">Credit will be used</h4>
+                                                                                <div class="bottom-cta-row">
+                                                                                    <button type="submit" class="btn btn-proceed">Proceed</button>
+                                                                                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                                                                                </div>
+                                                                            </form>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                
-                                                                <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endif
-                                                @endforeach
+                                                            {{-- reject Quoting modal --}}
+                                                            <div class="modal fade allot-rate-modal cancel-inquiry" id="all_cancelInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            
+                                                                            <div class="container-fluid">
+                                                                                <div class="row">
+                                                                                    <div class="col-12">
+                                                                                        <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
+                                                                                    </div>
+                                                                                    <div class="col-md-6 col-sm-4 col-6">
+                                                                                        <label for="cancelInquiryYes" class="modal-custom-radio">
+                                                                                            <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
+                                                                                            <span class="checkmark">
+                                                                                                <span class="checkedmark"></span>
+                                                                                            </span>
+                                                                                            <div class="radio-text">
+                                                                                                <label>Yes</label>
+                                                                                            </div>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                    <div class="col-md-6 col-sm-4 col-6">
+                                                                                        <label for="cancelInquiryNo" class="modal-custom-radio">
+                                                                                            <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
+                                                                                            <span class="checkmark">
+                                                                                                <span class="checkedmark"></span>
+                                                                                            </span>
+                                                                                            <div class="radio-text">
+                                                                                                <label>No</label>
+                                                                                            </div>
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mt-3">
+                                                                                    <div class="col-12">
+                                                                                        <h4 class="content-heading">Select a Reason*</h4>
+                                                                                        <select class="form-control">
+                                                                                            <option selected disabled>Select</option>
+                                                                                            <option value="">Withdrawn by Buyer</option>
+                                                                                            <option value="">Product/Service out of stock/no longer available</option>
+                                                                                            <option value="">Duplicate Inquiry</option>
+                                                                                            <option value="">Not Interested Anymore</option>
+                                                                                            <option value="">My Reason is not listed here</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            
+                                                                            <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
                                                 @endif
                                                 
                                             </tbody>
@@ -300,13 +363,17 @@
         $(document).ready(function(){
             $('#group_wies_search').keyup(function(){
                 var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
-                $('.item').show();
+                $('.data-row').show();
                 var found = false; // Flag to track if any items are found
-                $('.item').each(function() {
-                    var group_name = $(this).find('.group_name').text().toLowerCase(); // Get location text and convert to lowercase
-                    if (group_name.indexOf(selectedValue) === -1) {
-                        $(this).hide(); // Hide the item if location doesn't match
+                var count =0;
+                $('.data-row').each(function() {
+                    var row = $(this);
+                    var inquiry_id = row.find('.inquiry_id').text().toLowerCase();
+                    var inquiry_title = row.find('.inquiry_title').text().toLowerCase();
+                    if (inquiry_id.indexOf(selectedValue) === -1 && inquiry_title.indexOf(selectedValue) === -1) {
+                        row.hide(); // Hide the row if neither inquiry_id nor inquiry_title matches
                     } else {
+                        count+=1;
                         found = true; // Set the flag to true if at least one item is found
                     }
                 });

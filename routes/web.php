@@ -96,7 +96,6 @@ Route::get('/clear-cache', function() {
             Route::get('/live-inquiries', [BuyerDashboardController::class, 'live_inquiries'])->name('buyer_live_inquiries');
             Route::get('/live-inquiries-fetch-ajax', [BuyerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('buyer_live_inquiries_by_ajax');
         });
-
         // Seller Dashboard
         Route::group(['prefix'  =>   'seller'], function() {
             Route::get('/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
@@ -105,8 +104,9 @@ Route::get('/clear-cache', function() {
             Route::get('/pending-inquiries', [SellerDashboardController::class, 'pending_inquiries'])->name('seller_pending_inquiries');
             Route::get('/confirmed-inquiries', [SellerDashboardController::class, 'confirmed_inquiries'])->name('seller_confirmed_inquiries');
             Route::get('/history-inquiries', [SellerDashboardController::class, 'history_inquiries'])->name('seller_history_inquiries');
+            Route::post('/start-quotes', [SellerDashboardController::class, 'seller_start_quotes'])->name('seller_start_quotes');
+            Route::get('/live-inquiries-fetch-ajax', [SellerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('seller_live_inquiries_by_ajax');
         });
-
     });
 // Admin login routes
 // Route::redirect('/', '/admin/login');

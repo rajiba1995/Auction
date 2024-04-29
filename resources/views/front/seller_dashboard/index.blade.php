@@ -18,8 +18,8 @@
                         <div class="col-12">
                             <div class="inner-wrap">
                                 <ul>
-                                    <li>Home</li>
-                                    <li>&nbsp;>&nbsp;Supplier Dashboard</span></li>
+                                    <li><a href="{{asset('')}}">Home</a></li>
+                                    <li>&nbsp;>&nbsp;<a href="{{route('user_seller_dashboard')}}">Supplier Dashboard</a></span></li>
                                 </ul>
                             </div>
                         </div>
@@ -162,23 +162,22 @@
                                     <div class="table-responsive">
                                         <ul class="supplier-groups-table">
                                             <li class="heading-row">
-                                                <div class="groups-th">Groups({{count($group_wise_list)}})</div>
-                                                <div class="created-by-business-name-th">Created by(Business Name)</div>
-                                                <div class="created-by-name-th">Created by(Name)</div>
+                                                <div class="groups-th">Groups (<span id="group_count">{{count($group_wise_list)}}</span>)</div>
+                                                <div class="created-by-business-name-th">Buyer(Business Name)</div>
+                                                <div class="created-by-name-th">Buyer(Name)</div>
                                                 <div class="phone-number-th">Phone Number</div>
                                             </li>
                                             @foreach ( $group_wise_list as $item ) 
-                                            @if($item->GroupWacthListData && $item->SellerData)
                                             <li class="data-row">
                                                 <div class="groups-td">
                                                     <img src="{{asset('frontend/assets/images/group.png')}}" alt="Group">
-                                                    <span class="group_name">{{ ucfirst($item->GroupWacthListData->group_name) }}</span>
+                                                    <span class="group_name">{{ ucfirst($item->group_name) }}</span>
                                                 </div>
-                                                <div class="created-by-business-name-td">{{ ucfirst($item->SellerData->business_name) }}</div>
-                                                <div class="created-by-name-td">{{ ucfirst($item->SellerData->name) }}</div>
-                                                <div class="phone-number-td">{{$item->SellerData->country_code}}-{{$item->SellerData->mobile}}</div>
+                                               {{-- {{ dd($item)}} --}}
+                                                <div class="created-by-business-name-td">{{ ucfirst($item->business_name) }}</div>
+                                                <div class="created-by-name-td">{{ ucfirst($item->buyer_name) }}</div>
+                                                <div class="phone-number-td">{{$item->country_code}}-{{$item->mobile}}</div>
                                             </li>
-                                            @endif
                                             @endforeach                                         
                                         </ul>
                                     </div>
@@ -201,14 +200,17 @@
                 var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
                 $('.data-row').show();
                 var found = false; // Flag to track if any items are found
+                var count = 0;
                 $('.data-row').each(function() {
                     var group_name = $(this).find('.group_name').text().toLowerCase(); // Get location text and convert to lowercase
                     if (group_name.indexOf(selectedValue) === -1) {
                         $(this).hide(); // Hide the item if location doesn't match
                     } else {
+                        count+=1;
                         found = true; // Set the flag to true if at least one item is found
                     }
                 });
+                $('#group_count').text(count);
                 if (!found) {
                     $('#noDataAlert').remove(); // Remove the alert if items are found
                     var append = `<div class="alert alert-danger" id="noDataAlert" role="alert">
