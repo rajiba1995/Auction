@@ -10,6 +10,7 @@ use App\Contracts\MasterContract;
 use App\Models\WatchList;
 use App\Models\Inquiry;
 use App\Models\InquiryParticipant;
+use App\Models\OutsideParticipant;
 use App\Models\GroupWatchList;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
@@ -40,6 +41,7 @@ class AuctionGenerationController extends Controller
         $all_category = $this->MasterRepository->getAllActiveCollections();
         $user = $this->AuthCheck();
         $inquiry_id = "";
+        $group_id = "";
         $watch_list_data = [];
         $existing_inquiry = [];
         if($request->inquiry_type=="existing-inquiry"){
@@ -48,9 +50,10 @@ class AuctionGenerationController extends Controller
         }
         if($request->group && $request->inquiry_type){
             try {
-                $id = Crypt::decrypt($request->group);
-                $watch_list_data = WatchList::with('SellerData')->where('group_id', $id)->get();
-                return view('front.user.auction-inquiry-generation', compact('existing_inquiry', 'user','watch_list_data', 'inquiry_id', 'all_category'));
+                $group_id = Crypt::decrypt($request->group);
+                $watch_list_data = WatchList::with('SellerData')->where('group_id', $group_id)->get();
+                $outside_participant_data = OutsideParticipant::where('group_id', $group_id)->where('buyer_id', $user->id)->get();
+                // return view('front.user.auction-inquiry-generation', compact('group_id','existing_inquiry', 'user','watch_list_data', 'inquiry_id', 'all_category', 'outside_participant_data', 'outside_participant_without_group'));
             } catch ( DecryptException $e) {
                 return abort(404);
             }
@@ -59,7 +62,9 @@ class AuctionGenerationController extends Controller
                 $inquiry_id = Crypt::decrypt($request->inquiry_id);
                 $existing_inquiry = Inquiry::with('ParticipantsData')->where('id', $inquiry_id)->first();
                 $watch_list_data = WatchList::with('SellerData')->where('group_id', null)->where('buyer_id', $user->id)->get();
-                return view('front.user.auction-inquiry-generation', compact('user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry'));
+                $outside_participant_without_group = [];
+                $outside_participant_data = [];
+                // return view('front.user.auction-inquiry-generation', compact('group_id','user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group'));
             } catch ( DecryptException $e) {
                 return abort(404);
             }
@@ -67,14 +72,20 @@ class AuctionGenerationController extends Controller
             try{
                 $id = Crypt::decrypt($request->seller);
                 $watch_list_data = WatchList::with('SellerData')->where('group_id', null)->where('buyer_id', $user->id)->where('seller_id', $id)->get();
-                return view('front.user.auction-inquiry-generation', compact('user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry'));
+                $outside_participant_data = [];
+                $outside_participant_without_group = [];
+                // return view('front.user.auction-inquiry-generation', compact('group_id','user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group'));
             } catch ( DecryptException $e) {
                 return abort(404);
             }
         }else{
             $watch_list_data = WatchList::with('SellerData')->where('group_id', null)->where('buyer_id', $user->id)->get();
-            return view('front.user.auction-inquiry-generation', compact('user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry'));
+            $outside_participant_data = [];
+            $outside_participant_without_group = [];
         }
+        
+        $outside_participant_without_group = OutsideParticipant::where('group_id', null)->where('buyer_id', $user->id)->get();
+        return view('front.user.auction-inquiry-generation', compact('group_id', 'user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group'));
     }
 
     public function auction_inquiry_generation_store(Request $request){

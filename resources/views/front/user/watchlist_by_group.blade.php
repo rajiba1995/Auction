@@ -175,6 +175,40 @@
                                 </div>
                             </div>
                             @endforeach
+
+                            @if(count($outSideParticipats)>0)
+                                @foreach($outSideParticipats as $key=>$item)
+                                <div class="col-lg-6 col-12 content-col">
+                                    <div class="bidder-box type-2">
+                                        <div class="dots-cta">
+                                            <button type="button" class="btn-remove remove_outside_participants" data-id="{{ $item->id }}">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M3 6H5H21" stroke="#F70000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="#F70000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M10 11V17" stroke="#F70000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M14 11V17" stroke="#F70000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div class="content-holder">
+                                            <div class="approvals">
+                        
+                                            </div>
+                                            <div class="name">{{$item->name}}</div>
+                                            <div class="info">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M15.0499 5C16.0267 5.19057 16.9243 5.66826 17.628 6.37194C18.3317 7.07561 18.8094 7.97326 18.9999 8.95M15.0499 1C17.0792 1.22544 18.9715 2.13417 20.4162 3.57701C21.8608 5.01984 22.7719 6.91101 22.9999 8.94M21.9999 16.92V19.92C22.0011 20.1985 21.944 20.4742 21.8324 20.7293C21.7209 20.9845 21.5572 21.2136 21.352 21.4019C21.1468 21.5901 20.9045 21.7335 20.6407 21.8227C20.3769 21.9119 20.0973 21.9451 19.8199 21.92C16.7428 21.5856 13.7869 20.5341 11.1899 18.85C8.77376 17.3147 6.72527 15.2662 5.18993 12.85C3.49991 10.2412 2.44818 7.27099 2.11993 4.18C2.09494 3.90347 2.12781 3.62476 2.21643 3.36162C2.30506 3.09849 2.4475 2.85669 2.6347 2.65162C2.82189 2.44655 3.04974 2.28271 3.30372 2.17052C3.55771 2.05833 3.83227 2.00026 4.10993 2H7.10993C7.59524 1.99522 8.06572 2.16708 8.43369 2.48353C8.80166 2.79999 9.04201 3.23945 9.10993 3.72C9.23656 4.68007 9.47138 5.62273 9.80993 6.53C9.94448 6.88792 9.9736 7.27691 9.89384 7.65088C9.81408 8.02485 9.6288 8.36811 9.35993 8.64L8.08993 9.91C9.51349 12.4135 11.5864 14.4864 14.0899 15.91L15.3599 14.64C15.6318 14.3711 15.9751 14.1858 16.3491 14.1061C16.723 14.0263 17.112 14.0555 17.4699 14.19C18.3772 14.5286 19.3199 14.7634 20.2799 14.89C20.7657 14.9585 21.2093 15.2032 21.5265 15.5775C21.8436 15.9518 22.0121 16.4296 21.9999 16.92Z" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                                +91-{{$item->mobile}}
+                                            </div>
+                                        </div>
+                                        <div class="cta">
+                                            <button type="button" class="btn btn-cta btn-animated btn-yellow">Previously Worked</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                     <div class="tab-pane fade" id="watchlistgroupswebsite" role="tabpanel" aria-labelledby="watchlistgroupswebsite-tab" tabindex="0">
@@ -301,7 +335,41 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="watchlistgroupsoutside" role="tabpanel" aria-labelledby="watchlistgroupsoutside-tab" tabindex="0">
+                        <div class="row list-section">
+                            @if(count($outSideParticipats)>0)
+                                @foreach($outSideParticipats as $key=>$item)
+                                <div class="col-lg-6 col-12 content-col">
+                                    <div class="bidder-box type-2">
+                                        <div class="dots-cta">
+                                            <button type="button" class="btn-remove remove_outside_participants" data-id="{{ $item->id }}">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M3 6H5H21" stroke="#F70000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="#F70000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M10 11V17" stroke="#F70000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M14 11V17" stroke="#F70000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div class="content-holder">
+                                            <div class="approvals">
                         
+                                            </div>
+                                            <div class="name">{{$item->name}}</div>
+                                            <div class="info">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M15.0499 5C16.0267 5.19057 16.9243 5.66826 17.628 6.37194C18.3317 7.07561 18.8094 7.97326 18.9999 8.95M15.0499 1C17.0792 1.22544 18.9715 2.13417 20.4162 3.57701C21.8608 5.01984 22.7719 6.91101 22.9999 8.94M21.9999 16.92V19.92C22.0011 20.1985 21.944 20.4742 21.8324 20.7293C21.7209 20.9845 21.5572 21.2136 21.352 21.4019C21.1468 21.5901 20.9045 21.7335 20.6407 21.8227C20.3769 21.9119 20.0973 21.9451 19.8199 21.92C16.7428 21.5856 13.7869 20.5341 11.1899 18.85C8.77376 17.3147 6.72527 15.2662 5.18993 12.85C3.49991 10.2412 2.44818 7.27099 2.11993 4.18C2.09494 3.90347 2.12781 3.62476 2.21643 3.36162C2.30506 3.09849 2.4475 2.85669 2.6347 2.65162C2.82189 2.44655 3.04974 2.28271 3.30372 2.17052C3.55771 2.05833 3.83227 2.00026 4.10993 2H7.10993C7.59524 1.99522 8.06572 2.16708 8.43369 2.48353C8.80166 2.79999 9.04201 3.23945 9.10993 3.72C9.23656 4.68007 9.47138 5.62273 9.80993 6.53C9.94448 6.88792 9.9736 7.27691 9.89384 7.65088C9.81408 8.02485 9.6288 8.36811 9.35993 8.64L8.08993 9.91C9.51349 12.4135 11.5864 14.4864 14.0899 15.91L15.3599 14.64C15.6318 14.3711 15.9751 14.1858 16.3491 14.1061C16.723 14.0263 17.112 14.0555 17.4699 14.19C18.3772 14.5286 19.3199 14.7634 20.2799 14.89C20.7657 14.9585 21.2093 15.2032 21.5265 15.5775C21.8436 15.9518 22.0121 16.4296 21.9999 16.92Z" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                                +91-{{$item->mobile}}
+                                            </div>
+                                        </div>
+                                        <div class="cta">
+                                            <button type="button" class="btn btn-cta btn-animated btn-yellow">Previously Worked</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -318,84 +386,37 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="input-row">
-                    <div class="input-wrap">
-                        <label>Name</label>
-                        <input type="text" placeholder="Ex, John" class="border-red">
+                <form id="inviteForm" >
+                    @csrf
+                    <div class="input-row">
+                            <div class="input-wrap">
+                                <label>Name</label>
+                                <input type="text" name="name[]" placeholder="Ex, John" class="border-red" required>
+                            </div>
+                            <div class="input-wrap">
+                                <label>Phone Number *</label>
+                                <input type="text" name="phone[]" placeholder="+91 xx - xxx - xxxx" class="border-red" required>
+                            </div>
+                        <button type="button" class="btn-add" id="addMore">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 5V19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 12H19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        {{-- <button type="button" class="btn-remove">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 6H5H21" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button> --}}
                     </div>
-                    <div class="input-wrap">
-                        <label>Phone Number *</label>
-                        <input type="text" placeholder="Ex xx - xxx - xxxx" class="border-red">
-                    </div>
-                    <button type="button" class="btn-add">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 5V19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M5 12H19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="btn-remove">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 6H5H21" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M10 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="input-row">
-                    <div class="input-wrap">
-                        <label>Name</label>
-                        <input type="text" placeholder="Ex, John" class="border-red">
-                    </div>
-                    <div class="input-wrap">
-                        <label>Phone Number *</label>
-                        <input type="text" placeholder="Ex xx - xxx - xxxx" class="border-red">
-                    </div>
-                    <button type="button" class="btn-add">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 5V19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M5 12H19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="btn-remove">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 6H5H21" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M10 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="input-row">
-                    <div class="input-wrap">
-                        <label>Name</label>
-                        <input type="text" placeholder="Ex, John" class="border-red">
-                    </div>
-                    <div class="input-wrap">
-                        <label>Phone Number *</label>
-                        <input type="text" placeholder="Ex xx - xxx - xxxx" class="border-red">
-                    </div>
-                    <button type="button" class="btn-add">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M12 5V19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M5 12H19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                    <button type="button" class="btn-remove">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M3 6H5H21" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M10 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <button type="button" class="btn btn-animated btn-submit">Invite Now</button>
-
+                    <input type="hidden"  name="groupId" value="{{$GroupWatchList->id}}"/>
+                    <button type="button" class="btn btn-animated btn-submit" onclick="submitIviteForm()">Invite Now</button>
+                </form>
             </div>
+      
         </div>
     </div>
 </div>
@@ -523,5 +544,117 @@
             });
         });
     });
+    $(document).ready(function () {
+        $('.remove_outside_participants').click(function () {
+            var itemId = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ route("user.outside_participant.delete") }}',
+                        data: {
+                            id:itemId
+                        },
+                        success: function(response) {
+                            if(response.status==200){
+                                Swal.fire({
+                                    title: 'Deleted!',
+                                    text: 'Your group has been deleted.',
+                                    icon: 'success',
+                                    timer: 2000 // Adjust the timer as needed
+                                });
+                                setTimeout(function() {
+                                    // Reload the page
+                                    location.reload();
+                                }, 1000);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    });
+
+    
+    function addInputField() {
+        var inputRow = document.querySelector('.input-row');
+        var inputWrap = document.createElement('div');
+        inputWrap.classList.add('input-wrap');
+        inputWrap.innerHTML = '<label>Name</label><input type="text" placeholder="Ex, John" class="border-red">';
+        inputRow.insertBefore(inputWrap, inputRow.lastChild.previousSibling);
+    }
+
+    function removeInputField() {
+        var inputRow = document.querySelector('.input-row');
+        var inputWraps = inputRow.querySelectorAll('.input-wrap');
+        if (inputWraps.length > 2) {
+            inputRow.removeChild(inputRow.lastChild.previousSibling);
+        }
+    }
+
 </script>
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#addMore").click(function() {
+                $('<div class="input-row">' +
+                    '<div class="input-wrap">' +
+                    '<label>Name</label>' +
+                    '<input type="text" name="name[]" placeholder="Ex, John" class="border-red">' +
+                    '</div>' +
+                    '<div class="input-wrap">' +
+                    '<label>Phone Number *</label>' +
+                    '<input type="text"  name="phone[]" placeholder="Ex xx - xxx - xxxx" class="border-red">' +
+                    '</div>' +
+                    '<button type="button" class="btn-remove">' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                    '<path d="M3 6H5H21" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '<path d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '<path d="M10 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '<path d="M14 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '</svg>' +
+                    '</button>' +
+                    '</div>').insertAfter(".input-row:last");
+            });
+        
+            $('body').on('click', '.btn-remove', function() {
+                $(this).closest('.input-row').remove();
+            });
+        });
+
+ </script>
+ <script>
+        function submitIviteForm(){
+            event.preventDefault();
+            // var formData = new FormData(document.getElementById('inviteForm'));
+            var formData = $('#inviteForm').serialize();       
+            $.ajax({
+                type: "POST",
+                url: ' {{route("user.invite_outside_participants.store") }} ',
+                data: formData,
+                success: function(response) {
+                    // Handle success response
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error(xhr.responseText);
+                }
+            });
+    
+        }
+</script>
+    
+    
 @endsection
