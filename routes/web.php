@@ -80,6 +80,8 @@ Route::get('/clear-cache', function() {
                 Route::get('/delete/{id}', [UserController::class, 'myWatchlistDataDelete'])->name('user.watchlist.delete');
                 Route::get('/single_watchlist/delete', [UserController::class, 'DeleteSingleWatchlist'])->name('user.single_watchlist.delete');
                 Route::get('/{slug}', [UserController::class, 'my_watchlist_by_group'])->name('user.watchlist.my_watchlist_by_group');
+                Route::post('/invite_outside_participants', [UserController::class, 'InviteOutSideParticipants'])->name('user.invite_outside_participants.store');
+                Route::get('/outside_participants/delete', [UserController::class, 'OutSideParticipantsDelete'])->name('user.outside_participant.delete');
             });
         });
     

@@ -179,6 +179,52 @@
                                     </div>
                                 </div>
                                 @endif
+                                @if(count($outside_participant_data)>0)
+                                    <div class="row input-row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Outside Participants*</label>
+                                                <div class="participants-block border-red">
+                                                    @foreach ($outside_participant_data as $item)
+                                                        <label class="participant" id="participant{{$item}}">
+                                                                <input type="hidden" name="outside_participant[]" value="{{$item->id}}">
+                                                            {{$item->name}}
+                                                            <span class="remove Exist_remove2" data-id="{{$item->id}}">
+                                                                <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13.3636 3.7738L4.66797 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                    <path d="M4.66797 3.7738L13.3636 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                </svg>
+                                                            </span>
+                                                        </label>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                                @if(count($outside_participant_without_group)>0 && $group_id=="")
+                                    <div class="row input-row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Outside Participants*</label>
+                                                <div class="participants-block border-red">
+                                                    @foreach ($outside_participant_without_group as $item)
+                                                        <label class="participant" id="participant{{$item}}">
+                                                                <input type="hidden" name="outside_participant[]" value="{{$item->id}}">
+                                                            {{$item->name}}
+                                                            <span class="remove Exist_remove2" data-id="{{$item->id}}">
+                                                                <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13.3636 3.7738L4.66797 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                    <path d="M4.66797 3.7738L13.3636 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                </svg>
+                                                            </span>
+                                                        </label>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                                 @if(count($watch_list_data)>0)
                                 <div class="row input-row">
                                     <div class="col-12">
@@ -224,7 +270,7 @@
                                         </svg>                                                
                                         Add Participants from Website
                                     </button>
-                                    <button type="button" class="btn btn-add-invite">
+                                    <button type="button" class="btn btn-add-invite" data-bs-toggle="modal" data-bs-target="#inviteModal">
                                         <svg width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g clip-path="url(#clip0_613_9373)">
                                             <path d="M15.332 17.5V15.8333C15.332 14.9493 14.9282 14.1014 14.2093 13.4763C13.4904 12.8512 12.5154 12.5 11.4987 12.5H4.79036C3.7737 12.5 2.79868 12.8512 2.07979 13.4763C1.3609 14.1014 0.957031 14.9493 0.957031 15.8333V17.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -241,7 +287,7 @@
                                         Invite Participants from Outside
                                     </button>
                                 </div>
-                               
+                            
                                 <div class="row input-row">
                                     <div class="col-lg-6 col-12">
                                         <div class="form-group">
@@ -366,6 +412,51 @@
         
     </div>
 </div>
+
+   {{-- invite modal --}}
+   <div class="modal fade invite-modal" id="inviteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Invite Participants from Outside</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="inviteForm" >
+                    @csrf
+                    <div class="input-row">
+                            <div class="input-wrap">
+                                <input type="hidden" name="groupId" value="{{$group_id}}">
+                                <label>Name</label>
+                                <input type="text" name="name[]" placeholder="Ex, John" class="border-red" required>
+                            </div>
+                            <div class="input-wrap">
+                                <label>Phone Number *</label>
+                                <input type="text" name="phone[]" placeholder="+91 xx - xxx - xxxx" class="border-red" required>
+                            </div>
+                        <button type="button" class="btn-add" id="addMore">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 5V19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M5 12H19" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        {{-- <button type="button" class="btn-remove">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 6H5H21" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button> --}}
+                    </div>
+                    <button type="button" class="btn btn-animated btn-submit" onclick="submitIviteForm()">Add Now</button>
+                </form>
+            </div>
+      
+        </div>
+    </div>
+</div>
+
 @endsection
 @section('script')
 <script>
@@ -515,5 +606,55 @@ $(document).ready(function() {
         });
     });
 });
+</script>
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#addMore").click(function() {
+                $('<div class="input-row">' +
+                    '<div class="input-wrap">' +
+                    '<label>Name</label>' +
+                    '<input type="text" name="name[]" placeholder="Ex, John" class="border-red">' +
+                    '</div>' +
+                    '<div class="input-wrap">' +
+                    '<label>Phone Number *</label>' +
+                    '<input type="text"  name="phone[]" placeholder="Ex xx - xxx - xxxx" class="border-red">' +
+                    '</div>' +
+                    '<button type="button" class="btn-remove">' +
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">' +
+                    '<path d="M3 6H5H21" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '<path d="M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '<path d="M10 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '<path d="M14 11V17" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>' +
+                    '</svg>' +
+                    '</button>' +
+                    '</div>').insertAfter(".input-row:last");
+            });
+        
+            $('body').on('click', '.btn-remove', function() {
+                $(this).closest('.input-row').remove();
+            });
+        });
+
+ </script>
+  <script>
+    function submitIviteForm(){
+        event.preventDefault();
+        // var formData = new FormData(document.getElementById('inviteForm'));
+        var formData = $('#inviteForm').serialize();       
+        $.ajax({
+            type: "POST",
+            url: ' {{route("user.invite_outside_participants.store") }} ',
+            data: formData,
+            success: function(response) {
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                console.error(xhr.responseText);
+            }
+        });
+
+    }
 </script>
 @endsection

@@ -14,6 +14,7 @@ use App\Models\WatchList;
 use App\Models\MyBadge;
 use App\Models\User;
 use App\Models\MyWallet;
+use App\Models\OutsideParticipant;
 use App\Models\MyPackage;
 use App\Models\Package;
 use App\Models\GroupWatchList;
@@ -741,7 +742,11 @@ class UserController extends Controller{
         $WatchList->delete();
         return redirect()->back();
     }
-    
+    public function OutSideParticipantsDelete(Request $request){
+        $outSideParticipant = OutsideParticipant::findOrFail($request->id);
+        $outSideParticipant->delete();
+        return response()->json(['status'=>200]);     
+    }
     public function photos_and_documents_edit(){
         $data = $this->AuthCheck();
         $AllImages = $this->userRepository->getUserAllImages($data->id);
@@ -886,7 +891,9 @@ class UserController extends Controller{
         if($GroupWatchList){
             $existing_inquiries= $this->BuyerDashboardRepository->get_all_existing_inquiries_by_user($User->id);
             $WatchList =WatchList::with('SellerData')->where('group_id', $GroupWatchList->id)->get();
-             return view('front.user.watchlist_by_group', compact('WatchList', 'GroupWatchList', 'existing_inquiries'));
+            $outSideParticipats =OutsideParticipant::with('BuyerDetails')->where('group_id', $GroupWatchList->id)->get();
+            // dd($outSideParticipats);
+             return view('front.user.watchlist_by_group', compact('WatchList', 'GroupWatchList', 'existing_inquiries','outSideParticipats'));
         }else{
             return redirect()->route('user.watchlist')->with('warning', 'Group not found in your panel. Please enter a valid group name.');
         }
@@ -923,4 +930,28 @@ class UserController extends Controller{
         $data = $this->MasterRepository->StateWiseCityData($request->state);
         return response()->json(["status"=>200, 'data'=>$data]);
     }
+
+    public function InviteOutSideParticipants(Request $request){
+        $data = $this->AuthCheck();
+        // Make sure both arrays have the same number of elements
+      if(count($request->name) !== count($request->phone)) {
+          return response()->json(['error' => 'Names and phones arrays must have the same number of elements'], 400);
+      }
+        $goupId = $request->groupId;
+        $name = $request->name;
+        $phone = $request->phone;
+
+        // Iterate over the arrays and save each participant
+        foreach($request->name as $key => $name) {
+            $phone = $request->phone[$key]; // Get corresponding phone number
+            $outSide_participants = new OutsideParticipant();
+            $outSide_participants->group_id = $request->groupId; // Use groupId directly
+            $outSide_participants->buyer_id = $data->id;
+            $outSide_participants->name = $name;
+            $outSide_participants->mobile = $phone;
+            $outSide_participants->save();
+        }
+
+        return response()->json(['status' => 200]);
+        }
 }
