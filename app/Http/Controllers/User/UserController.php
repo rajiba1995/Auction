@@ -22,6 +22,7 @@ use App\Models\UserImage;
 use App\Models\SellerReport;
 use App\Models\Transaction;
 use App\Models\UserDocument;
+use App\Models\InquiryOutsideParticipant;
 use App\Models\Collection;
 use App\Models\UserAdditionalDocument;
 use App\Models\RequirementConsumption;
@@ -744,6 +745,11 @@ class UserController extends Controller{
     }
     public function OutSideParticipantsDelete(Request $request){
         $outSideParticipant = OutsideParticipant::findOrFail($request->id);
+        $outSideParticipant->delete();
+        return response()->json(['status'=>200]);     
+    }
+    public function ExsistingOutSideParticipantsDelete(Request $request){
+        $outSideParticipant = InquiryOutsideParticipant::findOrFail($request->id);
         $outSideParticipant->delete();
         return response()->json(['status'=>200]);     
     }

@@ -179,6 +179,29 @@
                                     </div>
                                 </div>
                                 @endif
+                                @if(count($exsisting_outside_participant)>0)
+                                    <div class="row input-row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Existing Outside Participants*</label>
+                                                <div class="participants-block border-red">
+                                                    @foreach ($exsisting_outside_participant as $item)
+                                                        <label class="participant" id="participant{{$item}}">
+                                                                <input type="hidden" name="outside_participant[]" value="{{$item->id}}">
+                                                            {{$item->name}}
+                                                            <span class="remove exists_outside_participant_remove" data-id="{{$item->id}}">
+                                                                <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M13.3636 3.7738L4.66797 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                    <path d="M4.66797 3.7738L13.3636 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                </svg>
+                                                            </span>
+                                                        </label>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
                                 @if(count($outside_participant_data)>0)
                                     <div class="row input-row">
                                         <div class="col-12">
@@ -189,7 +212,7 @@
                                                         <label class="participant" id="participant{{$item}}">
                                                                 <input type="hidden" name="outside_participant[]" value="{{$item->id}}">
                                                             {{$item->name}}
-                                                            <span class="remove Exist_remove2" data-id="{{$item->id}}">
+                                                            <span class="remove outside_participant_remove" data-id="{{$item->id}}">
                                                                 <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M13.3636 3.7738L4.66797 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                                     <path d="M4.66797 3.7738L13.3636 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -212,7 +235,7 @@
                                                         <label class="participant" id="participant{{$item}}">
                                                                 <input type="hidden" name="outside_participant[]" value="{{$item->id}}">
                                                             {{$item->name}}
-                                                            <span class="remove Exist_remove2" data-id="{{$item->id}}">
+                                                            <span class="remove outside_participant_remove" data-id="{{$item->id}}">
                                                                 <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M13.3636 3.7738L4.66797 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                                     <path d="M4.66797 3.7738L13.3636 11.2932" stroke="#ee2737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -517,6 +540,86 @@
                                 Swal.fire({
                                     title: "Success!",
                                     text: "Participant has been deleted successfully!",
+                                    icon: "success"
+                                });
+                                setTimeout(function() {
+                                    // Reload the page
+                                    location.reload();
+                                }, 1000);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('.outside_participant_remove').click(function () {
+            var itemId = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ route("user.outside_participant.delete") }}',
+                        data: {
+                            id:itemId
+                        },
+                        success: function(response) {
+                            if(response.status==200){
+                                Swal.fire({
+                                    title: "Success!",
+                                    text: "Outside Participant has been deleted successfully!",
+                                    icon: "success"
+                                });
+                                setTimeout(function() {
+                                    // Reload the page
+                                    location.reload();
+                                }, 1000);
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('.exists_outside_participant_remove').click(function () {
+            var itemId = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ route("user.exsists_outside_participant.delete") }}',
+                        data: {
+                            id:itemId
+                        },
+                        success: function(response) {
+                            if(response.status==200){
+                                Swal.fire({
+                                    title: "Success!",
+                                    text: "Existing Outside Participant has been deleted successfully!",
                                     icon: "success"
                                 });
                                 setTimeout(function() {
