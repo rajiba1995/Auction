@@ -11,6 +11,7 @@ use App\Models\WatchList;
 use App\Models\Inquiry;
 use App\Models\InquiryParticipant;
 use App\Models\OutsideParticipant;
+use App\Models\InquiryOutsideParticipant;
 use App\Models\GroupWatchList;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
@@ -44,6 +45,7 @@ class AuctionGenerationController extends Controller
         $group_id = "";
         $watch_list_data = [];
         $existing_inquiry = [];
+        $exsisting_outside_participant = [];
         if($request->inquiry_type=="existing-inquiry"){
             $inquiry_id = $request->inquiry_id;
             $existing_inquiry = Inquiry::with('ParticipantsData')->where('inquiry_id', $inquiry_id)->first();
@@ -61,6 +63,7 @@ class AuctionGenerationController extends Controller
             try{
                 $inquiry_id = Crypt::decrypt($request->inquiry_id);
                 $existing_inquiry = Inquiry::with('ParticipantsData')->where('id', $inquiry_id)->first();
+                $exsisting_outside_participant = InquiryOutsideParticipant::where('inquiry_id', $existing_inquiry->id)->get();
                 $watch_list_data = WatchList::with('SellerData')->where('group_id', null)->where('buyer_id', $user->id)->get();
                 $outside_participant_without_group = [];
                 $outside_participant_data = [];
@@ -84,8 +87,9 @@ class AuctionGenerationController extends Controller
             $outside_participant_without_group = [];
         }
         
+        
         $outside_participant_without_group = OutsideParticipant::where('group_id', null)->where('buyer_id', $user->id)->get();
-        return view('front.user.auction-inquiry-generation', compact('group_id', 'user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group'));
+        return view('front.user.auction-inquiry-generation', compact('group_id', 'user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group','exsisting_outside_participant'));
     }
 
     public function auction_inquiry_generation_store(Request $request){
@@ -111,7 +115,6 @@ class AuctionGenerationController extends Controller
         try {
             $inquiry_id = $request->saved_inquiry_id?$request->saved_inquiry_id:"";
             $inquiry = Inquiry::where('id', $inquiry_id)->first();
-            // dd($request->all());
             if(empty($inquiry)){
                 $inquiry = new Inquiry;
                 if($request->submit_type == "generate"){
@@ -165,6 +168,29 @@ class AuctionGenerationController extends Controller
                   
                 }
             }
+            
+            if($inquiry && isset($request->outside_participant) && count($request->outside_participant) > 0){
+              
+                foreach($request->outside_participant as $key => $item){
+                    $outside_participant_data = OutsideParticipant::where('id', $item)->first();
+                    if($outside_participant_data ){
+                        // $Exist_outside_participant = InquiryOutsideParticipant::where('inquiry_id', $inquiry->id)->where('mobile', $outside_participant_data->mobile)->first();
+                        // if(!isset($Exist_outside_participant)){
+                            $inqOutParti =  new InquiryOutsideParticipant;
+                            $inqOutParti->inquiry_id = $inquiry->id;
+                            $inqOutParti->buyer_id = $outside_participant_data->buyer_id;
+                            $inqOutParti->name = $outside_participant_data->name;
+                            $inqOutParti->mobile = $outside_participant_data->mobile;
+                            $inqOutParti->save();
+                            if($inqOutParti){
+                                $outside_participant_data->delete();
+                            }
+                        // }
+                    }
+                  
+                }
+            }
+
             if($request->submit_type == "generate"){
                 return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry has been generated successfully.');
 
@@ -172,7 +198,7 @@ class AuctionGenerationController extends Controller
                 return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry data has been saved successfully.');
             }
         } catch (\Exception $e) {
-            // dd($e->getMessage());
+            dd($e->getMessage());
              return abort(404);
          }
     }

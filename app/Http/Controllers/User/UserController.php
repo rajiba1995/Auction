@@ -22,6 +22,7 @@ use App\Models\UserImage;
 use App\Models\SellerReport;
 use App\Models\Transaction;
 use App\Models\UserDocument;
+use App\Models\InquiryOutsideParticipant;
 use App\Models\Collection;
 use App\Models\UserAdditionalDocument;
 use App\Models\RequirementConsumption;
@@ -495,9 +496,10 @@ class UserController extends Controller{
     public function payment_management(){
         $data = $this->AuthCheck();
         $packages = $this->userRepository->getUserAllPackages();
+        $seller_packages = $this->userRepository->getSellerAllPackages();
         $myBadges = $this->userRepository->getAllBadgesById($data->id);
         $allBadges = $this->userRepository->getAllBadges($myBadges);
-        return view('front.user.payment_management', compact('data','packages','myBadges','allBadges'));
+        return view('front.user.payment_management', compact('data','packages','seller_packages','myBadges','allBadges'));
     }
     public function package_payment_management(Request $request){
         try {
@@ -744,6 +746,11 @@ class UserController extends Controller{
     }
     public function OutSideParticipantsDelete(Request $request){
         $outSideParticipant = OutsideParticipant::findOrFail($request->id);
+        $outSideParticipant->delete();
+        return response()->json(['status'=>200]);     
+    }
+    public function ExsistingOutSideParticipantsDelete(Request $request){
+        $outSideParticipant = InquiryOutsideParticipant::findOrFail($request->id);
         $outSideParticipant->delete();
         return response()->json(['status'=>200]);     
     }

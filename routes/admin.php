@@ -96,14 +96,26 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
             Route::get('/status/{id}', [BlogController::class, 'BlogStatus'])->name('admin.blog.status');
             
         });
-        Route::group(['prefix'  =>   'package'], function() {
-            Route::get('', [PackageController::class, 'PackageIndex'])->name('admin.package.index');
-            Route::get('/create', [PackageController::class, 'PackageCreate'])->name('admin.package.create');
-            Route::post('/store', [PackageController::class, 'PackageStore'])->name('admin.package.store');
-            Route::get('/edit/{id}', [PackageController::class, 'PackageEdit'])->name('admin.package.edit');
-            Route::post('/update', [PackageController::class, 'PackageUpdate'])->name('admin.package.update');
-            Route::get('/delete/{id}', [PackageController::class, 'PackageDelete'])->name('admin.package.delete');
-            Route::get('/status/{id}', [PackageController::class, 'PackageStatus'])->name('admin.package.status');
+        //buyer-package
+        Route::group(['prefix'  =>   'buyer-package'], function() {
+            Route::get('', [PackageController::class, 'BuyerPackageIndex'])->name('admin.buyer.package.index');
+            Route::get('/create', [PackageController::class, 'BuyerPackageCreate'])->name('admin.buyer.package.create');
+            Route::post('/store', [PackageController::class, 'BuyerPackageStore'])->name('admin.buyer.package.store');
+            Route::get('/edit/{id}', [PackageController::class, 'BuyerPackageEdit'])->name('admin.buyer.package.edit');
+            Route::post('/update', [PackageController::class, 'BuyerPackageUpdate'])->name('admin.buyer.package.update');
+            Route::get('/delete/{id}', [PackageController::class, 'BuyerPackageDelete'])->name('admin.buyer.package.delete');
+            Route::get('/status/{id}', [PackageController::class, 'BuyerPackageStatus'])->name('admin.buyer.package.status');
+            
+        });
+        //buyer-package
+        Route::group(['prefix'  =>   'seller-package'], function() {
+            Route::get('', [PackageController::class, 'SellerPackageIndex'])->name('admin.seller.package.index');
+            Route::get('/create', [PackageController::class, 'SellerPackageCreate'])->name('admin.seller.package.create');
+            Route::post('/store', [PackageController::class, 'SellerPackageStore'])->name('admin.seller.package.store');
+            Route::get('/edit/{id}', [PackageController::class, 'SellerPackageEdit'])->name('admin.seller.package.edit');
+            Route::post('/update', [PackageController::class, 'SellerPackageUpdate'])->name('admin.seller.package.update');
+            Route::get('/delete/{id}', [PackageController::class, 'SellerPackageDelete'])->name('admin.seller.package.delete');
+            Route::get('/status/{id}', [PackageController::class, 'SellerPackageStatus'])->name('admin.seller.package.status');
             
         });
         // Business Management

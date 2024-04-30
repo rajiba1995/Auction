@@ -5,12 +5,12 @@
     <div class="report-table-box">
         <div class="heading-row mb-2">
             <h3>Update Package</h3>
-            <a href="{{route('admin.package.index')}}" class="btn btn-danger btn-sm">
+            <a href="{{route('admin.buyer.package.index')}}" class="btn btn-danger btn-sm">
                 <iconify-icon icon="icon-park-twotone:back"></iconify-icon>
                 Back 
             </a>
         </div>
-        <form action="{{route('admin.package.update')}}" method="POST" enctype="multipart/form-data">
+        <form action="{{route('admin.buyer.package.update')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-md-6 col-12">

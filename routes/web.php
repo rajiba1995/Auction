@@ -82,6 +82,7 @@ Route::get('/clear-cache', function() {
                 Route::get('/{slug}', [UserController::class, 'my_watchlist_by_group'])->name('user.watchlist.my_watchlist_by_group');
                 Route::post('/invite_outside_participants', [UserController::class, 'InviteOutSideParticipants'])->name('user.invite_outside_participants.store');
                 Route::get('/outside_participants/delete', [UserController::class, 'OutSideParticipantsDelete'])->name('user.outside_participant.delete');
+                Route::get('/exsisting_outside_participants/delete', [UserController::class, 'ExsistingOutSideParticipantsDelete'])->name('user.exsists_outside_participant.delete');
             });
         });
     
@@ -134,7 +135,9 @@ require 'admin.php';
 
 // Search User Module
 Route::get('/user/make_slug', [HomeController::class, 'UserGlobalMakeSlug'])->name('user.global.make_slug');
+Route::get('/user/make_slug/add_participant', [HomeController::class, 'UserGlobalMakeSlugParticipant'])->name('user.global.make_slug.participant');
 Route::get('/{location}/{keyword}', [HomeController::class, 'UserGlobalFilter'])->name('user.global.filter');
+Route::get('/{location}/{keyword}/{category}/{subcategory}', [HomeController::class, 'UserGlobalFilterAddParticipant'])->name('user.global.filter.add_participant');
 Route::get('/profile/{location}/{keyword}', [HomeController::class, 'UserProfileFetch'])->name('user.profile.fetch');
 Route::get('/rating-and-reviews/{location}/{keyword}', [HomeController::class, 'UserReviewAndRating'])->name('user.profile.review_and_rating');
 Route::get('/rating-and-reviews/write/{location}/{keyword}', [HomeController::class, 'UserReviewAndRatingWrite'])->name('user.profile.review_and_rating.write');

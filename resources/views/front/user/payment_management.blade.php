@@ -35,33 +35,78 @@
                                     </div>
                                     <div class="content-box bg-gray-1">
                                         <div class="inner">
-                                            <h3>Credit Packages</h3>
-                                            <div class="packages">
-                                                <div class="row">
-                                                    @foreach ($packages as $item)
-                                                    <div class="col-xxl-3 col-md-6 col-12 package-col">
-                                                        <div class="packages-card">
-                                                            <form method="post" action="{{ route('user.package_payment_management') }}">
-                                                                @csrf
-                                                                <input type="hidden" name="package_id" value="{{$item->id}}">
-                                                                <input type="hidden" name="package_value" value="{{$item->package_price}}">
-                                                                <input type="hidden" name="package_duration" value="{{$item->package_type}}">
-                                                                <input type="hidden" name="package_name" value="{{$item->package_name}}">
-                                                                <div class="card-header bg-gradient-free">
-                                                                    <h4>{{$item->package_name}}</h4>
-                                                                    <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
+                                            <div class="page-tabs-row">
+                                                <ul class="nav nav-tabs watchlist-tabs" id="productsServicesTab" role="tablist">
+                                                    <li class="nav-item" role="presentation">
+                                                        <button class="nav-link active" id="buyers-tab" data-bs-toggle="tab" data-bs-target="#buyers" type="button" role="tab" aria-controls="buyers" aria-selected="true">Buyer</button>
+                                                    </li>
+                                                    <li class="nav-item" role="presentation">
+                                                        <button class="nav-link" id="sellers-tab" data-bs-toggle="tab" data-bs-target="#sellers" type="button" role="tab" aria-controls="sellers" aria-selected="false">Seller</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="tab-content products-services-tab-content">
+                                                <div class="tab-pane fade show active" id="buyers" role="tabpanel" aria-labelledby="buyers-tab" tabindex="0">
+                                                    <h3>Buyer Credit Packages</h3>
+                                                    <div class="packages" >
+                                                        <div class="row">
+                                                            @foreach ($packages as $item)
+                                                            <div class="col-xxl-3 col-md-6 col-12 package-col">
+                                                                <div class="packages-card">
+                                                                    <form method="post" action="{{ route('user.package_payment_management') }}">
+                                                                        @csrf
+                                                                        <input type="hidden" name="package_id" value="{{$item->id}}">
+                                                                        <input type="hidden" name="package_value" value="{{$item->package_price}}">
+                                                                        <input type="hidden" name="package_duration" value="{{$item->package_type}}">
+                                                                        <input type="hidden" name="package_name" value="{{$item->package_name}}">
+                                                                        <div class="card-header bg-gradient-free">
+                                                                            <h4>{{$item->package_name}}</h4>
+                                                                            <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            <p>{!! $item->package_description !!}</p>                                                    
+                                                                        </div>
+                                                                        <div class="card-footer bg-gradient-free">
+                                                                            <button type="submit" class="btn btn-animated btn-cta bg-free">Buy Now</button>
+                                                                        </div>
+                                                                    </form>
                                                                 </div>
-                                                                <div class="card-body">
-                                                                    <p>{!! $item->package_description !!}</p>                                                    
-                                                                </div>
-                                                                <div class="card-footer bg-gradient-free">
-                                                                    <button type="submit" class="btn btn-animated btn-cta bg-free">Buy Now</button>
-                                                                </div>
-                                                            </form>
+                                                            </div>
+                                                            @endforeach
                                                         </div>
                                                     </div>
-                                                    @endforeach
                                                 </div>
+                                                <div class="tab-pane fade" id="sellers" role="tabpanel" aria-labelledby="sellers-tab" tabindex="0">
+                                                    <h3>Seller Credit Packages</h3>
+                                                    <div class="packages" style="color: red">
+                                                        <div class="row">
+                                                            @foreach ($seller_packages as $item)
+                                                            <div class="col-xxl-3 col-md-6 col-12 package-col">
+                                                                <div class="packages-card">
+                                                                    <form method="post" action="{{ route('user.package_payment_management') }}">
+                                                                        @csrf
+                                                                        <input type="hidden" name="package_id" value="{{$item->id}}">
+                                                                        <input type="hidden" name="package_value" value="{{$item->package_price}}">
+                                                                        <input type="hidden" name="package_duration" value="{{$item->package_type}}">
+                                                                        <input type="hidden" name="package_name" value="{{$item->package_name}}">
+                                                                        <div class="card-header bg-gradient-free">
+                                                                            <h4>{{$item->package_name}}</h4>
+                                                                            <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            <p>{!! $item->package_description !!}</p>                                                    
+                                                                        </div>
+                                                                        <div class="card-footer bg-gradient-free">
+                                                                            <button type="submit" class="btn btn-animated btn-cta bg-free">Buy Now</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>

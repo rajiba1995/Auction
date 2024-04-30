@@ -8,6 +8,7 @@ use App\Models\LegalStatus;
 use App\Models\UserImage;
 use App\Models\ReviewRating;
 use App\Models\Package;
+use App\Models\SellerPackage;
 use App\Models\MyBadge;
 use App\Models\Transaction;
 use App\Models\State;
@@ -317,6 +318,9 @@ class UserRepository implements UserContract
     }
     public function getUserAllPackages(){
         return Package::get();
+     }
+    public function getSellerAllPackages(){
+        return SellerPackage::get();
      }
     public function getAllBadgesById($id){
         return MyBadge::where('user_id',$id)->get('badge_id');
