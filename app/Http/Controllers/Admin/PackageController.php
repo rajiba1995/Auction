@@ -16,17 +16,17 @@ class PackageController extends Controller
         $this->packageRepository = $packageRepository;
     }
 
-     //package
-     public function PackageIndex()
+     //Buyer-package
+     public function BuyerPackageIndex()
      {
-         $data = $this->packageRepository->getAllPackages();
+         $data = $this->packageRepository->getAllBuyerPackages();
          return view('admin.package.index', compact('data'));
      }
-     public function PackageCreate()
+     public function BuyerPackageCreate()
      {
          return view('admin.package.create');
      }
-     public function PackageStore(Request $request)
+     public function BuyerPackageStore(Request $request)
      {
         //  dd($request->all());    
          $request->validate([
@@ -37,25 +37,25 @@ class PackageController extends Controller
              'package_description' => 'required',
          ]);
          $params = $request->except('_token');
-         $data = $this->packageRepository->CreatePackage($params);
+         $data = $this->packageRepository->CreateBuyerPackage($params);
          if ($data) {
-             return redirect()->route('admin.package.index')->with('success', 'Data has been successfully stored!');
+             return redirect()->route('admin.buyer.package.index')->with('success', 'Data has been successfully stored!');
          } else {
-             return redirect()->route('admin.package.create')->with('error', 'Something went wrong please try again!');
+             return redirect()->route('admin.buyer.package.create')->with('error', 'Something went wrong please try again!');
          }
      }
-     public function PackageStatus($id)
+     public function BuyerPackageStatus($id)
      {
-         $data = $this->packageRepository->StatusPackage($id);
+         $data = $this->packageRepository->StatusBuyerPackage($id);
          return redirect()->back();
      }
-     public function PackageEdit($id)
+     public function BuyerPackageEdit($id)
      {
-         $data = $this->packageRepository->GetPackageById($id);
+         $data = $this->packageRepository->GetBuyerPackageById($id);
         //  dd($data);
          return view('admin.package.edit', compact('data'));
      }
-     public function PackageUpdate(Request $request)
+     public function BuyerPackageUpdate(Request $request)
      {
         //  dd($request->all());
          $request->validate([
@@ -67,20 +67,87 @@ class PackageController extends Controller
  
          ]);
          $params = $request->except('_token');
-         $data = $this->packageRepository->updatePackage($params);
+         $data = $this->packageRepository->updateBuyerPackage($params);
          if ($data) {
-             return redirect()->route('admin.package.index', $request->id)->with('success', 'Data has been successfully updated!');
+             return redirect()->route('admin.buyer.package.index', $request->id)->with('success', 'Data has been successfully updated!');
          } else {
-             return redirect()->route('admin.package.edit', $request->id)->with('error', 'Something went wrong please try again!');
+             return redirect()->route('admin.buyer.package.edit', $request->id)->with('error', 'Something went wrong please try again!');
          }
      }
-     public function PackageDelete($id)
+     public function BuyerPackageDelete($id)
      {
-         $data = $this->packageRepository->DeletePackage($id);
+         $data = $this->packageRepository->DeleteBuyerPackage($id);
          if ($data) {
-             return redirect()->route('admin.package.index')->with('success', 'Deleted Successfully!');
+             return redirect()->route('admin.buyer.package.index')->with('success', 'Deleted Successfully!');
          } else {
-             return redirect()->route('admin.package.index')->with('error', 'Something went wrong please try again!');
+             return redirect()->route('admin.buyer.package.index')->with('error', 'Something went wrong please try again!');
+         }
+     }
+     //Seller-package
+     public function SellerPackageIndex()
+     {
+         $data = $this->packageRepository->getAllSellerPackages();
+         return view('admin.seller_package.index', compact('data'));
+     }
+     public function SellerPackageCreate()
+     {
+         return view('admin.seller_package.create');
+     }
+     public function SellerPackageStore(Request $request)
+     {
+        //  dd($request->all());    
+         $request->validate([
+             'package_name' => 'required|max:255',
+             'package_type' => 'required',
+             'package_price' => 'required',
+             'package_prefix' => 'required',
+             'package_description' => 'required',
+         ]);
+         $params = $request->except('_token');
+         $data = $this->packageRepository->CreateSellerPackage($params);
+         if ($data) {
+             return redirect()->route('admin.seller.package.index')->with('success', 'Data has been successfully stored!');
+         } else {
+             return redirect()->route('admin.seller.package.create')->with('error', 'Something went wrong please try again!');
+         }
+     }
+     public function SellerPackageStatus($id)
+     {
+         $data = $this->packageRepository->StatusSellerPackage($id);
+         return redirect()->back();
+     }
+     public function SellerPackageEdit($id)
+     {
+         $data = $this->packageRepository->GetSellerPackageById($id);
+        //  dd($data);
+         return view('admin.seller_package.edit', compact('data'));
+     }
+     public function SellerPackageUpdate(Request $request)
+     {
+        //  dd($request->all());
+         $request->validate([
+            'package_name' => 'required|max:255',
+            //  'package_type' => 'required',
+             'package_price' => 'required',
+             'package_prefix' => 'required',
+             'package_description' => 'required',
+ 
+         ]);
+         $params = $request->except('_token');
+         $data = $this->packageRepository->updateSellerPackage($params);
+         if ($data) {
+             return redirect()->route('admin.seller.package.index', $request->id)->with('success', 'Data has been successfully updated!');
+         } else {
+             return redirect()->route('admin.seller.package.edit', $request->id)->with('error', 'Something went wrong please try again!');
+         }
+     }
+     public function SellerPackageDelete($id)
+     {
+         $data = $this->packageRepository->DeleteSellerPackage($id);
+         if ($data) {
+             return redirect()->route('admin.seller.package.index')->with('success', 'Deleted Successfully!');
+         } else {
+             return redirect()->route('admin.seller.package.index')->with('error', 'Something went wrong please try again!');
          }
      }
 }

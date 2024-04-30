@@ -36,7 +36,10 @@
             <a class="nav-link {{ (request()->is('admin/master/blog*')) ? 'active' : '' }}" href="{{route('admin.blog.index')}}">Blogs</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ (request()->is('admin/master/package*')) ? 'active' : '' }}" href="{{route('admin.package.index')}}">Packages</a>
+            <a class="nav-link {{ (request()->is('admin/master/buyer-package*')) ? 'active' : '' }}" href="{{route('admin.buyer.package.index')}}">Buyer-Packages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{ (request()->is('admin/master/seller-package*')) ? 'active' : '' }}" href="{{route('admin.seller.package.index')}}">Seller-Packages</a>
           </li>
           <li class="nav-item">
             <a class="nav-link {{ (request()->is('admin/master/business-type*')) ? 'active' : '' }}" href="{{route('admin.business.index')}}">Business Type</a>

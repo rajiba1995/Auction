@@ -45,6 +45,7 @@ class AuctionGenerationController extends Controller
         $group_id = "";
         $watch_list_data = [];
         $existing_inquiry = [];
+        $exsisting_outside_participant = [];
         if($request->inquiry_type=="existing-inquiry"){
             $inquiry_id = $request->inquiry_id;
             $existing_inquiry = Inquiry::with('ParticipantsData')->where('inquiry_id', $inquiry_id)->first();
@@ -62,6 +63,7 @@ class AuctionGenerationController extends Controller
             try{
                 $inquiry_id = Crypt::decrypt($request->inquiry_id);
                 $existing_inquiry = Inquiry::with('ParticipantsData')->where('id', $inquiry_id)->first();
+                $exsisting_outside_participant = InquiryOutsideParticipant::where('inquiry_id', $existing_inquiry->id)->get();
                 $watch_list_data = WatchList::with('SellerData')->where('group_id', null)->where('buyer_id', $user->id)->get();
                 $outside_participant_without_group = [];
                 $outside_participant_data = [];
@@ -85,7 +87,7 @@ class AuctionGenerationController extends Controller
             $outside_participant_without_group = [];
         }
         
-        $exsisting_outside_participant = InquiryOutsideParticipant::where('inquiry_id', $existing_inquiry->id)->get();
+        
         $outside_participant_without_group = OutsideParticipant::where('group_id', null)->where('buyer_id', $user->id)->get();
         return view('front.user.auction-inquiry-generation', compact('group_id', 'user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group','exsisting_outside_participant'));
     }

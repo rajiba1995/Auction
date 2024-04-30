@@ -7,6 +7,9 @@
     .message_li{
         list-style-type: none;
     }
+    select.select2 {
+    width: 300px;
+    }
 </style>
 <div class="main">
     <div class="inner-page">
@@ -95,7 +98,7 @@
                                     <div class="col-lg-6 col-12">
                                         <div class="form-group">
                                             <label class="form-label">Select Category*</label>
-                                            <select class="form-control border-red" name="category">
+                                            <select class="form-control border-red" name="category" id="category">
                                                 <option value="" selected hidden>Ex, transport service, Parlour, etc </option>
                                                 @foreach($all_category as $key=>$item)
                                                     <option value="{{ $item->title }}" {{ $existing_inquiry && $existing_inquiry->category == $item->title ? 'selected' : '' }}>{{$item->title}}</option>
@@ -277,7 +280,7 @@
                                 </div>
                                 @endif
                                 <div class="add-invite-row">
-                                    <button type="button" class="btn btn-add-invite">
+                                    <button type="button" onclick="checkModal()" class="btn btn-add-invite" data-bs-toggle="modal" data-bs-target="#inviteModalWebsite">
                                         <svg width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g clip-path="url(#clip0_613_9373)">
                                             <path d="M15.332 17.5V15.8333C15.332 14.9493 14.9282 14.1014 14.2093 13.4763C13.4904 12.8512 12.5154 12.5 11.4987 12.5H4.79036C3.7737 12.5 2.79868 12.8512 2.07979 13.4763C1.3609 14.1014 0.957031 14.9493 0.957031 15.8333V17.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -436,7 +439,7 @@
     </div>
 </div>
 
-   {{-- invite modal --}}
+   {{-- invite modal from out side --}}
    <div class="modal fade invite-modal" id="inviteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -474,6 +477,50 @@
                     </div>
                     <button type="button" class="btn btn-animated btn-submit" onclick="submitIviteForm()">Add Now</button>
                 </form>
+            </div>
+      
+        </div>
+    </div>
+</div>
+
+   {{-- invite modal from website --}}
+   <div class="modal fade show" id="inviteModalWebsite" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Invite Participants from Website</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="location-bar">
+                            <img src="{{asset('frontend/assets/images/location.png')}}" alt="">
+
+                            <select class="select2" id="stateInput_modal" name="global_state_name_modal">
+                                @foreach ($global_filter_location as $key =>$value)
+                                    <option value="{{$value}}">{{$value}}</option>
+                                @endforeach
+                            </select>
+                            <input type="text" placeholder="Select Location" id="stateInput_modal" name="global_state_name_modal" value="@yield('location')">
+                        </div>
+                        <div id="stateSuggestions_modal"></div>
+                    </div>
+                    <div class="col">
+                        <div class="search-bar">
+                            <form>
+                                <input type="search" name="keyword_modal" id="global_filter_data_modal" placeholder="Search for Service, Category, etc" value="@yield('keyword')">
+                                <button type="button" class="btn-search btn-animated" id="global_form_submit_modal">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M20.9999 21.0004L16.6499 16.6504" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                        <div id="filterSuggestions_modal"></div>
+                    </div>
+                </div>
             </div>
       
         </div>
@@ -759,5 +806,129 @@ $(document).ready(function() {
         });
 
     }
+</script>
+<script src="{{asset('frontend/assets/js/custom.js')}}"></script>
+<script>
+
+     function checkModal(){
+        var category =$('#category').val().trim();
+        var subCategory =$('#sub_category').val().trim();
+        if(category.length === 0  &&  subCategory.length === 0){
+            Swal.fire("Please Seelect Category & Subcategory first before Add Participants!");
+            return false;
+            
+        }else{
+            $('#inviteModalWebsite').modal('show');
+            $('#global_form_submit_modal').on('click', function() {
+                var category = $('#category').val();
+                var sub_category = $('#sub_category').val();
+                var location = $('#stateInput_modal').val();
+                var keyword = $('#global_filter_data_modal').val();
+                // Check if location is empty
+                if(location.trim().length === 0){
+                    $('.location-bar').css('border', '1px solid red');
+                    return; // Stop further execution  
+                }
+                // Check if keyword is empty
+                if(keyword.trim().length === 0){
+                    $('.search-bar').css('border', '1px solid red');
+                    return; // Stop further execution
+                }
+                $.ajax({
+                    url: "{{route('user.global.make_slug.participant')}}", // Replace this with your actual route
+                    type: 'GET',
+                    data: {
+                        location: location,
+                        keyword: keyword,
+                        category: category,
+                        sub_category: sub_category,
+                    },
+                    success: function(response) {
+                        if(response.status==200){
+                            window.location.href = response.route;
+                        }
+                        
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                        // Handle errors if any
+                    }
+                });
+            });
+    
+        }
+     }
+
+    //  $(document).ready(function(){
+    //                     // List of Indian states
+    //     var indianStates = {!! json_encode($global_filter_location) !!};
+    //     function showStateSuggestions(input) {
+    //         var filter = input.value.toLowerCase();
+    //         var suggestions = indianStates.filter(function(state) {
+    //         return state.toLowerCase().indexOf(filter) > -1;
+    //         });
+    //         var html = '<ul>';
+    //         suggestions.forEach(function(state) {
+    //         html += '<li>' + state + '</li>';
+    //         });
+    //         html += '</ul>';
+    //         $('#stateSuggestions_modal').html(html);
+    //     }
+
+    //     // Handle keyup event on the input field
+    //     $('#stateInput_modal').on('keyup', function() {
+    //         showStateSuggestions(this);
+    //     });
+
+    //     // Handle click event on state suggestion
+    //     $('#stateSuggestions').on('click', 'li', function() {
+    //         $('#stateInput_modal').val($(this).text());
+    //         $('#stateSuggestions_modal').html('');
+    //     });
+
+    //     // Hide suggestions when clicking outside
+    //     $(document).on('click', function(e) {
+    //         if (!$(e.target).closest('#stateSuggestions_modal').length && !$(e.target).is('#stateInput_modal')) {
+    //         $('#stateSuggestions_modal').html('');
+    //         }
+    //     });
+    // });
+
+    // $(document).ready(function() {
+    //     // Assuming $global_filter_data is a JSON-encoded array of Indian states
+    //     var GlobalData = {!! json_encode($global_filter_data) !!};
+    //     function showFilterSuggestions(input) {
+    //         var filter = input.value.toLowerCase();
+    //         var suggestions = GlobalData.filter(function(name) {
+    //             return name.toLowerCase().indexOf(filter) > -1;
+    //         });
+    //         var html = '<ul>';
+    //         suggestions.forEach(function(name) {
+    //             html += '<li>' + name + '</li>';
+    //         });
+    //         html += '</ul>';
+    //         $('#filterSuggestions_modal').html(html);
+    //     }
+
+    //     // Handle keyup event on the input field
+    //     $('#global_filter_data_modal').on('keyup', function() {
+    //         showFilterSuggestions(this);
+    //     });
+
+    //     // Handle click event on state suggestion
+    //     $('#filterSuggestions_modal').on('click', 'li', function() {
+    //         $('#global_filter_data_modal').val($(this).text());
+    //         $('#filterSuggestions_modal').html('');
+    //     });
+
+    //     // Hide suggestions when clicking outside
+    //     $(document).on('click', function(e) {
+    //         if (!$(e.target).closest('#filterSuggestions_modal').length && !$(e.target).is('#global_filter_data_modal')) {
+    //             $('#filterSuggestions_modal').html('');
+    //         }
+    //     });
+    // });
+    
+   
 </script>
 @endsection

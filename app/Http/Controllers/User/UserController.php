@@ -496,9 +496,10 @@ class UserController extends Controller{
     public function payment_management(){
         $data = $this->AuthCheck();
         $packages = $this->userRepository->getUserAllPackages();
+        $seller_packages = $this->userRepository->getSellerAllPackages();
         $myBadges = $this->userRepository->getAllBadgesById($data->id);
         $allBadges = $this->userRepository->getAllBadges($myBadges);
-        return view('front.user.payment_management', compact('data','packages','myBadges','allBadges'));
+        return view('front.user.payment_management', compact('data','packages','seller_packages','myBadges','allBadges'));
     }
     public function package_payment_management(Request $request){
         try {

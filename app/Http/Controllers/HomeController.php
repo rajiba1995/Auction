@@ -70,7 +70,64 @@ class HomeController extends Controller
         $route = route('user.global.filter', [$location,$keyword]);
         return response()->json(['status'=>200, 'route'=>$route]);
     }
+
+    public function UserGlobalMakeSlugParticipant(Request $request){
+        // dd($request->all());
+        $location = Str::slug($request->location, '-');
+        $keyword = Str::slug($request->keyword, '-');
+        $category = Str::slug($request->category, '-');
+        $sub_category = Str::slug($request->sub_category, '-');
+        $route = route('user.global.filter.add_participant', [$location,$keyword,$category,$sub_category]);
+        return response()->json(['status'=>200, 'route'=>$route]);
+    }
     public function UserGlobalFilter($old_location, $old_keyword){
+        $location = str_replace('-', ' ', $old_location);
+        $keyword = str_replace('-', ' ', $old_keyword);
+        $exist_state = "";
+        $exist_city = "";
+        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        $userIds = User::where('state', $exist_state)
+            ->orWhere('city', $exist_city)
+            ->pluck('id')
+            ->toArray();
+
+        $category = Collection::where('title', $keyword)
+            ->pluck('id')
+            ->toArray();
+
+        $User_products = Product::whereIn('user_id', $userIds)
+            ->where('title', 'like', '%' . $keyword . '%')
+            ->pluck('user_id')
+            ->toArray();
+        $User_products = array_merge($User_products, Product::whereIn('user_id', $userIds)
+            ->whereIn('category_id', $category)
+            ->pluck('user_id')
+            ->toArray());
+            $authUserId = Auth::guard('web')->check() ? Auth::guard('web')->user()->id : null;
+            $data = User::with('MyBadgeData')->whereIn('id', $User_products)
+            ->where('id', '!=', $authUserId)
+            ->get();
+            $groupWatchList = GroupWatchList::where('created_by',$authUserId)->get();
+            $product_categories = [];
+            if(count($data)>0){
+                foreach($data as $item){
+                    if($item->UserProductData){
+                        foreach($item->UserProductData as $Ditem){
+                            $product_categories[] = $Ditem->category_id;
+                        }
+                      
+                    }
+                }
+            }
+            $categories = [];
+            if(count($product_categories)>0){
+                $categories = Collection::whereIn('id', $product_categories)->pluck('title')
+                ->toArray();
+            }
+            return view('front.filter', compact('data', 'location', 'keyword', 'old_location', 'old_keyword', 'categories','groupWatchList'));
+    }
+    public function UserGlobalFilterAddParticipant($old_location, $old_keyword){
         $location = str_replace('-', ' ', $old_location);
         $keyword = str_replace('-', ' ', $old_keyword);
         $exist_state = "";

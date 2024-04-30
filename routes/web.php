@@ -133,7 +133,9 @@ require 'admin.php';
 
 // Search User Module
 Route::get('/user/make_slug', [HomeController::class, 'UserGlobalMakeSlug'])->name('user.global.make_slug');
+Route::get('/user/make_slug/add_participant', [HomeController::class, 'UserGlobalMakeSlugParticipant'])->name('user.global.make_slug.participant');
 Route::get('/{location}/{keyword}', [HomeController::class, 'UserGlobalFilter'])->name('user.global.filter');
+Route::get('/{location}/{keyword}/{category}/{subcategory}', [HomeController::class, 'UserGlobalFilterAddParticipant'])->name('user.global.filter.add_participant');
 Route::get('/profile/{location}/{keyword}', [HomeController::class, 'UserProfileFetch'])->name('user.profile.fetch');
 Route::get('/rating-and-reviews/{location}/{keyword}', [HomeController::class, 'UserReviewAndRating'])->name('user.profile.review_and_rating');
 Route::get('/rating-and-reviews/write/{location}/{keyword}', [HomeController::class, 'UserReviewAndRatingWrite'])->name('user.profile.review_and_rating.write');
