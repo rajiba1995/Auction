@@ -51,6 +51,18 @@ class BuyerDashboardController extends Controller
         $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
         return view('front.user_dashboard.live_inquireis', compact('live_inquiries'));
     }
+    public function pending_inquiries(Request $request){
+        $pending_inquiries =  $this->BuyerDashboardRepository->pending_inquiries_by_user($this->getAuthenticatedUserId());
+        return view('front.user_dashboard.pending_inquireis', compact('pending_inquiries'));
+    }
+    public function confirmed_inquiries(Request $request){
+        $confirmed_inquiries =  $this->BuyerDashboardRepository->confirmed_inquiries_by_user($this->getAuthenticatedUserId());
+        return view('front.user_dashboard.confirmed_inquireis', compact('confirmed_inquiries'));
+    }
+    public function cancelled_inquiries(Request $request){
+        $cancelled_inquiries =  $this->BuyerDashboardRepository->cancelled_inquiries_by_user($this->getAuthenticatedUserId());
+        return view('front.user_dashboard.cancelled_inquireis', compact('cancelled_inquiries'));
+    }
 
     public function live_inquiries_fetch_ajax(){
         $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());

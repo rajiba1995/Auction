@@ -96,6 +96,9 @@ Route::get('/clear-cache', function() {
             Route::get('/groups', [BuyerDashboardController::class, 'index'])->name('user_buyer_dashboard');
             Route::get('/saved-inquiries', [BuyerDashboardController::class, 'saved_inquiries'])->name('buyer_saved_inquiries');
             Route::get('/live-inquiries', [BuyerDashboardController::class, 'live_inquiries'])->name('buyer_live_inquiries');
+            Route::get('/pending-inquiries', [BuyerDashboardController::class, 'pending_inquiries'])->name('buyer_pending_inquiries');
+            Route::get('/confirmed-inquiries', [BuyerDashboardController::class, 'confirmed_inquiries'])->name('buyer_confirmed_inquiries');
+            Route::get('/cancelled-inquiries', [BuyerDashboardController::class, 'cancelled_inquiries'])->name('buyer_cancelled_inquiries');
             Route::get('/live-inquiries-fetch-ajax', [BuyerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('buyer_live_inquiries_by_ajax');
         });
         // Seller Dashboard

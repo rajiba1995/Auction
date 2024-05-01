@@ -4,9 +4,6 @@
     #group_list .search-bar{
         max-width: unset !important;
     }
-    .show2{
-        display: block !important;
-    }
 </style>
 <div class="main">
     <div class="inner-page">
@@ -17,7 +14,7 @@
                     <div class="col-12">
                         <div class="inner-wrap">
                             <ul>
-                                <li>Home</li>
+                                <li><a href="{{asset('/')}}"> Home</a></li>
                                 <li>&nbsp;>&nbsp;Buyer Dashboard</span></li>
                                 <li id="message_li"> 
                                     @if (session('success'))
@@ -47,7 +44,7 @@
                             </div>
                             <ul class="nav nav-tabs dashboard-tabs" id="dashboardTabs" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <a href="{{route('user_buyer_dashboard')}}" class="nav-link {{ (request()->is('buyer/groups*')) ? 'active' : '' }}" id="groups-tab">
+                                    <a href="{{route('user_buyer_dashboard')}}" class="nav-link" id="groups-tab">
                                         Groups
                                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M12.3964 11.6256C13.1599 11.6256 13.9062 11.3992 14.5411 10.975C15.1759 10.5508 15.6706 9.94787 15.9628 9.24247C16.2549 8.53707 16.3313 7.76088 16.1823 7.01206C16.0333 6.26325 15.6656 5.57543 15.1257 5.03561C14.5857 4.49579 13.8978 4.12821 13.149 3.97935C12.4001 3.8305 11.624 3.90705 10.9186 4.19934C10.2133 4.49162 9.61047 4.98651 9.18641 5.62141C8.76234 6.25631 8.53608 7.00271 8.53623 7.76621C8.53747 8.78954 8.94459 9.77058 9.66826 10.4941C10.3919 11.2176 11.3731 11.6246 12.3964 11.6256ZM12.3964 5.46856C12.8508 5.46856 13.2951 5.60331 13.6729 5.85578C14.0507 6.10825 14.3452 6.4671 14.5191 6.88694C14.6931 7.30678 14.7386 7.76876 14.6499 8.21446C14.5612 8.66017 14.3424 9.06957 14.0211 9.3909C13.6997 9.71223 13.2903 9.93106 12.8446 10.0197C12.3989 10.1084 11.937 10.0629 11.5171 9.88897C11.0973 9.71507 10.7384 9.42057 10.486 9.04272C10.2335 8.66487 10.0987 8.22065 10.0987 7.76621C10.0996 7.15709 10.3419 6.57315 10.7726 6.14244C11.2033 5.71172 11.7873 5.46938 12.3964 5.46856ZM5.1042 13.8943C5.69137 13.8943 6.26534 13.7202 6.75355 13.394C7.24176 13.0678 7.62227 12.6041 7.84697 12.0617C8.07167 11.5192 8.13046 10.9223 8.01591 10.3464C7.90136 9.77053 7.61861 9.24155 7.20343 8.82636C6.78824 8.41118 6.25926 8.12843 5.68338 8.01388C5.1075 7.89933 4.51058 7.95812 3.96811 8.18282C3.42564 8.40752 2.96199 8.78803 2.63578 9.27624C2.30957 9.76445 2.13545 10.3384 2.13545 10.9256C2.13545 11.7129 2.44823 12.4681 3.00498 13.0248C3.56173 13.5816 4.31684 13.8943 5.1042 13.8943ZM5.1042 9.51934C5.38233 9.51934 5.65422 9.60181 5.88547 9.75633C6.11673 9.91085 6.29697 10.1305 6.40341 10.3874C6.50984 10.6444 6.53769 10.9271 6.48343 11.1999C6.42917 11.4727 6.29524 11.7233 6.09857 11.92C5.9019 12.1166 5.65133 12.2506 5.37855 12.3048C5.10576 12.3591 4.82301 12.3312 4.56605 12.2248C4.30909 12.1184 4.08947 11.9381 3.93495 11.7069C3.78043 11.4756 3.69795 11.2037 3.69795 10.9256C3.69795 10.5526 3.84611 10.1949 4.10983 9.93122C4.37356 9.6675 4.73124 9.51934 5.1042 9.51934ZM19.6878 13.8943C20.275 13.8943 20.8489 13.7202 21.3371 13.394C21.8254 13.0678 22.2059 12.6041 22.4306 12.0617C22.6553 11.5192 22.7141 10.9223 22.5995 10.3464C22.485 9.77053 22.2022 9.24155 21.787 8.82636C21.3718 8.41118 20.8429 8.12843 20.267 8.01388C19.6911 7.89933 19.0942 7.95812 18.5517 8.18282C18.0092 8.40752 17.5456 8.78803 17.2194 9.27624C16.8932 9.76445 16.719 10.3384 16.719 10.9256C16.719 11.7129 17.0318 12.4681 17.5886 13.0248C18.1453 13.5816 18.9004 13.8943 19.6878 13.8943ZM19.6878 9.51934C19.9659 9.51934 20.2378 9.60181 20.4691 9.75633C20.7003 9.91085 20.8806 10.1305 20.987 10.3874C21.0934 10.6444 21.1213 10.9271 21.067 11.1999C21.0128 11.4727 20.8788 11.7233 20.6822 11.92C20.4855 12.1166 20.2349 12.2506 19.9621 12.3048C19.6894 12.3591 19.4066 12.3312 19.1496 12.2248C18.8927 12.1184 18.6731 11.9381 18.5185 11.7069C18.364 11.4756 18.2815 11.2037 18.2815 10.9256C18.2815 10.5526 18.4297 10.1949 18.6934 9.93122C18.9571 9.6675 19.3148 9.51934 19.6878 9.51934ZM19.7917 15.4615C19.1068 15.4661 18.4339 15.6414 17.8339 15.9717C17.2635 15.0686 16.4773 14.3218 15.5461 13.7984C14.615 13.2751 13.5683 12.9918 12.5003 12.974C11.4323 12.9918 10.3856 13.2751 9.45446 13.7984C8.52333 14.3218 7.73711 15.0686 7.1667 15.9717C6.5667 15.6414 5.89377 15.4661 5.20889 15.4615C3.9799 15.5215 2.82455 16.0652 1.99506 16.9741C1.16557 17.8829 0.729322 19.083 0.781546 20.3123C0.781546 20.5195 0.863856 20.7182 1.01037 20.8647C1.15688 21.0112 1.3556 21.0936 1.5628 21.0936C1.77 21.0936 1.96871 21.0112 2.11522 20.8647C2.26174 20.7182 2.34405 20.5195 2.34405 20.3123C2.29284 19.4975 2.56488 18.6954 3.10116 18.0798C3.63745 17.4643 4.39476 17.0849 5.20889 17.024C5.64062 17.0273 6.06448 17.14 6.44092 17.3514C6.07273 18.2793 5.88423 19.2687 5.88545 20.267C5.88545 20.4742 5.96776 20.6729 6.11427 20.8194C6.26079 20.9659 6.4595 21.0482 6.6667 21.0482C6.8739 21.0482 7.07262 20.9659 7.21913 20.8194C7.36564 20.6729 7.44795 20.4742 7.44795 20.267C7.44795 17.1068 9.71358 14.5365 12.5003 14.5365C15.287 14.5365 17.5526 17.1068 17.5526 20.267C17.5526 20.4742 17.635 20.6729 17.7815 20.8194C17.928 20.9659 18.1267 21.0482 18.3339 21.0482C18.5411 21.0482 18.7398 20.9659 18.8863 20.8194C19.0328 20.6729 19.1151 20.4742 19.1151 20.267C19.1164 19.2687 18.9279 18.2793 18.5597 17.3514C18.9361 17.14 19.36 17.0273 19.7917 17.024C20.6058 17.0849 21.3631 17.4643 21.8994 18.0798C22.4357 18.6954 22.7078 19.4975 22.6565 20.3123C22.6565 20.5195 22.7389 20.7182 22.8854 20.8647C23.0319 21.0112 23.2306 21.0936 23.4378 21.0936C23.645 21.0936 23.8437 21.0112 23.9902 20.8647C24.1367 20.7182 24.219 20.5195 24.219 20.3123C24.2713 19.083 23.835 17.8829 23.0055 16.9741C22.176 16.0652 21.0207 15.5215 19.7917 15.4615Z" fill="#0076D7"/>
@@ -55,7 +52,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <a href="{{route('buyer_saved_inquiries')}}" class="nav-link" id="savedinquiries-tab">
+                                    <a href="{{route('buyer_saved_inquiries')}}" class="nav-link {{ (request()->is('buyer/saved-inquiries*')) ? 'active' : '' }}" id="savedinquiries-tab">
                                         Saved Inquiries
                                         <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M17.209 10.7422C17.209 10.2028 16.7718 9.76562 16.2324 9.76562H6.17383C5.63447 9.76562 5.19727 10.2028 5.19727 10.7422C5.19727 11.2815 5.63447 11.7188 6.17383 11.7188H16.2324C16.7718 11.7188 17.209 11.2815 17.209 10.7422ZM6.17383 13.6719C5.63447 13.6719 5.19727 14.1091 5.19727 14.6484C5.19727 15.1878 5.63447 15.625 6.17383 15.625H12.2828C12.8221 15.625 13.2593 15.1878 13.2593 14.6484C13.2593 14.1091 12.8221 13.6719 12.2828 13.6719H6.17383Z" fill="#0076D7"/>
@@ -138,7 +135,7 @@
                         <div class="col-lg-12 col-12">
                             <div class="search-bar">
                                 <form>
-                                    <input type="search" name="" placeholder="Search by group name..." id="group_wies_search">
+                                    <input type="search" name="" placeholder="Search by inquiry title..." id="group_wies_search">
                                     <button type="submit" class="btn-search btn-animated">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                             <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
@@ -148,127 +145,326 @@
                                 </form>
                             </div>
                         </div>
-                        {{-- <div class="col-lg-6 col-12">
-                            <div class="date-filters">
-                                <input type="hidden" id="filterStartDate">
-                                <div id="filterSelectedStartDate" class="selected-date selected-start-date"></div>
-                                <div class="between">
-                                    <img src="{{asset('frontend/assets/images/arrow-right-2.png')}}" alt="">
-                                </div>
-                                <input type="hidden" id="filterEndDate">
-                                <div id="filterSelectedEndDate" class="selected-date selected-end-date"></div>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
             </div>
 
             <div class="tab-content dashboard-tab-content">
-                <div class="tab-pane fade show active" id="groups" role="tabpanel" aria-labelledby="groups-tab" tabindex="0">
-                    <div class="container">
+            <div class="tab-pane fade show active" id="pendingresults" role="tabpanel" aria-labelledby="pendingresults-tab" tabindex="0">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="table-responsive inquiry-tables">
+                                        <table class="table inquiry-wrapper-table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="input-th input-id-th">Id</th>
+                                                    <th class="input-th input-title-th">Title</th>
+                                                    <th class="input-th input-details-th">Details</th>
+                                                    <th class="input-th input-start-date-th"><span>Start date &amp; time</span></th>
+                                                    <th class="input-th input-end-date-th"><span>End date &amp; time</span></th>
+                                                    <th class="input-th min-quote-th">Min Quote</th>
+                                                    <th class="input-th max-quote-th">Max Quote</th>
+                                                    <th class="output-th invited-partitipants-th">Invited vs partitipants</th>
+                                                    <th class="output-th suppliers-th">Suppliers</th>
+                                                    <th class="output-th quotes-th">Quotes</th>
+                                                    <th class="output-th comments-th">Comments &amp; Files</th>
+                                                    <th class="output-th actions-th">Action</th>
+                                                    <th class="output-th other-actions-th">&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if($pending_inquiries)
+                                                @foreach($pending_inquiries as $item)
+                                                <tr>
+                                                    <td class="input-table-column" colspan="7">
+                                                        <table class="table input-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="input-id-td">{{$item->inquiry_id}}</td>
+                                                                    <td class="input-title-td">{{$item->title}}</td>
+                                                                    <td class="input-details-td">
+                                                                        {{-- <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal" class="btn btn-view">View</a> --}}
+                                                                        <ul class="input-data-list">
+                                                                            <li>
+                                                                                <label>Inquiry Type</label>
+                                                                                <p>{{$item->inquiry_type}}</p>
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>Category</label>
+                                                                                <p>{{ucfirst($item->category)}}</p>
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>Sub-Category</label>
+                                                                                <p>{{ucfirst($item->sub_category)}}</p>
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>Description of the Service</label>
+                                                                                <p class="hidden">{{ucfirst($item->description)}}</p>
+                                                                                <div class="read-more"><span>read more</span></div>
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>Date of execution of the task</label>
+                                                                                <p>25 jan, 2024</p>
+                                                                            </li>
+                                                                            <li>
+                                                                                <label>No of Quotes per Participants</label>
+                                                                                <p>{{$item->quotes_per_participants}}</p>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </td> 
+                                                                    <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
+                                                                    <td class="input-end-date-td">{{ date('d M, Y', strtotime($item->end_date)) }} {{ date('g:i A', strtotime($item->end_time)) }}</td>
+                                                                    <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.', ',')}}</td>
+                                                                    <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.', ',')}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="7" class="note-td">
+                                                                        <div class="note-wrap">
+                                                                            <h3>Notepad</h3>
+                                                                            <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
+                                                                            <button type="button" class="btn btn-animated bg-green">Save</button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td class="output-table-column" colspan="5">
+                                                        <table class="table output-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="invited-partitipants-td">20/152</td>
+                                                                    <td class="suppliers-td">
+                                                                        <div class="supplier">
+                                                                            <p>Shree Krishna Enterprise</p>
+                                                                            <p>Mahesh Gupta</p>
+                                                                            <a href="javascript:void();">+911234567891</a>
+                                                                            <label>L1</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="quotes-td">
+                                                                        <div class="quote">
+                                                                            2000
+                                                                            <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
+                                                                                <img src="assets/images/arrow-up-right.png" alt="">
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="comments-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
+                                                                        <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                            <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
+                                                                            </svg>                                                                    
+                                                                            Download File
+                                                                        </a>
+                                                                    </td>
+                                                                    <td class="actions-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#startAllotModal" class="btn btn-yellow btn-allot">Allot</a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="invited-partitipants-td"></td>
+                                                                    <td class="suppliers-td">
+                                                                        <div class="supplier">
+                                                                            <p>Shree Krishna Enterprise</p>
+                                                                            <p>Mahesh Gupta</p>
+                                                                            <a href="javascript:void();">+911234567891</a>
+                                                                            <label>L1</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="quotes-td">
+                                                                        <div class="quote">
+                                                                            2000
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
+                                                                                <img src="assets/images/arrow-up-right.png" alt="">
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="comments-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
+                                                                        <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                            <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
+                                                                            </svg>                                                                    
+                                                                            Download File
+                                                                        </a>
+                                                                    </td>
+                                                                    <td class="actions-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#startAllotModal" class="btn btn-yellow btn-allot">Allot</a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="invited-partitipants-td"></td>
+                                                                    <td class="suppliers-td">
+                                                                        <div class="supplier">
+                                                                            <p>Shree Krishna Enterprise</p>
+                                                                            <p>Mahesh Gupta</p>
+                                                                            <a href="javascript:void();">+911234567891</a>
+                                                                            <label>L1</label>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="quotes-td">
+                                                                        <div class="quote">
+                                                                            2000
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
+                                                                                <img src="assets/images/arrow-up-right.png" alt="">
+                                                                            </a>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="comments-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
+                                                                        <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                            <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
+                                                                            </svg>                                                                    
+                                                                            Download File
+                                                                        </a>
+                                                                    </td>
+                                                                    <td class="actions-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#startAllotModal" class="btn btn-yellow btn-allot">Allot</a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                    <td class="actions-table-column">
+                                                        <table class="table actions-table">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="other-actions-td">
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#PendingallotOfflineModal{{$item->id}}" class="btn btn-yellow btn-allot-offline">
+                                                                            <img src="{{asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
+                                                                            Allot Offline
+                                                                        </a>
+                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#PendingcancelInquiryModal{{$item->id}}" class="btn btn-red btn-cancel-inquiry">
+                                                                            <img src="{{asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
+                                                                            Cancel Inquiry
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+
+
+                                                <!-- modal -->
+    <div class="modal fade allot-rate-modal offline-allot" id="PendingallotOfflineModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6 col-12">
+                                <h4 class="content-heading">Name*</h4>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-sm-6 col-12 mt-3 mt-sm-0">
+                                <h4 class="content-heading">Phone Number*</h4>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <h4 class="content-heading">Please give the Rate at which you want to Allot(in Rs) *</h4>
+                        <div class="allot-amount">
+                            <input type="text" class="form-control">
+                        </div>
+                        <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade allot-rate-modal cancel-inquiry" id="PendingcancelInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
-                                <ul class="dashboard-groups">
-                                    {{-- {{dd($group_wise_list)}} --}}
-                                    @foreach ($group_wise_list as $item)
-                                        @php
-                                            $SellerList = GetSellerByGroupId($item->id);
-                                        @endphp
-                                        <li class="item">
-                                            <div class="group-icon">
-                                                <img src="{{asset('frontend/assets/images/group.png')}}" alt="Group">
-                                            </div>
-                                            <div class="group-name"> <span class="group_name">{{ucwords($item->group_name)}}</span> ({{count($SellerList)}})</div>
-                                            <a href="{{route('user.watchlist.my_watchlist_by_group', $item->slug)}}" class="btn btn-animated btn-view bg-green">Open</a>
-                                            <a href="#" class="btn btn-animated btn-yellow btn-inquiry" data-bs-toggle="modal" data-bs-target="#sendToInquiryModal{{$item->id}}">Start Inquiry</a>
-
-                                            <div class="modal fade send-to-modal" id="sendToInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form action="{{ route('front.auction_inquiry_generation') }}" method="GET">
-                                                                <div class="container-fluid">
-                                                                    <div class="row">
-                                                                        <div class="col-xl-6 col-12">
-                                                                            <label for="sendInquiry{{$item->id}}" class="modal-custom-radio">
-                                                                                <input type="radio" name="inquiry_type" id="sendInquiry{{$item->id}}" value="new-inquiry" data-id="{{$item->id}}" checked>
-                                                                                <span class="checkmark">
-                                                                                    <span class="checkedmark"></span>
-                                                                                </span>
-                                                                                <div class="radio-text">
-                                                                                    <label for="sendInquiry{{$item->id}}">New Inquiry</label>
-                                                                                    <span>Generate a new auction inquiry</span>
-                                                                                </div>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div class="col-xl-6 col-12">
-                                                                            <label for="sendInquiryExisting{{$item->id}}" class="modal-custom-radio">
-                                                                                <input type="radio" name="inquiry_type" id="sendInquiryExisting{{$item->id}}" value="existing-inquiry" data-id="{{$item->id}}">
-                                                                                <span class="checkmark">
-                                                                                    <span class="checkedmark"></span>
-                                                                                </span>
-                                                                                <div class="radio-text">
-                                                                                    <label for="sendInquiryExisting{{$item->id}}">Existing Inquiry</label>
-                                                                                    <span>Send to previously generated auction inquiry</span>
-                                                                                </div>
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div id="inquiryoptions{{$item->id}}" style="display: none">
-                                                                        <h5>Select Inquiry</h5>
-                                                                        <div class="dropdown watchlistgroups">
-                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                                Select
-                                                                                <img src="{{asset('frontend/assets/images/chevron-down.png')}}" alt="">
-                                                                                <select name="inquiry_id" class="form-control">
-                                                                                    @if(count($existing_inquiries)>0)
-                                                                                    <option value="" selected hidden>select inquiry..</option>
-                                                                                        @foreach ($existing_inquiries as $eitem)
-                                                                                        <option value="{{$eitem->inquiry_id}}">{{$eitem->inquiry_id}}</option>
-                                                                                        @endforeach
-                                                                                    @else
-                                                                                    <option value="" selected hidden>No inquiry found.</option>
-                                                                                    @endif
-                                                                                </select>
-                                                                            </button>
-                                                                            
-                                                                        </div>
-                                                                    </div>
-                                                                    <input type="hidden" name="group" value="{{Crypt::encrypt($item->id)}}">
-                                                                    <button type="submit" class="btn btn-animated btn-submit w-100">Submit </button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
+                            </div>
+                            <div class="col-md-6 col-sm-4 col-6">
+                                <label for="cancelInquiryYes" class="modal-custom-radio">
+                                    <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
+                                    <span class="checkmark">
+                                        <span class="checkedmark"></span>
+                                    </span>
+                                    <div class="radio-text">
+                                        <label>Yes</label>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-md-6 col-sm-4 col-6">
+                                <label for="cancelInquiryNo" class="modal-custom-radio">
+                                    <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
+                                    <span class="checkmark">
+                                        <span class="checkedmark"></span>
+                                    </span>
+                                    <div class="radio-text">
+                                        <label>No</label>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <h4 class="content-heading">Select a Reason*</h4>
+                                <select class="form-control">
+                                    <option selected disabled>Select</option>
+                                    <option value="">Withdrawn by Supplier</option>
+                                    <option value="">Supplier Unavailable</option>
+                                    <option value="">Duplicate Inquiry</option>
+                                    <option value="">Not Interested Anymore</option>
+                                    <option value="">My Reason is not listed here</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                     
+                    <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
                 </div>
             </div>
+        </div>
+    </div>
+                                                @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            
         </section>
         
     </div>
 </div>
+
 @endsection
 @section('script')
 <script>
+
     $(document).ready(function(){
         $('#group_wies_search').keyup(function(){
             var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
             $('.item').show();
             var found = false; // Flag to track if any items are found
             $('.item').each(function() {
-                var group_name = $(this).find('.group_name').text().toLowerCase(); // Get location text and convert to lowercase
-                if (group_name.indexOf(selectedValue) === -1) {
+                var inquiry_title = $(this).find('.inquiry_title').text().toLowerCase(); // Get location text and convert to lowercase
+                if (inquiry_title.indexOf(selectedValue) === -1) {
                     $(this).hide(); // Hide the item if location doesn't match
                 } else {
                     found = true; // Set the flag to true if at least one item is found
@@ -285,16 +481,5 @@
             }
         });
     });
-    $("input[name='inquiry_type']").click(function() {
-        var inputval = $(this).val();
-        var id = $(this).attr('data-id');
-        if(inputval == "existing-inquiry") {
-            $("#inquiryoptions"+id).show();
-        } else {
-            $("#inquiryoptions"+id).hide();
-        }
-    });
-
-
 </script>
 @endsection
