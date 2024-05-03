@@ -15,6 +15,9 @@ class Inquiry extends Model{
     public function SellerQuotesData(){
         return $this->hasMany('App\Models\InquirySellerQuotes','inquiry_id','id');
     }
+    public function SellerCommentData(){
+        return $this->hasMany('App\Models\InquirySellerComments','inquiry_id','id');
+    }
     public function BuyerData(){
         return $this->belongsTo('App\Models\User','created_by','id');
     }

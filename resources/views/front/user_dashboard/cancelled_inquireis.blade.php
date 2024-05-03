@@ -175,268 +175,256 @@
                                             </thead>
                                             <tbody>
                                                 @if($cancelled_inquiries)
-                                                @foreach($cancelled_inquiries as $item)
-                                                <tr>
-                                                    <td class="input-table-column" colspan="7">
-                                                        <table class="table input-table">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="input-id-td">{{$item->inquiry_id}}</td>
-                                                                    <td class="input-title-td">{{$item->title}}</td>
-                                                                    <td class="input-details-td">
-                                                                        {{-- <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal" class="btn btn-view">View</a> --}}
-                                                                        <ul class="input-data-list">
-                                                                            <li>
-                                                                                <label>Inquiry Type</label>
-                                                                                <p>{{$item->inquiry_type}}</p>
-                                                                            </li>
-                                                                            <li>
-                                                                                <label>Category</label>
-                                                                                <p>{{ucfirst($item->category)}}</p>
-                                                                            </li>
-                                                                            <li>
-                                                                                <label>Sub-Category</label>
-                                                                                <p>{{ucfirst($item->sub_category)}}</p>
-                                                                            </li>
-                                                                            <li>
-                                                                                <label>Description of the Service</label>
-                                                                                <p class="hidden">{{ucfirst($item->description)}}</p>
-                                                                                <div class="read-more"><span>read more</span></div>
-                                                                            </li>
-                                                                            <li>
-                                                                                <label>Date of execution of the task</label>
-                                                                                <p>25 jan, 2024</p>
-                                                                            </li>
-                                                                            <li>
-                                                                                <label>No of Quotes per Participants</label>
-                                                                                <p>{{$item->quotes_per_participants}}</p>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </td> 
-                                                                    <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
-                                                                    <td class="input-end-date-td">{{ date('d M, Y', strtotime($item->end_date)) }} {{ date('g:i A', strtotime($item->end_time)) }}</td>
-                                                                    <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.', ',')}}</td>
-                                                                    <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.', ',')}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="7" class="note-td">
-                                                                        <div class="note-wrap">
-                                                                            <h3>Notepad</h3>
-                                                                            <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
-                                                                            <button type="button" class="btn btn-animated bg-green">Save</button>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td class="output-table-column" colspan="5">
-                                                        <table class="table output-table">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="invited-partitipants-td">20/152</td>
-                                                                    <td class="suppliers-td">
-                                                                        <div class="supplier">
-                                                                            <p>Shree Krishna Enterprise</p>
-                                                                            <p>Mahesh Gupta</p>
-                                                                            <a href="javascript:void();">+911234567891</a>
-                                                                            <label>L1</label>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="quotes-td">
-                                                                        <div class="quote">
-                                                                            2000
-                                                                            <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
-                                                                                <img src="assets/images/arrow-up-right.png" alt="">
-                                                                            </a>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="comments-td">
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
-                                                                        <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
-                                                                            <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
-                                                                            </svg>                                                                    
-                                                                            Download File
-                                                                        </a>
-                                                                    </td>
-                                                                    <td class="actions-td">
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#startAllotModal" class="btn btn-yellow btn-allot">Allot</a>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="invited-partitipants-td"></td>
-                                                                    <td class="suppliers-td">
-                                                                        <div class="supplier">
-                                                                            <p>Shree Krishna Enterprise</p>
-                                                                            <p>Mahesh Gupta</p>
-                                                                            <a href="javascript:void();">+911234567891</a>
-                                                                            <label>L1</label>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="quotes-td">
-                                                                        <div class="quote">
-                                                                            2000
-                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
-                                                                                <img src="assets/images/arrow-up-right.png" alt="">
-                                                                            </a>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="comments-td">
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
-                                                                        <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
-                                                                            <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
-                                                                            </svg>                                                                    
-                                                                            Download File
-                                                                        </a>
-                                                                    </td>
-                                                                    <td class="actions-td">
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#startAllotModal" class="btn btn-yellow btn-allot">Allot</a>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="invited-partitipants-td"></td>
-                                                                    <td class="suppliers-td">
-                                                                        <div class="supplier">
-                                                                            <p>Shree Krishna Enterprise</p>
-                                                                            <p>Mahesh Gupta</p>
-                                                                            <a href="javascript:void();">+911234567891</a>
-                                                                            <label>L1</label>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="quotes-td">
-                                                                        <div class="quote">
-                                                                            2000
-                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
-                                                                                <img src="assets/images/arrow-up-right.png" alt="">
-                                                                            </a>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="comments-td">
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
-                                                                        <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
-                                                                            <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
-                                                                            </svg>                                                                    
-                                                                            Download File
-                                                                        </a>
-                                                                    </td>
-                                                                    <td class="actions-td">
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#startAllotModal" class="btn btn-yellow btn-allot">Allot</a>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                    <td class="actions-table-column">
-                                                        <table class="table actions-table">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="other-actions-td">
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#CancellallotOfflineModal{{$item->id}}" class="btn btn-yellow btn-allot-offline">
-                                                                            <img src="{{asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
-                                                                            Allot Offline
-                                                                        </a>
-                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#CancellcancelInquiryModal{{$item->id}}" class="btn btn-red btn-cancel-inquiry">
-                                                                            <img src="{{asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
-                                                                            Cancel Inquiry
-                                                                        </a>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr>
+                                                    @foreach($cancelled_inquiries as $item)
+                                                    <tr>
+                                                        <td class="input-table-column" colspan="7">
+                                                            <table class="table input-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="input-id-td">{{$item['inquiry_id']}}</td>
+                                                                        <td class="input-title-td">{{$item['title']}}</td>
+                                                                        <td class="input-details-td">
+                                                                            <ul class="input-data-list">
+                                                                                <li>
+                                                                                    <label>Inquiry Type</label>
+                                                                                    <p>{{$item['inquiry_type']}}</p>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <label>Category</label>
+                                                                                    <p>{{ucfirst($item['category'])}}</p>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <label>Sub-Category</label>
+                                                                                    <p>{{ucfirst($item['sub_category'])}}</p>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <label>Description of the Service</label>
+                                                                                    <p class="hidden">{{ucfirst($item['description'])}}</p>
+                                                                                    <div class="read-more"><span>read more</span></div>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <label>Date of execution of the task</label>
+                                                                                    <p>{{$item['execution_date']}}</p>
+                                                                                </li>
+                                                                                <li>
+                                                                                    <label>No of Quotes per Participants</label>
+                                                                                    <p>{{$item['quotes_per_participants']}}</p>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </td> 
+                                                                        <td class="input-start-date-td">{{$item['start_date_time']}}</td>
+                                                                        <td class="input-end-date-td">{{$item['end_date_time'] }}</td>
+                                                                        <td class="min-quote-td">{{number_format($item['minimum_quote_amount'],2, '.', ',')}}</td>
+                                                                        <td class="max-quote-td">{{number_format($item['maximum_quote_amount'],2, '.', ',')}}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="7" class="note-td">
+                                                                            <div class="note-wrap">
+                                                                                <h3>Notepad</h3>
+                                                                                <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
+                                                                                <button type="button" class="btn btn-animated bg-green">Save</button>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td class="output-table-column" colspan="5">
+                                                            <table class="table output-table">
+                                                                <tbody>
+                                                                        @if(count($item['seller_data'])>0)
+                                                                            @foreach ($item['seller_data'] as $seller_key => $seller_item)
+                                                                            <tr>
+                                                                                @if($seller_key==0)
+                                                                                <td class="invited-partitipants-td" rowspan="{{count($item['seller_data'])}}">{{$item['invted_participants_count']}}/{{$item['participants_count']}}</td>
+                                                                                @endif
+                                                                                <td class="suppliers-td">
+                                                                                    <div class="supplier">
+                                                                                        <p>{{$seller_item['business_name']}}</p>
+                                                                                        <p>{{$seller_item['name']}}</p>
+                                                                                        <a href="javascript:void();">{{$seller_item['country_code']}}{{$seller_item['mobile']}}</a>
+                                                                                        <label>L{{$seller_key+1}}</label>
+                                                                                    </div>
+                                                                                </td>
+                                                                                
+                                                                                <td class="quotes-td">
+                                                                                    <div class="quote">
+                                                                                        {{$seller_item['quotes']}}
+                                                                                        <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
+                                                                                            <img src="assets/images/arrow-up-right.png" alt="">
+                                                                                        </a>
+                                                                                    </div>
+                                                                                </td>
+                                                                                <td class="comments-td">
+                                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal{{$item['id']}}{{$seller_item['id']}}" class="btn btn-view btn-view-comment">View Comment</a>
 
+                                                                                    <div class="modal fade view-comment-modal" id="viewCommentModal{{$item['id']}}{{$seller_item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                        <div class="modal-dialog">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-header">
+                                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                </div>
+                                                                                                <div class="modal-body">
+                                                                                                    <h3 class="content-heading">{{$seller_item['business_name']}}</h3>
+                                                                                                    @if(count($seller_item['seller_comments_data']))
+                                                                                                        @foreach ($seller_item['seller_comments_data'] as $item_comment)
+                                                                                                            <p>{{$item_comment->comments}}</p>
+                                                                                                        @endforeach
+                                                                                                    @endif
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                            <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
+                                                                                        </svg>
+                                                                                        Download File
+                                                                                    </a>
+                                                                                </td>
+                                                                                <td class="actions-td">
+                                                                                    @if($item['allot_seller']!=$seller_item['seller_id'])
+                                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#startAllotModal{{$item['inquiry_id']}}{{$seller_item['id']}}" class="btn btn-yellow btn-allot">Allot</a>
+                                                                                    <div class="modal fade allot-rate-modal start-allot" id="startAllotModal{{$item['inquiry_id']}}{{$seller_item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                        <div class="modal-dialog">
+                                                                                            <form action="{{route('live_inquiry_seller_allot')}}" method="POST" id="seller_allot_form{{$item['id']}}">
+                                                                                                @csrf
+                                                                                                <div class="modal-content">
+                                                                                                    <div class="modal-header">
+                                                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                    </div>
+                                                                                                    <div class="modal-body">
+                                                                                                        <h4 class="content-heading">Please give the Rate at which you want to Allot(in Rs) *</h4>
+                                                                                                        <div class="allot-amount">
+                                                                                                            <input type="hidden" name="allotrate" class="form-control" value="yes">
+                                                                                                            <input type="hidden" name="inquiry_id" class="form-control" value="{{$item['id']}}">
+                                                                                                            <input type="hidden" name="bidder_id" class="form-control" value="{{$seller_item['seller_id']}}">
+                                                                                                            <input type="text" name="allot_amount" class="form-control" onkeyup="validateAmount(this, '{{$item['id']}}')" required>
+                                                                                                            <div id="{{$item['id']}}error-message" style="color: red;"></div>
+                                                                                                        </div>
+                                                                                                        <button type="submit" class="btn btn-animated btn-submit w-75">Submit</button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    @else
+                                                                                    <a href="javascript:void(0)" class="btn btn-yellow btn-allot">  
+                                                                                        <img src="{{asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">Allot</a>
+                                                                                    @endif
+                                                                                </td>
+                                                                            </tr>
+                                                                            @endforeach
+                                                                        @endif
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td class="actions-table-column">
+                                                            <table class="table actions-table">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="other-actions-td">
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#PendingallotOfflineModal{{$item['id']}}" class="btn btn-yellow btn-allot-offline">
+                                                                                <img src="{{asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
+                                                                                Allot Offline
+                                                                            </a>
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#PendingcancelInquiryModal{{$item['id']}}" class="btn btn-red btn-cancel-inquiry">
+                                                                                <img src="{{asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
+                                                                                Cancel Inquiry
+                                                                            </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- modal -->
+                                                    <div class="modal fade allot-rate-modal offline-allot" id="PendingallotOfflineModal{{$item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <div class="container-fluid">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-6 col-12">
+                                                                                <h4 class="content-heading">Name*</h4>
+                                                                                <input type="text" class="form-control">
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-12 mt-3 mt-sm-0">
+                                                                                <h4 class="content-heading">Phone Number*</h4>
+                                                                                <input type="text" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <h4 class="content-heading">Please give the Rate at which you want to Allot(in Rs) *</h4>
+                                                                        <div class="allot-amount">
+                                                                            <input type="text" class="form-control">
+                                                                        </div>
+                                                                        <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                 <!-- modal -->
-    <div class="modal fade allot-rate-modal offline-allot" id="CancellallotOfflineModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-sm-6 col-12">
-                                <h4 class="content-heading">Name*</h4>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="col-sm-6 col-12 mt-3 mt-sm-0">
-                                <h4 class="content-heading">Phone Number*</h4>
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <h4 class="content-heading">Please give the Rate at which you want to Allot(in Rs) *</h4>
-                        <div class="allot-amount">
-                            <input type="text" class="form-control">
-                        </div>
-                        <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade allot-rate-modal cancel-inquiry" id="CancellcancelInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
-                            </div>
-                            <div class="col-md-6 col-sm-4 col-6">
-                                <label for="cancelInquiryYes" class="modal-custom-radio">
-                                    <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
-                                    <span class="checkmark">
-                                        <span class="checkedmark"></span>
-                                    </span>
-                                    <div class="radio-text">
-                                        <label>Yes</label>
-                                    </div>
-                                </label>
-                            </div>
-                            <div class="col-md-6 col-sm-4 col-6">
-                                <label for="cancelInquiryNo" class="modal-custom-radio">
-                                    <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
-                                    <span class="checkmark">
-                                        <span class="checkedmark"></span>
-                                    </span>
-                                    <div class="radio-text">
-                                        <label>No</label>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <h4 class="content-heading">Select a Reason*</h4>
-                                <select class="form-control">
-                                    <option selected disabled>Select</option>
-                                    <option value="">Withdrawn by Supplier</option>
-                                    <option value="">Supplier Unavailable</option>
-                                    <option value="">Duplicate Inquiry</option>
-                                    <option value="">Not Interested Anymore</option>
-                                    <option value="">My Reason is not listed here</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
-                </div>
-            </div>
-        </div>
-    </div>
-                                                @endforeach
+                                                    <div class="modal fade allot-rate-modal cancel-inquiry" id="PendingcancelInquiryModal{{$item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    
+                                                                    <div class="container-fluid">
+                                                                        <div class="row">
+                                                                            <div class="col-12">
+                                                                                <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-4 col-6">
+                                                                                <label for="cancelInquiryYes" class="modal-custom-radio">
+                                                                                    <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
+                                                                                    <span class="checkmark">
+                                                                                        <span class="checkedmark"></span>
+                                                                                    </span>
+                                                                                    <div class="radio-text">
+                                                                                        <label>Yes</label>
+                                                                                    </div>
+                                                                                </label>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-4 col-6">
+                                                                                <label for="cancelInquiryNo" class="modal-custom-radio">
+                                                                                    <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
+                                                                                    <span class="checkmark">
+                                                                                        <span class="checkedmark"></span>
+                                                                                    </span>
+                                                                                    <div class="radio-text">
+                                                                                        <label>No</label>
+                                                                                    </div>
+                                                                                </label>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mt-3">
+                                                                            <div class="col-12">
+                                                                                <h4 class="content-heading">Select a Reason*</h4>
+                                                                                <select class="form-control">
+                                                                                    <option selected disabled>Select</option>
+                                                                                    <option value="">Withdrawn by Supplier</option>
+                                                                                    <option value="">Supplier Unavailable</option>
+                                                                                    <option value="">Duplicate Inquiry</option>
+                                                                                    <option value="">Not Interested Anymore</option>
+                                                                                    <option value="">My Reason is not listed here</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @endforeach
                                                 @endif
                                             </tbody>
                                         </table>

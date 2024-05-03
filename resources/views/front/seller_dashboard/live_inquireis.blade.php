@@ -198,6 +198,7 @@
 
     @endsection
     @section('script')
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script>
         function formatDate(dateString) {
             var date = new Date(dateString);
@@ -253,8 +254,8 @@
     
 
         $(document).ready(function() {
-            // $('.rajib').on('click', function() {
-            setInterval(function() {
+            $('.rajib').on('click', function() {
+            // setInterval(function() {
                 $.ajax({
                     url: "{{route('seller_live_inquiries_by_ajax')}}",
                     method: "GET",
@@ -327,14 +328,39 @@
                                             <tr>
                                                 <td class="quotes-supplier-td">
                                                     <div class="quote">
-                                                        <input type="text" class="quote-amount" value="₹ 3500" disabled>
-                                                        <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal" class="quotes-left">${item.left_quotes} Quotes Left</a>
+                                                        ${item.left_quotes > 0 ?
+                                                            `<button type="button" class="quote-amount" data-bs-toggle="modal" data-bs-target="#New_Quotes_Modal" onclick="NewQuotesModal(${item.id})">Quote Now</button>` :
+                                                            ``
+                                                        }
+                                                        
+                                                        <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target=".allQuotesModal" onclick="allQuotesModal(${item.id})" class="quotes-left">${item.left_quotes} Quotes Left</a>
+                                                        <div class="modal fade all-quotes-modal" id="allQuotesModal${item.id}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <h3 class="content-heading"></h3>
+                                                                        <div class="quotes-list-wrapper">
+                                                                            Quotes: 
+                                                                            <ul class="quotes-list" id="allQuotesModal_data${item.id}">
+                                                                                ${Array.isArray(item.my_last_three_quotes) ? 
+                                                                                    item.my_last_three_quotes.map(quote => `<li>${formatCurrency(quote)}</li>`).join('') :
+                                                                                    ''
+                                                                                }
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="quote-diff">Quote Difference: ${item.quote_difference}</div>
                                                         <div class="level">L${item.my_mank}</div>
                                                     </div>
                                                 </td>
                                                 <td class="comments-td">
-                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#live_addCommentModal" class="btn btn-view btn-view-comment">
+                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".Add_comments_modal" onclick="Add_comments_modal(${item.id})" class="btn btn-view btn-view-comment">
                                                         <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M1.3 9C0.9425 9 0.636458 8.90208 0.381875 8.70625C0.127292 8.51042 0 8.275 0 8V1C0 0.725 0.127292 0.489583 0.381875 0.29375C0.636458 0.0979167 0.9425 0 1.3 0H10.4C10.7575 0 11.0635 0.0979167 11.3181 0.29375C11.5727 0.489583 11.7 0.725 11.7 1V4.35C11.4942 4.275 11.2829 4.21042 11.0662 4.15625C10.8496 4.10208 10.6275 4.0625 10.4 4.0375V1H1.3V8H5.2325C5.265 8.18333 5.31646 8.35833 5.38687 8.525C5.45729 8.69167 5.54125 8.85 5.63875 9H1.3ZM1.3 7.5V8V1V4.0375V4V7.5ZM2.6 7H5.24875C5.28125 6.825 5.33271 6.65417 5.40312 6.4875C5.47354 6.32083 5.55208 6.15833 5.63875 6H2.6V7ZM2.6 5H6.565C6.91167 4.75 7.29896 4.54167 7.72687 4.375C8.15479 4.20833 8.6125 4.09583 9.1 4.0375V4H2.6V5ZM2.6 3H9.1V2H2.6V3ZM9.75 10C8.85083 10 8.08437 9.75625 7.45062 9.26875C6.81687 8.78125 6.5 8.19167 6.5 7.5C6.5 6.80833 6.81687 6.21875 7.45062 5.73125C8.08437 5.24375 8.85083 5 9.75 5C10.6492 5 11.4156 5.24375 12.0494 5.73125C12.6831 6.21875 13 6.80833 13 7.5C13 8.19167 12.6831 8.78125 12.0494 9.26875C11.4156 9.75625 10.6492 10 9.75 10ZM9.425 9H10.075V7.75H11.7V7.25H10.075V6H9.425V7.25H7.8V7.75H9.425V9Z" fill="#0076D7"/>
                                                         </svg>
@@ -382,8 +408,140 @@
                         // Handle errors
                     }
                 });
-            }, 1000); // 1000 milliseconds = 1 second
-            // });
+            // }, 1000); // 1000 milliseconds = 1 second
+            });
+        });
+        function NewQuotesModal(id){
+            $('#inquiry_modal_id').val(id);
+        }
+        $("#new_quote").keypress(function (event) {
+            if (event.which != 8 && isNaN(String.fromCharCode(event.which))) {
+                event.preventDefault();
+            }
+        });
+        $('#new_quote_form').validate({
+            rules: {
+                new_quote: "required",
+                inquiry_id: "required"
+            },
+            messages: {
+                new_quote: "Please enter your new quote",
+                inquiry_id: "Please provide inquiry ID"
+            },
+            submitHandler: function(form) {
+                // Form is valid, perform AJAX submit
+                $.ajax({
+                    url: "{{route('seller_new_quote_now')}}", // Replace 'your_endpoint_url' with your actual endpoint
+                    type: 'POST',
+                    data: $(form).serialize(), // Serialize form data
+                    success: function(response) {
+                        if(response.status==200){
+                            $("#New_Quotes_Modal").modal('hide');
+                            $('#new_quote_form')[0].reset(); // Reset the form
+                        }else{
+                            $("#New_Quotes_Modal").modal('hide');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+                return false;
+            }
+        });
+        function allQuotesModal(id){
+            var data = $('#allQuotesModal_data'+id).html();
+            $('#allQuotesModal_data').html(data);
+        }
+        function Add_comments_modal(id){
+            $('#inquiry_comment_id').val(id);
+        }
+        $('#new_comment_form').validate({
+            rules: {
+                new_comment: "required",
+                inquiry_id: "required"
+            },
+            messages: {
+                new_comment: "Please enter your comment",
+                inquiry_id: "Please provide inquiry ID"
+            },
+            submitHandler: function(form) {
+                // Form is valid, perform AJAX submit
+                $.ajax({
+                    url: "{{route('seller_new_comment')}}", // Replace 'your_endpoint_url' with your actual endpoint
+                    type: 'POST',
+                    data: $(form).serialize(), // Serialize form data
+                    success: function(response) {
+                        if(response.status==200){
+                            $("#Add_comments_modal").modal('hide');
+                            $('#new_comment_form')[0].reset(); // Reset the form
+                        }else{
+                            $("#Add_comments_modal").modal('hide');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+                return false;
+            }
         });
     </script>
+
+     {{--confirm new quotes modal --}}
+     <div class="modal fade add-comment-modal" id="New_Quotes_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{route('seller_new_quote_now')}}" method="POST" id="new_quote_form">
+                        @csrf
+                        <h3 class="content-heading">New Quote</h3>
+                        <input type="hidden" name="inquiry_id" id="inquiry_modal_id" value="">
+                        <input class="form-control" placeholder="Write here" name="new_quote" id="new_quote"></input>
+                        <button type="submit" class="btn btn-animated btn-add-comment">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--confirm add comment modal --}}
+    <div class="modal fade add-comment-modal Add_comments_modal" id="Add_comments_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="new_comment_form">
+                        @csrf
+                        <h3 class="content-heading">Add your comment</h3>
+                        <input type="hidden" name="inquiry_id" id="inquiry_comment_id" value="">
+                        <textarea class="form-control" name="new_comment" placeholder="Write here"></textarea>
+                        <button type="submit" class="btn btn-animated btn-add-comment">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{-- allQuotesModal --}}
+    <div class="modal fade all-quotes-modal allQuotesModal"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h3 class="content-heading"></h3>
+                    <div class="quotes-list-wrapper">
+                        Quotes: 
+                        <ul class="quotes-list" id="allQuotesModal_data">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @endsection

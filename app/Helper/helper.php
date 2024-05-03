@@ -10,9 +10,11 @@ use App\Models\State;
 use App\Models\City;
 use App\Models\InquirySellerQuotes;
 use App\Models\WatchList;
+use App\Models\InquirySellerComments;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 
 if (!function_exists('GetSellerByGroupId')) {
@@ -187,7 +189,6 @@ function getAllSellerQuotes($id){
     ->where('iq.inquiry_id', '=', $id)
     ->orderBy('iq.quotes', 'DESC')->limit(10)
     ->get();
-    // dd($data);
     if($data){
         return $data;
     }else{
@@ -198,6 +199,34 @@ function getAllSellerQuotes($id){
 function get_last_three_quotes($inquiry_id, $seller_id){
    return InquirySellerQuotes::latest()->where('inquiry_id', $inquiry_id)->where('seller_id', $seller_id)->take(3)->get();
 }
+function get_my_all_quotes($inquiry_id, $seller_id){
+   return InquirySellerQuotes::latest()->where('inquiry_id', $inquiry_id)->where('seller_id', $seller_id)->get()->count();
+}
 function get_inquiry_seller_quotes($seller_id, $inquiry_id){
     return InquirySellerQuotes::where('inquiry_id', $inquiry_id)->where('seller_id', $seller_id)->first();
+}
+function valid_live_time($start_time, $end_time){
+    $startDateTime = Carbon::parse($start_time)->timezone(env('APP_TIMEZONE'));
+    $endDateTime = Carbon::parse($end_time)->timezone(env('APP_TIMEZONE'));
+    $now = Carbon::now();
+    if ($startDateTime > $now) {
+        return false;
+    }elseif($endDateTime<$now){
+        return false;
+    }else{
+        return true;
+    }
+}
+function SellerCommentsData($inquiry_id, $seller_id){
+    return InquirySellerComments::where('seller_id', $seller_id)->where('inquiry_id', $inquiry_id)->get();
+}
+function valid_execution_time($execution_time){
+    $startDateTime = Carbon::parse($execution_time)->timezone(env('APP_TIMEZONE'));
+    $endDateTime = Carbon::now();
+    if($startDateTime > $endDateTime){
+        return true;
+    }else{
+         return false;
+    }   
+
 }

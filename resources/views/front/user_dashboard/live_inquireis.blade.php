@@ -269,7 +269,7 @@
                                                                             </div>
                                                                         </td>
                                                                         <td class="comments-td">
-                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>
                                                                             <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
                                                                                 <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                                     <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
@@ -282,7 +282,9 @@
                                                                             {{-- <p id="countdown{{$item->id}}">Ends in: {{$secondsRemaining}}</p> --}}
                                                                         </td>
                                                                         <td class="actions-td">
-                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allotRateModal" class="btn btn-yellow btn-allot">Allot</a>
+                                                                            <input type="hidden" id="value_quotes'{{$value->id}}" value="{{$value->quotes}}">
+                                                                            <input type="hidden" id="bidder_id{{$value->id}}" value="{{$value->seller_id}}">
+                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".allotRateModal" class="btn btn-yellow btn-allot" onclick="allotRateModal({{$value->id}})">Allot</a>
                                                                         </td>
                                                                     </tr>
                                                                     <div class="modal fade all-quotes-modal" id="allQuotesModal{{$value->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -462,63 +464,64 @@
 
 
 
-<div class="modal fade view-comment-modal" id="viewCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade view-comment-modal viewCommentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <h3 class="content-heading">Comments from Shree Krishna Enterprise</h3>
-                <div class="comment-wrapper">
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-                </div>
+            <div class="modal-body" id="viewCommentModal">
+                
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade allot-rate-modal" id="allotRateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade allot-rate-modal allotRateModal" id="allotRateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <h4 class="content-heading">Do you want to allot at this rate?</h4>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="offset-md-0 col-md-6 offset-sm-4 col-sm-2 col-6">
-                            <label for="allotrateYes" class="modal-custom-radio">
-                                <input type="radio" name="allotrate" id="allotrateYes" value="yes" checked>
-                                <span class="checkmark">
-                                    <span class="checkedmark"></span>
-                                </span>
-                                <div class="radio-text">
-                                    <label>Yes</label>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="col-md-6 col-sm-2 col-6">
-                            <label for="allotrateNo" class="modal-custom-radio">
-                                <input type="radio" name="allotrate" id="allotrateNo" value="no">
-                                <span class="checkmark">
-                                    <span class="checkedmark"></span>
-                                </span>
-                                <div class="radio-text">
-                                    <label>No</label>
-                                </div>
-                            </label>
+            <form action="{{route('live_inquiry_seller_allot')}}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <h4 class="content-heading">Do you want to allot at this rate?</h4>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="offset-md-0 col-md-6 offset-sm-4 col-sm-2 col-6">
+                                <label for="allotrateYes" class="modal-custom-radio">
+                                    <input type="radio" name="allotrate" id="allotrateYes" value="yes" checked>
+                                    <span class="checkmark">
+                                        <span class="checkedmark"></span>
+                                    </span>
+                                    <div class="radio-text">
+                                        <label>Yes</label>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="col-md-6 col-sm-2 col-6">
+                                <label for="allotrateNo" class="modal-custom-radio">
+                                    <input type="radio" name="allotrate" id="allotrateNo" value="no">
+                                    <span class="checkmark">
+                                        <span class="checkedmark"></span>
+                                    </span>
+                                    <div class="radio-text">
+                                        <label>No</label>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
+                    <div class="allot-amount">
+                        <input type="hidden" name="inquiry_id" id="live_inquiry_id" value="">
+                        <input type="hidden" name="bidder_id" id="bidder_id" value="">
+                        <input type="hidden" name="allot_amount" id="allot_amount" value="">
+                        <input type="text" class="form-control" id="allotAmount" disabled value="">
+                    </div>
+                    <button type="submit" class="btn btn-animated btn-submit w-75">Submit</button>
                 </div>
-                <div class="allot-amount">
-                    <input type="text" class="form-control" id="allotAmount" value="Rs. 30000" disabled>
-                </div>
-                <button type="button" class="btn btn-animated btn-submit w-75">Submit</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -550,9 +553,6 @@
                 <div class="quotes-list-wrapper">
                     Quotes: 
                     <ul class="quotes-list" id="allQuotesModal_data">
-                        {{-- @foreach (get_last_three_quotes($item->id,$value->seller_id) as $itemValue)
-                            <li>{{$itemValue->quotes}}</li>  
-                        @endforeach --}}
                     </ul>
                 </div>
             </div>
@@ -652,6 +652,19 @@
         var data = $('#allQuotesModal_data'+id).html();
         $('#allQuotesModal_data').html(data);
     }
+    function allCommentModal(id){
+        var data = $('#viewCommentModal'+id).html();
+        $('#viewCommentModal').html(data);
+    }
+    function allotRateModal(id){
+        var value_quotes = $('#value_quotes'+id).val();
+        var bidder_id = $('#bidder_id'+id).val();
+        var live_inquiry_id = $('#live_inquiry_id'+id).val();
+        $('#allotAmount').val(value_quotes);
+        $('#allot_amount').val(value_quotes);
+        $('#live_inquiry_id').val(live_inquiry_id);
+        $('#bidder_id').val(bidder_id);
+    }
     function formatDate(dateString) {
         var date = new Date(dateString);
         var day = date.getDate();
@@ -696,8 +709,8 @@
     });
 
     $(document).ready(function() {
-        $('.rajib').on('click', function() {
-        // setInterval(function() {
+        // $('.rajib').on('click', function() {
+        setInterval(function() {
             $.ajax({
                 url: "{{route('buyer_live_inquiries_by_ajax')}}",
                 method: "GET",
@@ -802,12 +815,34 @@
                                         '<div class="quote">' +
                                         formatCurrency(value.quotes) +
                                         '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".allQuotesModal" onclick="allQuotesModal(' + value.id + ')">' +
+                                        '<input type="hidden" id="value_quotes'+value.id+'" value="'+value.quotes+'">' +
+                                        '<input type="hidden" id="live_inquiry_id'+value.id+'" value="'+value.inquiry_id+'">' +
+                                        '<input type="hidden" id="bidder_id'+value.id+'" value="'+value.seller_id+'">' +
                                         '<img src="{{asset("frontend/assets/images/arrow-up-right.png")}}" alt="">' +
                                         '</a>' +
                                         '</div>' +
                                         '</td>' +
                                         '<td class="comments-td">' +
-                                        '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewCommentModal" class="btn btn-view btn-view-comment">View Comment</a>' +
+                                        '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".viewCommentModal" class="btn btn-view btn-view-comment" onclick="allCommentModal(' + value.id + ')">View Comment</a>' +
+                                        '<div class="modal fade view-comment-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">'+
+                                            '<div class="modal-dialog">'+
+                                                '<div class="modal-content">'+
+                                                    '<div class="modal-header">'+
+                                                        '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>'+
+                                                    '</div>'+
+                                                    '<div class="modal-body" id="viewCommentModal' + value.id + '">'+
+                                                        '<h3 class="content-heading">Comments from '+ value.business_name.substr(0, 50) +'</h3>'+
+                                                        '<div class="comment-wrapper" id="viewCommentModalData' + value.id + '">';
+                                                            if (value.seller_comments_data) {
+                                                                $.each(value.seller_comments_data, function(k, val) {
+                                                                    htmlString +='<p>'+val.comments+'</p>';
+                                                                });
+                                                            }
+                                                        htmlString +='</div>'+
+                                                    '</div>'+
+                                                '</div>'+
+                                            '</div>'+
+                                        '</div>'+
                                         '<a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">' +
                                         '<svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">' +
                                         '<path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>' +
@@ -825,7 +860,7 @@
                                                 htmlString += '</td>';
                                             }
                                         htmlString +='<td class="actions-td">' +
-                                        '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allotRateModal" class="btn btn-yellow btn-allot">Allot</a>' +
+                                        '<a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".allotRateModal" class="btn btn-yellow btn-allot" onclick="allotRateModal(' + value.id + ')">Allot</a>' +
                                         '</td>' +
                                         '</tr>' +
                                         '<div class="modal fade all-quotes-modal" id="allQuotesModal' + value.id + '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">' +
@@ -881,8 +916,8 @@
                     // Handle errors
                 }
             });
-        // }, 1000); // 1000 milliseconds = 1 second
-        });
+        }, 1000); // 1000 milliseconds = 1 second
+        // });
     });
 </script>
 
