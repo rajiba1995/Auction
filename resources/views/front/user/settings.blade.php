@@ -27,8 +27,6 @@
                                     <div class="content-box">
                                         <div class="inner">
                                             <div class="settings-cta-box">
-                                                <div class="row">
-                                                    <div class="col">
                                                         <h5>Account Settings</h5>
                                                         <div class="cta-row">
                                                             <a href="{{ route('user.change_password')}}">
@@ -59,7 +57,6 @@
                                                                 <img src="{{asset('frontend/assets/images/log-out-blue.png')}}" alt="">
                                                             </a>
                                                         </div>
-                                                    </div>
                                                     {{-- <div class="settings-cta-box">
                                                         <h5>More</h5>
                                                         <div class="cta-row">
@@ -81,50 +78,6 @@
                                                             </a>
                                                         </div>
                                                     </div> --}}
-                                                    <div class="col">
-                                                        <h5>Wallet Section</h5>
-                                                        <div class="cta-row">
-                                                            <a href="#">
-                                                                <span>Current Package</span>
-                                                                @if($package)
-                                                                    @if($package->getPackageDetails)
-                                                                 <h5>{{$package->getPackageDetails->package_name}}</h5> 
-                                                                    @endif
-                                                                 @else
-                                                                 <h5>No Package Availabe Yet!</h5>   
-                                                                @endif
-                                                            </a>       
-                                                        </div>
-                                                        <div class="cta-row">
-                                                            <a href="#">
-                                                                <span>Expiry Date</span>
-                                                                @if($package)
-                                                                <h5>{{ date('d M, Y H:i:s A', strtotime($package->expiry_date)) }}</h5>
-                                                                 @else
-                                                                 <h5>###</h5>   
-                                                                @endif
-                                                            </a>       
-                                                        </div>
-                                                        <div class="cta-row">
-                                                            <a href="#">
-                                                                <span>Available Balance</span>
-                                                                @if($walletBalance)
-                                                                 
-                                                                <h5>&#8377; {{$walletBalance->current_amount}}</h5>
-                                                                  
-                                                                @else
-                                                                <h5>0.00</h5>   
-                                                               @endif
-                                                            </a>
-                                                        </div>
-                                                        <div class="cta-row">
-                                                            <a href="#">
-                                                                <span>Wallet History</span>
-                                                                <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt="">
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>

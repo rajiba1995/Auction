@@ -10,6 +10,7 @@ use App\Models\ReviewRating;
 use App\Models\Package;
 use App\Models\SellerPackage;
 use App\Models\MyBadge;
+use App\Models\MyWallet;
 use App\Models\Transaction;
 use App\Models\State;
 use App\Models\City;
@@ -346,6 +347,31 @@ class UserRepository implements UserContract
     
     public function getAllTransactionByUserId($id){
        return Transaction::where('user_id',$id)->paginate(20);
+       
+    }
+    public function getSearchTransactionByUserId($id,$purpose,$mode,$startDate,$endDate){
+        // dd($id,$purpose,$mode,$startDate,$endDate);
+        // $query = Transaction::query();
+        $query = Transaction::query()->where('user_id', $id);
+        
+        $query->when($mode || $purpose, function ($query) use ($mode, $purpose) {
+            $query->where('transaction_type', 'like', '%' . $mode . '%')
+                ->orWhere('purpose', 'like', '%' . $purpose . '%');
+        });
+
+
+        if (!is_null($startDate) && !is_null($endDate)) {
+      
+            $query->when($startDate && $endDate, function($query) use ($startDate, $endDate) {
+                $query->where('created_at', '>=', $startDate." 00:00:00")
+                      ->where('created_at', '<=', date("Y-m-d 23:59:59",strtotime($endDate)));
+            });
+        }
+    return $query->paginate(25);
+       
+    }
+    public function getAllWalletTransactionByUserId($id){
+       return MyWallet::where('user_id',$id)->paginate(20);
        
     }
     public function getUserAllReviewRating($id){

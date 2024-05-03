@@ -501,6 +501,12 @@ class UserController extends Controller{
         $allBadges = $this->userRepository->getAllBadges($myBadges);
         return view('front.user.payment_management', compact('data','packages','seller_packages','myBadges','allBadges'));
     }
+    public function wallet_management(){
+        $data = $this->AuthCheck();
+        $package = MyPackage::where('user_id',$data->id)->latest()->first();
+        $walletBalance = MyWallet::where(["user_id"=>$data->id])->latest()->first();
+        return view('front.user.wallet_management',compact('data','package','walletBalance'));
+    }
     public function package_payment_management(Request $request){
         try {
              $data = $this->AuthCheck();
@@ -556,7 +562,7 @@ class UserController extends Controller{
             $transaction->unique_id = rand(10000000, 99999999); // Adjusted range for 8-digit number
             $transaction->transaction_type = 1;
             $transaction->transaction_id = rand(10000000, 99999999); // Adjusted range for 8-digit number
-            $transaction->purpose = $request->package_name.' Package';
+            $transaction->purpose ='Package';
             $transaction->amount = $request->package_value;
             $transaction->transaction_source = "phonePe";
             $transaction->save();
@@ -580,10 +586,25 @@ class UserController extends Controller{
         return view('front.user.settings', compact('data','package','walletBalance'));
     }
 
-    public function transaction(){
+    public function transaction(Request $request){
         $data = $this->AuthCheck();
-        $transactions = $this->userRepository->getAllTransactionByUserId($data->id);
+        $startDate = $request->start_date ?? '';
+        $endDate = $request->end_date ?? '';
+        $mode = $request->mode ?? '';
+        $purpose = $request->purpose ?? '';
+        // Check if any of the parameters are provided
+        // If keyword is provided or both start_date and end_date are provided
+        if (!empty($mode) || !empty($startDate) || !empty($endDate)|| !empty($purpose)) {  
+            $transactions = $this->userRepository->getSearchTransactionByUserId($data->id,$startDate, $endDate,$mode,$purpose);
+        }else{
+            $transactions = $this->userRepository->getAllTransactionByUserId($data->id);
+        }
         return view('front.user.transaction',compact('data','transactions'));
+    }
+    public function wallet_transaction(){
+        $data = $this->AuthCheck();
+        $wallet_transactions = $this->userRepository->getAllWalletTransactionByUserId($data->id);
+        return view('front.user.wallet',compact('data','wallet_transactions'));
     }
     public function changePassword(){
         $data = $this->AuthCheck();
@@ -915,7 +936,7 @@ class UserController extends Controller{
             $transaction->unique_id = rand(10000000, 9999999);
             $transaction->transaction_type = 1;
             $transaction->transaction_id = rand(10000000, 9999999);
-            $transaction->purpose = 'Purchase Badge'.','.$request->id;
+            $transaction->purpose = 'Badge';
             $transaction->amount = $request->amount;
             $transaction->transaction_source = "phonePe";
             $transaction->save();
