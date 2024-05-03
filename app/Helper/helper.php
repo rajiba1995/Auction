@@ -211,7 +211,7 @@ function valid_live_time($start_time, $end_time){
     $now = Carbon::now();
     if ($startDateTime > $now) {
         return false;
-    }elseif($endDateTime<$now){
+    }elseif($startDateTime<$now){
         return false;
     }else{
         return true;
