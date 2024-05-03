@@ -180,6 +180,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="append_live_data">
+                                                
                                             </tbody>
                                         </table>
                                     </div>

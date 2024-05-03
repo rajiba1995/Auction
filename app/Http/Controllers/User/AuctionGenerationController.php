@@ -107,6 +107,7 @@ class AuctionGenerationController extends Controller
             'quotes_per_participants' => 'required|numeric',    
             'minimum_quote_amount' => 'required|numeric',
             'maximum_quote_amount' => 'required|numeric',
+            'bid_difference_quote_amount' => 'required|numeric',
         ]);
        
         if ($validator->fails()) {
@@ -141,9 +142,9 @@ class AuctionGenerationController extends Controller
             $inquiry->description = $request->description;
             $inquiry->execution_date = $request->execution_date;
             $inquiry->quotes_per_participants = $request->quotes_per_participants;
-            $inquiry->minimum_quote_amount = $request->minimum_quote_amount;
-           
+            $inquiry->minimum_quote_amount = $request->minimum_quote_amount;     
             $inquiry->maximum_quote_amount = $request->maximum_quote_amount;
+            $inquiry->bid_difference_quote_amount = $request->bid_difference_quote_amount;
             $inquiry->inquiry_type = $request->auction_type?$request->auction_type:$inquiry->inquiry_type;
     
             if($request->auctionfrom == "region"){
