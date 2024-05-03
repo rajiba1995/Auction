@@ -122,16 +122,19 @@ class SellerDashboardController extends Controller
                     }
                     $all_inquiries['my_mank'] = $my_mank;
                   
-                 
 
+                    $all_inquiries['my_last_quotes'] = '';
                     foreach(get_last_three_quotes($value->id,$value->my_id) as $index =>$qItem){
                         $all_inquiries['my_last_three_quotes'][]=$qItem->quotes;
+                        $last_index = count($all_inquiries['my_last_three_quotes']) - 1;
+                        $all_inquiries['my_last_quotes'] = $all_inquiries['my_last_three_quotes'][$last_index]->quotes;
                     }
 
                     $count = 0;
                     $quote_difference = 0; // Initialize the quote difference
                     // Iterate through the array
                     $array = $all_inquiries['my_last_three_quotes'];
+                    
                     for ($i = 0; $i < count($array) - 1; $i++) {
                         $count++; 
                         if ($count >= 1) { // Check if the count is 2 or more

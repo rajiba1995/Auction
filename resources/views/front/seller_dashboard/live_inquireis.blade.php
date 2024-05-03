@@ -180,7 +180,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="append_live_data">
-                                                
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -262,6 +262,7 @@
                     success: function(response) {
                     if(response.status==200){
                         $('#append_live_data').html('');
+                        console.log(response.data)
                         $.each(response.data, function(index, item) {
                             console.log(item);
                             var html = `<tr>
@@ -328,6 +329,7 @@
                                             <tr>
                                                 <td class="quotes-supplier-td">
                                                     <div class="quote">
+                                                        <button type="button" class="quote-amount">${item.my_last_quotes}</button>
                                                         ${item.left_quotes > 0 ?
                                                             `<button type="button" class="quote-amount" data-bs-toggle="modal" data-bs-target="#New_Quotes_Modal" onclick="NewQuotesModal(${item.id})">Quote Now</button>` :
                                                             ``
