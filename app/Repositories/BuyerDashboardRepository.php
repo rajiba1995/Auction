@@ -30,5 +30,14 @@ class BuyerDashboardRepository implements BuyerDashboardContract{
     public function live_inquiries_by_user($id){
         return Inquiry::with('ParticipantsData')->where('created_by',$id)->where('inquiry_id', '!=', null)->where('status', 1)->get();
     }
+    public function pending_inquiries_by_user($id){
+        return Inquiry::with('ParticipantsData')->where('created_by',$id)->where('inquiry_id', '!=', null)->where('status', 2)->get();
+    }
+    public function confirmed_inquiries_by_user($id){
+        return Inquiry::with('ParticipantsData')->where('created_by',$id)->where('inquiry_id', '!=', null)->where('status', 3)->get();
+    }
+    public function cancelled_inquiries_by_user($id){
+        return Inquiry::with('ParticipantsData')->where('created_by',$id)->where('inquiry_id', '!=', null)->where('status', 4)->get();
+    }
     
 }

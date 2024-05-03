@@ -296,6 +296,7 @@
                                         </svg>                                                
                                         Add Participants from Website
                                     </button>
+
                                     <button type="button" class="btn btn-add-invite" data-bs-toggle="modal" data-bs-target="#inviteModal">
                                         <svg width="23" height="20" viewBox="0 0 23 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g clip-path="url(#clip0_613_9373)">
@@ -484,48 +485,48 @@
 </div>
 
    {{-- invite modal from website --}}
-   <div class="modal fade show" id="inviteModalWebsite" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Invite Participants from Website</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col">
-                        <div class="location-bar">
-                            <img src="{{asset('frontend/assets/images/location.png')}}" alt="">
+   {{-- <div class="modal fade show" id="inviteModalWebsite" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Invite Participants from Website</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="location-bar">
+                                <img src="{{asset('frontend/assets/images/location.png')}}" alt="">
 
-                            <select class="select2" id="stateInput_modal" name="global_state_name_modal">
-                                @foreach ($global_filter_location as $key =>$value)
-                                    <option value="{{$value}}">{{$value}}</option>
-                                @endforeach
-                            </select>
-                            <input type="text" placeholder="Select Location" id="stateInput_modal" name="global_state_name_modal" value="@yield('location')">
+                                <select class="select2" id="stateInput_modal" name="global_state_name_modal">
+                                    @foreach ($global_filter_location as $key =>$value)
+                                        <option value="{{$value}}">{{$value}}</option>
+                                    @endforeach
+                                </select>
+                                <input type="text" placeholder="Select Location" id="stateInput_modal" name="global_state_name_modal" value="@yield('location')">
+                            </div>
+                            <div id="stateSuggestions_modal"></div>
                         </div>
-                        <div id="stateSuggestions_modal"></div>
-                    </div>
-                    <div class="col">
-                        <div class="search-bar">
-                            <form>
-                                <input type="search" name="keyword_modal" id="global_filter_data_modal" placeholder="Search for Service, Category, etc" value="@yield('keyword')">
-                                <button type="button" class="btn-search btn-animated" id="global_form_submit_modal">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M20.9999 21.0004L16.6499 16.6504" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                </button>
-                            </form>
+                        <div class="col">
+                            <div class="search-bar">
+                                <form>
+                                    <input type="search" name="keyword_modal" id="global_filter_data_modal" placeholder="Search for Service, Category, etc" value="@yield('keyword')">
+                                    <button type="button" class="btn-search btn-animated" id="global_form_submit_modal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                            <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M20.9999 21.0004L16.6499 16.6504" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                            <div id="filterSuggestions_modal"></div>
                         </div>
-                        <div id="filterSuggestions_modal"></div>
                     </div>
                 </div>
+        
             </div>
-      
         </div>
-    </div>
-</div>
+    </div> --}}
 
 @endsection
 @section('script')

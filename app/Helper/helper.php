@@ -189,7 +189,6 @@ function getAllSellerQuotes($id){
     ->where('iq.inquiry_id', '=', $id)
     ->orderBy('iq.quotes', 'DESC')->limit(10)
     ->get();
-    // dd($data);
     if($data){
         return $data;
     }else{
@@ -220,4 +219,14 @@ function valid_live_time($start_time, $end_time){
 }
 function SellerCommentsData($inquiry_id, $seller_id){
     return InquirySellerComments::where('seller_id', $seller_id)->where('inquiry_id', $inquiry_id)->get();
+}
+function valid_execution_time($execution_time){
+    $startDateTime = Carbon::parse($execution_time)->timezone(env('APP_TIMEZONE'));
+    $endDateTime = Carbon::now();
+    if($startDateTime > $endDateTime){
+        return true;
+    }else{
+         return false;
+    }   
+
 }

@@ -51,6 +51,208 @@ class BuyerDashboardController extends Controller
         $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
         return view('front.user_dashboard.live_inquireis', compact('live_inquiries'));
     }
+    public function pending_inquiries(Request $request){
+        $pending_inquiries_data =  $this->BuyerDashboardRepository->pending_inquiries_by_user($this->getAuthenticatedUserId());
+        $pending_inquiries = [];
+        if(count($pending_inquiries_data)>0){
+            foreach ($pending_inquiries_data as $key => $value) {
+                $seller_data = [];
+                $all_inquiries = [];
+                $all_inquiries['id'] = $value->id;
+                $all_inquiries['inquiry_id'] = $value->inquiry_id;
+                $all_inquiries['created_by'] = $value->BuyerData->name;
+                $all_inquiries['title'] = $value->title;
+                $all_inquiries['start_date_time'] = date('d M, Y h:i A', strtotime($value->start_date.' '.$value->start_time));
+                
+                $all_inquiries['end_date_time'] = date('d M, Y h:i A', strtotime($value->end_date.' '.$value->end_time));
+               
+                $all_inquiries['category'] = $value->category;
+                $all_inquiries['sub_category'] = $value->sub_category;
+                $all_inquiries['description'] = $value->description;
+                $all_inquiries['execution_date'] = $value->execution_date;
+                $all_inquiries['quotes_per_participants'] = $value->quotes_per_participants;
+                $all_inquiries['minimum_quote_amount'] = $value->minimum_quote_amount;
+                $all_inquiries['maximum_quote_amount'] = $value->maximum_quote_amount;
+                $all_inquiries['inquiry_type'] = $value->inquiry_type;
+                $all_inquiries['inquiry_amount'] = $value->inquiry_amount;
+                $all_inquiries['location'] = $value->location;
+                $all_inquiries['status'] = $value->status;
+
+                if($value->ParticipantsData){
+                    foreach($value->ParticipantsData as $k =>$item){
+                        $all_inquiries['participants'][]= $item->SellerData->business_name;
+                        if($item->status==1){
+                            $all_inquiries['invted_participants'][]= $item->SellerData->business_name;
+                        }
+                    }
+                }
+                $all_inquiries['invted_participants_count'] = count($all_inquiries['participants']);
+                $getAllSellerQuotes = getAllSellerQuotes($value->id);
+                $all_inquiries['participants_count'] = count($all_inquiries['invted_participants']);
+                    if(count($getAllSellerQuotes)>0){
+                        foreach($getAllSellerQuotes as $k =>$itemk){
+                            $seller = [];
+                            $seller['id'] = $itemk->id;
+                            $seller['inquiry_id'] = $itemk->inquiry_id;
+                            $seller['seller_id'] = $itemk->seller_id;
+                            $seller['quotes'] = $itemk->quotes;
+                            $seller['name'] = $itemk->name;
+                            $seller['country_code'] = $itemk->country_code;
+                            $seller['mobile'] = $itemk->mobile;
+                            $seller['business_name'] = $itemk->business_name;
+                            $seller['last_three_quotes'] = [];
+                            foreach(get_last_three_quotes($itemk->inquiry_id,$itemk->seller_id) as $qItem){
+                                $seller['last_three_quotes'][]=$qItem->quotes; 
+                            }
+                            $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
+                            $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
+                            $seller['seller_comments_data'] = $SellerCommentsData;
+                            $seller_data[]= $seller;
+                        }
+                    }
+                    $all_inquiries['seller_data'] = $seller_data;
+                
+                $pending_inquiries[] = $all_inquiries;
+            }
+        }
+        return view('front.user_dashboard.pending_inquireis', compact('pending_inquiries'));
+    }
+    public function confirmed_inquiries(Request $request){
+        $confirmed_inquiry_data =  $this->BuyerDashboardRepository->confirmed_inquiries_by_user($this->getAuthenticatedUserId());
+
+        $confirmed_inquiries = [];
+        if(count($confirmed_inquiry_data)>0){
+            foreach ($confirmed_inquiry_data as $key => $value) {
+                $seller_data = [];
+                $all_inquiries = [];
+                $all_inquiries['id'] = $value->id;
+                $all_inquiries['allot_seller'] = $value->allot_seller;
+                $all_inquiries['inquiry_id'] = $value->inquiry_id;
+                $all_inquiries['created_by'] = $value->BuyerData->name;
+                $all_inquiries['title'] = $value->title;
+                $all_inquiries['start_date_time'] = date('d M, Y h:i A', strtotime($value->start_date.' '.$value->start_time));
+                
+                $all_inquiries['end_date_time'] = date('d M, Y h:i A', strtotime($value->end_date.' '.$value->end_time));
+               
+                $all_inquiries['category'] = $value->category;
+                $all_inquiries['sub_category'] = $value->sub_category;
+                $all_inquiries['description'] = $value->description;
+                $all_inquiries['execution_date'] = $value->execution_date;
+                $all_inquiries['quotes_per_participants'] = $value->quotes_per_participants;
+                $all_inquiries['minimum_quote_amount'] = $value->minimum_quote_amount;
+                $all_inquiries['maximum_quote_amount'] = $value->maximum_quote_amount;
+                $all_inquiries['inquiry_type'] = $value->inquiry_type;
+                $all_inquiries['inquiry_amount'] = $value->inquiry_amount;
+                $all_inquiries['location'] = $value->location;
+                $all_inquiries['status'] = $value->status;
+
+                if($value->ParticipantsData){
+                    foreach($value->ParticipantsData as $k =>$item){
+                        $all_inquiries['participants'][]= $item->SellerData->business_name;
+                        if($item->status==1){
+                            $all_inquiries['invted_participants'][]= $item->SellerData->business_name;
+                        }
+                    }
+                }
+                $all_inquiries['invted_participants_count'] = count($all_inquiries['participants']);
+                $getAllSellerQuotes = getAllSellerQuotes($value->id);
+                $all_inquiries['participants_count'] = count($all_inquiries['invted_participants']);
+                    if(count($getAllSellerQuotes)>0){
+                        foreach($getAllSellerQuotes as $k =>$itemk){
+                            $seller = [];
+                            $seller['id'] = $itemk->id;
+                            $seller['inquiry_id'] = $itemk->inquiry_id;
+                            $seller['seller_id'] = $itemk->seller_id;
+                            $seller['quotes'] = $itemk->quotes;
+                            $seller['name'] = $itemk->name;
+                            $seller['country_code'] = $itemk->country_code;
+                            $seller['mobile'] = $itemk->mobile;
+                            $seller['business_name'] = $itemk->business_name;
+                            $seller['last_three_quotes'] = [];
+                            foreach(get_last_three_quotes($itemk->inquiry_id,$itemk->seller_id) as $qItem){
+                                $seller['last_three_quotes'][]=$qItem->quotes; 
+                            }
+                            $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
+                            $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
+                            $seller['seller_comments_data'] = $SellerCommentsData;
+                            $seller_data[]= $seller;
+                        }
+                    }
+                    $all_inquiries['seller_data'] = $seller_data;
+                
+                $confirmed_inquiries[] = $all_inquiries;
+            }
+        }
+        return view('front.user_dashboard.confirmed_inquireis', compact('confirmed_inquiries'));
+    }
+    public function cancelled_inquiries(Request $request){
+        $cancelled_inquiry_data =  $this->BuyerDashboardRepository->cancelled_inquiries_by_user($this->getAuthenticatedUserId());
+
+        $cancelled_inquiries = [];
+        if(count($cancelled_inquiry_data)>0){
+            foreach ($cancelled_inquiry_data as $key => $value) {
+                $seller_data = [];
+                $all_inquiries = [];
+                $all_inquiries['id'] = $value->id;
+                $all_inquiries['allot_seller'] = $value->allot_seller;
+                $all_inquiries['inquiry_id'] = $value->inquiry_id;
+                $all_inquiries['created_by'] = $value->BuyerData->name;
+                $all_inquiries['title'] = $value->title;
+                $all_inquiries['start_date_time'] = date('d M, Y h:i A', strtotime($value->start_date.' '.$value->start_time));
+                
+                $all_inquiries['end_date_time'] = date('d M, Y h:i A', strtotime($value->end_date.' '.$value->end_time));
+               
+                $all_inquiries['category'] = $value->category;
+                $all_inquiries['sub_category'] = $value->sub_category;
+                $all_inquiries['description'] = $value->description;
+                $all_inquiries['execution_date'] = $value->execution_date;
+                $all_inquiries['quotes_per_participants'] = $value->quotes_per_participants;
+                $all_inquiries['minimum_quote_amount'] = $value->minimum_quote_amount;
+                $all_inquiries['maximum_quote_amount'] = $value->maximum_quote_amount;
+                $all_inquiries['inquiry_type'] = $value->inquiry_type;
+                $all_inquiries['inquiry_amount'] = $value->inquiry_amount;
+                $all_inquiries['location'] = $value->location;
+                $all_inquiries['status'] = $value->status;
+
+                if($value->ParticipantsData){
+                    foreach($value->ParticipantsData as $k =>$item){
+                        $all_inquiries['participants'][]= $item->SellerData->business_name;
+                        if($item->status==1){
+                            $all_inquiries['invted_participants'][]= $item->SellerData->business_name;
+                        }
+                    }
+                }
+                $all_inquiries['invted_participants_count'] = count($all_inquiries['participants']);
+                $getAllSellerQuotes = getAllSellerQuotes($value->id);
+                $all_inquiries['participants_count'] = count($all_inquiries['invted_participants']);
+                    if(count($getAllSellerQuotes)>0){
+                        foreach($getAllSellerQuotes as $k =>$itemk){
+                            $seller = [];
+                            $seller['id'] = $itemk->id;
+                            $seller['inquiry_id'] = $itemk->inquiry_id;
+                            $seller['seller_id'] = $itemk->seller_id;
+                            $seller['quotes'] = $itemk->quotes;
+                            $seller['name'] = $itemk->name;
+                            $seller['country_code'] = $itemk->country_code;
+                            $seller['mobile'] = $itemk->mobile;
+                            $seller['business_name'] = $itemk->business_name;
+                            $seller['last_three_quotes'] = [];
+                            foreach(get_last_three_quotes($itemk->inquiry_id,$itemk->seller_id) as $qItem){
+                                $seller['last_three_quotes'][]=$qItem->quotes; 
+                            }
+                            $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
+                            $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
+                            $seller['seller_comments_data'] = $SellerCommentsData;
+                            $seller_data[]= $seller;
+                        }
+                    }
+                    $all_inquiries['seller_data'] = $seller_data;
+                
+                $cancelled_inquiries[] = $all_inquiries;
+            }
+        }
+        return view('front.user_dashboard.cancelled_inquireis', compact('cancelled_inquiries'));
+    }
 
     public function live_inquiries_fetch_ajax(){
         $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
@@ -150,6 +352,19 @@ class BuyerDashboardController extends Controller
             return response()->json(['status'=>200, 'data'=>$inquiries]);
         }else{
             return response()->json(['status'=>400]);
+        }
+    }
+
+    public function live_inquiry_seller_allot(Request $request){
+        if($request->allotrate=="yes"){
+            $inquiry= Inquiry::findOrFail($request->inquiry_id);
+            $inquiry->allot_seller = $request->bidder_id;
+            $inquiry->inquiry_amount = $request->allot_amount;
+            $inquiry->status = 3; //Confirmed
+            $inquiry->save();
+            return redirect()->route('buyer_confirmed_inquiries')->with('success', 'Seller has been successfully allocated.');
+        }else{
+            return redirect()->back()->with('warning', 'Something went wrong. Please try again later.');
         }
     }
     
