@@ -381,7 +381,7 @@
                                                                         <div class="col-12">
                                                                             <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
                                                                         </div>
-                                                                        <div class="col-md-6 col-sm-4 col-6">
+                                                                        {{-- <div class="col-md-6 col-sm-4 col-6">
                                                                             <label for="cancelInquiryYes" class="modal-custom-radio">
                                                                                 <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
                                                                                 <span class="checkmark">
@@ -391,8 +391,8 @@
                                                                                     <label>Yes</label>
                                                                                 </div>
                                                                             </label>
-                                                                        </div>
-                                                                        <div class="col-md-6 col-sm-4 col-6">
+                                                                        </div> --}}
+                                                                        {{-- <div class="col-md-6 col-sm-4 col-6">
                                                                             <label for="cancelInquiryNo" class="modal-custom-radio">
                                                                                 <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
                                                                                 <span class="checkmark">
@@ -403,24 +403,28 @@
                                                                                 </div>
                                                                             </label>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="row mt-3">
-                                                                        <div class="col-12">
-                                                                            <h4 class="content-heading">Select a Reason*</h4>
-                                                                            <select class="form-control">
-                                                                                <option selected disabled>Select</option>
-                                                                                <option value="">Withdrawn by Supplier</option>
-                                                                                <option value="">Supplier Unavailable</option>
-                                                                                <option value="">Duplicate Inquiry</option>
-                                                                                <option value="">Not Interested Anymore</option>
-                                                                                <option value="">My Reason is not listed here</option>
-                                                                            </select>
+                                                                    </div> --}}
+                                                                    <form method="post" action="{{ route('buyer_cancelled_reason') }}">
+                                                                        @csrf
+                                                                        <input type="hidden" name="id" value="{{$item['id']}}">
+                                                                        <div class="row mt-3">
+                                                                            <div class="col-12">
+                                                                                <h4 class="content-heading">Select a Reason*</h4>
+                                                                                <select name="cancelled_reason" class="form-control" required>
+                                                                                    <option selected disabled>Select</option>
+                                                                                    <option value="Withdrawn by Supplier">Withdrawn by Supplier</option>
+                                                                                    <option value="Supplier Unavailable">Supplier Unavailable</option>
+                                                                                    <option value="Duplicate Inquiry">Duplicate Inquiry</option>
+                                                                                    <option value="Not Interested Anymore">Not Interested Anymore</option>
+                                                                                    <option value="My Reason is not listed here">My Reason is not listed here</option>
+                                                                                </select>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
                                                                 </div>
                                                                 
-                                                                <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
+                                                                <button type="submit" class="btn btn-animated btn-submit w-50">Submit</button>
                                                             </div>
+                                                        </form>
                                                         </div>
                                                     </div>
                                                 </div>

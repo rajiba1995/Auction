@@ -101,6 +101,7 @@ Route::get('/clear-cache', function() {
             Route::get('/pending-inquiries', [BuyerDashboardController::class, 'pending_inquiries'])->name('buyer_pending_inquiries');
             Route::get('/confirmed-inquiries', [BuyerDashboardController::class, 'confirmed_inquiries'])->name('buyer_confirmed_inquiries');
             Route::get('/cancelled-inquiries', [BuyerDashboardController::class, 'cancelled_inquiries'])->name('buyer_cancelled_inquiries');
+            Route::post('/cancelled-reason', [BuyerDashboardController::class, 'cancelled_reason'])->name('buyer_cancelled_reason');
             Route::get('/live-inquiries-fetch-ajax', [BuyerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('buyer_live_inquiries_by_ajax');
             Route::post('/live-inquiry-seller-allot', [BuyerDashboardController::class, 'live_inquiry_seller_allot'])->name('live_inquiry_seller_allot');
         });

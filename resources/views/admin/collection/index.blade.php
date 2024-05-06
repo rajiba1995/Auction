@@ -101,7 +101,7 @@
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href = "collection/delete/" + id;
+                    window.location.href = "category/delete/" + id;
                 } else {
                     Swal.fire("Cancelled", "Record is safe", "error");
                 }

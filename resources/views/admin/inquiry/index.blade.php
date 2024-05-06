@@ -47,6 +47,7 @@
             <th>Title</th>
             <th>Inquiry Type</th>
             <th>Amount</th>
+            <th>Alloted</th>
             <th>Date</th>
             <th>Action</th>
         </tr>
@@ -63,6 +64,7 @@
             <td> {{ $item->title }}</td>      
             <td> {{ $item->inquiry_type }}</td>      
             <td>{{number_format($item->inquiry_amount,2, '.', ',')}}</td>      
+            <td>{{  isset($item->SellerData->name) ? $item->SellerData->name : 'Not-Allot' }}</td>      
             <td>{{ date('d-M-Y',strtotime($item->created_at)) }}</td>
             <td>
                 <a href="{{route('admin.inquiry.view', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">View</a>               

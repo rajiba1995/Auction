@@ -19,10 +19,10 @@ use Illuminate\Support\Facades\Hash;
 class AdminInquiryRepository implements AdminInquiryContract
 {
     public function getAllInquiries(){
-        return Inquiry::where('inquiry_id','!=',null)->paginate(20);
+        return Inquiry::with('SellerData')->where('inquiry_id','!=',null)->paginate(20);
     }
     public function getInquiryDetailsById($id){
-        return Inquiry::findOrFail($id);
+        return Inquiry::with('SellerData')->findOrFail($id);
     }
     public function getSearchInquery($keyword,$startDate,$endDate)
     {
@@ -50,7 +50,7 @@ class AdminInquiryRepository implements AdminInquiryContract
 
     public function getSearchInquriesByStatus($status)
     {
-        return Inquiry::where([['status', 'LIKE', '%' . $status . '%']])->where('inquiry_id','!=',null)->paginate(20);   
+        return Inquiry::with('SellerData')->where([['status', 'LIKE', '%' . $status . '%']])->where('inquiry_id','!=',null)->paginate(20);   
 
     }
 }
