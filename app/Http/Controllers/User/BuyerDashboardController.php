@@ -266,38 +266,39 @@ class BuyerDashboardController extends Controller
                 $all_inquiries['created_by'] = $value->BuyerData->name;
                 $all_inquiries['title'] = $value->title;
                 $all_inquiries['start_date_time'] = date('d M, Y h:i A', strtotime($value->start_date.' '.$value->start_time));
-                $startDateTime = Carbon::parse($value->start_date . ' ' . $value->start_time)->timezone(env('APP_TIMEZONE'));
-                $endDateTime = Carbon::now();
-                
-                if ($startDateTime > $endDateTime) {
-                    $endRemainingTime = $endDateTime->diff($startDateTime);
-                    $days = $endRemainingTime->days;
-                    $hours = $endRemainingTime->h;
-                    $minutes = $endRemainingTime->i;
-                    $seconds = $endRemainingTime->s;
-                    
-                    $all_inquiries['start_remaining_time'] = "Start IN: $days d $hours h $minutes m $seconds s";
-                } else {
-                    $all_inquiries['start_remaining_time'] =null;
-                }
-               
-                $all_inquiries['end_date_time'] = date('d M, Y h:i A', strtotime($value->end_date.' '.$value->end_time));
-                $startDateTime = Carbon::now();
-                $endDateTime = Carbon::parse($value->end_date . ' ' . $value->end_time)->timezone(env('APP_TIMEZONE'));
-                
-                if ($startDateTime < $endDateTime) {
-                    $endRemainingTime = $endDateTime->diff($startDateTime);
-                    $days = $endRemainingTime->days;
-                    $hours = $endRemainingTime->h;
-                    $minutes = $endRemainingTime->i;
-                    $seconds = $endRemainingTime->s;
-                    $all_inquiries['end_remaining_time'] = "End IN: $days d $hours h $minutes m $seconds s";
-                } else {
-                    $inquiries = Inquiry::findOrFail($value->id);
-                    $inquiries->status = 2;
-                    $inquiries->save();
-                    $all_inquiries['end_remaining_time'] ="";
-                }
+                 // Calculate remaining time until start date/time
+                 $startDateTime = Carbon::parse($value->start_date . ' ' . $value->start_time)->timezone(env('APP_TIMEZONE'));
+                 $currentDateTime = Carbon::now();
+                 
+                 if ($currentDateTime < $startDateTime) {
+                     $startRemainingTime = $startDateTime->diff($currentDateTime);
+                     $days = $startRemainingTime->days;
+                     $hours = $startRemainingTime->h;
+                     $minutes = $startRemainingTime->i;
+                     $seconds = $startRemainingTime->s;
+                     
+                     $all_inquiries['start_remaining_time'] = "Starts in: $days d $hours h $minutes m $seconds s";
+                 } else {
+                     $all_inquiries['start_remaining_time'] = null;
+                 }
+                 
+                 // Calculate remaining time until end date/time
+                 $endDateTime = Carbon::parse($value->end_date . ' ' . $value->end_time)->timezone(env('APP_TIMEZONE'));
+                 
+                 if ($currentDateTime < $endDateTime) {
+                     $endRemainingTime = $endDateTime->diff($currentDateTime);
+                     $days = $endRemainingTime->days;
+                     $hours = $endRemainingTime->h;
+                     $minutes = $endRemainingTime->i;
+                     $seconds = $endRemainingTime->s;
+                     $all_inquiries['end_date_time'] = date('d M, Y h:i A', strtotime($value->end_date.' '.$value->end_time));
+                     $all_inquiries['end_remaining_time'] = "Ends in: $days d $hours h $minutes m $seconds s";
+                 } else {
+                     $store = Inquiry::find($value->id);
+                     $store->status = 2;
+                     $store->save();
+                     $all_inquiries['end_remaining_time'] = "";
+                 }
                 $all_inquiries['category'] = $value->category;
                 $all_inquiries['sub_category'] = $value->sub_category;
                 $all_inquiries['description'] = $value->description;

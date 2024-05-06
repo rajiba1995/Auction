@@ -266,59 +266,59 @@
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <div class="container-fluid">
-                                                                <div class="row">
-                                                                    <div class="col-sm-6 col-12">
-                                                                        <label for="sendInquiry" class="modal-custom-radio">
-                                                                            <input type="radio" name="sendinquirylist" id="sendInquiry{{$item->id}}" value="sendinquiry" checked>
-                                                                            <span class="checkmark">
-                                                                                <span class="checkedmark"></span>
-                                                                            </span>
-                                                                            <div class="radio-text">
-                                                                                <label for="sendInquiry{{$item->id}}">New Inquiry</label>
-                                                                                <span>Generate a new auction inquiry</span>
-                                                                            </div>
-                                                                        </label>
+                                                            <form action="{{ route('front.auction_inquiry_generation') }}" method="GET">
+                                                                <div class="container-fluid">
+                                                                    <div class="row">
+                                                                        <div class="col-xl-6 col-12">
+                                                                            <label for="sendInquiry" class="modal-custom-radio">
+                                                                                <input type="radio" name="inquiry_type" id="sendInquiry" value="new-inquiry" checked>
+                                                                                <span class="checkmark">
+                                                                                    <span class="checkedmark"></span>
+                                                                                </span>
+                                                                                <div class="radio-text">
+                                                                                    <label for="sendInquiry">New Inquiry</label>
+                                                                                    <span>Generate a new auction inquiry</span>
+                                                                                </div>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="col-xl-6 col-12">
+                                                                            <label for="sendInquiryExisting" class="modal-custom-radio">
+                                                                                <input type="radio" name="inquiry_type" id="sendInquiryExisting" value="existing-inquiry">
+                                                                                <span class="checkmark">
+                                                                                    <span class="checkedmark"></span>
+                                                                                </span>
+                                                                                <div class="radio-text">
+                                                                                    <label for="sendInquiryExisting">Existing Inquiry</label>
+                                                                                    <span>Send to previously generated auction inquiry</span>
+                                                                                </div>
+                                                                            </label>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="col-sm-6 col-12">
-                                                                        <label for="sendInquiryExisting" class="modal-custom-radio">
-                                                                            <input type="radio" name="sendinquirylist" id="sendInquiryExisting{{$item->id}}" value="sendinquiryexisting">
-                                                                            <span class="checkmark">
-                                                                                <span class="checkedmark"></span>
-                                                                            </span>
-                                                                            <div class="radio-text">
-                                                                                <label for="sendInquiryExisting{{$item->id}}">Existing Inquiry</label>
-                                                                                <span>Send to previously generated auction inquiry</span>
-                                                                            </div>
-                                                                        </label>
+
+                                                                    <div id="inquiryoptions">
+                                                                        <h5>Select Inquiry</h5>
+                                                                        <div class="dropdown watchlistgroups">
+                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                                Select
+                                                                                <img src="{{asset('frontend/assets/images/chevron-down.png')}}" alt="">
+                                                                                <select name="inquiry_id" class="form-control">
+                                                                                    @if(count($existing_inquiries)>0)
+                                                                                        <option value="" selected hidden>select inquiry..</option>
+                                                                                        @foreach ($existing_inquiries as $eitem)
+                                                                                        <option value="{{$eitem->inquiry_id}}">{{$eitem->inquiry_id}}</option>
+                                                                                        @endforeach
+                                                                                    @else
+                                                                                    <option value="" selected hidden>No inquiry found.</option>
+                                                                                    @endif
+                                                                                </select>
+                                                                            </button>
+                                                                            
+                                                                        </div>
                                                                     </div>
+                                                                    <input type="hidden" name="seller" value="{{Crypt::encrypt($item->id)}}">
+                                                                    <button type="submit" class="btn btn-animated btn-submit w-100">Submit</button>
                                                                 </div>
-                                        
-                                                                <div id="inquiryoptions">
-                                                                    <h5>Select Inquiry</h5>
-                                                                    <div class="dropdown watchlistgroups">
-                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                            Select
-                                                                            <img src="assets/images/chevron-down.png" alt="">
-                                                                        </button>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li>
-                                                                                <label for="inquirylistop1">
-                                                                                    <input type="checkbox" name="watchlistop" id="inquirylistop1">
-                                                                                    <span>ID **********</span>
-                                                                                </label>
-                                                                            </li>
-                                                                            <li>
-                                                                                <label for="inquirylistop2">
-                                                                                    <input type="checkbox" name="watchlistop" id="inquirylistop2">
-                                                                                    <span>ID **********</span>
-                                                                                </label>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </div>
-                                                                </div>
-                                                                <button type="button" class="btn btn-animated btn-submit w-100">Submit</button>
-                                                            </div>
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>

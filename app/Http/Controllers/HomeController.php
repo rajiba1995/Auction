@@ -17,6 +17,7 @@ use App\Models\State;
 use App\Models\ReviewRating;
 use App\Models\City;
 use App\Models\User;
+use App\Contracts\BuyerDashboardContract;
 use App\Models\RequirementConsumption;
 use App\Models\Blog;
 use Illuminate\Support\Str;
@@ -28,9 +29,11 @@ use Illuminate\Support\Facades\Redirect;
 class HomeController extends Controller
 {
     protected $userRepository;
+    protected $BuyerDashboardRepository;
 
-    public function __construct(UserContract $userRepository) {
+    public function __construct(UserContract $userRepository, BuyerDashboardContract $BuyerDashboardRepository) {
         $this->userRepository = $userRepository;
+        $this->BuyerDashboardRepository = $BuyerDashboardRepository;
     }
     /**
      * Create a new controller instance.
@@ -125,7 +128,8 @@ class HomeController extends Controller
                 $categories = Collection::whereIn('id', $product_categories)->pluck('title')
                 ->toArray();
             }
-            return view('front.filter', compact('data', 'location', 'keyword', 'old_location', 'old_keyword', 'categories','groupWatchList'));
+            $existing_inquiries= $this->BuyerDashboardRepository->get_all_existing_inquiries_by_user($authUserId);
+            return view('front.filter', compact('data', 'location', 'keyword', 'old_location', 'old_keyword', 'categories','groupWatchList', 'existing_inquiries'));
     }
     public function UserGlobalFilterAddParticipant($old_location, $old_keyword){
         $location = str_replace('-', ' ', $old_location);
@@ -172,7 +176,8 @@ class HomeController extends Controller
                 $categories = Collection::whereIn('id', $product_categories)->pluck('title')
                 ->toArray();
             }
-            return view('front.filter', compact('data', 'location', 'keyword', 'old_location', 'old_keyword', 'categories','groupWatchList'));
+            $existing_inquiries= $this->BuyerDashboardRepository->get_all_existing_inquiries_by_user($authUserId);
+            return view('front.filter', compact('data', 'location', 'keyword', 'old_location', 'old_keyword', 'categories','groupWatchList', 'existing_inquiries'));
     }
 
     public function UserProfileFetch($location, $slug_keyword){

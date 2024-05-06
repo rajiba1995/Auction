@@ -7,6 +7,10 @@
     .show2{
         display: block !important;
     }
+    .bit_difference{
+        padding-right: 70px;
+        padding-left: 70px;
+    }
 </style>
     <div class="main">
         <div class="inner-page">
@@ -169,7 +173,8 @@
                                                     <th class="input-th input-end-date-th"><span>End date &amp; time</span></th>
                                                     <th class="input-th min-quote-th">Min Quote</th>
                                                     <th class="input-th max-quote-th">Max Quote</th>
-                                                    <th class="input-th other-actions-th"></th>
+                                                    <th class="input-th max-quote-th">Bid Difference</th>
+                                                    <th class="input-th other-actions-th">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -246,8 +251,13 @@
                                                                 <td class="input-location-td">{{ ucfirst($item->location) }}</td>
                                                                 <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
                                                                 <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->end_date)) }} {{ date('g:i A', strtotime($item->end_time)) }}</td>
-                                                                <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.',',')}}</td>
-                                                                <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.',',')}}</td></td>
+                                                                    <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.',',')}}
+                                                                    </td>
+                                                                    <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.',',')}}
+                                                                    </td>
+                                                                    <td class="max-quote-td">{{number_format($item->bid_difference_quote_amount,2, '.',',')}}
+                                                                    </td>
+                                                                </td>
                                                                 <td class="other-actions-td">
                                                                     {{-- @if(valid_live_time($item->start_date.' '.$item->start_time, $item->end_date.' '.$item->end_time)) --}}
                                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_startQuotingModal{{$item->id}}" class="btn btn-yellow btn-allot-offline">
@@ -270,13 +280,19 @@
                                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                            <form action="{{route('seller_start_quotes')}}" method="POST">
+                                                                            <form action="{{route('seller_start_quotes')}}" method="POST" id="bit_difference_form{{$item->id}}">
                                                                                 @csrf
                                                                                 <input type="hidden" name="inquiry_id" value="{{$item->id}}">
+                                                                                <input type="hidden" name="minimum_quote_amount" id="minimum_quote_amount{{$item->id}}" value="{{$item->minimum_quote_amount}}">
+                                                                                <input type="hidden" id="maximum_quote_amount{{$item->id}}" name="maximum_quote_amount"  value="{{$item->maximum_quote_amount}}">
                                                                                 <input type="hidden" name="seller_id" value="{{$item->my_id}}">
                                                                                 <h4 class="content-heading">Credit will be used</h4>
+                                                                                <div class="bit_difference">
+                                                                                    <input type="text" class="form-control" name="bit_difference" id="bit_difference{{$item->id}}" value="{{$item->maximum_quote_amount}}">
+                                                                                    <p class="error"></p>
+                                                                                </div>
                                                                                 <div class="bottom-cta-row">
-                                                                                    <button type="submit" class="btn btn-proceed">Proceed</button>
+                                                                                    <button type="button" class="btn btn-proceed difference_btn_submit" data-id="{{$item->id}}">Proceed</button>
                                                                                     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
                                                                                 </div>
                                                                             </form>
@@ -363,6 +379,36 @@
     @endsection
     @section('script')
     <script>
+     $('.difference_btn_submit').click(function() {
+            var id = $(this).data('id');
+            
+            // Get the values
+            var bit_difference = $('#bit_difference'+id).val();
+            var minimum_quote_amount = parseFloat($('#minimum_quote_amount'+id).val());
+            var maximum_quote_amount = parseFloat($('#maximum_quote_amount'+id).val());
+            // Check if bit_difference is a valid number
+            if (isNaN(bit_difference)) {
+                // Show error message for invalid bit_difference
+                $('.error').text("Amount must be a valid number").show();
+                // Set timeout to hide error message after 3 seconds
+                setTimeout(function(){
+                    $('.error').hide();
+                }, 3000);
+                return; // Exit the function early
+            }
+            // Check if bit_difference is between minimum_quote_amount and maximum_quote_amount
+            if (bit_difference >= minimum_quote_amount && bit_difference <= maximum_quote_amount) {
+                // Submit the form
+                $('#bit_difference_form'+id).submit();
+            } else {
+                // Show error message
+                $('.error').text("Bit amount should be between Minimum and Maximum Quote Amounts").show();
+                // Set timeout to hide error message after 3 seconds
+                setTimeout(function(){
+                    $('.error').hide();
+                }, 5000);
+            }
+        });
         $(document).ready(function(){
             $('#group_wies_search').keyup(function(){
                 var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison

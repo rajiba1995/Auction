@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Contracts\UserContract;
 use App\Contracts\MasterContract;
 use App\Models\WatchList;
+use App\Models\User;
 use App\Models\Inquiry;
 use App\Models\InquiryParticipant;
 use App\Models\OutsideParticipant;
@@ -107,6 +108,7 @@ class AuctionGenerationController extends Controller
             'quotes_per_participants' => 'required|numeric',    
             'minimum_quote_amount' => 'required|numeric',
             'maximum_quote_amount' => 'required|numeric',
+            'bid_difference_quote_amount' => 'required|numeric',
         ]);
        
         if ($validator->fails()) {
@@ -141,17 +143,22 @@ class AuctionGenerationController extends Controller
             $inquiry->description = $request->description;
             $inquiry->execution_date = $request->execution_date;
             $inquiry->quotes_per_participants = $request->quotes_per_participants;
-            $inquiry->minimum_quote_amount = $request->minimum_quote_amount;
-           
+            $inquiry->minimum_quote_amount = $request->minimum_quote_amount;     
             $inquiry->maximum_quote_amount = $request->maximum_quote_amount;
+            $inquiry->bid_difference_quote_amount = $request->bid_difference_quote_amount;
             $inquiry->inquiry_type = $request->auction_type?$request->auction_type:$inquiry->inquiry_type;
-    
+            
+
             if($request->auctionfrom == "region"){
                 $inquiry->location = $request->region; 
             } elseif($request->auctionfrom == "country") {
                 $inquiry->location = "India"; 
             } elseif($request->auctionfrom == "city") {
                 $inquiry->location = $request->city; 
+            }
+            if($inquiry->inquiry_type=="close auction"){
+                $user = User::findOrFail($request->created_by)->with('CityData')->first();
+                $inquiry->location = $user->city?$user->CityData->city:"";
             }
             $inquiry->location_type =$request->auctionfrom;
             $inquiry->save();
@@ -198,7 +205,7 @@ class AuctionGenerationController extends Controller
                 return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry data has been saved successfully.');
             }
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
              return abort(404);
          }
     }

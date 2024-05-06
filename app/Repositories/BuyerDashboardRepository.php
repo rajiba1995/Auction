@@ -19,7 +19,7 @@ class BuyerDashboardRepository implements BuyerDashboardContract{
         return null;
     }
     public function get_all_existing_inquiries_by_user($id){
-        return Inquiry::where('created_by', $id)->where('inquiry_id', '!=', null)->get();
+        return Inquiry::where('created_by', $id)->where('inquiry_id', '!=', null)->where('status', 1)->get();
     }
     public function group_wise_inquiries_by_user($id){
         return GroupWatchList::orderBy('group_name', 'ASC')->where('created_by',$id)->get();

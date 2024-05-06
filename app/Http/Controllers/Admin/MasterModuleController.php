@@ -131,7 +131,7 @@ class MasterModuleController extends Controller
     {
         // dd($request->all());    
         $request->validate([
-            'title' => 'required|max:255',
+            'title' => 'required|max:255|unique:collections,title',
             'image' => 'required|mimes:jpeg,jepg,gif,webp,png',
         ]);
         $params = $request->except('_token');

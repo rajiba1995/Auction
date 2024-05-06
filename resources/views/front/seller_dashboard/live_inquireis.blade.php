@@ -7,6 +7,14 @@
     .show2{
         display: block !important;
     }
+    .new_quotes_div{
+        font-size: 12px;
+        color: #646464;
+        text-align: justify;
+    }
+    .new_quotes_div span{
+        color: red;
+    }
 </style>
 
     <div class="main">
@@ -180,6 +188,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody id="append_live_data">
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -253,14 +262,15 @@
     
 
         $(document).ready(function() {
-            $('.rajib').on('click', function() {
-            // setInterval(function() {
+            // $('.rajib').on('click', function() {
+            setInterval(function() {
                 $.ajax({
                     url: "{{route('seller_live_inquiries_by_ajax')}}",
                     method: "GET",
                     success: function(response) {
                     if(response.status==200){
                         $('#append_live_data').html('');
+                        console.log(response.data)
                         $.each(response.data, function(index, item) {
                             console.log(item);
                             var html = `<tr>
@@ -306,8 +316,8 @@
                                                 <td class="input-location-td">${item.location}</td>
                                                 <td class="input-start-date-td">${item.start_date_time}</td>
                                                 <td class="input-end-date-td">${item.end_date_time}</td>
-                                                <td class="min-quote-td">${item.maximum_quote_amount}</td>
                                                 <td class="max-quote-td">${item.minimum_quote_amount}</td>
+                                                <td class="min-quote-td">${item.maximum_quote_amount}</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="9" class="note-td">
@@ -327,8 +337,9 @@
                                             <tr>
                                                 <td class="quotes-supplier-td">
                                                     <div class="quote">
+                                                        <button type="button" class="quote-amount" data-bs-toggle="modal" data-bs-target=".allQuotesModal" onclick="allQuotesModal(${item.id})">${item.my_last_quotes}</button>
                                                         ${item.left_quotes > 0 ?
-                                                            `<button type="button" class="quote-amount" data-bs-toggle="modal" data-bs-target="#New_Quotes_Modal" onclick="NewQuotesModal(${item.id})">Quote Now</button>` :
+                                                            `<button type="button" class="quote-amount mt-2" data-bs-toggle="modal" data-bs-target="#New_Quotes_Modal" onclick="NewQuotesModal(${item.id},${item.minimum_quote},${item.maximum_quote},${item.quote_difference},${item.my_last_quotes})">Quote Now</button>` :
                                                             ``
                                                         }
                                                         
@@ -407,46 +418,87 @@
                         // Handle errors
                     }
                 });
-            // }, 1000); // 1000 milliseconds = 1 second
-            });
+            }, 1000); // 1000 milliseconds = 1 second
+            // });
         });
-        function NewQuotesModal(id){
+        function NewQuotesModal(id,min_quote,max_quote,bid_difference,last_quote){
             $('#inquiry_modal_id').val(id);
+            $('#min_quote').val(min_quote);
+            $('#max_quote').val(max_quote);
+            $('#bid_difference').val(bid_difference);
+            $('.min_quote').text(min_quote);
+            $('.max_quote').text(max_quote);
+            $('.bid_difference').text(bid_difference);
+            $('.last_quote').text(last_quote);
+            $('#last_quote').val(last_quote);
         }
         $("#new_quote").keypress(function (event) {
             if (event.which != 8 && isNaN(String.fromCharCode(event.which))) {
                 event.preventDefault();
             }
         });
-        $('#new_quote_form').validate({
-            rules: {
-                new_quote: "required",
-                inquiry_id: "required"
-            },
-            messages: {
-                new_quote: "Please enter your new quote",
-                inquiry_id: "Please provide inquiry ID"
-            },
-            submitHandler: function(form) {
-                // Form is valid, perform AJAX submit
-                $.ajax({
-                    url: "{{route('seller_new_quote_now')}}", // Replace 'your_endpoint_url' with your actual endpoint
-                    type: 'POST',
-                    data: $(form).serialize(), // Serialize form data
-                    success: function(response) {
-                        if(response.status==200){
-                            $("#New_Quotes_Modal").modal('hide');
-                            $('#new_quote_form')[0].reset(); // Reset the form
-                        }else{
-                            $("#New_Quotes_Modal").modal('hide');
-                        }
+       $(document).ready(function() {
+            $('#new_quote_form').validate({
+                rules: {
+                    new_quote: {
+                        required: true,
+                        min: function(element) {
+                            return parseFloat($("#min_quote").val());
+                        },
+                        max: function(element) {
+                            return parseFloat($("#max_quote").val());
+                        },
+                        lessThanLast: true
                     },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-                return false;
-            }
+                    inquiry_id: "required"
+                },
+                messages: {
+                    new_quote: {
+                        required: "Please enter your new quote",
+                        min: "New quote must be greater than or equal to Min Quote",
+                        max: "New quote must be less than or equal to Max Quote"
+                    },
+                    inquiry_id: "Please provide inquiry ID"
+                },
+                submitHandler: function(form) {
+                    // Form is valid, perform AJAX submit
+                    $.ajax({
+                        url: "{{route('seller_new_quote_now')}}",
+                        type: 'POST',
+                        data: $(form).serialize(), // Serialize form data
+                        success: function(response) {
+                            if (response.status == 200) {
+                                $("#New_Quotes_Modal").modal('hide');
+                                $(form)[0].reset(); // Reset the form
+                            } else {
+                                $("#New_Quotes_Modal").modal('hide');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                        }
+                    });
+                    return false; // Prevent default form submission
+                }
+            });
+
+            $.validator.addMethod("lessThanLast", function(value, element) {
+                var newQuote = parseFloat(value);
+                var lastQuote = parseFloat($('#last_quote').val());
+                var minQuote = parseFloat($('#min_quote').val());
+                var bidDifference = parseFloat($('#bid_difference').val());
+                
+                // Calculate the maximum acceptable value for the new quote
+                var maxAcceptableValue = lastQuote - bidDifference;
+
+                // Check if the new quote is equal to the minimum quote
+                if (newQuote === minQuote) {
+                    return true;
+                }
+                // Check if the new quote is less than or equal to the maximum acceptable value
+                return newQuote <= maxAcceptableValue;
+            }, 'New quote must be less than or equal to the maximum acceptable quote.');
+
         });
         function allQuotesModal(id){
             var data = $('#allQuotesModal_data'+id).html();
@@ -498,8 +550,14 @@
                     <form action="{{route('seller_new_quote_now')}}" method="POST" id="new_quote_form">
                         @csrf
                         <h3 class="content-heading">New Quote</h3>
+                        <input type="hidden" name="bid_difference" id="bid_difference" value="">
+                        <input type="hidden" name="min_quote" id="min_quote" value="">
+                        <input type="hidden" name="max_quote" id="max_quote" value="">
+                        <input type="hidden" name="last_quote" id="last_quote" value="">
                         <input type="hidden" name="inquiry_id" id="inquiry_modal_id" value="">
                         <input class="form-control" placeholder="Write here" name="new_quote" id="new_quote"></input>
+                        <p class="new_quotes_div">Min quote <span class="min_quote"></span> | Max quote <span class="max_quote"></span> | Bid difference <span class="bid_difference"></span>| Last Quote <span class="last_quote"></span></p>
+                        <p class="new_quotes_div">Maximum acceptable quote = (Last Quote-Bid difference)</p>
                         <button type="submit" class="btn btn-animated btn-add-comment">Submit</button>
                     </form>
                 </div>
