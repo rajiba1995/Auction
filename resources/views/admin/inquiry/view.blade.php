@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
                                     <label>Seller Name:</label>
-                                    <p><strong>XXYYZZ</strong></p>
+                                    <p><strong>{{isset($data->SellerData->name)?$data->SellerData->name:"Not-Allot"}}</strong></p>
                                 </div>
                                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
                                     <label>Start Date & Time:</label>

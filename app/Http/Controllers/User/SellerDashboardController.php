@@ -48,7 +48,8 @@ class SellerDashboardController extends Controller
         return view('front.seller_dashboard.all_inquireis',compact('all_inquery'));
     }
     public function live_inquiries(Request $request){
-        return view('front.seller_dashboard.live_inquireis');
+        // $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller($this->getAuthenticatedUserId());
+       return view('front.seller_dashboard.live_inquireis');
     }
     public function live_inquiries_fetch_ajax(){
         $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();

@@ -132,7 +132,7 @@ class MasterModuleController extends Controller
         // dd($request->all());    
         $request->validate([
             'title' => 'required|max:255|unique:collections,title',
-            'image' => 'required|mimes:jpeg,jepg,gif,webp,png',
+            'image' => 'mimes:jpeg,jepg,gif,webp,png',
         ]);
         $params = $request->except('_token');
         $data = $this->masterRepository->CreateCollection($params);
@@ -205,13 +205,12 @@ class MasterModuleController extends Controller
         $request->validate([
             'title' => 'required|max:255|unique:categories,title,NULL,id,collection_id,' . $request->collection,
             'collection' => 'required',
-            'image' => 'required|mimes:jpeg,jepg,gif,webp,png',
+            'image' => 'mimes:jpeg,jepg,gif,webp,png',
         ], [
             'title.required' => 'The title field is required.',
             'title.max' => 'The title may not be greater than 255 characters.',
             'title.unique' => 'The title has already been taken for this Category.',
             'collection.required' => 'The collection field is required.',
-            'image.required' => 'The image field is required.',
             'image.mimes' => 'The image must be a file of type: jpeg, jpg, gif, webp, png.',
         ]);
         $params = $request->except('_token');

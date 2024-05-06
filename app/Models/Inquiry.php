@@ -21,4 +21,7 @@ class Inquiry extends Model{
     public function BuyerData(){
         return $this->belongsTo('App\Models\User','created_by','id');
     }
+    public function SellerData(){
+        return $this->belongsTo('App\Models\User','allot_seller','id');
+    }
 }

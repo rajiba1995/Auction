@@ -368,5 +368,18 @@ class BuyerDashboardController extends Controller
             return redirect()->back()->with('warning', 'Something went wrong. Please try again later.');
         }
     }
+
+    public function cancelled_reason(Request $request){
+        // dd($request->all());
+        if(isset($request->cancelled_reason)){
+            $inquiry= Inquiry::findOrFail($request->id);
+            $inquiry->status = 4;
+            $inquiry->cancelled_reason = $request->cancelled_reason;
+            $inquiry->save();
+            return redirect()->back()->with('success','Inquiry cancelled successfull.');
+        }else{
+            return redirect()->back()->with('warning','Please select the cancell reason.');
+    }
     
+    }
 }
