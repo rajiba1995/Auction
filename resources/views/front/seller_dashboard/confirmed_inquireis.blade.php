@@ -218,7 +218,7 @@
                                                                                 </ul>
                                                                             </td>
                                                                             <td class="input-buyer-td">
-                                                                                {{ ucfirst($item->BuyerData->name) }} <strong>{{ $item->BuyerData->country_code}}-{{ $item->BuyerData->mobile}}</strong>
+                                                                                {{ ucfirst($item->BuyerData->name) }} <br> <strong>{{ $item->BuyerData->country_code}}-{{ $item->BuyerData->mobile}}</strong>
                                                                             </td>
                                                                             <td class="input-location-td">{{$item->location}}</td>
                                                                             <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
@@ -244,12 +244,13 @@
                                                                         <tr>
                                                                             <td class="quotes-supplier-td">
                                                                                 <div class="quote">
-                                                                                    <input type="text" class="quote-amount" value="₹ 3500" disabled>
+                                                                                    {{-- {{dd($item)}} --}}
+                                                                                    <input type="text" class="quote-amount" value="₹ {{$item->inquiry_amount}}" disabled>
                                                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
                                                                                         <img src="assets/images/arrow-up-right.png" alt="">
                                                                                     </a>
-                                                                                    <div class="quote-diff">Quote Difference: 200</div>
-                                                                                    <div class="level">L1</div>
+                                                                                    <div class="quote-diff">Quote Difference: {{$item->bid_difference_quote_amount}}</div>
+                                                                                    {{-- <div class="level">L1</div> --}}
                                                                                 </div>
                                                                             </td>
                                                                             <td class="comments-td">
@@ -276,7 +277,7 @@
                                                                         <tr>
                                                                             <td class="other-actions-td">
                                                                                 <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#cancelInquiryModal" class="btn btn-red btn-cancel-inquiry">
-                                                                                    <img src="assets/images/white-circle-cross.png" alt="Cancel">
+                                                                                    <img src="{{asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
                                                                                     Reject Inquiry
                                                                                 </a>
                                                                             </td>
@@ -284,7 +285,7 @@
                                                                         <tr>
                                                                             <td class="other-actions-td">
                                                                                 <a href="javascript:void(0)" class="btn btn-yellow bill-download">
-                                                                                    <img src="assets/images/upload.png" alt="Download">
+                                                                                    <img src="{{asset('frontend/assets/images/upload.png')}}" alt="Download">
                                                                                     Upload Bill
                                                                                 </a>
                                                                                 <div class="billing-date-time">24 Jan 2024 12.30 pm</div>

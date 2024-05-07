@@ -107,8 +107,8 @@ class AuctionGenerationController extends Controller
             'execution_date' => 'required|date',
             'quotes_per_participants' => 'required|numeric',    
             'minimum_quote_amount' => 'required|numeric',
-            'maximum_quote_amount' => 'required|numeric',
-            'bid_difference_quote_amount' => 'required|numeric',
+            'maximum_quote_amount' => 'required|numeric|gt:minimum_quote_amount',
+            'bid_difference_quote_amount' => 'required|numeric|gt:0', // Ensure bid difference is positive
         ]);
        
         if ($validator->fails()) {

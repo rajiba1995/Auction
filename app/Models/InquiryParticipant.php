@@ -14,4 +14,11 @@ class InquiryParticipant extends Model{
     public function InquriesData(){
         return $this->belongsTo('App\Models\Inquiry','inquiry_id','id');
     }
+    protected $fillable = [
+        'id',
+        'status',
+        'inquiry_id', 
+        'user_id', 
+        'rejected_reason'
+    ];
 }

@@ -411,7 +411,7 @@
                             $('#append_live_data').append(html);
                         });
                     }else{
-
+                        $('#append_live_data').html('');
                     }
                     },
                     error: function(xhr, status, error) {

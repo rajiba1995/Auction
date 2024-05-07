@@ -39,6 +39,20 @@ class SellerDashboardRepository implements SellerDashboardContract{
             ->join('inquiry_participants', 'inquiry_participants.inquiry_id', '=', 'inquiries.id')
             ->join('users', 'users.id', '=', 'inquiries.created_by')
             ->where('inquiry_participants.user_id', $id)
+            ->where('inquiry_participants.status', 1)
+            ->whereNotNull('inquiries.inquiry_id')
+            ->orderBy('inquiries.created_at', 'DESC')
+            ->get();
+    }
+    public function rejected_inquiries_by_seller($id){
+        return DB::table('inquiries')
+            ->select('users.name as buyer_name', 'inquiry_participants.user_id as my_id', 'inquiries.*', 'inquiry_participants.rejected_reason', 'inquiry_participants.status as participants_status')
+            ->join('inquiry_participants', 'inquiry_participants.inquiry_id', '=', 'inquiries.id')
+            ->join('users', 'users.id', '=', 'inquiries.created_by')
+            ->where('inquiry_participants.user_id', $id)
+            ->whereIn('inquiry_participants.status', [2, 3]) // 2: Seller own cancelled, 3: Buyer selected another seller
+            ->orWhere('inquiries.status', 4) // Buyer Cancelled inquiry 
+            // ->whereNotNull('inquiry_participants.rejected_reason')
             ->whereNotNull('inquiries.inquiry_id')
             ->orderBy('inquiries.created_at', 'DESC')
             ->get();
@@ -91,6 +105,7 @@ class SellerDashboardRepository implements SellerDashboardContract{
         ->where('inquiries.status', 3)
         ->join('inquiry_participants', 'inquiries.id', '=', 'inquiry_participants.inquiry_id')
         ->where('inquiry_participants.user_id', $this->getAuthenticatedUserId())
+        ->where('inquiries.allot_seller', $this->getAuthenticatedUserId())
         ->get();
     }
 

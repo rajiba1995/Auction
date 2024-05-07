@@ -22,6 +22,18 @@
                                 <ul>
                                     <li><a href="{{asset('')}}">Home</a></li>
                                     <li>&nbsp;>&nbsp;<a href="{{route('user_seller_dashboard')}}">Supplier Dashboard</a></span></li>
+                                    <li id="message_li"> 
+                                        @if (session('success'))
+                                            <div class="alert alert-success" id="successAlert">
+                                                {{ session('success') }}
+                                            </div>
+                                        @endif
+                                        @if (session('warning'))
+                                            <div class="alert alert-warning" id="successAlert">
+                                                {{ session('warning') }}
+                                            </div>
+                                        @endif
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -308,7 +320,8 @@
                                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                         </div>
                                                                         <div class="modal-body">
-                                                                            
+                                                                            <form action="{{route('seller_cancelled_inquiry')}}" method="POST">
+                                                                            @csrf
                                                                             <div class="container-fluid">
                                                                                 <div class="row">
                                                                                     <div class="col-12">
@@ -340,19 +353,20 @@
                                                                                 <div class="row mt-3">
                                                                                     <div class="col-12">
                                                                                         <h4 class="content-heading">Select a Reason*</h4>
-                                                                                        <select class="form-control">
-                                                                                            <option selected disabled>Select</option>
-                                                                                            <option value="">Withdrawn by Buyer</option>
-                                                                                            <option value="">Product/Service out of stock/no longer available</option>
-                                                                                            <option value="">Duplicate Inquiry</option>
-                                                                                            <option value="">Not Interested Anymore</option>
-                                                                                            <option value="">My Reason is not listed here</option>
+                                                                                        <select class="form-control" name="reason" required>
+                                                                                            <option value="" selected hidden>Select</option>
+                                                                                            <option value="withdrawn">Withdrawn by Buyer</option>
+                                                                                            <option value="out_of_stock">Product/Service out of stock/no longer available</option>
+                                                                                            <option value="duplicate">Duplicate Inquiry</option>
+                                                                                            <option value="not_interested">Not Interested Anymore</option>
+                                                                                            <option value="other">My Reason is not listed here</option>
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            
-                                                                            <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
+                                                                            <input type="hidden" name="inquiry_id" value="{{$item->id}}">
+                                                                            <button type="submit" class="btn btn-animated btn-submit w-50">Submit</button>
+                                                                            </form>
                                                                         </div>
                                                                     </div>
                                                                 </div>
