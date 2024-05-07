@@ -178,6 +178,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {{-- {{dd($rejected_inquiries)}} --}}
                                                 @forelse ($rejected_inquiries as $key=>$item)
                                                     @if($item->my_id==Auth::guard('web')->user()->id)
                                                         <tr>
@@ -188,16 +189,42 @@
                                                                             <td class="input-id-td">{{$item->inquiry_id}}</td>
                                                                             <td class="input-title-td">{{$item->title}}</td>
                                                                             <td class="input-details-td">
-                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal" class="btn btn-view">View</a>
+                                                                                <ul class="input-data-list">
+                                                                                    <li>
+                                                                                        <label>Inquiry Type</label>
+                                                                                        <p>{{$item->inquiry_type}}</p>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>Category</label>
+                                                                                        <p>{{ucfirst($item->category)}}</p>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>Sub-Category</label>
+                                                                                        <p>{{ucfirst($item->sub_category)}}</p>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>Description of the Service</label>
+                                                                                        <p class="hidden">{{ucfirst($item->description)}}</p>
+                                                                                        <div class="read-more"><span>read more</span></div>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>Date of execution of the task</label>
+                                                                                        <p>25 jan, 2024</p>
+                                                                                    </li>
+                                                                                    <li>
+                                                                                        <label>No of Quotes per Participants</label>
+                                                                                        <p>{{$item->quotes_per_participants}}</p>
+                                                                                    </li>
+                                                                                </ul>
                                                                             </td>
                                                                             <td class="input-buyer-td">
-                                                                                Mahesh Gupta <strong>+911234567891</strong>
+                                                                                {{ ucfirst($item->BuyerData->name) }} <br> <strong>{{ $item->BuyerData->country_code}}-{{ $item->BuyerData->mobile}}</strong>
                                                                             </td>
-                                                                            <td class="input-location-td">Delhi</td>
-                                                                            <td class="input-start-date-td">25 jan, 2024</td>
-                                                                            <td class="input-end-date-td">28 jan, 2024</td>
-                                                                            <td class="min-quote-td">2,00,000</td>
-                                                                            <td class="max-quote-td">3,00,000</td>
+                                                                            <td class="input-location-td">{{$item->location}}</td>
+                                                                            <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
+                                                                            <td class="input-end-date-td">{{ date('d M, Y', strtotime($item->end_date)) }} {{ date('g:i A', strtotime($item->end_time)) }}</td>
+                                                                            <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.', ',')}}</td>
+                                                                            <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.', ',')}}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td colspan="7" class="note-td">
@@ -248,10 +275,22 @@
                                                                     <tbody>
                                                                         <tr>
                                                                             <td class="other-actions-td">
-                                                                                <a href="javascript:void(0)" class="failed-inquiry">
-                                                                                    <img src="assets/images/red-circle-cross.png" alt="Cancel">
-                                                                                    Failed Inquiry
-                                                                                </a>
+                                                                                @if ($item->participants_status == 2)
+                                                                                    <a href="javascript:void(0)" class="failed-inquiry">
+                                                                                        <img src="{{asset('frontend/assets/images/red-circle-cross.png')}}" alt="Cancel">
+                                                                                        Failed Inquiry
+                                                                                    </a>
+                                                                                @elseif ($item->participants_status == 3)
+                                                                                    <a href="javascript:void(0)" class="failed-inquiry">
+                                                                                        <img src="{{asset('frontend/assets/images/failed.png')}}" alt="Cancel">
+                                                                                        Cancelled Inquiry
+                                                                                    </a>              
+                                                                                @elseif ($item->participants_status == 4)
+                                                                                    <a href="javascript:void(0)" class="failed-inquiry">
+                                                                                        <img src="{{asset('frontend/assets/images/green-circle-tick.png')}}" alt="Cancel">
+                                                                                         Alloted
+                                                                                    </a>              
+                                                                                @endif
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
