@@ -9,6 +9,7 @@ use App\Contracts\UserContract;
 use App\Contracts\SellerDashboardContract;
 use App\Contracts\MasterContract;
 use App\Models\InquirySellerQuotes;
+use App\Models\InquiryParticipant;
 use App\Models\InquirySellerComments;
 use App\Models\Inquiry;
 use Illuminate\Support\Facades\Crypt;
@@ -137,16 +138,16 @@ class SellerDashboardController extends Controller
                     $count = 0;
                     $quote_difference = 0; // Initialize the quote difference
                     // Iterate through the array
-                    // $array = $all_inquiries['my_last_three_quotes'];
+                    $array = $all_inquiries['my_last_three_quotes'];
                     
-                    // for ($i = 0; $i < count($array) - 1; $i++) {
-                    //     $count++; 
-                    //     if ($count >= 1) { // Check if the count is 2 or more
-                    //         // Calculate the quote difference dynamically between the last index and the item before the last index
-                    //         $quote_difference = abs($array[count($array) - 1] - $array[count($array) - 2]);
-                    //         break; // Exit the loop once the condition is met
-                    //     }
-                    // }
+                    for ($i = 0; $i < count($array) - 1; $i++) {
+                        $count++; 
+                        if ($count >= 1) { // Check if the count is 2 or more
+                            // Calculate the quote difference dynamically between the last index and the item before the last index
+                            $quote_difference = abs($array[count($array) - 1] - $array[count($array) - 2]);
+                            break; // Exit the loop once the condition is met
+                        }
+                    }
                     // Assuming $all_inquiries['my_last_three_quotes'] is an array
                     $all_inquiries['my_last_three_quotes'] = array_reverse($all_inquiries['my_last_three_quotes']);
                     $all_inquiries['quote_difference'] = $value->bid_difference_quote_amount;
@@ -246,19 +247,19 @@ class SellerDashboardController extends Controller
 
                     $count = 0;
                     $last_quotes = 0;
-                    // $quote_difference = 0; // Initialize the quote difference
+                    $quote_difference = 0; // Initialize the quote difference
                     // Iterate through the array
-                    // $array = $all_inquiries['my_last_three_quotes'];
-                    // for ($i = 0; $i < count($array) - 1; $i++) {
-                    //     $last_quotes = $array[count($array) - 1];
-                    //     $count++; 
-                    //     if ($count >= 1) { // Check if the count is 2 or more
-                    //         // Calculate the quote difference dynamically between the last index and the item before the last index
-                    //         $quote_difference = abs($array[count($array) - 1] - $array[count($array) - 2]);
+                    $array = $all_inquiries['my_last_three_quotes'];
+                    for ($i = 0; $i < count($array) - 1; $i++) {
+                        $last_quotes = $array[count($array) - 1];
+                        $count++; 
+                        if ($count >= 1) { // Check if the count is 2 or more
+                            // Calculate the quote difference dynamically between the last index and the item before the last index
+                            $quote_difference = abs($array[count($array) - 1] - $array[count($array) - 2]);
 
-                    //         break; // Exit the loop once the condition is met
-                    //     }
-                    // }
+                            break; // Exit the loop once the condition is met
+                        }
+                    }
                     $all_inquiries['my_last_three_quotes'] = array_reverse($all_inquiries['my_last_three_quotes']);
                     $all_inquiries['quote_difference'] = $value->bid_difference_quote_amount;
                     $all_inquiries['last_quotes'] = $last_quotes;
@@ -275,9 +276,13 @@ class SellerDashboardController extends Controller
         return view('front.seller_dashboard.confirmed_inquireis', compact('confirmed_inquiries'));
     }
     public function history_inquiries(Request $request){
-        // $live_inquiries =  $this->SellerDashboardRepository->live_inquiries_by_seller();
-        // dd('history');   
-        return view('front.seller_dashboard.history_inquireis');
+        $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
+        $distinct = [];
+        foreach($rejected_inquiries as $key =>$item){
+            $distinct[] = $item->id;
+        }
+        $distinct = array_unique($distinct);
+        return view('front.seller_dashboard.history_inquireis', compact('rejected_inquiries', 'distinct'));
     }
     public function seller_start_quotes(Request $request){
         // Define validation rules
@@ -333,5 +338,16 @@ class SellerDashboardController extends Controller
         }else{
             return response()->json(['status'=>400]);
         }
+    }
+    public function cancelled_reason(Request $request){
+       $data = InquiryParticipant::where('inquiry_id', $request->inquiry_id)->where('user_id', $this->getAuthenticatedUserId())->first();
+       if($data){
+        $data->status = 2;
+        $data->rejected_reason = $request->reason;
+        $data->save();
+        return redirect()->back()->with('success', 'Inquiry has been successfully rejected.');
+       }else{
+        return redirect()->back();
+       }
     }
 }

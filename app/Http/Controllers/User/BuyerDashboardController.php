@@ -9,6 +9,7 @@ use App\Contracts\UserContract;
 use App\Contracts\BuyerDashboardContract;
 use App\Contracts\MasterContract;
 use App\Models\Inquiry;
+use App\Models\InquiryParticipant;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
@@ -81,9 +82,9 @@ class BuyerDashboardController extends Controller
                 if($value->ParticipantsData){
                     foreach($value->ParticipantsData as $k =>$item){
                         $all_inquiries['participants'][]= $item->SellerData->business_name;
-                        if($item->status==1){
+                        // if($item->status==1){
                             $all_inquiries['invted_participants'][]= $item->SellerData->business_name;
-                        }
+                        // }
                     }
                 }
                 $all_inquiries['invted_participants_count'] = count($all_inquiries['participants']);
@@ -95,14 +96,16 @@ class BuyerDashboardController extends Controller
                             $seller['id'] = $itemk->id;
                             $seller['inquiry_id'] = $itemk->inquiry_id;
                             $seller['seller_id'] = $itemk->seller_id;
-                            $seller['quotes'] = $itemk->quotes;
                             $seller['name'] = $itemk->name;
                             $seller['country_code'] = $itemk->country_code;
                             $seller['mobile'] = $itemk->mobile;
                             $seller['business_name'] = $itemk->business_name;
                             $seller['last_three_quotes'] = [];
-                            foreach(get_last_three_quotes($itemk->inquiry_id,$itemk->seller_id) as $qItem){
+                            foreach(get_last_three_quotes($itemk->inquiry_id,$itemk->seller_id) as $index=> $qItem){
                                 $seller['last_three_quotes'][]=$qItem->quotes; 
+                                if($index==0){
+                                    $seller['quotes'] = $itemk->quotes;
+                                }
                             }
                             $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
                             $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
@@ -149,9 +152,9 @@ class BuyerDashboardController extends Controller
                 if($value->ParticipantsData){
                     foreach($value->ParticipantsData as $k =>$item){
                         $all_inquiries['participants'][]= $item->SellerData->business_name;
-                        if($item->status==1){
+                        // if($item->status==1){
                             $all_inquiries['invted_participants'][]= $item->SellerData->business_name;
-                        }
+                        // }
                     }
                 }
                 $all_inquiries['invted_participants_count'] = count($all_inquiries['participants']);
@@ -217,9 +220,9 @@ class BuyerDashboardController extends Controller
                 if($value->ParticipantsData){
                     foreach($value->ParticipantsData as $k =>$item){
                         $all_inquiries['participants'][]= $item->SellerData->business_name;
-                        if($item->status==1){
+                        // if($item->status==1){
                             $all_inquiries['invted_participants'][]= $item->SellerData->business_name;
-                        }
+                        // }
                     }
                 }
                 $all_inquiries['invted_participants_count'] = count($all_inquiries['participants']);
@@ -328,15 +331,17 @@ class BuyerDashboardController extends Controller
                             $seller['id'] = $itemk->id;
                             $seller['inquiry_id'] = $itemk->inquiry_id;
                             $seller['seller_id'] = $itemk->seller_id;
-                            $seller['quotes'] = $itemk->quotes;
+                            // $seller['quotes'] = $itemk->quotes;
                             $seller['name'] = $itemk->name;
                             $seller['country_code'] = $itemk->country_code;
                             $seller['mobile'] = $itemk->mobile;
                             $seller['business_name'] = $itemk->business_name;
                             $seller['last_three_quotes'] = [];
-                            foreach(get_last_three_quotes($itemk->inquiry_id,$itemk->seller_id) as $qItem){
-                                $seller['last_three_quotes'][]=$qItem->quotes; 
+                            foreach($get_last_three_quotes = get_last_three_quotes($itemk->inquiry_id,$itemk->seller_id) as $index=> $qItem){
+                                $seller['last_three_quotes'][]=$qItem->quotes;
                             }
+                            $seller['quotes'] = $get_last_three_quotes[0]->quotes;
+                            
                             $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
                             $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
                             $seller['seller_comments_data'] = $SellerCommentsData;
@@ -363,6 +368,24 @@ class BuyerDashboardController extends Controller
             $inquiry->inquiry_amount = $request->allot_amount;
             $inquiry->status = 3; //Confirmed
             $inquiry->save();
+            if ($inquiry) {
+                $data = InquiryParticipant::where('inquiry_id', $inquiry->id)
+                                          ->where('user_id', '!=', $inquiry->allot_seller)
+                                          ->get();
+                
+                // Loop through each record and update the status to 3
+                foreach ($data as $participant) {
+                    $participant->update(['status' => 3, 'rejected_reason'=>'Buyer selected another supplier']);
+                }
+                $allot_seller = InquiryParticipant::where('inquiry_id', $inquiry->id)
+                                          ->where('user_id', $inquiry->allot_seller)
+                                          ->first();
+                if($allot_seller){
+                    $allot_seller->status = 4; //Allot
+                    $allot_seller->rejected_reason = null;
+                    $allot_seller->save();
+                }
+            }
             return redirect()->route('buyer_confirmed_inquiries')->with('success', 'Seller has been successfully allocated.');
         }else{
             return redirect()->back()->with('warning', 'Something went wrong. Please try again later.');
