@@ -14,6 +14,8 @@ use App\Models\Feedback;
 use App\Models\SocialMedia;
 use App\Models\Badge;
 use App\Models\Business;
+use App\Models\BuyerCancell;
+use App\Models\SellerCancell;
 use App\Models\City;
 use App\Models\State;
 use App\Models\EmployeeAttandance;
@@ -870,6 +872,90 @@ class MasterRepository implements MasterContract
     }
     }
 
+
+    //buyer cancell reason
+
+    public function getAllBuyerReason(){
+        return  BuyerCancell::orderBy('title', 'ASC')->paginate(20);;
+    }
+    public function CreateBuyerCancell(array $data)
+    {
+        try {
+            $buyer_cancell = new BuyerCancell();
+            $collection = collect($data);
+            $buyer_cancell->title = $collection['name'];
+            $buyer_cancell->save();
+            return $buyer_cancell;
+        } catch (QueryException $exception) {
+            throw new InvalidArgumentException($exception->getMessage());
+        }
+    }
+    public function GetBuyerCancellById($id)
+    {
+        return BuyerCancell::findOrFail($id);
+    }
+    public function updateBuyerCancellReason(array $data)
+    {
+
+        try {
+            $collection = collect($data);
+            $buyer_cancell = BuyerCancell::findOrFail($collection['id']);
+            $buyer_cancell->title = $collection['name'];
+            $buyer_cancell->save();
+            return $buyer_cancell;
+        } catch (QueryException $exception) {
+            throw new InvalidArgumentException($exception->getMessage());
+        }
+    }
+    public function DeleteBuyerCancellReason($id)
+    {
+        $delete = BuyerCancell::findOrFail($id);
+        $delete->delete();
+        return $delete;
+    }
+
+
+
+    //Seller cancell reason
+
+    public function getAllSellerReason(){
+        return  SellerCancell::orderBy('title', 'ASC')->paginate(20);;
+    }
+    public function CreateSellerCancell(array $data)
+    {
+        try {
+            $seller_cancell = new SellerCancell();
+            $collection = collect($data);
+            $seller_cancell->title = $collection['name'];
+            $seller_cancell->save();
+            return $seller_cancell;
+        } catch (QueryException $exception) {
+            throw new InvalidArgumentException($exception->getMessage());
+        }
+    }
+    public function GetSellerCancellById($id)
+    {
+        return SellerCancell::findOrFail($id);
+    }
+    public function updateSellerCancellReason(array $data)
+    {
+
+        try {
+            $collection = collect($data);
+            $seller_cancell = SellerCancell::findOrFail($collection['id']);
+            $seller_cancell->title = $collection['name'];
+            $seller_cancell->save();
+            return $seller_cancell;
+        } catch (QueryException $exception) {
+            throw new InvalidArgumentException($exception->getMessage());
+        }
+    }
+    public function DeleteSellerCancellReason($id)
+    {
+        $delete = SellerCancell::findOrFail($id);
+        $delete->delete();
+        return $delete;
+    }
 
     
 }

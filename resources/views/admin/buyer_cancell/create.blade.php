@@ -4,19 +4,19 @@
 <div class="inner-content">
     <div class="report-table-box">
         <div class="heading-row mb-2">
-            <h3>New Legal Status</h3>
-            <a href="{{route('admin.legalstatus.index')}}" class="btn btn-danger btn-sm">
+            <h3>New Buyer Reason</h3>
+            <a href="{{route('admin.buyer_cancell_reason.index')}}" class="btn btn-danger btn-sm">
                 <iconify-icon icon="icon-park-twotone:back"></iconify-icon>
                 Back 
             </a>
         </div>
-        <form action="{{route('admin.legalstatus.store')}}" method="POST"  enctype="multipart/form-data">
+        <form action="{{route('admin.buyer_cancell_reason.store')}}" method="POST"  enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-md-6 col-12">
 
                     <div class="form-wrap mb-3">
-                        <label for="">Legal Status Name</label>
+                        <label for="">Title</label>
                             <input type="text" class="form-control" name="name" id="name" value="{{old('name')}}">
                             @error('name')<div class="text-danger">{{ $message }}</div>@enderror
                            

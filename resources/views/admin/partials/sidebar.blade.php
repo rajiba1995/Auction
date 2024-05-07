@@ -129,6 +129,24 @@
       </div>
     </div> 
     <div class="accordion-item">
+      <a href="javascript:void(0)" class="accordion-button {{ (request()->is('admin/cancell-reason-management*')) ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse8">
+        <i class="fa-solid fa-xmark"></i>
+        Cancelled Reason Management
+        <img src="{{asset('admin/assets/images/up-arrow-black.png')}}" alt="arrow" class="indicator i-black">
+        <img src="{{asset('admin/assets/images/up-arrow-white.png')}}" alt="arrow" class="indicator i-white">
+      </a>
+      <div class="accordion-collapse collapse {{ (request()->is('admin/cancell-reason-management*')) ? 'show' : '' }}" id="collapse8" data-bs-parent="#menusAccordion">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link {{ (request()->is('admin/cancell-reason-management/buyer*')) ? 'active' : '' }}" aria-current="page" href="{{route('admin.buyer_cancell_reason.index')}}">Buyer Cancell Reason</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{ (request()->is('admin/cancell-reason-management/seller*')) ? 'active' : '' }}" aria-current="page" href="{{route('admin.seller_cancell_reason.index')}}">Seller Cancell Reason</a>
+          </li>
+        </ul>
+      </div>
+    </div> 
+    <div class="accordion-item">
       <a href="javascript:void(0)" class="accordion-button {{ (request()->is('admin/setting*')) ? 'active' : '' }} " data-bs-toggle="collapse" data-bs-target="#collapse3">
         <i class="fa-solid fa-gear"></i>
         Settings

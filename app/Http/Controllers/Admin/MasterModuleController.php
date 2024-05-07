@@ -879,7 +879,123 @@ class MasterModuleController extends Controller
         }
      }
 
+     //Buyer cancell reason
+     public function BuyerCancellReasonIndex()
+     {
+        $data = $this->masterRepository->getAllBuyerReason();
+        return view('admin.buyer_cancell.index',compact('data'));
+     }
+     public function BuyerCancellReasonCreate()
+     {
+         return view('admin.buyer_cancell.create');
+     }
+     public function BuyerCancellReasonStore(Request $request)
+     {   
+        $request->validate([
+            'name' => 'required|string|max:255|unique:buyer_cancell,title',
+        ],[
+            'name.required'=>'Name is required.',
+            'name.unique'=>'The Reason is already taken.'
+      
+        ]);
+        
+         $params = $request->except('_token');
+         $data = $this->masterRepository->CreateBuyerCancell($params);
+         if ($data) {
+             return redirect()->route('admin.buyer_cancell_reason.index')->with('success', 'Data has been successfully stored!');
+         } else {
+             return redirect()->route('admin.buyer_cancell_reason.create')->with('error', 'Something went wrong please try again!');
+         }
+     }
+     public function BuyerCancellReasonEdit($id)
+     {
+         $data = $this->masterRepository->GetBuyerCancellById($id);
+         return view('admin.buyer_cancell.edit', compact('data'));
+     }
+     public function BuyerCancellReasonUpdate(Request $request)
+     {
+         // dd($request->all());
+         $request->validate([
+            'name' => 'required|string|max:255|unique:buyer_cancell,title,' . $request->id,
+        ]);
+        
+         $params = $request->except('_token');
+         $data = $this->masterRepository->updateBuyerCancellReason($params);
+         if ($data) {
+             return redirect()->route('admin.buyer_cancell_reason.index', $request->id)->with('success', 'Data has been successfully updated!');
+         } else {
+             return redirect()->route('admin.buyer_cancell_reason.edit', $request->id)->with('error', 'Something went wrong please try again!');
+         }
+     }
+     public function BuyerCancellReasonDelete($id)
+     {
+         $data = $this->masterRepository->DeleteBuyerCancellReason($id);
+         if ($data) {
+             return redirect()->route('admin.buyer_cancell_reason.index')->with('success', 'Deleted Successfully!');
+         } else {
+             return redirect()->route('admin.buyer_cancell_reason.index')->with('error', 'Something went wrong please try again!');
+         }
+     }
 
+
+     //Seller cancell reason
+     public function SellerCancellReasonIndex()
+     {
+        $data = $this->masterRepository->getAllSellerReason();
+        return view('admin.seller_cancell.index',compact('data'));
+
+     }
+     public function SellerCancellReasonCreate()
+     {
+         return view('admin.seller_cancell.create');
+     }
+     public function SellerCancellReasonStore(Request $request)
+     {   
+        $request->validate([
+            'name' => 'required|string|max:255|unique:seller_cancell,title',
+        ],[
+            'name.required'=>'Name is required.',
+            'name.unique'=>'The Reason is already taken.'
+      
+        ]);
+        
+         $params = $request->except('_token');
+         $data = $this->masterRepository->CreateSellerCancell($params);
+         if ($data) {
+             return redirect()->route('admin.seller_cancell_reason.index')->with('success', 'Data has been successfully stored!');
+         } else {
+             return redirect()->route('admin.seller_cancell_reason.create')->with('error', 'Something went wrong please try again!');
+         }
+     }
+     public function SellerCancellReasonEdit($id)
+     {
+         $data = $this->masterRepository->GetSellerCancellById($id);
+         return view('admin.seller_cancell.edit', compact('data'));
+     }
+     public function SellerCancellReasonUpdate(Request $request)
+     {
+         // dd($request->all());
+         $request->validate([
+            'name' => 'required|string|max:255|unique:seller_cancell,title,' . $request->id,
+        ]);
+        
+         $params = $request->except('_token');
+         $data = $this->masterRepository->updateSellerCancellReason($params);
+         if ($data) {
+             return redirect()->route('admin.seller_cancell_reason.index', $request->id)->with('success', 'Data has been successfully updated!');
+         } else {
+             return redirect()->route('admin.seller_cancell_reason.edit', $request->id)->with('error', 'Something went wrong please try again!');
+         }
+     }
+     public function SellerCancellReasonDelete($id)
+     {
+         $data = $this->masterRepository->DeleteSellerCancellReason($id);
+         if ($data) {
+             return redirect()->route('admin.seller_cancell_reason.index')->with('success', 'Deleted Successfully!');
+         } else {
+             return redirect()->route('admin.seller_cancell_reason.index')->with('error', 'Something went wrong please try again!');
+         }
+     }
 
 
 }

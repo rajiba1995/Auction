@@ -4,11 +4,11 @@
 <div class="inner-content">
     <div class="report-table-box">
         <div class="heading-row">
-            <h3>Sub-category List</h3>
+            <h3>Buyer Cancell List</h3>
             <div class="d-flex">
-                <a href="{{route('admin.category.create')}}" class="btn btn-add btn-sm">
+                <a href="{{route('admin.buyer_cancell_reason.create')}}" class="btn btn-add btn-sm">
                     <i class="fa-solid fa-plus"></i>
-                    Add Sub-category
+                    Add Reason
                 </a>
             </div>
         </div>
@@ -17,9 +17,7 @@
     <thead>
         <tr>
             <th>SL.</th>
-            <th width="10%">Image</th>
             <th>Title</th>
-            <th>Status</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -27,15 +25,10 @@
         @forelse ($data as $key =>$item)
         <tr>
             <td> {{ $data->firstItem() + $loop->index }}</td>
-            <td><img src="{{asset($item->image)}}" alt="No-Image" srcset="" class="img-thumbnail" height="10%" width="50%"></td>
             <td> {{ $item->title }}</td>
-           
-            <td>
-                <a href="{{route('admin.category.status', $item->id)}}"><span class="btn-sm btn-status btn {{$item->status==1?"bg-success":"bg-danger"}}">{{$item->status==1?"Active":"Inactive"}}</span></a>
-            </td>
             <td>
                 {{-- <button type="button" class="btn btn-view" title="View"><i class="fa-regular fa-eye"></i></button> --}}
-                <a href="{{route('admin.category.edit', $item->id)}}" class="btn btn-edit" title="Edit">Edit</a>
+                <a href="{{route('admin.buyer_cancell_reason.edit', $item->id)}}" class="btn btn-edit" title="Edit">Edit</a>
                 <button type="button" class="btn btn-delete itemremove" data-id="{{$item->id}}" title="Delete"><i class="fa-regular fa-trash-can"></i></button>
             </td>
         </tr>
@@ -65,7 +58,7 @@
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "subcategory/delete/" + id;
+                window.location.href = "buyer/delete/" + id;
             } else {
                 Swal.fire("Cancelled", "Record is safe", "error");
             }
