@@ -108,6 +108,14 @@
                                     <p><strong>{{$data->BuyerData->name}}</strong></p>
                                 </div>
                                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+                                    <label>Seller Name:</label>
+                                    <p><strong>{{isset($data->SellerData->name)?$data->SellerData->name:"Not-Allot"}}</strong></p>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
+                                    <label>Final Quote Amout:</label>
+                                    <p><strong>{{number_format($data->inquiry_amount,2, '.', ',')}}</strong></p>
+                                </div>
+                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
                                     <label>Inquiry Type:</label>
                                     <p>{{$data->inquiry_type}}</p>
                                 </div>                             
@@ -138,14 +146,6 @@
                                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
                                     <label>Maximum Quote Amount:</label>
                                     <p>{{number_format($data->minimum_quote_amount,2, '.', ',')}}</p>
-                                </div>
-                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
-                                    <label>Final Quote Amout:</label>
-                                    <p><strong>{{number_format($data->inquiry_amount,2, '.', ',')}}</strong></p>
-                                </div>
-                                <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
-                                    <label>Seller Name:</label>
-                                    <p><strong>{{isset($data->SellerData->name)?$data->SellerData->name:"Not-Allot"}}</strong></p>
                                 </div>
                                 <div class="col-xl-3 col-lg-4 col-sm-6 col-12">
                                     <label>Start Date & Time:</label>
