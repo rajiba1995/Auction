@@ -275,15 +275,15 @@
                                                                     <tbody>
                                                                         <tr>
                                                                             <td class="other-actions-td">
-                                                                                @if ($item->participants_status == 2)
+                                                                                @if ($item->status == 4 || $item->participants_status == 2)
                                                                                     <a href="javascript:void(0)" class="failed-inquiry">
                                                                                         <img src="{{asset('frontend/assets/images/red-circle-cross.png')}}" alt="Cancel">
-                                                                                        Cancelled Inquiry
+                                                                                        Failed Inquiry
                                                                                     </a>
-                                                                                @elseif ($item->participants_status == 3)
+                                                                                @elseif ($item->status == 3 && $item->participants_status == 3)
                                                                                     <a href="javascript:void(0)" class="failed-inquiry">
                                                                                         <img src="{{asset('frontend/assets/images/failed.png')}}" alt="Cancel">
-                                                                                        Failed Inquiry
+                                                                                        Cancelled Inquiry
                                                                                     </a>              
                                                                                 @elseif ($item->participants_status == 4)
                                                                                     <a href="javascript:void(0)" class="failed-inquiry">

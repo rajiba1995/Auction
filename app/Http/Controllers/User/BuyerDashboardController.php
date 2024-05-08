@@ -396,9 +396,16 @@ class BuyerDashboardController extends Controller
         // dd($request->all());
         if(isset($request->cancelled_reason)){
             $inquiry= Inquiry::findOrFail($request->id);
-            $inquiry->status = 4;
             $inquiry->cancelled_reason = $request->cancelled_reason;
+            $inquiry->status = 4;  // here we do push evey paticipats staus ==2 in inquiry_participats table as buyer cancel the inquiry for reason
             $inquiry->save();
+
+            // if ($inquiry) {
+            //     $data = InquiryParticipant::where('inquiry_id', $inquiry->id)->get();
+            //        // Loop through each record and update the status to 2
+            //        foreach ($data as $participant) {
+            //         $participant->update(['status' => 2]);
+            //     }
             return redirect()->back()->with('success','Inquiry cancelled successfull.');
         }else{
             return redirect()->back()->with('warning','Please select the cancell reason.');

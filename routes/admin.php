@@ -231,12 +231,28 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
             Route::get('', [AdminInquiryController::class, 'InquiryIndex'])->name('admin.inquiry.index');
             Route::get('/view/{id}', [AdminInquiryController::class, 'InquiryDetailsView'])->name('admin.inquiry.view');
             Route::get('/export', [AdminInquiryController::class, 'InquiryDetailsExport'])->name('admin.inquiry.details.export');
-            // Route::post('/store', [PaymentManageMentController::class, 'BadgeStore'])->name('admin.badge.store');
-            // Route::get('/status/{id}', [PaymentManageMentController::class, 'BadgeStatus'])->name('admin.badge.status');
-            // Route::get('/delete/{id}', [PaymentManageMentController::class, 'BadgeDelete'])->name('admin.badge.delete');
-            // Route::get('/edit/{id}', [PaymentManageMentController::class, 'BadgeEdit'])->name('admin.badge.edit');
-            // Route::post('/update', [PaymentManageMentController::class, 'BadgeUpdate'])->name('admin.badge.update');
-
+        });
+    });
+      // Buyer-cancell-reason
+      Route::group(['prefix'  =>   'cancell-reason-management'], function() {
+        Route::group(['prefix'  =>   'buyer'], function() {
+            Route::get('', [MasterModuleController::class, 'BuyerCancellReasonIndex'])->name('admin.buyer_cancell_reason.index');
+            Route::get('/create', [MasterModuleController::class, 'BuyerCancellReasonCreate'])->name('admin.buyer_cancell_reason.create');
+            Route::post('/store', [MasterModuleController::class, 'BuyerCancellReasonStore'])->name('admin.buyer_cancell_reason.store');
+            Route::get('/edit/{id}', [MasterModuleController::class, 'BuyerCancellReasonEdit'])->name('admin.buyer_cancell_reason.edit');
+            Route::post('/update', [MasterModuleController::class, 'BuyerCancellReasonUpdate'])->name('admin.buyer_cancell_reason.update');
+            Route::get('/delete/{id}', [MasterModuleController::class, 'BuyerCancellReasonDelete'])->name('admin.buyer_cancell_reason.delete');
+        });
+    });
+      // Seller-cancell-reason
+      Route::group(['prefix'  =>   'cancell-reason-management'], function() {
+        Route::group(['prefix'  =>   'seller'], function() {
+            Route::get('', [MasterModuleController::class, 'SellerCancellReasonIndex'])->name('admin.seller_cancell_reason.index');
+            Route::get('/create', [MasterModuleController::class, 'SellerCancellReasonCreate'])->name('admin.seller_cancell_reason.create');
+            Route::post('/store', [MasterModuleController::class, 'SellerCancellReasonStore'])->name('admin.seller_cancell_reason.store');
+            Route::get('/edit/{id}', [MasterModuleController::class, 'SellerCancellReasonEdit'])->name('admin.seller_cancell_reason.edit');
+            Route::post('/update', [MasterModuleController::class, 'SellerCancellReasonUpdate'])->name('admin.seller_cancell_reason.update');
+            Route::get('/delete/{id}', [MasterModuleController::class, 'SellerCancellReasonDelete'])->name('admin.seller_cancell_reason.delete');
         });
     });
 });

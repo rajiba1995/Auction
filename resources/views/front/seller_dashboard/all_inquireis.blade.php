@@ -197,8 +197,34 @@
                                                                 <td class="input-id-td"><span class="inquiry_id">{{$item->inquiry_id}}</span></td>
                                                                 <td class="input-title-td"> <span class="inquiry_title">{{ ucfirst($item->title) }}</span></td>
                                                                 <td class="input-details-td">
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal{{$item->id}}" class="btn btn-view">View</a>
-                                                                    <div class="modal fade buyer-details-modal" id="buyerDetailsModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                    <ul class="input-data-list">
+                                                                        <li>
+                                                                            <label>Inquiry Type</label>
+                                                                            <p>{{$item->inquiry_type}}</p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>Category</label>
+                                                                            <p>{{ucfirst($item->category)}}</p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>Sub-Category</label>
+                                                                            <p>{{ucfirst($item->sub_category)}}</p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>Description of the Service</label>
+                                                                            <p class="hidden">{{ucfirst($item->description)}}</p>
+                                                                            <div class="read-more"><span>read more</span></div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>Date of execution of the task</label>
+                                                                            <p>{{ date('d M, Y', strtotime($item->execution_date)) }}</p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>No of Quotes per Participants</label>
+                                                                            <p>{{$item->quotes_per_participants}}</p>
+                                                                        </li>
+                                                                    </ul>
+                                                                    {{-- <div class="modal fade buyer-details-modal" id="buyerDetailsModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                         <div class="modal-dialog">
                                                                             <div class="modal-content">
                                                                                 <div class="modal-header">
@@ -229,15 +255,7 @@
                                                                                                 <p class="pt-1">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</p>
                                                                                             </div>
                                                                                         </div>
-                                                                                        {{-- <div class="row info-row">
-                                                                                            <div class="col-12">
-                                                                                                <div class="photos">
-                                                                                                    <div class="photo"><img src="assets/images/female-car-dealer-giving-keys-young-couple-2.png" alt=""></div>
-                                                                                                    <div class="photo"><img src="assets/images/female-car-dealer-giving-keys-young-couple-2.png" alt=""></div>
-                                                                                                    <div class="photo"><img src="assets/images/female-car-dealer-giving-keys-young-couple-2.png" alt=""></div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div> --}}
+                                                                                       
                                                                                         <div class="row info-row">
                                                                                             <div class="col-sm-6 col-12">
                                                                                                 <label>Date of execution of the task</label>
@@ -258,7 +276,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div> --}}
                                                                 </td>
                                                                 <td class="input-location-td">{{ ucfirst($item->location) }}</td>
                                                                 <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
