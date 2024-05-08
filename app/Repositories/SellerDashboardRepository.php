@@ -105,6 +105,7 @@ class SellerDashboardRepository implements SellerDashboardContract{
         ->where('inquiries.status', 3)
         ->join('inquiry_participants', 'inquiries.id', '=', 'inquiry_participants.inquiry_id')
         ->where('inquiry_participants.user_id', $this->getAuthenticatedUserId())
+        ->where('inquiry_participants.status', 4)
         ->where('inquiries.allot_seller', $this->getAuthenticatedUserId())
         ->get();
     }

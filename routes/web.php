@@ -117,6 +117,7 @@ Route::get('/clear-cache', function() {
             Route::get('/live-inquiries-fetch-ajax', [SellerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('seller_live_inquiries_by_ajax');
             Route::post('/new-quote-now', [SellerDashboardController::class, 'new_quote_now'])->name('seller_new_quote_now');
             Route::post('/cancelled-reason', [SellerDashboardController::class, 'cancelled_reason'])->name('seller_cancelled_inquiry');
+            Route::post('/after-confirm-seller-cancelled-reason', [SellerDashboardController::class, 'after_confirm_seller_cancelled_reason'])->name('after_confirm_seller_cancelled_inquiry');
             Route::post('/seller-new-comment', [SellerDashboardController::class, 'seller_new_comment'])->name('seller_new_comment');
         });
     });

@@ -178,7 +178,7 @@ function getState($id){
 function getAllSellerQuotes($id){
     $data = DB::table('inquiry_seller_quotes AS iq')
     ->select('iq.*', 'users.name', 'users.id', 'users.country_code', 'users.mobile', 'users.business_name')
-    ->join(DB::raw('(SELECT seller_id, MAX(quotes) AS max_quotes
+    ->join(DB::raw('(SELECT seller_id, MIN(quotes) AS max_quotes
                     FROM inquiry_seller_quotes
                     WHERE inquiry_id = '.$id.'
                     GROUP BY seller_id) AS subquery'), function($join) {
@@ -187,7 +187,7 @@ function getAllSellerQuotes($id){
     })
     ->join('users', 'iq.seller_id', '=', 'users.id')
     ->where('iq.inquiry_id', '=', $id)
-    ->orderBy('iq.quotes', 'DESC')->limit(10)
+    ->orderBy('iq.quotes', 'ASC')->limit(10)
     ->get();
     if($data){
         return $data;

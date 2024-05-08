@@ -91,7 +91,7 @@ class HomeController extends Controller
         $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
         $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
         $userIds = User::where('state', $exist_state)
-            ->orWhere('city', $exist_city)
+            ->orWhere('city', $exist_city)->whereNotNull('business_name')
             ->pluck('id')
             ->toArray();
 

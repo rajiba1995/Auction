@@ -253,18 +253,34 @@
                                                                                 </div>
                                                                             </td>
                                                                             <td class="comments-td">
-                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addCommentModal" class="btn btn-view btn-view-comment">
+                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#view_CommentModal{{$item['id']}}" class="btn btn-view btn-view-comment">
                                                                                     <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                                         <path d="M1.3 9C0.9425 9 0.636458 8.90208 0.381875 8.70625C0.127292 8.51042 0 8.275 0 8V1C0 0.725 0.127292 0.489583 0.381875 0.29375C0.636458 0.0979167 0.9425 0 1.3 0H10.4C10.7575 0 11.0635 0.0979167 11.3181 0.29375C11.5727 0.489583 11.7 0.725 11.7 1V4.35C11.4942 4.275 11.2829 4.21042 11.0662 4.15625C10.8496 4.10208 10.6275 4.0625 10.4 4.0375V1H1.3V8H5.2325C5.265 8.18333 5.31646 8.35833 5.38687 8.525C5.45729 8.69167 5.54125 8.85 5.63875 9H1.3ZM1.3 7.5V8V1V4.0375V4V7.5ZM2.6 7H5.24875C5.28125 6.825 5.33271 6.65417 5.40312 6.4875C5.47354 6.32083 5.55208 6.15833 5.63875 6H2.6V7ZM2.6 5H6.565C6.91167 4.75 7.29896 4.54167 7.72687 4.375C8.15479 4.20833 8.6125 4.09583 9.1 4.0375V4H2.6V5ZM2.6 3H9.1V2H2.6V3ZM9.75 10C8.85083 10 8.08437 9.75625 7.45062 9.26875C6.81687 8.78125 6.5 8.19167 6.5 7.5C6.5 6.80833 6.81687 6.21875 7.45062 5.73125C8.08437 5.24375 8.85083 5 9.75 5C10.6492 5 11.4156 5.24375 12.0494 5.73125C12.6831 6.21875 13 6.80833 13 7.5C13 8.19167 12.6831 8.78125 12.0494 9.26875C11.4156 9.75625 10.6492 10 9.75 10ZM9.425 9H10.075V7.75H11.7V7.25H10.075V6H9.425V7.25H7.8V7.75H9.425V9Z" fill="#0076D7"/>
-                                                                                    </svg>                                                                                
-                                                                                    Add Comment
+                                                                                    </svg>
+                                                                                    View Comment
                                                                                 </a>
-                                                                                <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
-                                                                                    <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                        <path d="M9.16634 11.875H10.833V9.26562L12.1663 10.2656L13.333 9.375L9.99967 6.875L6.66634 9.375L7.85384 10.25L9.16634 9.26562V11.875ZM4.99967 13.75C4.54134 13.75 4.14898 13.6276 3.82259 13.3828C3.4962 13.138 3.33301 12.8438 3.33301 12.5V2.5C3.33301 2.15625 3.4962 1.86198 3.82259 1.61719C4.14898 1.3724 4.54134 1.25 4.99967 1.25H11.6663L16.6663 5V12.5C16.6663 12.8438 16.5031 13.138 16.1768 13.3828C15.8504 13.6276 15.458 13.75 14.9997 13.75H4.99967ZM10.833 5.625V2.5H4.99967V12.5H14.9997V5.625H10.833Z" fill="#FFB800"/>
-                                                                                    </svg>                                                                   
-                                                                                    Send File
-                                                                                </a>
+                                                                                <div class="modal fade view-comment-modal" id="view_CommentModal{{$item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                    <div class="modal-dialog">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                <h3 class="content-heading">{{$item->buyerData?$item->buyerData->business_name:""}}</h3>
+                                                                                                <div class="comment-wrapper">
+                                                                                                     @php $SellerCommentsData=SellerCommentsData($item['id'], $item['my_id']);
+                                                                                                     @endphp
+                                                                                                    @if(count($SellerCommentsData)>0)
+                                                                                                        @foreach($SellerCommentsData as $k =>$itemValue)
+                                                                                                        <p><strong>{{$k+1}}</strong> {{$itemValue->comments}}</p>
+                                                                                                        @endforeach
+                                                                                                    @endif
+                                                                                                    
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -275,22 +291,36 @@
                                                                     <tbody>
                                                                         <tr>
                                                                             <td class="other-actions-td">
-                                                                                @if ($item->status == 4 || $item->participants_status == 2)
+                                                                                @if ($item->status == 4 )
                                                                                     <a href="javascript:void(0)" class="failed-inquiry">
                                                                                         <img src="{{asset('frontend/assets/images/red-circle-cross.png')}}" alt="Cancel">
                                                                                         Cancelled Inquiry
-                                                                                        <p><strong>{{$item->cancelled_reason}}</strong></p>                                                                                       
+                                                                                    <div class="alert alert-danger" role="alert">
+                                                                                        <p><strong>{{$item->cancelled_reason}}</strong></p>  
+                                                                                    </div>                                                                                     
                                                                                     </a>
+
+                                                                                @elseif ($item->participants_status == 2)
+                                                                                <a href="javascript:void(0)" class="failed-inquiry">
+                                                                                    <img src="{{asset('frontend/assets/images/red-circle-cross.png')}}" alt="Cancel">
+                                                                                    Cancelled Inquiry by Me
+                                                                                    <div class="alert alert-danger" role="alert">
+                                                                                        <p><strong>{{$item->rejected_reason}}</strong></p>     
+                                                                                      </div>
+                                                                                                                                                                     
+                                                                                </a>
                                                                                 @elseif ($item->status == 3 && $item->participants_status == 3)
                                                                                     <a href="javascript:void(0)" class="failed-inquiry">
                                                                                         <img src="{{asset('frontend/assets/images/failed.png')}}" alt="Cancel">
-                                                                                        Failed Inquiry    
-                                                                                    <p><strong>{{$item->rejected_reason}}</strong></p>      
+                                                                                        Failed Inquiry   
+                                                                                    <div class="alert alert-danger" role="alert"> 
+                                                                                    <p><strong>{{$item->rejected_reason}}</strong></p>   
+                                                                                    </div>   
                                                                                     </a>       
                                                                                 @elseif ($item->participants_status == 4)
                                                                                     <a href="javascript:void(0)" class="failed-inquiry">
                                                                                         <img src="{{asset('frontend/assets/images/green-circle-tick.png')}}" alt="Cancel">
-                                                                                         Alloted
+                                                                                    <div class="alert alert-success" role="alert"> Alloted</div>
                                                                                     </a>              
                                                                                 @endif
                                                                             </td>
