@@ -62,6 +62,7 @@ class SellerDashboardController extends Controller
         return view('front.seller_dashboard.index',compact('group_wise_list', 'all_inquery_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function all_inquiries(Request $request){
+        $seller_cancell_reasons = $this->MasterRepository->getAllSellerReason();
         $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
         $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
         $live_inquiries_count =  $this->SellerDashboardRepository->live_inquiries_by_seller();
@@ -80,7 +81,7 @@ class SellerDashboardController extends Controller
                 $rejected_inquiries_count+=1;
             }
         }
-        return view('front.seller_dashboard.all_inquireis',compact('all_inquery', 'all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
+        return view('front.seller_dashboard.all_inquireis',compact('all_inquery', 'all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count','seller_cancell_reasons'));
     }
     public function live_inquiries(Request $request){
         $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
@@ -218,6 +219,24 @@ class SellerDashboardController extends Controller
     }
     public function pending_inquiries(Request $request){
         $pending_inquiries =  $this->SellerDashboardRepository->pending_inquiries_by_seller();
+        $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
+        $live_inquiries_count =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        $pending_inquiries_count =  $this->SellerDashboardRepository->pending_inquiries_by_seller();
+        $confirmed_inquiries_count =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller(); 
+        $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
+        $all_inquery_count = 0;
+        foreach ( $all_inquery as  $item){
+            if(empty(get_inquiry_seller_quotes($item->my_id, $item->id))){
+                $all_inquery_count+=1;
+            }
+        }
+        $rejected_inquiries_count = 0;
+        foreach ($rejected_inquiries as  $item){
+            if($item->my_id==$this->getAuthenticatedUserId()){
+                $rejected_inquiries_count+=1;
+            }
+        }
         $inquiries = [];
         if(count($pending_inquiries)>0){
             foreach ($pending_inquiries as $key => $value) {
@@ -320,20 +339,56 @@ class SellerDashboardController extends Controller
                 }
             }
         }
-        return view('front.seller_dashboard.pending_inquireis',compact('inquiries'));
+        return view('front.seller_dashboard.pending_inquireis',compact('inquiries','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function confirmed_inquiries(Request $request){
         $confirmed_inquiries =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller();  
-        return view('front.seller_dashboard.confirmed_inquireis', compact('confirmed_inquiries'));
+        $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
+        $live_inquiries_count =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        $pending_inquiries_count =  $this->SellerDashboardRepository->pending_inquiries_by_seller();
+        $confirmed_inquiries_count =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller(); 
+        $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
+        $all_inquery_count = 0;
+        foreach ( $all_inquery as  $item){
+            if(empty(get_inquiry_seller_quotes($item->my_id, $item->id))){
+                $all_inquery_count+=1;
+            }
+        }
+        $rejected_inquiries_count = 0;
+        foreach ($rejected_inquiries as  $item){
+            if($item->my_id==$this->getAuthenticatedUserId()){
+                $rejected_inquiries_count+=1;
+            }
+        }
+        return view('front.seller_dashboard.confirmed_inquireis', compact('confirmed_inquiries','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function history_inquiries(Request $request){
         $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
+        $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
+        $live_inquiries_count =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        $pending_inquiries_count =  $this->SellerDashboardRepository->pending_inquiries_by_seller();
+        $confirmed_inquiries_count =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller(); 
+        $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
+        $all_inquery_count = 0;
+        foreach ( $all_inquery as  $item){
+            if(empty(get_inquiry_seller_quotes($item->my_id, $item->id))){
+                $all_inquery_count+=1;
+            }
+        }
+        $rejected_inquiries_count = 0;
+        foreach ($rejected_inquiries as  $item){
+            if($item->my_id==$this->getAuthenticatedUserId()){
+                $rejected_inquiries_count+=1;
+            }
+        }
         $distinct = [];
         foreach($rejected_inquiries as $key =>$item){
             $distinct[] = $item->id;
         }
         $distinct = array_unique($distinct);
-        return view('front.seller_dashboard.history_inquireis', compact('rejected_inquiries', 'distinct'));
+        return view('front.seller_dashboard.history_inquireis', compact('rejected_inquiries', 'distinct','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function seller_start_quotes(Request $request){
         // Define validation rules

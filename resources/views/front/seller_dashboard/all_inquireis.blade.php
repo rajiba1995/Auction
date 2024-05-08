@@ -190,6 +190,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {{-- {{dd($seller_cancell_reasons)}} --}}
                                                 @if($all_inquery)
                                                     @foreach ( $all_inquery as  $item)
                                                         @if(empty(get_inquiry_seller_quotes($item->my_id, $item->id)))
@@ -345,7 +346,7 @@
                                                                                     <div class="col-12">
                                                                                         <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
                                                                                     </div>
-                                                                                    <div class="col-md-6 col-sm-4 col-6">
+                                                                                    {{-- <div class="col-md-6 col-sm-4 col-6">
                                                                                         <label for="cancelInquiryYes" class="modal-custom-radio">
                                                                                             <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
                                                                                             <span class="checkmark">
@@ -355,8 +356,8 @@
                                                                                                 <label>Yes</label>
                                                                                             </div>
                                                                                         </label>
-                                                                                    </div>
-                                                                                    <div class="col-md-6 col-sm-4 col-6">
+                                                                                    </div> --}}
+                                                                                    {{-- <div class="col-md-6 col-sm-4 col-6">
                                                                                         <label for="cancelInquiryNo" class="modal-custom-radio">
                                                                                             <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
                                                                                             <span class="checkmark">
@@ -366,18 +367,17 @@
                                                                                                 <label>No</label>
                                                                                             </div>
                                                                                         </label>
-                                                                                    </div>
+                                                                                    </div> --}}
                                                                                 </div>
                                                                                 <div class="row mt-3">
                                                                                     <div class="col-12">
                                                                                         <h4 class="content-heading">Select a Reason*</h4>
                                                                                         <select class="form-control" name="reason" required>
                                                                                             <option value="" selected hidden>Select</option>
-                                                                                            <option value="withdrawn">Withdrawn by Buyer</option>
-                                                                                            <option value="out_of_stock">Product/Service out of stock/no longer available</option>
-                                                                                            <option value="duplicate">Duplicate Inquiry</option>
-                                                                                            <option value="not_interested">Not Interested Anymore</option>
-                                                                                            <option value="other">My Reason is not listed here</option>
+                                                                                            @foreach ($seller_cancell_reasons as $reason)
+                                                                                            <option value="{{$reason->title}}">{{$reason->title}}</option>
+                                                                                                
+                                                                                            @endforeach
                                                                                         </select>
                                                                                     </div>
                                                                                 </div>
