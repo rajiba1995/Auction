@@ -109,103 +109,110 @@ class SellerDashboardController extends Controller
         if(count($live_inquiries)>0){
             foreach ($live_inquiries as $key => $value) {
                 if(!empty(get_inquiry_seller_quotes($value->my_id, $value->id))){
-                    $all_inquiries = [];
-                    $all_inquiries['id'] = $value->id;
-                    $all_inquiries['inquiry_id'] = $value->inquiry_id;
-                    $all_inquiries['buyer_name'] = ucwords($value->buyer_name);
-                    $all_inquiries['buyer_business_name'] = ucwords($value->buyer_business_name);
-                    $all_inquiries['country_code'] = $value->country_code;
-                    $all_inquiries['buyer_mobile'] = $value->buyer_mobile;
-                    $all_inquiries['title'] = ucwords($value->title);
-                    $all_inquiries['start_date_time'] = date('d M, Y h:i A', strtotime($value->start_date.' '.$value->start_time));
-                     // Calculate remaining time until start date/time
                     $startDateTime = Carbon::parse($value->start_date . ' ' . $value->start_time)->timezone(env('APP_TIMEZONE'));
-                    $currentDateTime = Carbon::now();
-                    
-                    if ($currentDateTime < $startDateTime) {
-                        $startRemainingTime = $startDateTime->diff($currentDateTime);
-                        $days = $startRemainingTime->days;
-                        $hours = $startRemainingTime->h;
-                        $minutes = $startRemainingTime->i;
-                        $seconds = $startRemainingTime->s;
-                        
-                        $all_inquiries['start_remaining_time'] = "Starts in: $days d $hours h $minutes m $seconds s";
-                    } else {
-                        $all_inquiries['start_remaining_time'] = null;
-                    }
-                    
                     // Calculate remaining time until end date/time
                     $endDateTime = Carbon::parse($value->end_date . ' ' . $value->end_time)->timezone(env('APP_TIMEZONE'));
+                    $currentDateTime = Carbon::now();
+                    $adjustedEndDateTime = $endDateTime->copy()->addMinutes(1);
+                    if ($currentDateTime < $adjustedEndDateTime) {
+                        // Calculate remaining time until start date/time
                     
-                    if ($currentDateTime < $endDateTime) {
-                        $endRemainingTime = $endDateTime->diff($currentDateTime);
-                        $days = $endRemainingTime->days;
-                        $hours = $endRemainingTime->h;
-                        $minutes = $endRemainingTime->i;
-                        $seconds = $endRemainingTime->s;
-                        $all_inquiries['end_date_time'] = date('d M, Y h:i A', strtotime($value->end_date.' '.$value->end_time));
-                        $all_inquiries['end_remaining_time'] = "Ends in: $days d $hours h $minutes m $seconds s";
-                    } else {
-                        $store = Inquiry::find($value->id);
-                        $store->status = 2;
-                        $store->save();
-                        $all_inquiries['end_remaining_time'] = "";
-                    }
-                    $all_inquiries['category'] = $value->category;
-                    $all_inquiries['sub_category'] = $value->sub_category;
-                    $all_inquiries['description'] = $value->description;
-                    $all_inquiries['execution_date'] = date('d M, Y h:i A', strtotime($value->execution_date));
-                    $all_inquiries['quotes_per_participants'] = $value->quotes_per_participants;
-                    $all_inquiries['minimum_quote_amount'] = number_format($value->minimum_quote_amount,2, '.', ',');
-                    $all_inquiries['maximum_quote_amount'] = number_format($value->maximum_quote_amount,2, '.', ',');
-                    $all_inquiries['minimum_quote'] = $value->minimum_quote_amount;
-                    $all_inquiries['maximum_quote'] = $value->maximum_quote_amount;
-                    $all_inquiries['inquiry_type'] = $value->inquiry_type;
-                    $all_inquiries['inquiry_amount'] = $value->inquiry_amount;
-                    $all_inquiries['location'] = $value->location;
-                    $all_inquiries['status'] = $value->status;
-                    $all_inquiries['my_id'] = $value->my_id;
-                    $all_inquiries['my_name'] = Auth::guard('web')->check() ? ucwords(Auth::guard('web')->user()->name) : "";
-                    $all_inquiries['my_business_name'] = Auth::guard('web')->check() ? ucwords(Auth::guard('web')->user()->business_name) : "";
-                    $all_inquiries['my_last_three_quotes'] = [];
-                    $getAllSellerQuotes = getAllSellerQuotes($value->id);
-                    $my_mank = null;
-                    if(count($getAllSellerQuotes)>0){
-                        foreach($getAllSellerQuotes as $k =>$items){
-                            if($items->seller_id ==$value->my_id){
-                                $my_mank = $k+1;
+                        $all_inquiries = [];
+                        $all_inquiries['id'] = $value->id;
+                        $all_inquiries['inquiry_id'] = $value->inquiry_id;
+                        $all_inquiries['buyer_name'] = ucwords($value->buyer_name);
+                        $all_inquiries['buyer_business_name'] = ucwords($value->buyer_business_name);
+                        $all_inquiries['country_code'] = $value->country_code;
+                        $all_inquiries['buyer_mobile'] = $value->buyer_mobile;
+                        $all_inquiries['allot_seller'] = $value->allot_seller;
+                        $all_inquiries['inquiry_amount'] = $value->inquiry_amount;
+                        $all_inquiries['title'] = ucwords($value->title);
+                        $all_inquiries['start_date_time'] = date('d M, Y h:i A', strtotime($value->start_date.' '.$value->start_time));
+                        
+                        
+                        if ($currentDateTime < $startDateTime) {
+                            $startRemainingTime = $startDateTime->diff($currentDateTime);
+                            $days = $startRemainingTime->days;
+                            $hours = $startRemainingTime->h;
+                            $minutes = $startRemainingTime->i;
+                            $seconds = $startRemainingTime->s;
+                            
+                            $all_inquiries['start_remaining_time'] = "Starts in: $days d $hours h $minutes m $seconds s";
+                        } else {
+                            $all_inquiries['start_remaining_time'] = null;
+                        }
+                        if ($currentDateTime < $endDateTime) {
+                            $endRemainingTime = $endDateTime->diff($currentDateTime);
+                            $days = $endRemainingTime->days;
+                            $hours = $endRemainingTime->h;
+                            $minutes = $endRemainingTime->i;
+                            $seconds = $endRemainingTime->s;
+                            $all_inquiries['end_date_time'] = date('d M, Y h:i A', strtotime($value->end_date.' '.$value->end_time));
+                            $all_inquiries['end_remaining_time'] = "Ends in: $days d $hours h $minutes m $seconds s";
+                        } else {
+                            $all_inquiries['end_date_time'] = date('d M, Y h:i A', strtotime($value->end_date.' '.$value->end_time));
+                            $all_inquiries['end_remaining_time'] = 0;
+                            // sleep(60); // Wait for 60 seconds
+                            // $store = Inquiry::find($value->id);
+                            // $store->status = 2;
+                            // $store->save();
+                        }
+                        $all_inquiries['category'] = $value->category;
+                        $all_inquiries['sub_category'] = $value->sub_category;
+                        $all_inquiries['description'] = $value->description;
+                        $all_inquiries['execution_date'] = date('d M, Y h:i A', strtotime($value->execution_date));
+                        $all_inquiries['quotes_per_participants'] = $value->quotes_per_participants;
+                        $all_inquiries['minimum_quote_amount'] = number_format($value->minimum_quote_amount,2, '.', ',');
+                        $all_inquiries['maximum_quote_amount'] = number_format($value->maximum_quote_amount,2, '.', ',');
+                        $all_inquiries['minimum_quote'] = $value->minimum_quote_amount;
+                        $all_inquiries['maximum_quote'] = $value->maximum_quote_amount;
+                        $all_inquiries['inquiry_type'] = $value->inquiry_type;
+                        $all_inquiries['inquiry_amount'] = $value->inquiry_amount;
+                        $all_inquiries['location'] = $value->location;
+                        $all_inquiries['status'] = $value->status;
+                        $all_inquiries['my_id'] = $value->my_id;
+                        $all_inquiries['my_name'] = Auth::guard('web')->check() ? ucwords(Auth::guard('web')->user()->name) : "";
+                        $all_inquiries['my_business_name'] = Auth::guard('web')->check() ? ucwords(Auth::guard('web')->user()->business_name) : "";
+                        $all_inquiries['my_last_three_quotes'] = [];
+                        $getAllSellerQuotes = getAllSellerQuotes($value->id);
+                        $my_mank = null;
+                        if(count($getAllSellerQuotes)>0){
+                            foreach($getAllSellerQuotes as $k =>$items){
+                                if($items->seller_id ==$value->my_id){
+                                    $my_mank = $k+1;
+                                }
                             }
                         }
-                    }
-                    $all_inquiries['my_mank'] = $my_mank;
-                  
-
-                    $all_inquiries['my_last_quotes'] = '';
-                    foreach($last_three_quotes = get_last_three_quotes($value->id,$value->my_id) as $index =>$qItem){
-                        $all_inquiries['my_last_three_quotes'][]=$qItem->quotes;
-                        $all_inquiries['my_last_quotes'] = $last_three_quotes[0]->quotes;
-                    }
-
-                    $count = 0;
-                    $quote_difference = 0; // Initialize the quote difference
-                    // Iterate through the array
-                    $array = $all_inquiries['my_last_three_quotes'];
+                        $all_inquiries['my_mank'] = $my_mank;
                     
-                    for ($i = 0; $i < count($array) - 1; $i++) {
-                        $count++; 
-                        if ($count >= 1) { // Check if the count is 2 or more
-                            // Calculate the quote difference dynamically between the last index and the item before the last index
-                            $quote_difference = abs($array[count($array) - 1] - $array[count($array) - 2]);
-                            break; // Exit the loop once the condition is met
+
+                        $all_inquiries['my_last_quotes'] = '';
+                        foreach($last_three_quotes = get_last_three_quotes($value->id,$value->my_id) as $index =>$qItem){
+                            $all_inquiries['my_last_three_quotes'][]=$qItem->quotes;
+                            $all_inquiries['my_last_quotes'] = $last_three_quotes[0]->quotes;
                         }
+
+                        $count = 0;
+                        $quote_difference = 0; // Initialize the quote difference
+                        // Iterate through the array
+                        $array = $all_inquiries['my_last_three_quotes'];
+                        
+                        for ($i = 0; $i < count($array) - 1; $i++) {
+                            $count++; 
+                            if ($count >= 1) { // Check if the count is 2 or more
+                                // Calculate the quote difference dynamically between the last index and the item before the last index
+                                $quote_difference = abs($array[count($array) - 1] - $array[count($array) - 2]);
+                                break; // Exit the loop once the condition is met
+                            }
+                        }
+                        // Assuming $all_inquiries['my_last_three_quotes'] is an array
+                        $all_inquiries['my_last_three_quotes'] = array_reverse($all_inquiries['my_last_three_quotes']);
+                        $all_inquiries['quote_difference'] = $value->bid_difference_quote_amount;
+
+                        $all_inquiries['left_quotes'] = $value->quotes_per_participants - get_my_all_quotes($value->id,$value->my_id);
+
+                        $inquiries[] = $all_inquiries;
                     }
-                    // Assuming $all_inquiries['my_last_three_quotes'] is an array
-                    $all_inquiries['my_last_three_quotes'] = array_reverse($all_inquiries['my_last_three_quotes']);
-                    $all_inquiries['quote_difference'] = $value->bid_difference_quote_amount;
-
-                    $all_inquiries['left_quotes'] = $value->quotes_per_participants - get_my_all_quotes($value->id,$value->my_id);
-
-                    $inquiries[] = $all_inquiries;
                 }
             }
             
@@ -367,16 +374,29 @@ class SellerDashboardController extends Controller
     }
 
     public function new_quote_now(Request $request){
-        $store = new InquirySellerQuotes;
-        $store->inquiry_id = $request->inquiry_id;
-        $store->seller_id = $this->getAuthenticatedUserId();
-        $store->quotes = $request->new_quote;
-        $store->save();
-        if($store){
-            return response()->json(['status'=>200]);
+        $Inquiry = Inquiry::findOrFail($request->inquiry_id);
+        if($Inquiry){
+            $endDateTime = Carbon::parse($Inquiry->end_date . ' ' . $Inquiry->end_time)->timezone(env('APP_TIMEZONE'));
+            $currentDateTime = Carbon::now();
+            if ($currentDateTime < $endDateTime) {
+                $store = new InquirySellerQuotes;
+                $store->inquiry_id = $request->inquiry_id;
+                $store->seller_id = $this->getAuthenticatedUserId();
+                $store->quotes = $request->new_quote;
+                $store->save();
+                if($store){
+                    return response()->json(['status'=>200]);
+                }else{
+                    return response()->json(['status'=>400]);
+                }
+            }else{
+                return response()->json(['status'=>300]);
+            }
+            
         }else{
             return response()->json(['status'=>400]);
         }
+        
     }
     public function seller_new_comment(Request $request){
         $store = new InquirySellerComments;

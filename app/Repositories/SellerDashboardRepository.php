@@ -72,9 +72,10 @@ class SellerDashboardRepository implements SellerDashboardContract{
                 'users.mobile as buyer_mobile'
             )
             ->whereNotNull('inquiries.inquiry_id') // Filter inquiries where 'inquiry_id' is not null
-            ->where('inquiries.status', 1) // Filter inquiries with a status of 1
+            // ->where('inquiries.status', 1) // Filter inquiries with a status of 1
             ->join('inquiry_participants', 'inquiries.id', '=', 'inquiry_participants.inquiry_id') // Join 'inquiry_participants' table
             ->join('users', 'inquiries.created_by', '=', 'users.id') // Join 'users' table
+            ->whereIn('inquiry_participants.status', [1,4]) 
             ->where('inquiry_participants.user_id', $this->getAuthenticatedUserId()) // Filter by authenticated user's ID
             ->get(); // Get the results
     }
