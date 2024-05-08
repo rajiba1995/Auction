@@ -217,7 +217,7 @@
                                                                         </li>
                                                                         <li>
                                                                             <label>Date of execution of the task</label>
-                                                                            <p>25 jan, 2024</p>
+                                                                            <p>{{ date('d M, Y', strtotime($item->execution_date)) }} </p>
                                                                         </li>
                                                                         <li>
                                                                             <label>No of Quotes per Participants</label>
