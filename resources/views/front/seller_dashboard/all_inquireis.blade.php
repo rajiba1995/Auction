@@ -197,7 +197,33 @@
                                                                 <td class="input-id-td"><span class="inquiry_id">{{$item->inquiry_id}}</span></td>
                                                                 <td class="input-title-td"> <span class="inquiry_title">{{ ucfirst($item->title) }}</span></td>
                                                                 <td class="input-details-td">
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#buyerDetailsModal{{$item->id}}" class="btn btn-view">View</a>
+                                                                    <ul class="input-data-list">
+                                                                        <li>
+                                                                            <label>Inquiry Type</label>
+                                                                            <p>{{$item->inquiry_type}}</p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>Category</label>
+                                                                            <p>{{ucfirst($item->category)}}</p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>Sub-Category</label>
+                                                                            <p>{{ucfirst($item->sub_category)}}</p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>Description of the Service</label>
+                                                                            <p class="hidden">{{ucfirst($item->description)}}</p>
+                                                                            <div class="read-more"><span>read more</span></div>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>Date of execution of the task</label>
+                                                                            <p>25 jan, 2024</p>
+                                                                        </li>
+                                                                        <li>
+                                                                            <label>No of Quotes per Participants</label>
+                                                                            <p>{{$item->quotes_per_participants}}</p>
+                                                                        </li>
+                                                                    </ul>
                                                                     <div class="modal fade buyer-details-modal" id="buyerDetailsModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                         <div class="modal-dialog">
                                                                             <div class="modal-content">
