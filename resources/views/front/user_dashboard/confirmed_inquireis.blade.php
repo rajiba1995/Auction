@@ -250,9 +250,29 @@
                                                                             <td class="quotes-td">
                                                                                 <div class="quote">
                                                                                     {{$seller_item['quotes']}}
-                                                                                    <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
-                                                                                        <img src="assets/images/arrow-up-right.png" alt="">
+                                                                                    <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal{{$seller_item['id']}}_{{$seller_item['inquiry_id']}}">
+                                                                                        <img src="{{asset('frontend/assets/images/arrow-up-right.png')}}" alt="">
                                                                                     </a>
+                                                                                    <div class="modal fade all-quotes-modal" id="allQuotesModal{{$seller_item['id']}}_{{$seller_item['inquiry_id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                        <div class="modal-dialog">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-header">
+                                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                </div>
+                                                                                                <div class="modal-body">
+                                                                                                    <h3 class="content-heading">{{$seller_item['business_name']}}</h3>
+                                                                                                    <div class="quotes-list-wrapper">
+                                                                                                        Quotes:
+                                                                                                        <ul class="quotes-list">
+                                                                                                            @foreach ($seller_item['last_three_quotes'] as $item_quotes)
+                                                                                                                <li>{{$item_quotes}}</li>
+                                                                                                            @endforeach
+                                                                                                        </ul>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </td>
                                                                             <td class="comments-td">

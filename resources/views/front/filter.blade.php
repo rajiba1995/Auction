@@ -179,6 +179,7 @@
                                         @endphp
                                         +91-{{$maskedNumber}}
                                     </div>
+                                    
                                     <div class="cta">
                                         @if(Auth::guard('web')->check())
                                             <button type="button" class="btn btn-cta btn-animated" data-bs-toggle="modal" data-bs-target="#sendToWatchlistModal{{$item->id}}">Send to Watchlist</button>
@@ -222,7 +223,7 @@
                                                                     @csrf
                                                                 <div class="dropdown watchlistgroups">
                                                                     <select class="btn btn-secondary dropdown-toggle" name="group_id">
-                                                                        <option selected hidden> Select </option>
+                                                                        {{-- <option selected hidden> Select </option> --}}
                                                                         @foreach($groupWatchList as $gropu_item)
                                                                             <option value="{{ $gropu_item->id }}"> {{ $gropu_item->group_name }} </option>
                                                                         @endforeach
@@ -315,6 +316,7 @@
                                                                             
                                                                         </div>
                                                                     </div>
+                                                                    
                                                                     <input type="hidden" name="seller" value="{{Crypt::encrypt($item->id)}}">
                                                                     <button type="submit" class="btn btn-animated btn-submit w-100">Submit</button>
                                                                 </div>
