@@ -28,7 +28,7 @@
         <header class="logged">
             <div class="header-inner">
                 <div class="brand">
-                    <a href="#" class="rajib">
+                    <a href="{{asset('')}}" class="rajib">
                         <img src="{{asset('frontend/assets/images/logo.png')}}" alt="">
                     </a>
                 </div>

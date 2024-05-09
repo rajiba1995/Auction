@@ -315,17 +315,17 @@
                                                         <td class="actions-table-column">
                                                             <table class="table actions-table">
                                                                 <tbody>
-                                                                    {{-- <tr>
+                                                                    <tr>
                                                                         <td class="other-actions-td">
-                                                                            <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#cancelInquiryModal" class="btn btn-red btn-cancel-inquiry">
-                                                                                <img src="{{asset("frontend/assets/images/white-circle-cross.png")}}" alt="Cancel">
-                                                                                Reject Inquiry
-                                                                            </a>
+                                                                            <div class="alert alert-warning" role="alert"> 
+                                                                                <p><strong>Waiting for buyer confirmation</strong></p>   
+                                                                                </div>  
                                                                         </td>
-                                                                    </tr> --}}
+                                                                    </tr>
                                                                 </tbody>
                                                             </table>
                                                         </td>
+                                                     
                                                     </tr>
                                                 @endforeach
                                             @endif

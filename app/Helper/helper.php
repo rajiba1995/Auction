@@ -220,6 +220,11 @@ function valid_live_time($start_time, $end_time){
 function SellerCommentsData($inquiry_id, $seller_id){
     return InquirySellerComments::where('seller_id', $seller_id)->where('inquiry_id', $inquiry_id)->get();
 }
+function get_all_quotes_by_seller($inquiry_id,$seller_id){
+    $data = InquirySellerQuotes::where('seller_id', $seller_id)->where('inquiry_id', $inquiry_id)->get();
+    // dd($data);
+    return $data;
+}
 function valid_execution_time($execution_time){
     $startDateTime = Carbon::parse($execution_time)->timezone(env('APP_TIMEZONE'));
     $endDateTime = Carbon::now();
@@ -228,5 +233,4 @@ function valid_execution_time($execution_time){
     }else{
          return false;
     }   
-
 }

@@ -130,7 +130,8 @@
     </div> 
     <div class="accordion-item">
       <a href="javascript:void(0)" class="accordion-button {{ (request()->is('admin/cancell-reason-management*')) ? 'active' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse8">
-        <i class="fa-solid fa-xmark"></i>
+        <i class="fa-solid fa-circle-xmark"></i>
+        {{-- <i class="fa-regular fa-circle-xmark"></i> --}}
         Cancelled Reason Management
         <img src="{{asset('admin/assets/images/up-arrow-black.png')}}" alt="arrow" class="indicator i-black">
         <img src="{{asset('admin/assets/images/up-arrow-white.png')}}" alt="arrow" class="indicator i-white">

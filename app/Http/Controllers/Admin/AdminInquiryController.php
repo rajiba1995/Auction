@@ -35,6 +35,10 @@ class AdminInquiryController extends Controller
         $data= $this->adminInquiryRepository->getInquiryDetailsById($id);
         return view('admin.inquiry.view',compact('data'));
     }
+    public function InquiryParticipantsView($id){
+        $data=$this->adminInquiryRepository->getAllParticipantsByInquiryId($id);
+        return view('admin.inquiry.participant',compact('data'));
+    }
 
     public function InquiryDetailsExport(Request $request)
     {

@@ -158,7 +158,8 @@ class AuctionGenerationController extends Controller
             }
             if($inquiry->inquiry_type=="close auction"){
                 $user = User::findOrFail($request->created_by)->with('CityData')->first();
-                $inquiry->location = $user->city?$user->CityData->city:"";
+                // dd($user);
+                $inquiry->location = $user->city?$user->CityData->name:"";
             }
             $inquiry->location_type =$request->auctionfrom;
             $inquiry->save();

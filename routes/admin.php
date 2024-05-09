@@ -230,6 +230,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::group(['prefix'  =>   'inquiry'], function() {
             Route::get('', [AdminInquiryController::class, 'InquiryIndex'])->name('admin.inquiry.index');
             Route::get('/view/{id}', [AdminInquiryController::class, 'InquiryDetailsView'])->name('admin.inquiry.view');
+            Route::get('/participants/{id}', [AdminInquiryController::class, 'InquiryParticipantsView'])->name('admin.inquiry.participants');
             Route::get('/export', [AdminInquiryController::class, 'InquiryDetailsExport'])->name('admin.inquiry.details.export');
         });
     });

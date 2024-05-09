@@ -64,10 +64,17 @@
             <td> {{ $item->title }}</td>      
             <td> {{ $item->inquiry_type }}</td>      
             <td>{{number_format($item->inquiry_amount,2, '.', ',')}}</td>      
-            <td>{{  isset($item->SellerData->name) ? $item->SellerData->name : 'Not-Allot' }}</td>      
+            <td>
+                @if(isset($item->SellerData->name))
+                <div  class="alert alert-success p-1 text-center" role="alert">{{ $item->SellerData->name }}</div>
+                @else
+                <div class="alert alert-danger p-1 text-center" role="alert">Not-Allot</div>
+                @endif
+            </td>  
             <td>{{ date('d-M-Y',strtotime($item->created_at)) }}</td>
             <td>
                 <a href="{{route('admin.inquiry.view', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">View</a>               
+                <a href="{{route('admin.inquiry.participants', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Participants</a>               
                 {{-- <a href="{{route('admin.user.document.view', $item->id)}}" class="btn btn-sm btn-outline-{{$doc_color}}" title="View">Documents</a>
                 <a href="{{route('admin.user.transaction.view', $item->id)}}" class="btn btn-sm btn-outline-primary">Transaction</a>
                 <a href="{{route('admin.user.report', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Reports</a> --}}

@@ -7,6 +7,7 @@ use App\Contracts\AdminInquiryContract;
 
 use App\Models\Admin;
 use App\Models\EmployeeAttandance;
+use App\Models\InquiryParticipant;
 use App\Models\User;
 use App\Models\Inquiry;
 use App\Models\EmployeeRole;
@@ -43,14 +44,14 @@ class AdminInquiryRepository implements AdminInquiryContract
                     ->where('created_at', '<=', date("Y-m-d 23:59:59", strtotime($endDate)));
             });
         }
-
-        return $data = $query->where('inquiry_id','!=',null)->latest('id')->paginate(25);
-        
+        return $data = $query->where('inquiry_id','!=',null)->latest('id')->paginate(25);        
     }
-
     public function getSearchInquriesByStatus($status)
     {
         return Inquiry::with('SellerData')->where([['status', 'LIKE', '%' . $status . '%']])->where('inquiry_id','!=',null)->paginate(20);   
-
+    }
+    public function getAllParticipantsByInquiryId($id)
+    {
+        return InquiryParticipant::with('SellerData')->where('inquiry_id',$id)->paginate(20);   
     }
 }

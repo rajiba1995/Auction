@@ -24,4 +24,5 @@ class Inquiry extends Model{
     public function SellerData(){
         return $this->belongsTo('App\Models\User','allot_seller','id');
     }
+    
 }
