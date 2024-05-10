@@ -182,7 +182,7 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="input-id-td">{{$item['inquiry_id']}}</td>
-                                                                    <td class="input-title-td">{{$item['title']}}</td>
+                                                                    <td class="input-title-td"><span class="inquiry_title">{{$item['title']}}</span></td>
                                                                     <td class="input-details-td">
                                                                         <ul class="input-data-list">
                                                                             <li>

@@ -129,7 +129,7 @@
                             <div class="col-lg-12 col-12" id="group_list">
                                 <div class="search-bar">
                                     <form>
-                                        <input type="search" name="" placeholder="Search for Service, Category, Location, etc">
+                                        <input type="search" name="" placeholder="Search for Service, Category, Location, etc" id="group_wies_search">
                                         <button type="submit" class="btn-search btn-animated">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
@@ -177,17 +177,17 @@
                                                     <th class="output-th other-actions-th">&nbsp;</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="dashboard_groups">
                                                 {{-- {{dd($rejected_inquiries)}} --}}
                                                 @forelse ($rejected_inquiries as $key=>$item)
                                                     @if($item->my_id==Auth::guard('web')->user()->id)
-                                                        <tr>
+                                                        <tr class="item">
                                                             <td class="input-table-column" colspan="9">
                                                                 <table class="table input-table">
                                                                     <tbody>
                                                                         <tr>
                                                                             <td class="input-id-td">{{$item->inquiry_id}}</td>
-                                                                            <td class="input-title-td">{{$item->title}}</td>
+                                                                            <td class="input-title-td"><span class="inquiry_title">{{$item->title}}</span></td>
                                                                             <td class="input-details-td">
                                                                                 <ul class="input-data-list">
                                                                                     <li>
@@ -352,30 +352,30 @@
     @endsection
     @section('script')
     <script>
-        $(document).ready(function(){
-            $('#group_wies_search').keyup(function(){
-                var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
-                $('.item').show();
-                var found = false; // Flag to track if any items are found
-                $('.item').each(function() {
-                    var group_name = $(this).find('.group_name').text().toLowerCase(); // Get location text and convert to lowercase
-                    if (group_name.indexOf(selectedValue) === -1) {
-                        $(this).hide(); // Hide the item if location doesn't match
-                    } else {
-                        found = true; // Set the flag to true if at least one item is found
-                    }
-                });
-                if (!found) {
-                    $('#noDataAlert').remove(); // Remove the alert if items are found
-                    var append = `<div class="alert alert-danger" id="noDataAlert" role="alert">
-                    No data found
-                    </div>`;
-                    $('.dashboard-groups').append(append);
+   $(document).ready(function(){
+        $('#group_wies_search').keyup(function(){
+            var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
+            $('.item').show();
+            var found = false; // Flag to track if any items are found
+            $('.item').each(function() {
+                var inquiry_title = $(this).find('.inquiry_title').text().toLowerCase(); // Get location text and convert to lowercase
+                if (inquiry_title.indexOf(selectedValue) === -1) {
+                    $(this).hide(); // Hide the item if location doesn't match
                 } else {
-                    $('#noDataAlert').remove(); // Remove the alert if items are found
+                    found = true; // Set the flag to true if at least one item is found
                 }
             });
+            if (!found) {
+                $('#noDataAlert').remove(); // Remove the alert if items are found
+                var append = `<div class="alert alert-danger" id="noDataAlert" role="alert">
+                No data found
+                </div>`;
+                $('.dashboard_groups').append(append);
+            } else {
+                $('#noDataAlert').remove(); // Remove the alert if items are found
+            }
         });
+    });
         $("input[name='inquiry_type']").click(function() {
             var inputval = $(this).val();
             var id = $(this).attr('data-id');

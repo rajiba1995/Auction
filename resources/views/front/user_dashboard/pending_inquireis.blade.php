@@ -182,7 +182,7 @@
                                                                 <tbody>
                                                                     <tr>
                                                                         <td class="input-id-td">{{$item['inquiry_id']}}</td>
-                                                                        <td class="input-title-td">{{$item['title']}}</td>
+                                                                        <td class="input-title-td"><span class="inquiry_title">{{$item['title']}}</span></td>
                                                                         <td class="input-details-td">
                                                                             <ul class="input-data-list">
                                                                                 <li>
@@ -487,6 +487,7 @@
     $(document).ready(function(){
         $('#group_wies_search').keyup(function(){
             var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
+            // console.log(selectedValue);
             $('.item').show();
             var found = false; // Flag to track if any items are found
             $('.item').each(function() {
