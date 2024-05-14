@@ -282,7 +282,7 @@
                         $('#append_live_data_count').html(response.data.length);
                         console.log(response.data)
                         $.each(response.data, function(index, item) {
-                            // console.log(item);
+                            console.log(item);
                             var html = `<tr>
                                 <td class="input-table-column" colspan="9">
                                     <table class="table input-table">
@@ -367,6 +367,19 @@
                                             </tbody>
                                         </table>`
                                         :
+                                        (item.my_quote_status == 3?
+                                        `<table class="table output-table">
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="alert alert-danger" role="alert">
+                                                            Buyer selected another supplier!
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>`
+                                        :
                                         `<table class="table output-table">
                                             <tbody>
                                                 <tr>
@@ -427,7 +440,7 @@
                                                 </tr>
                                             </tbody>
                                         </table>`
-                                    )}
+                                    ))}
                                 </td>
                                 <td class="actions-table-column">
                                     <table class="table actions-table">
@@ -667,7 +680,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    
+                    <form action="{{route('seller_cancelled_inquiry')}}" method="POST">
+                        @csrf
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
@@ -699,19 +713,19 @@
                         <div class="row mt-3">
                             <div class="col-12">
                                 <h4 class="content-heading">Select a Reason*</h4>
-                                <select class="form-control">
-                                    <option selected disabled>Select</option>
-                                    <option value="">Withdrawn by Supplier</option>
-                                    <option value="">Supplier Unavailable</option>
-                                    <option value="">Duplicate Inquiry</option>
-                                    <option value="">Not Interested Anymore</option>
-                                    <option value="">My Reason is not listed here</option>
+                                <select class="form-control" name="reason" required>
+                                    <option value="withdrawn">Withdrawn by Buyer</option>
+                                    <option value="out_of_stock">Product/Service out of stock/no longer available</option>
+                                    <option value="duplicate">Duplicate Inquiry</option>
+                                    <option value="not_interested">Not Interested Anymore</option>
+                                    <option value="other">My Reason is not listed here</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    <input type="hidden" name="cancel_inquiry_id" id="cancel_inquiry_id" value="">
+                    <input type="hidden" name="inquiry_id" id="cancel_inquiry_id" value="">
                     <button type="submit" class="btn btn-animated btn-submit w-50">Submit</button>
+                </form>
                 </div>
             </div>
         </div>

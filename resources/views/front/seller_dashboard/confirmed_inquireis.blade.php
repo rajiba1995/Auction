@@ -317,7 +317,7 @@
                                                                     <tbody>
                                                                         <tr>
                                                                             <td class="other-actions-td">
-                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#cancelInquiryModal" class="btn btn-red btn-cancel-inquiry">
+                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#confirm_cancelInquiryModal{{$item->id}}" class="btn btn-red btn-cancel-inquiry">
                                                                                     <img src="{{asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
                                                                                     Reject Inquiry
                                                                                 </a>
@@ -339,7 +339,44 @@
                                                                 </table>
                                                             </td>
                                                         </tr>
-
+                                                            {{-- reject Quoting modal --}}
+                                                            <div class="modal fade allot-rate-modal cancel-inquiry" id="confirm_cancelInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <form action="{{route('after_confirm_seller_cancelled_inquiry')}}" method="POST">
+                                                                            @csrf
+                                                                            <div class="container-fluid">
+                                                                                <div class="row">
+                                                                                    <div class="col-12">
+                                                                                        <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="row mt-3">
+                                                                                    <div class="col-12">
+                                                                                        <h4 class="content-heading">Select a Reason*</h4>
+                                                                                        <select class="form-control" name="reason" required>
+                                                                                            <option value="" selected hidden>Select</option>
+                                                                                            <option value="Lack of Materials">Lack of Materials</option>
+                                                                                            <option value="withdrawn">Withdrawn by Buyer</option>
+                                                                                            <option value="out_of_stock">Product/Service out of stock/no longer available</option>
+                                                                                            <option value="duplicate">Duplicate Inquiry</option>
+                                                                                            <option value="not_interested">Not Interested Anymore</option>
+                                                                                            <option value="other">My Reason is not listed here</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <input type="hidden" name="inquiry_id" value="{{$item->id}}">
+                                                                            <button type="submit" class="btn btn-animated btn-submit w-50">Submit</button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                     @endforeach
                                                 @endif
                                             </tbody>

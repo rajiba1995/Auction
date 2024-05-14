@@ -116,7 +116,6 @@ class SellerDashboardController extends Controller
                     $adjustedEndDateTime = $endDateTime->copy()->addMinutes(1);
                     if ($currentDateTime < $adjustedEndDateTime) {
                         // Calculate remaining time until start date/time
-                    
                         $all_inquiries = [];
                         $all_inquiries['id'] = $value->id;
                         $all_inquiries['inquiry_id'] = $value->inquiry_id;
@@ -128,19 +127,17 @@ class SellerDashboardController extends Controller
                         $all_inquiries['inquiry_amount'] = $value->inquiry_amount;
                         $all_inquiries['title'] = ucwords($value->title);
                         $all_inquiries['start_date_time'] = date('d M, Y h:i A', strtotime($value->start_date.' '.$value->start_time));
-                        
-                        
                         if ($currentDateTime < $startDateTime) {
                             $startRemainingTime = $startDateTime->diff($currentDateTime);
                             $days = $startRemainingTime->days;
                             $hours = $startRemainingTime->h;
                             $minutes = $startRemainingTime->i;
                             $seconds = $startRemainingTime->s;
-                            
                             $all_inquiries['start_remaining_time'] = "Starts in: $days d $hours h $minutes m $seconds s";
                         } else {
                             $all_inquiries['start_remaining_time'] = null;
                         }
+
                         if ($currentDateTime < $endDateTime) {
                             $endRemainingTime = $endDateTime->diff($currentDateTime);
                             $days = $endRemainingTime->days;
@@ -171,6 +168,7 @@ class SellerDashboardController extends Controller
                         $all_inquiries['location'] = $value->location;
                         $all_inquiries['status'] = $value->status;
                         $all_inquiries['my_id'] = $value->my_id;
+                        $all_inquiries['my_quote_status'] = $value->my_quote_status;
                         $all_inquiries['my_name'] = Auth::guard('web')->check() ? ucwords(Auth::guard('web')->user()->name) : "";
                         $all_inquiries['my_business_name'] = Auth::guard('web')->check() ? ucwords(Auth::guard('web')->user()->business_name) : "";
                         $all_inquiries['my_last_three_quotes'] = [];
@@ -417,6 +415,18 @@ class SellerDashboardController extends Controller
         $data->rejected_reason = $request->reason;
         $data->save();
         return redirect()->back()->with('success', 'Inquiry has been successfully rejected.');
+       }else{
+        return redirect()->back();
+       }
+    }
+    public function after_confirm_seller_cancelled_reason(Request $request){
+        // dd($request->all());
+        $data = InquiryParticipant::where('inquiry_id', $request->inquiry_id)->where('user_id', $this->getAuthenticatedUserId())->first();
+       if($data){
+        $data->status = 2;
+        $data->rejected_reason = $request->reason;
+        $data->save();
+        return redirect()->back()->with('success', 'You successfully rejected this Inquiry.');
        }else{
         return redirect()->back();
        }

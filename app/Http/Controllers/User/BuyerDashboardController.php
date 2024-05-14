@@ -287,7 +287,6 @@ class BuyerDashboardController extends Controller
                  
                  // Calculate remaining time until end date/time
                  $endDateTime = Carbon::parse($value->end_date . ' ' . $value->end_time)->timezone(env('APP_TIMEZONE'));
-                 
                  if ($currentDateTime < $endDateTime) {
                      $endRemainingTime = $endDateTime->diff($currentDateTime);
                      $days = $endRemainingTime->days;

@@ -66,6 +66,7 @@ class SellerDashboardRepository implements SellerDashboardContract{
             ->select(
                 'inquiries.*', 
                 'inquiry_participants.user_id as my_id', 
+                'inquiry_participants.status as my_quote_status', 
                 'users.business_name as buyer_business_name', 
                 'users.name as buyer_name', 
                 'users.country_code as country_code',
@@ -75,7 +76,7 @@ class SellerDashboardRepository implements SellerDashboardContract{
             // ->where('inquiries.status', 1) // Filter inquiries with a status of 1
             ->join('inquiry_participants', 'inquiries.id', '=', 'inquiry_participants.inquiry_id') // Join 'inquiry_participants' table
             ->join('users', 'inquiries.created_by', '=', 'users.id') // Join 'users' table
-            ->whereIn('inquiry_participants.status', [1,4]) 
+            ->whereIn('inquiry_participants.status', [1,4,3]) 
             ->where('inquiry_participants.user_id', $this->getAuthenticatedUserId()) // Filter by authenticated user's ID
             ->get(); // Get the results
     }
@@ -106,6 +107,7 @@ class SellerDashboardRepository implements SellerDashboardContract{
         ->where('inquiries.status', 3)
         ->join('inquiry_participants', 'inquiries.id', '=', 'inquiry_participants.inquiry_id')
         ->where('inquiry_participants.user_id', $this->getAuthenticatedUserId())
+        ->where('inquiry_participants.status', 4)
         ->where('inquiries.allot_seller', $this->getAuthenticatedUserId())
         ->get();
     }

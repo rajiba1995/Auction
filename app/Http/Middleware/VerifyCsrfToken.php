@@ -13,5 +13,7 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         //
+        '/lux/cozi/test',
+        '/lux/cozi/send-message',
     ];
 }

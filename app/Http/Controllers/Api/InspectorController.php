@@ -672,6 +672,7 @@ class InspectorController extends Controller{
             return response()->json($response);
         }
     }
+
     
    
 }

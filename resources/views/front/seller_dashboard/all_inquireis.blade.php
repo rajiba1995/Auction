@@ -217,7 +217,7 @@
                                                                         </li>
                                                                         <li>
                                                                             <label>Date of execution of the task</label>
-                                                                            <p>{{ date('d M, Y', strtotime($item->execution_date)) }}</p>
+                                                                            <p>{{ date('d M, Y', strtotime($item->execution_date)) }} </p>
                                                                         </li>
                                                                         <li>
                                                                             <label>No of Quotes per Participants</label>
@@ -316,7 +316,8 @@
                                                                                 <input type="hidden" name="minimum_quote_amount" id="minimum_quote_amount{{$item->id}}" value="{{$item->minimum_quote_amount}}">
                                                                                 <input type="hidden" id="maximum_quote_amount{{$item->id}}" name="maximum_quote_amount"  value="{{$item->maximum_quote_amount}}">
                                                                                 <input type="hidden" name="seller_id" value="{{$item->my_id}}">
-                                                                                <h4 class="content-heading">Credit will be used</h4>
+                                                                                {{-- <h4 class="content-heading">Credit will be used</h4> --}}
+                                                                                <label for="">Quote</label>
                                                                                 <div class="bit_difference">
                                                                                     <input type="text" class="form-control" name="bit_difference" id="bit_difference{{$item->id}}" value="{{$item->maximum_quote_amount}}">
                                                                                     <p class="error"></p>
@@ -345,7 +346,7 @@
                                                                                     <div class="col-12">
                                                                                         <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
                                                                                     </div>
-                                                                                    <div class="col-md-6 col-sm-4 col-6">
+                                                                                    {{-- <div class="col-md-6 col-sm-4 col-6">
                                                                                         <label for="cancelInquiryYes" class="modal-custom-radio">
                                                                                             <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
                                                                                             <span class="checkmark">
@@ -366,13 +367,12 @@
                                                                                                 <label>No</label>
                                                                                             </div>
                                                                                         </label>
-                                                                                    </div>
+                                                                                    </div> --}}
                                                                                 </div>
                                                                                 <div class="row mt-3">
                                                                                     <div class="col-12">
                                                                                         <h4 class="content-heading">Select a Reason*</h4>
                                                                                         <select class="form-control" name="reason" required>
-                                                                                            <option value="" selected hidden>Select</option>
                                                                                             <option value="withdrawn">Withdrawn by Buyer</option>
                                                                                             <option value="out_of_stock">Product/Service out of stock/no longer available</option>
                                                                                             <option value="duplicate">Duplicate Inquiry</option>

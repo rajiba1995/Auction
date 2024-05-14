@@ -20,9 +20,11 @@ use App\Models\User;
 use App\Contracts\BuyerDashboardContract;
 use App\Models\RequirementConsumption;
 use App\Models\Blog;
+use App\Models\CoziWhatsapp;
 use Illuminate\Support\Str;
 use App\Contracts\UserContract;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Http;
 
 
 
@@ -330,4 +332,157 @@ class HomeController extends Controller
             return redirect()->back();
         }
     }   
+    
+    public function CoziTest(Request $request){
+        try {
+            // Retrieve the JSON data from the request body
+            $requestData = $request->all();
+            // Check if the 'messages' array exists in the decoded data
+            $statuses = $requestData['statuses'] ?? [];
+            $messages = $requestData['messages'] ?? [];
+            $contacts = $requestData['contacts'] ?? [];
+            $country_code = null;
+            $recipient_number = null;
+            $type = null;
+            $text = null;
+            $qr_code = null;
+            $status = null;
+            if (isset($messages)) {
+                // Access the first message in the array
+                $firstMessage = $requestData['messages'][0] ?? null;
+
+                // Check if the first message exists and has the 'type' and 'text' fields
+                if ($firstMessage && isset($firstMessage['type'], $firstMessage['text']['body'])) {
+                    $text = $firstMessage['text']['body'];
+                    // Retrieve the 'type' and 'body' values from the first message
+                    $startPosition = strpos($text, 'Your QR Code is');
+                    $substringAfterQRCode = substr($text, $startPosition + strlen('Your QR Code is'));
+
+                    // Trim any leading or trailing spaces
+                    $substringAfterQRCode = trim($substringAfterQRCode);
+                    $substringAfterQRCode = str_replace('.', '', $substringAfterQRCode);
+                    $from = $firstMessage['from'];
+                    $qr_code = $substringAfterQRCode?$substringAfterQRCode:null;
+                    $type = $firstMessage['type'];
+                    
+                    
+                    $country_code = substr($from, 0, 2);
+                    $recipient_number = substr($from, 2, 11);
+                    $recipient_number =$recipient_number;
+                    // Now you have the 'type' and 'body' values from the first message
+                    // You can use them as needed in your code
+                }
+            }else{
+                $country_code = substr($statuses[0]['recipient_id'], 0, 2);
+                $recipient_number = substr($statuses[0]['recipient_id'], 2, 11);
+                $status = $statuses[0]['status'];
+                $type = $statuses[0]['type'];
+                $recipient_number =$recipient_number;
+                $text = null;
+                $qr_code = null;
+            }
+            
+            // $brand_msisdn = $requestData['brand_msisdn'] ?? '';
+            // $request_id = $requestData['request_id'] ?? '';
+           
+            // dd($recipient_number);
+           
+            // Perform operations based on the retrieved data
+            if($requestData){
+                $coziWhatsapp = new CoziWhatsapp();
+                $coziWhatsapp->country_code = $country_code;
+                $coziWhatsapp->mobile = $recipient_number;
+                $coziWhatsapp->status = $status;
+                $coziWhatsapp->type = $type;
+                $coziWhatsapp->qr_code = $qr_code;
+                $coziWhatsapp->text = $text;
+                $coziWhatsapp->response = json_encode($requestData);
+                // $coziWhatsapp->response = json_encode($requestData);
+                $coziWhatsapp->save();
+            }
+            // if (strpos($text, 'Your QR Code is') !== false) {
+            //     $response_data = $this->SendWhatsAppMessage($qr_code, $recipient_number);
+            //     $coziWhatsapp = new CoziWhatsapp();
+            //     $coziWhatsapp->response = $response_data;
+            //     $coziWhatsapp->save();
+            // }
+            // Return a response if needed
+            return response()->json(['status' => 'success', 'data' => $requestData]);
+        } catch (\Exception $e) {
+            // Handle any exceptions
+            $coziWhatsapp = new CoziWhatsapp();
+            $coziWhatsapp->response = $e->getMessage();
+            $coziWhatsapp->save();
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+        }
+    }
+    public function SendWhatsAppMessage($qr_code,$mobile){
+       
+        // try {
+             // Authenticate and obtain token
+            // $authResponse = Http::post('https://apis.rmlconnect.net/auth/v1/login/', [
+            //     "username" => "LuxIndustriesNew",
+            //     "password" => "Welcome@1"
+            // ])->json();
+            
+            // // Extract token from the response
+            // $token = $authResponse['JWTAUTH'];
+            $token = "DDDD";
+            $coziWhatsapp = new CoziWhatsapp();
+            $coziWhatsapp->response = $token;
+            $coziWhatsapp->save();
+            // Build the request body
+            $data = [
+                "phone" => '+91' . $mobile,
+                "extra" => "",
+                "enable_acculync" => true,
+                "media" => [
+                    "type" => "media_template",
+                    "template_name" => "gamelink",
+                    "lang_code" => "en",
+                    "body" => [
+                        ["text" => ""],
+                        ["text" => ""]
+                    ],
+                    "button" => [
+                        [
+                            "button_no" => 0,
+                            "url" => "index.html?qrcode=" . $qr_code . "&mob=" . $mobile
+                        ]
+                    ]
+                ]
+            ];
+
+            // Make the HTTP request to send message
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => $token
+            ])->post('https://apis.rmlconnect.net/wba/v1/messages', $data);
+
+            // Check if the request was successful
+            if ($response->successful()) {
+                // Return success response
+                $coziWhatsapp = new CoziWhatsapp();
+                $coziWhatsapp->response = "If";
+                $coziWhatsapp->save();
+                return $response;
+            } else {
+                // Return error response
+                $coziWhatsapp = new CoziWhatsapp();
+                $coziWhatsapp->response = "Else";
+                $coziWhatsapp->save();
+                return $response;
+            }
+
+        // } catch (\Exception $e) {
+        //     // Handle any exceptions
+        //     $coziWhatsapp = new CoziWhatsapp();
+        //     $coziWhatsapp->response = "Cache";
+        //     $coziWhatsapp->save();
+        //     return $e->getMessage();
+        // }
+    }
+    public function CoziUserData(){
+        return CoziWhatsapp::latest()->get();
+    }
 }

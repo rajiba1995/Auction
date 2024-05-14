@@ -47,3 +47,4 @@ Route::get('vendor/list/', [InspectorController::class, 'AllVendorList']);
 Route::post('vendor/store', [InspectorController::class, 'VendorStore']);
 Route::get('vendor/edit/{id}', [InspectorController::class, 'VendorEdit']);
 Route::post('vendor/update', [InspectorController::class, 'VendorUpdate']);
+

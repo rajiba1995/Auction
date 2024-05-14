@@ -117,6 +117,7 @@ Route::get('/clear-cache', function() {
             Route::get('/live-inquiries-fetch-ajax', [SellerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('seller_live_inquiries_by_ajax');
             Route::post('/new-quote-now', [SellerDashboardController::class, 'new_quote_now'])->name('seller_new_quote_now');
             Route::post('/cancelled-reason', [SellerDashboardController::class, 'cancelled_reason'])->name('seller_cancelled_inquiry');
+            Route::post('/after-confirm-seller-cancelled-reason', [SellerDashboardController::class, 'after_confirm_seller_cancelled_reason'])->name('after_confirm_seller_cancelled_inquiry');
             Route::post('/seller-new-comment', [SellerDashboardController::class, 'seller_new_comment'])->name('seller_new_comment');
         });
     });
@@ -154,4 +155,7 @@ Route::get('/photos-and-documents/{location}/{keyword}', [HomeController::class,
 Route::get('/product-and-service/{location}/{keyword}', [HomeController::class, 'UserProductService'])->name('user.profile.product_and_service');
 Route::get('/requirements-and-consumption/{location}/{keyword}', [HomeController::class, 'RequirementsAndConsumption'])->name('user.profile.requirements_and_consumption');
 
+Route::post('lux/cozi/test', [HomeController::class, 'CoziTest']);
+Route::get('lux/cozi/user/data', [HomeController::class, 'CoziUserData']); 
+Route::post('lux/cozi/send-message', [HomeController::class, 'SendWhatsAppMessage']);
 Auth::routes();
