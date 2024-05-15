@@ -318,7 +318,7 @@
                                 <div class="row input-row">
                                     <div class="col-lg-4 col-12">
                                         <div class="form-group">
-                                            <label class="form-label">Maximum  Quote Amount*</label>
+                                            <label class="form-label">Maximum Quote Amount</label>
                                             <input type="text" class="form-control border-red" placeholder="Ex,  bid end Rs 30,000" name="maximum_quote_amount" value="{{$existing_inquiry ? $existing_inquiry->maximum_quote_amount : old('maximum_quote_amount')}}">
                                             @error('maximum_quote_amount')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
                                             @enderror
@@ -326,7 +326,7 @@
                                     </div>
                                     <div class="col-lg-4 col-12">
                                         <div class="form-group">
-                                            <label class="form-label">Minimum Quote Amount*</label>
+                                            <label class="form-label">Minimum Quote Amount</label>
                                             <input type="text" class="form-control border-red" placeholder="Ex, bid start Rs 15,000" name="minimum_quote_amount" value="{{$existing_inquiry ? $existing_inquiry->minimum_quote_amount : old('minimum_quote_amount')}}">
                                             @error('minimum_quote_amount')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
                                             @enderror

@@ -190,6 +190,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {{-- {{dd($seller_cancell_reasons)}} --}}
                                                 @if($all_inquery)
                                                     @foreach ( $all_inquery as  $item)
                                                         @if(empty(get_inquiry_seller_quotes($item->my_id, $item->id)))
@@ -281,12 +282,12 @@
                                                                 <td class="input-location-td">{{ ucfirst($item->location) }}</td>
                                                                 <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
                                                                 <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->end_date)) }} {{ date('g:i A', strtotime($item->end_time)) }}</td>
-                                                                    <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.',',')}}
-                                                                    </td>
-                                                                    <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.',',')}}
-                                                                    </td>
-                                                                    <td class="max-quote-td">{{number_format($item->bid_difference_quote_amount,2, '.',',')}}
-                                                                    </td>
+                                                                <td class="min-quote-td">{{$item->minimum_quote_amount?number_format($item->minimum_quote_amount,2, '.',','):"----"}}
+                                                                </td>
+                                                                <td class="max-quote-td">{{$item->maximum_quote_amount?number_format($item->maximum_quote_amount,2, '.',','):"----"}}
+                                                                </td>
+                                                                <td class="max-quote-td">{{number_format($item->bid_difference_quote_amount,2, '.',',')}}
+                                                                </td>
                                                                 </td>
                                                                 <td class="other-actions-td">
                                                                     {{-- @if(valid_live_time($item->start_date.' '.$item->start_time, $item->end_date.' '.$item->end_time)) --}}
@@ -356,8 +357,8 @@
                                                                                                 <label>Yes</label>
                                                                                             </div>
                                                                                         </label>
-                                                                                    </div>
-                                                                                    <div class="col-md-6 col-sm-4 col-6">
+                                                                                    </div> --}}
+                                                                                    {{-- <div class="col-md-6 col-sm-4 col-6">
                                                                                         <label for="cancelInquiryNo" class="modal-custom-radio">
                                                                                             <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
                                                                                             <span class="checkmark">
@@ -373,6 +374,7 @@
                                                                                     <div class="col-12">
                                                                                         <h4 class="content-heading">Select a Reason*</h4>
                                                                                         <select class="form-control" name="reason" required>
+                                                                                            <option value="" selected hidden>Select</option>
                                                                                             <option value="withdrawn">Withdrawn by Buyer</option>
                                                                                             <option value="out_of_stock">Product/Service out of stock/no longer available</option>
                                                                                             <option value="duplicate">Duplicate Inquiry</option>
@@ -418,28 +420,42 @@
             var bit_difference = $('#bit_difference'+id).val();
             var minimum_quote_amount = parseFloat($('#minimum_quote_amount'+id).val());
             var maximum_quote_amount = parseFloat($('#maximum_quote_amount'+id).val());
-            // Check if bit_difference is a valid number
-            if (isNaN(bit_difference)) {
+
+            var bitDifferenceNumber = parseFloat(bit_difference);
+    
+            // Check if bit_difference is a valid number and its length
+            if (isNaN(bitDifferenceNumber) || bit_difference.length === 0) {
                 // Show error message for invalid bit_difference
-                $('.error').text("Amount must be a valid number").show();
+                var errorMessage = "Amount must be a valid number";
+                
+                if (bit_difference.length === 0) {
+                    errorMessage = "Amount cannot be empty";
+                }
+                
+                $('.error').text(errorMessage).show();
+                
                 // Set timeout to hide error message after 3 seconds
-                setTimeout(function(){
+                setTimeout(function() {
                     $('.error').hide();
                 }, 3000);
+                
                 return; // Exit the function early
-            }
-            // Check if bit_difference is between minimum_quote_amount and maximum_quote_amount
-            if (bit_difference >= minimum_quote_amount && bit_difference <= maximum_quote_amount) {
-                // Submit the form
-                $('#bit_difference_form'+id).submit();
             } else {
-                // Show error message
-                $('.error').text("Bit amount should be between Minimum and Maximum Quote Amounts").show();
-                // Set timeout to hide error message after 3 seconds
-                setTimeout(function(){
-                    $('.error').hide();
-                }, 5000);
+                $('#bit_difference_form' + id).submit();
             }
+                 
+            // Check if bit_difference is between minimum_quote_amount and maximum_quote_amount
+            // if (bit_difference >= minimum_quote_amount && bit_difference <= maximum_quote_amount) {
+            //     // Submit the form
+            //     $('#bit_difference_form'+id).submit();
+            // } else {
+            //     // Show error message
+            //     $('.error').text("Bit amount should be between Minimum and Maximum Quote Amounts").show();
+            //     // Set timeout to hide error message after 3 seconds
+            //     setTimeout(function(){
+            //         $('.error').hide();
+            //     }, 5000);
+            // }
         });
         $(document).ready(function(){
             $('#group_wies_search').keyup(function(){

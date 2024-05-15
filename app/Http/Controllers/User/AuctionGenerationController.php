@@ -106,8 +106,8 @@ class AuctionGenerationController extends Controller
             // 'description' => 'nullable|string',
             'execution_date' => 'required|date',
             'quotes_per_participants' => 'required|numeric',    
-            'minimum_quote_amount' => 'required|numeric',
-            'maximum_quote_amount' => 'required|numeric|gt:minimum_quote_amount',
+            'minimum_quote_amount' => 'nullable|numeric',
+            'maximum_quote_amount' => 'nullable|numeric|gt:minimum_quote_amount',
             'bid_difference_quote_amount' => 'required|numeric|gt:0', // Ensure bid difference is positive
         ]);
        
@@ -158,7 +158,8 @@ class AuctionGenerationController extends Controller
             }
             if($inquiry->inquiry_type=="close auction"){
                 $user = User::findOrFail($request->created_by)->with('CityData')->first();
-                $inquiry->location = $user->city?$user->CityData->city:"";
+                // dd($user);
+                $inquiry->location = $user->city?$user->CityData->name:"";
             }
             $inquiry->location_type =$request->auctionfrom;
             $inquiry->save();

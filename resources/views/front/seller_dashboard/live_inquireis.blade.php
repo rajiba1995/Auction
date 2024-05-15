@@ -74,7 +74,7 @@
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         <a  href="{{ route('seller_live_inquiries') }}" class="nav-link {{ (request()->is('seller/live-inquiries*')) ? 'active' : '' }}" id="liveinquiries-tab" >
-                                            Live Inquiries (<span id="append_live_data_count">{{count($live_inquiries_count)}}</span>)
+                                            Live Inquiries (<span id="append_live_data_count">0</span>)
                                             <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_1151_262)">
                                                 <path d="M19.7983 9.16754L13.2115 2.58068M13.2115 2.58068L9.05138 6.74078M13.2115 2.58068C13.6901 2.10201 13.6901 1.32594 13.2115 0.847278C12.7328 0.368616 11.9568 0.368616 11.4781 0.847278L7.31798 5.00739C6.83932 5.48605 6.83932 6.26212 7.31798 6.74078C7.79664 7.21945 8.57272 7.21945 9.05138 6.74078M9.05138 6.74078L15.6382 13.3276M17.3716 15.061L21.5317 10.9009C22.0104 10.4222 22.0104 9.64615 21.5317 9.16749C21.053 8.68883 20.277 8.68883 19.7983 9.16749L15.6382 13.3276C15.1595 13.8063 15.1595 14.5823 15.6382 15.061C16.1169 15.5397 16.8929 15.5397 17.3716 15.061ZM14.2515 11.9409L10.4381 8.1275C9.67223 8.89337 9.67223 10.1351 10.4381 10.9009L11.4781 11.9409C12.244 12.7068 13.4857 12.7068 14.2515 11.9409Z" stroke="#0076D7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -193,7 +193,7 @@
                                                     <th class="output-th quotes-supplier-th">Quotes</th>
                                                     <th class="output-th comments-th">Comments &amp; Files</th>
                                                     <th class="output-th timer-th">Timer</th>
-                                                    <th class="output-th other-actions-th">&nbsp;</th>
+                                                    {{-- <th class="output-th other-actions-th">&nbsp;</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody id="append_live_data">
@@ -280,9 +280,9 @@
                     if(response.status==200){
                         $('#append_live_data').html('');
                         $('#append_live_data_count').html(response.data.length);
-                        console.log(response.data)
+                        // console.log(response.data)
                         $.each(response.data, function(index, item) {
-                            console.log(item);
+                            // console.log(item);
                             var html = `<tr>
                                 <td class="input-table-column" colspan="9">
                                     <table class="table input-table">
@@ -326,7 +326,7 @@
                                                 <td class="input-location-td">${item.location}</td>
                                                 <td class="input-start-date-td">${item.start_date_time}</td>
                                                 <td class="input-end-date-td">${item.end_date_time}</td>
-                                                <td class="max-quote-td">${item.minimum_quote_amount}</td>
+                                                <td class="max-quote-td"> ${item.minimum_quote_amount}</td>
                                                 <td class="min-quote-td">${item.maximum_quote_amount}</td>
                                             </tr>
                                             <tr>
@@ -424,7 +424,7 @@
                                                             </svg>
                                                             Add Comment
                                                         </a>
-                                                        <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target=".Send_file_modal" onclick="Send_file_modal(${item.id})" class="btn btn-view btn-view-yellow btn-file-download">
                                                             <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M9.16634 11.875H10.833V9.26562L12.1663 10.2656L13.333 9.375L9.99967 6.875L6.66634 9.375L7.85384 10.25L9.16634 9.26562V11.875ZM4.99967 13.75C4.54134 13.75 4.14898 13.6276 3.82259 13.3828C3.4962 13.138 3.33301 12.8438 3.33301 12.5V2.5C3.33301 2.15625 3.4962 1.86198 3.82259 1.61719C4.14898 1.3724 4.54134 1.25 4.99967 1.25H11.6663L16.6663 5V12.5C16.6663 12.8438 16.5031 13.138 16.1768 13.3828C15.8504 13.6276 15.458 13.75 14.9997 13.75H4.99967ZM10.833 5.625V2.5H4.99967V12.5H14.9997V5.625H10.833Z" fill="#FFB800"/>
                                                             </svg>
@@ -441,25 +441,6 @@
                                             </tbody>
                                         </table>`
                                     ))}
-                                </td>
-                                <td class="actions-table-column">
-                                    <table class="table actions-table">
-                                        <tbody>
-                                            <tr>
-                                                <td class="other-actions-td">
-                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#cancelInquiryModal" class="btn btn-red btn-cancel-inquiry" onclick="cancelInquiryModal(${item.id})">
-                                                        <img src="{{asset("frontend/assets/images/white-circle-cross.png")}}" alt="Cancel">
-                                                        Reject Inquiry
-                                                    </a>
-                                                    ${item.allot_seller == item.my_id ?
-                                                        `<a href="javascript:void(0)" class="btn btn-yellow btn-allot mt-2">  
-                                                            <img src="{{asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">Allotted</a>` :
-                                                        ``
-                                                    }
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
                                 </td>
                             </tr>`;
                             $('#append_live_data').append(html);
@@ -494,16 +475,25 @@
                 event.preventDefault();
             }
         });
-       $(document).ready(function() {
+        $(document).ready(function() {
             $('#new_quote_form').validate({
                 rules: {
                     new_quote: {
                         required: true,
-                        min: function(element) {
-                            return parseFloat($("#min_quote").val());
+                        min: function() {
+                            var minQuote = parseFloat($("#min_quote").val());
+                            if (!isNaN(minQuote)) {
+                                return minQuote;
+                            } else {
+                                return true;
+                            }
                         },
-                        max: function(element) {
-                            return parseFloat($("#max_quote").val());
+                        max: function() {
+                            var maxQuote = parseFloat($("#max_quote").val());
+                            if (!isNaN(maxQuote)) {
+                                return maxQuote;
+                            }
+                            return parseFloat($("#last_quote").val());
                         },
                         lessThanLast: true
                     },
@@ -512,8 +502,8 @@
                 messages: {
                     new_quote: {
                         required: "Please enter your new quote",
-                        min: "New quote must be greater than or equal to Min Quote",
-                        max: "New quote must be less than or equal to Max Quote"
+                        min: "New quote must be more than the minimum quote or less than the previous quotes",
+                        max: "New quote must be less than previous quotes"
                     },
                     inquiry_id: "Please provide inquiry ID"
                 },
@@ -558,9 +548,12 @@
                 var maxAcceptableValue = lastQuote - bidDifference;
 
                 // Check if the new quote is equal to the minimum quote
-                if (newQuote === minQuote) {
-                    return true;
+                if(minQuote.length>0){
+                    if (newQuote === minQuote) {
+                        return true;
+                    }
                 }
+                
                 // Check if the new quote is less than or equal to the maximum acceptable value
                 return newQuote <= maxAcceptableValue;
             }, 'New quote must be less than or equal to the maximum acceptable quote.');
@@ -575,6 +568,9 @@
         }
         function Add_comments_modal(id){
             $('#inquiry_comment_id').val(id);
+        }
+        function Send_file_modal(id){
+            $('#inquiry_file_id').val(id);
         }
         $('#new_comment_form').validate({
             rules: {
@@ -606,6 +602,57 @@
                 return false;
             }
         });
+        $(document).ready(function() {
+            $('#submit_button').click(function() {
+                var fileInput = $('#new_file');
+                var file = fileInput[0].files[0];
+                // Check if file is selected
+                if (!file) {
+                    $('.error_file').html("Please select a file");
+                    return;
+                }
+                
+                // Check file type
+                if (!file.type.match('application/pdf') && !file.type.match('image/')) {
+                    $('.error_file').html("Please select a PDF or image file");
+                    return;
+                }
+                
+                // Check file size
+                var maxSize = 1024 * 1024 * 2; // 2 MB
+                if (file.size > maxSize) {
+                    $('.error_file').html("File size must be less than 2 MB");
+                    return;
+                }
+                
+                // Perform AJAX form submission
+                var formData = new FormData($('#new_send_file_form')[0]);
+                $.ajax({
+                    url: "{{ route('seller_send_new_file') }}",
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('.error_file').html("");
+                        if (response.status == 200) {
+                            $("#Send_file_modal").modal('hide');
+                            $('#new_send_file_form')[0].reset(); // Reset the form
+                        } else {
+                            if (response.message) {
+                                $('.error_file').html(response.message);
+                            } else {
+                                $("#Send_file_modal").modal('hide');
+                            }
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+
     </script>
 
      {{--confirm new quotes modal --}}
@@ -625,7 +672,7 @@
                         <input type="hidden" name="last_quote" id="last_quote" value="">
                         <input type="hidden" name="inquiry_id" id="inquiry_modal_id" value="">
                         <input class="form-control" placeholder="Write here" name="new_quote" id="new_quote"></input>
-                        <p class="new_quotes_div">Min quote <span class="min_quote"></span> | Max quote <span class="max_quote"></span> | Bid difference <span class="bid_difference"></span>| Last Quote <span class="last_quote"></span></p>
+                        <p class="new_quotes_div">Min quote <span class="min_quote"></span> | Max quote <span class="max_quote"></span> | Bid difference <span class="bid_difference"></span>| Previous Quote <span class="last_quote"></span></p>
                         <p class="new_quotes_div">Maximum acceptable quote = (Last Quote-Bid difference)</p>
                         <div class="alert alert-danger" role="alert" id="seller_new_quote_time_up" style="display: none;">
                         </div>
@@ -647,8 +694,30 @@
                         @csrf
                         <h3 class="content-heading">Add your comment</h3>
                         <input type="hidden" name="inquiry_id" id="inquiry_comment_id" value="">
-                        <textarea class="form-control" name="new_comment" placeholder="Write here"></textarea>
+                        <textarea class="form-control" name="new_comment" placeholder="Write here" rows="3"></textarea>
                         <button type="submit" class="btn btn-animated btn-add-comment">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--confirm add File modal --}}
+    <div class="modal fade add-comment-modal Send_file_modal" id="Send_file_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" id="new_send_file_form" enctype="multipart/form-data">
+                        @csrf
+                        <h3 class="content-heading">Add new file</h3>
+                        <input type="hidden" name="inquiry_id" id="inquiry_file_id" value="">
+                        <input type="file" class="form-control" name="new_file" id="new_file">
+                        <p class="text-danger text-sm error_file"></p>
+                        <div>
+                            <button type="button" id="submit_button" class="btn btn-animated btn-add-comment">Submit</button>
+                        </div>
                     </form>
                 </div>
             </div>

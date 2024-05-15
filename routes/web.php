@@ -119,6 +119,7 @@ Route::get('/clear-cache', function() {
             Route::post('/cancelled-reason', [SellerDashboardController::class, 'cancelled_reason'])->name('seller_cancelled_inquiry');
             Route::post('/after-confirm-seller-cancelled-reason', [SellerDashboardController::class, 'after_confirm_seller_cancelled_reason'])->name('after_confirm_seller_cancelled_inquiry');
             Route::post('/seller-new-comment', [SellerDashboardController::class, 'seller_new_comment'])->name('seller_new_comment');
+            Route::post('/seller-send-new-file', [SellerDashboardController::class, 'seller_send_new_file'])->name('seller_send_new_file');
         });
     });
 // Admin login routes

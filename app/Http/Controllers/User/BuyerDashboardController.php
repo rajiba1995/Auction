@@ -41,19 +41,51 @@ class BuyerDashboardController extends Controller
     public function index(Request $request){
         $existing_inquiries= $this->BuyerDashboardRepository->get_all_existing_inquiries_by_user($this->getAuthenticatedUserId());
         $group_wise_list =  $this->BuyerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
-        return view('front.user_dashboard.index', compact('group_wise_list', 'existing_inquiries'));
+        $saved_inquiries =  $this->BuyerDashboardRepository->saved_inquiries_by_user($this->getAuthenticatedUserId());
+        $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
+        $confirmed_inquiry_data =  $this->BuyerDashboardRepository->confirmed_inquiries_by_user($this->getAuthenticatedUserId());
+        $pending_inquiries_data =  $this->BuyerDashboardRepository->pending_inquiries_by_user($this->getAuthenticatedUserId());
+        $cancelled_inquiry_data =  $this->BuyerDashboardRepository->cancelled_inquiries_by_user($this->getAuthenticatedUserId());
+
+
+        return view('front.user_dashboard.index', compact('group_wise_list', 'existing_inquiries','saved_inquiries','live_inquiries','confirmed_inquiry_data','pending_inquiries_data','cancelled_inquiry_data'));
     }
 
     public function saved_inquiries(Request $request){
         $saved_inquiries =  $this->BuyerDashboardRepository->saved_inquiries_by_user($this->getAuthenticatedUserId());
-        return view('front.user_dashboard.saved_inquireis', compact('saved_inquiries'));
+        $group_wise_list =  $this->BuyerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
+        $confirmed_inquiry_data =  $this->BuyerDashboardRepository->confirmed_inquiries_by_user($this->getAuthenticatedUserId());
+        $pending_inquiries_data =  $this->BuyerDashboardRepository->pending_inquiries_by_user($this->getAuthenticatedUserId());
+        $cancelled_inquiry_data =  $this->BuyerDashboardRepository->cancelled_inquiries_by_user($this->getAuthenticatedUserId());
+
+
+
+        return view('front.user_dashboard.saved_inquireis', compact('saved_inquiries','group_wise_list','live_inquiries','confirmed_inquiry_data','pending_inquiries_data','cancelled_inquiry_data'));
     }
     public function live_inquiries(Request $request){
         $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
-        return view('front.user_dashboard.live_inquireis', compact('live_inquiries'));
+        $group_wise_list =  $this->BuyerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $saved_inquiries =  $this->BuyerDashboardRepository->saved_inquiries_by_user($this->getAuthenticatedUserId());
+        $confirmed_inquiry_data =  $this->BuyerDashboardRepository->confirmed_inquiries_by_user($this->getAuthenticatedUserId());
+        $pending_inquiries_data =  $this->BuyerDashboardRepository->pending_inquiries_by_user($this->getAuthenticatedUserId());
+        $cancelled_inquiry_data =  $this->BuyerDashboardRepository->cancelled_inquiries_by_user($this->getAuthenticatedUserId());
+
+
+
+        return view('front.user_dashboard.live_inquireis', compact('live_inquiries','saved_inquiries','group_wise_list','confirmed_inquiry_data','pending_inquiries_data','cancelled_inquiry_data'));
     }
     public function pending_inquiries(Request $request){
         $pending_inquiries_data =  $this->BuyerDashboardRepository->pending_inquiries_by_user($this->getAuthenticatedUserId());
+        $group_wise_list =  $this->BuyerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $confirmed_inquiry_data =  $this->BuyerDashboardRepository->confirmed_inquiries_by_user($this->getAuthenticatedUserId());
+        $cancelled_inquiry_data =  $this->BuyerDashboardRepository->cancelled_inquiries_by_user($this->getAuthenticatedUserId());
+        $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
+        $saved_inquiries =  $this->BuyerDashboardRepository->saved_inquiries_by_user($this->getAuthenticatedUserId());
+
+
+
+
         $pending_inquiries = [];
         if(count($pending_inquiries_data)>0){
             foreach ($pending_inquiries_data as $key => $value) {
@@ -118,10 +150,16 @@ class BuyerDashboardController extends Controller
                 $pending_inquiries[] = $all_inquiries;
             }
         }
-        return view('front.user_dashboard.pending_inquireis', compact('pending_inquiries'));
+        return view('front.user_dashboard.pending_inquireis', compact('pending_inquiries','live_inquiries','saved_inquiries','group_wise_list','confirmed_inquiry_data','pending_inquiries_data','cancelled_inquiry_data'));
     }
     public function confirmed_inquiries(Request $request){
         $confirmed_inquiry_data =  $this->BuyerDashboardRepository->confirmed_inquiries_by_user($this->getAuthenticatedUserId());
+        $group_wise_list =  $this->BuyerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $pending_inquiries_data =  $this->BuyerDashboardRepository->pending_inquiries_by_user($this->getAuthenticatedUserId());
+        $cancelled_inquiry_data =  $this->BuyerDashboardRepository->cancelled_inquiries_by_user($this->getAuthenticatedUserId());
+        $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
+        $saved_inquiries =  $this->BuyerDashboardRepository->saved_inquiries_by_user($this->getAuthenticatedUserId());
+
 
         $confirmed_inquiries = [];
         if(count($confirmed_inquiry_data)>0){
@@ -186,10 +224,15 @@ class BuyerDashboardController extends Controller
                 $confirmed_inquiries[] = $all_inquiries;
             }
         }
-        return view('front.user_dashboard.confirmed_inquireis', compact('confirmed_inquiries'));
+        return view('front.user_dashboard.confirmed_inquireis', compact('confirmed_inquiries','live_inquiries','saved_inquiries','group_wise_list','confirmed_inquiry_data','pending_inquiries_data','cancelled_inquiry_data'));
     }
     public function cancelled_inquiries(Request $request){
         $cancelled_inquiry_data =  $this->BuyerDashboardRepository->cancelled_inquiries_by_user($this->getAuthenticatedUserId());
+        $group_wise_list =  $this->BuyerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $saved_inquiries =  $this->BuyerDashboardRepository->saved_inquiries_by_user($this->getAuthenticatedUserId());
+        $live_inquiries =  $this->BuyerDashboardRepository->live_inquiries_by_user($this->getAuthenticatedUserId());
+        $confirmed_inquiry_data =  $this->BuyerDashboardRepository->confirmed_inquiries_by_user($this->getAuthenticatedUserId());
+        $pending_inquiries_data =  $this->BuyerDashboardRepository->pending_inquiries_by_user($this->getAuthenticatedUserId());
 
         $cancelled_inquiries = [];
         if(count($cancelled_inquiry_data)>0){
@@ -254,7 +297,7 @@ class BuyerDashboardController extends Controller
                 $cancelled_inquiries[] = $all_inquiries;
             }
         }
-        return view('front.user_dashboard.cancelled_inquireis', compact('cancelled_inquiries'));
+        return view('front.user_dashboard.cancelled_inquireis', compact('cancelled_inquiries','group_wise_list','saved_inquiries','live_inquiries','confirmed_inquiry_data','pending_inquiries_data','cancelled_inquiry_data'));
     }
 
     public function live_inquiries_fetch_ajax(){
@@ -343,7 +386,10 @@ class BuyerDashboardController extends Controller
                             
                             $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
                             $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
+                            $SellerFileData = SellerFileData($itemk->inquiry_id, $itemk->seller_id);
+                           
                             $seller['seller_comments_data'] = $SellerCommentsData;
+                            $seller['seller_file_data'] = $SellerFileData;
                             $seller_data[]= $seller;
                         }
                     }

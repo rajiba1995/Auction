@@ -62,6 +62,7 @@ class SellerDashboardController extends Controller
         return view('front.seller_dashboard.index',compact('group_wise_list', 'all_inquery_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function all_inquiries(Request $request){
+        $seller_cancell_reasons = $this->MasterRepository->getAllSellerReason();
         $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
         $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
         $live_inquiries_count =  $this->SellerDashboardRepository->live_inquiries_by_seller();
@@ -80,7 +81,7 @@ class SellerDashboardController extends Controller
                 $rejected_inquiries_count+=1;
             }
         }
-        return view('front.seller_dashboard.all_inquireis',compact('all_inquery', 'all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
+        return view('front.seller_dashboard.all_inquireis',compact('all_inquery', 'all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count','seller_cancell_reasons'));
     }
     public function live_inquiries(Request $request){
         $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
@@ -159,8 +160,8 @@ class SellerDashboardController extends Controller
                         $all_inquiries['description'] = $value->description;
                         $all_inquiries['execution_date'] = date('d M, Y h:i A', strtotime($value->execution_date));
                         $all_inquiries['quotes_per_participants'] = $value->quotes_per_participants;
-                        $all_inquiries['minimum_quote_amount'] = number_format($value->minimum_quote_amount,2, '.', ',');
-                        $all_inquiries['maximum_quote_amount'] = number_format($value->maximum_quote_amount,2, '.', ',');
+                        $all_inquiries['minimum_quote_amount'] = $value->minimum_quote_amount?number_format($value->minimum_quote_amount,2, '.', ','):"----";
+                        $all_inquiries['maximum_quote_amount'] = $value->maximum_quote_amount?number_format($value->maximum_quote_amount,2, '.', ','):"----";
                         $all_inquiries['minimum_quote'] = $value->minimum_quote_amount;
                         $all_inquiries['maximum_quote'] = $value->maximum_quote_amount;
                         $all_inquiries['inquiry_type'] = $value->inquiry_type;
@@ -223,6 +224,24 @@ class SellerDashboardController extends Controller
     }
     public function pending_inquiries(Request $request){
         $pending_inquiries =  $this->SellerDashboardRepository->pending_inquiries_by_seller();
+        $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
+        $live_inquiries_count =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        $pending_inquiries_count =  $this->SellerDashboardRepository->pending_inquiries_by_seller();
+        $confirmed_inquiries_count =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller(); 
+        $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
+        $all_inquery_count = 0;
+        foreach ( $all_inquery as  $item){
+            if(empty(get_inquiry_seller_quotes($item->my_id, $item->id))){
+                $all_inquery_count+=1;
+            }
+        }
+        $rejected_inquiries_count = 0;
+        foreach ($rejected_inquiries as  $item){
+            if($item->my_id==$this->getAuthenticatedUserId()){
+                $rejected_inquiries_count+=1;
+            }
+        }
         $inquiries = [];
         if(count($pending_inquiries)>0){
             foreach ($pending_inquiries as $key => $value) {
@@ -325,26 +344,62 @@ class SellerDashboardController extends Controller
                 }
             }
         }
-        return view('front.seller_dashboard.pending_inquireis',compact('inquiries'));
+        return view('front.seller_dashboard.pending_inquireis',compact('inquiries','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function confirmed_inquiries(Request $request){
         $confirmed_inquiries =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller();  
-        return view('front.seller_dashboard.confirmed_inquireis', compact('confirmed_inquiries'));
+        $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
+        $live_inquiries_count =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        $pending_inquiries_count =  $this->SellerDashboardRepository->pending_inquiries_by_seller();
+        $confirmed_inquiries_count =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller(); 
+        $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
+        $all_inquery_count = 0;
+        foreach ( $all_inquery as  $item){
+            if(empty(get_inquiry_seller_quotes($item->my_id, $item->id))){
+                $all_inquery_count+=1;
+            }
+        }
+        $rejected_inquiries_count = 0;
+        foreach ($rejected_inquiries as  $item){
+            if($item->my_id==$this->getAuthenticatedUserId()){
+                $rejected_inquiries_count+=1;
+            }
+        }
+        return view('front.seller_dashboard.confirmed_inquireis', compact('confirmed_inquiries','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function history_inquiries(Request $request){
         $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
+        $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
+        $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
+        $live_inquiries_count =  $this->SellerDashboardRepository->live_inquiries_by_seller();
+        $pending_inquiries_count =  $this->SellerDashboardRepository->pending_inquiries_by_seller();
+        $confirmed_inquiries_count =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller(); 
+        $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
+        $all_inquery_count = 0;
+        foreach ( $all_inquery as  $item){
+            if(empty(get_inquiry_seller_quotes($item->my_id, $item->id))){
+                $all_inquery_count+=1;
+            }
+        }
+        $rejected_inquiries_count = 0;
+        foreach ($rejected_inquiries as  $item){
+            if($item->my_id==$this->getAuthenticatedUserId()){
+                $rejected_inquiries_count+=1;
+            }
+        }
         $distinct = [];
         foreach($rejected_inquiries as $key =>$item){
             $distinct[] = $item->id;
         }
         $distinct = array_unique($distinct);
-        return view('front.seller_dashboard.history_inquireis', compact('rejected_inquiries', 'distinct'));
+        return view('front.seller_dashboard.history_inquireis', compact('rejected_inquiries', 'distinct','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function seller_start_quotes(Request $request){
         // Define validation rules
         $rules = [
-            'minimum_quote_amount' => 'required|numeric',
-            'maximum_quote_amount' => 'required|numeric|gt:minimum_quote_amount', // Ensure maximum is greater than minimum
+            // 'minimum_quote_amount' => 'required|numeric',
+            // 'maximum_quote_amount' => 'required|numeric|gt:minimum_quote_amount', // Ensure maximum is greater than minimum
             'bit_difference' => 'required|numeric'
         ];
     
@@ -352,13 +407,13 @@ class SellerDashboardController extends Controller
         $validator = Validator::make($request->all(), $rules);
     
         // Additional validation to check if the input values are numeric
-        if (!is_numeric($request->minimum_quote_amount) || !is_numeric($request->maximum_quote_amount) || !is_numeric($request->bit_difference)) {
+        if (!is_numeric($request->bit_difference)) {
             return redirect()->back()->with('warning', 'Amount must be a valid number.');
         }
     
         // Check if validation fails
         if ($validator->fails()) {
-            return redirect()->back()->with('warning', 'Bit amount should be between Minimum and Maximum Quote Amounts.');
+            return redirect()->back()->with('warning', 'Amount must be a valid number.');
         }
     
         // Validation passed, proceed to store data
@@ -406,6 +461,34 @@ class SellerDashboardController extends Controller
             return response()->json(['status'=>200]);
         }else{
             return response()->json(['status'=>400]);
+        }
+    }
+    public function seller_send_new_file(Request $request){
+        $request->validate([
+            'inquiry_id' => 'required',
+            'new_file' => 'required|file|mimes:pdf,image/*|max:2048', // Max file size: 2MB
+        ]);
+    
+        if ($request->hasFile('new_file') && $request->file('new_file')->isValid()) {
+            $file = $request->file('new_file');
+            $imageName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/seller/file'), $imageName); // Save the file to the specified directory
+            
+            $uploadedImage = $imageName;
+
+            $store = new InquirySellerComments;
+            $store->inquiry_id = $request->inquiry_id;
+            $store->seller_id = $this->getAuthenticatedUserId();
+            $store->file = asset('uploads/seller/file/' . $uploadedImage); // Save the file path to the database
+            $store->save();
+    
+            if ($store) {
+                return response()->json(['status' => 200]);
+            } else {
+                return response()->json(['status' => 400, 'message'=>'']);
+            }
+        } else {
+            return response()->json(['status' => 400, 'message' => 'Invalid file or file upload failed.']);
         }
     }
     public function cancelled_reason(Request $request){
