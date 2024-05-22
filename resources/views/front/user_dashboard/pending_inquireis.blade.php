@@ -222,7 +222,7 @@
                                                                             <div class="note-wrap">
                                                                                 <h3>Notepad</h3>
                                                                                 <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
-                                                                                <button type="button" class="btn btn-animated bg-green">Save</button>
+                                                                                {{-- <button type="button" class="btn btn-animated bg-green">Save</button> --}}
                                                                             </div>
                                                                         </td>
                                                                     </tr>
@@ -295,12 +295,42 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                    <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
-                                                                                        <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                            <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
-                                                                                        </svg>
-                                                                                        Download File
-                                                                                    </a>
+                                                                                    @if(count($seller_item['seller_file_data'])>0)
+                                                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#viewFileModal{{$item['id']}}{{$seller_item['id']}}" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                                            <svg width="12" height="9" viewBox="0 0 12 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                                <path d="M6 6.75L2.25 3.9375L3.3 3.12187L5.25 4.58437V0H6.75V4.58437L8.7 3.12187L9.75 3.9375L6 6.75ZM1.5 9C1.0875 9 0.734375 8.88984 0.440625 8.66953C0.146875 8.44922 0 8.18437 0 7.875V6.1875H1.5V7.875H10.5V6.1875H12V7.875C12 8.18437 11.8531 8.44922 11.5594 8.66953C11.2656 8.88984 10.9125 9 10.5 9H1.5Z" fill="#FFB800"/>
+                                                                                            </svg>
+                                                                                            Download File
+                                                                                        </a>
+                                                                                        <div class="modal fade view-comment-modal" id="viewFileModal{{$item['id']}}{{$seller_item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                            <div class="modal-dialog">
+                                                                                                <div class="modal-content">
+                                                                                                    <div class="modal-header">
+                                                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                    </div>
+                                                                                                    <div class="modal-body text-center">
+                                                                                                        <h3 class="content-heading">{{$seller_item['business_name']}}</h3>
+                                                                                                        <table class="table text-center">
+                                                                                                            <thead>
+                                                                                                                <tr>
+                                                                                                                    <th>Date & Time</th>
+                                                                                                                    <th>File</th>
+                                                                                                                </tr>
+                                                                                                            </thead>
+                                                                                                            <tbody>
+                                                                                                                @foreach ($seller_item['seller_file_data'] as $item_file)
+                                                                                                                    <tr>
+                                                                                                                        <td>{{date('d M Y h:i a', strtotime($item_file->created_at))}}</td>
+                                                                                                                        <td><a href="{{$item_file->file}}" class="btn btn-red btn-cancel-inquiry" download>Download</a></td>
+                                                                                                                    </tr>
+                                                                                                                @endforeach
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    @endif
                                                                                 </td>
                                                                                 <td class="actions-td">
                                                                                     @if(valid_execution_time($item['execution_date'])==true)

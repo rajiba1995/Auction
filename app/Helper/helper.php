@@ -11,6 +11,7 @@ use App\Models\City;
 use App\Models\InquirySellerQuotes;
 use App\Models\WatchList;
 use App\Models\InquirySellerComments;
+use App\Models\InquiryAllotmentData;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Illuminate\Support\Facades\DB;
@@ -217,7 +218,7 @@ function valid_live_time($start_time, $end_time){
     }
 }
 function SellerCommentsData($inquiry_id, $seller_id){
-    return InquirySellerComments::where('seller_id', $seller_id)->where('inquiry_id', $inquiry_id)->where('file', NULL)->get();
+    return InquirySellerComments::latest()->where('seller_id', $seller_id)->where('inquiry_id', $inquiry_id)->where('file', NULL)->get();
 }
 function SellerFileData($inquiry_id, $seller_id){
     return InquirySellerComments::where('seller_id', $seller_id)->where('inquiry_id', $inquiry_id)->where('comments', NULL)->get();
@@ -235,4 +236,7 @@ function valid_execution_time($execution_time){
     }else{
          return false;
     }   
+}
+function GetAllQuotesData($inquiry_id){
+    return InquiryAllotmentData::with('SellerData')->latest()->where('inquiry_id', $inquiry_id)->get();
 }

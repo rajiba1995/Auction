@@ -347,6 +347,7 @@ class SellerDashboardController extends Controller
         return view('front.seller_dashboard.pending_inquireis',compact('inquiries','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function confirmed_inquiries(Request $request){
+        $my_id = $this->getAuthenticatedUserId();
         $confirmed_inquiries =  $this->SellerDashboardRepository->confirmed_inquiries_by_seller();  
         $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
         $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
@@ -366,7 +367,7 @@ class SellerDashboardController extends Controller
                 $rejected_inquiries_count+=1;
             }
         }
-        return view('front.seller_dashboard.confirmed_inquireis', compact('confirmed_inquiries','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
+        return view('front.seller_dashboard.confirmed_inquireis', compact('my_id','confirmed_inquiries','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function history_inquiries(Request $request){
         $rejected_inquiries =  $this->SellerDashboardRepository->rejected_inquiries_by_seller($this->getAuthenticatedUserId());
@@ -480,6 +481,33 @@ class SellerDashboardController extends Controller
             $store->inquiry_id = $request->inquiry_id;
             $store->seller_id = $this->getAuthenticatedUserId();
             $store->file = asset('uploads/seller/file/' . $uploadedImage); // Save the file path to the database
+            $store->save();
+    
+            if ($store) {
+                return response()->json(['status' => 200]);
+            } else {
+                return response()->json(['status' => 400, 'message'=>'']);
+            }
+        } else {
+            return response()->json(['status' => 400, 'message' => 'Invalid file or file upload failed.']);
+        }
+    }
+    public function seller_send_new_bill(Request $request){
+        $request->validate([
+            'inquiry_id' => 'required',
+            'new_bill' => 'required|file|mimes:pdf,image/*|max:2048', // Max file size: 2MB
+        ]);
+    
+        if ($request->hasFile('new_bill') && $request->file('new_bill')->isValid()) {
+            $file = $request->file('new_bill');
+            $imageName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/seller/file'), $imageName); // Save the file to the specified directory
+
+            $uploadedImage = $imageName;
+            $store = Inquiry::findOrFail($request->inquiry_id);
+            $store->bill_by = $this->getAuthenticatedUserId();
+            $store->bill_at = date('Y-m-d h:i:s');
+            $store->bill = asset('uploads/seller/bill/' . $uploadedImage); // Save the file path to the database
             $store->save();
     
             if ($store) {

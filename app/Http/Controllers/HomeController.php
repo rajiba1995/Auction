@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Http;
 
 
 
+
 class HomeController extends Controller
 {
     protected $userRepository;
@@ -402,9 +403,10 @@ class HomeController extends Controller
             }
             // if (strpos($text, 'Your QR Code is') !== false) {
             //     $response_data = $this->SendWhatsAppMessage($qr_code, $recipient_number);
-            //     $coziWhatsapp = new CoziWhatsapp();
-            //     $coziWhatsapp->response = $response_data;
-            //     $coziWhatsapp->save();
+                // dd($response_data);
+                // $coziWhatsapp = new CoziWhatsapp();
+                // $coziWhatsapp->response = $response_data;
+                // $coziWhatsapp->save();
             // }
             // Return a response if needed
             return response()->json(['status' => 'success', 'data' => $requestData]);
@@ -417,70 +419,91 @@ class HomeController extends Controller
         }
     }
     public function SendWhatsAppMessage($qr_code,$mobile){
-       
-        // try {
-             // Authenticate and obtain token
-            // $authResponse = Http::post('https://apis.rmlconnect.net/auth/v1/login/', [
-            //     "username" => "LuxIndustriesNew",
-            //     "password" => "Welcome@1"
-            // ])->json();
-            
-            // // Extract token from the response
-            // $token = $authResponse['JWTAUTH'];
-            $token = "DDDD";
-            $coziWhatsapp = new CoziWhatsapp();
-            $coziWhatsapp->response = $token;
-            $coziWhatsapp->save();
+    //    $mobile = "7908115612";
+    $GetUser = CoziWhatsapp::where('mobile', $mobile)->where('qr_code', $qr_code)->first();
+        try {
+            //  Authenticate and obtain token
+            $authResponse = Http::post('https://apis.rmlconnect.net/auth/v1/login/', [
+                "username" => "LuxIndustriesNew",
+                "password" => "Welcome@1"
+            ])->json();
+            // Extract token from the response
+            $token = $authResponse['JWTAUTH'];
+            // $coziWhatsapp = new CoziWhatsapp();
+            // $coziWhatsapp->response = $token;
+            // $coziWhatsapp->save();
             // Build the request body
             $data = [
                 "phone" => '+91' . $mobile,
-                "extra" => "",
                 "enable_acculync" => true,
                 "media" => [
                     "type" => "media_template",
-                    "template_name" => "gamelink",
+                    "template_name" => "playwin",
                     "lang_code" => "en",
                     "body" => [
-                        ["text" => ""],
-                        ["text" => ""]
+                        [
+                            "text" => "Hello", // Replace with your variable value
+                        ],
+                        [
+                            "text" => "Dear", // Replace with your variable value
+                        ]
                     ],
                     "button" => [
                         [
-                            "button_no" => 0,
-                            "url" => "index.html?qrcode=" . $qr_code . "&mob=" . $mobile
+                            "button_no" => "0",
+                            "url" => "index.html?qrcode=" . $qr_code . "_91" . $mobile
                         ]
                     ]
                 ]
             ];
-
+                // dd($data);
             // Make the HTTP request to send message
-            $response = Http::withHeaders([
-                'Content-Type' => 'application/json',
-                'Authorization' => $token
-            ])->post('https://apis.rmlconnect.net/wba/v1/messages', $data);
+            $jsonData = json_encode($data);
 
-            // Check if the request was successful
-            if ($response->successful()) {
-                // Return success response
-                $coziWhatsapp = new CoziWhatsapp();
-                $coziWhatsapp->response = "If";
-                $coziWhatsapp->save();
-                return $response;
-            } else {
-                // Return error response
-                $coziWhatsapp = new CoziWhatsapp();
-                $coziWhatsapp->response = "Else";
-                $coziWhatsapp->save();
-                return $response;
+            // Initialize cURL session
+            $ch = curl_init();
+        
+            // Set cURL options
+            curl_setopt($ch, CURLOPT_URL, 'https://apis.rmlconnect.net/wba/v1/messages');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+                'Authorization: ' . $token
+            ]);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+        
+            // Execute cURL request
+            $response = curl_exec($ch);
+            // Check for errors
+            if (curl_errno($ch)) {
+                $error_msg = curl_error($ch);
+                curl_close($ch);
+                throw new Exception('Curl error: ' . $error_msg);
             }
 
-        // } catch (\Exception $e) {
-        //     // Handle any exceptions
-        //     $coziWhatsapp = new CoziWhatsapp();
-        //     $coziWhatsapp->response = "Cache";
-        //     $coziWhatsapp->save();
-        //     return $e->getMessage();
-        // }
+            // Get HTTP response status code
+            $httpStatusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            // Close cURL session
+            curl_close($ch);
+
+            // Decode the response
+            // dd($response);
+            $responseBody = json_decode($response, true);
+            // dd($responseBody);
+            if($GetUser){
+                $GetUser->message = $responseBody;
+                $GetUser->save();
+            }
+
+        } catch (\Exception $e) {
+            // Handle any exceptions
+            $coziWhatsapp = new CoziWhatsapp();
+            $coziWhatsapp->response = $e->getMessage();
+            $coziWhatsapp->save();
+            return $e->getMessage();
+        }
     }
     public function CoziUserData(){
         return CoziWhatsapp::latest()->get();

@@ -878,12 +878,27 @@
                                                         '<div class="comment-wrapper" id="viewFileModalData' + value.id + '">'+
                                                             '<table class="table">'+
                                                             '<tbody>';
-                                                            if (value.seller_file_data) {
-                                                                $.each(value.seller_file_data, function(k, val) {
-                                                                    // Append the download link to a table row
-                                                                    htmlString += '<tr><td>' + val.created_at + '</td><td><a href="' + val.file + '" class="btn btn-red btn-cancel-inquiry" download>Download</a></td></tr>';
-                                                                });
-                                                            }
+                                                                if (value.seller_file_data) {
+                                                                    $.each(value.seller_file_data, function(k, val) {
+                                                                        // Convert the created_at value to a JavaScript Date object
+                                                                        var date = new Date(val.created_at);
+
+                                                                        // Format the date part for Indian format
+                                                                        var options = { day: '2-digit', month: 'short', year: 'numeric' };
+                                                                        var formattedDate = date.toLocaleDateString('en-IN', options);
+
+                                                                        // Format the time part for Indian format
+                                                                        var timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
+                                                                        var formattedTime = date.toLocaleTimeString('en-IN', timeOptions);
+
+                                                                        // Combine the formatted date and time
+                                                                        var formattedDateTime = formattedDate + ' ' + formattedTime;
+
+                                                                        // Append the download link to a table row
+                                                                        htmlString += '<tr><td>' + formattedDateTime + '</td><td><a href="' + val.file + '" class="btn btn-red btn-cancel-inquiry" download>Download</a></td></tr>';
+                                                                    });
+                                                                }
+
                                                         htmlString +='</tbody>'+
                                                             '</table>'+
                                                             '</div>'+

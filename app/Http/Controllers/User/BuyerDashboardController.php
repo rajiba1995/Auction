@@ -9,6 +9,7 @@ use App\Contracts\UserContract;
 use App\Contracts\BuyerDashboardContract;
 use App\Contracts\MasterContract;
 use App\Models\Inquiry;
+use App\Models\InquiryAllotmentData;
 use App\Models\InquiryParticipant;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
@@ -141,7 +142,9 @@ class BuyerDashboardController extends Controller
                             }
                             $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
                             $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
+                            $SellerFileData = SellerFileData($itemk->inquiry_id, $itemk->seller_id);
                             $seller['seller_comments_data'] = $SellerCommentsData;
+                            $seller['seller_file_data'] = $SellerFileData;
                             $seller_data[]= $seller;
                         }
                     }
@@ -169,6 +172,8 @@ class BuyerDashboardController extends Controller
                 $all_inquiries['id'] = $value->id;
                 $all_inquiries['allot_seller'] = $value->allot_seller;
                 $all_inquiries['inquiry_id'] = $value->inquiry_id;
+                $all_inquiries['bill'] = $value->bill;
+                $all_inquiries['bill_at'] = $value->bill_at;
                 $all_inquiries['created_by'] = $value->BuyerData->name;
                 $all_inquiries['title'] = $value->title;
                 $all_inquiries['start_date_time'] = date('d M, Y h:i A', strtotime($value->start_date.' '.$value->start_time));
@@ -215,10 +220,13 @@ class BuyerDashboardController extends Controller
                             }
                             $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
                             $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
+                            $SellerFileData = SellerFileData($itemk->inquiry_id, $itemk->seller_id);
                             $seller['seller_comments_data'] = $SellerCommentsData;
+                            $seller['seller_file_data'] = $SellerFileData;
                             $seller_data[]= $seller;
                         }
                     }
+                    
                     $all_inquiries['seller_data'] = $seller_data;
                 
                 $confirmed_inquiries[] = $all_inquiries;
@@ -288,7 +296,9 @@ class BuyerDashboardController extends Controller
                             }
                             $seller['last_three_quotes'] = array_reverse($seller['last_three_quotes']);
                             $SellerCommentsData = SellerCommentsData($itemk->inquiry_id, $itemk->seller_id);
+                            $SellerFileData = SellerFileData($itemk->inquiry_id, $itemk->seller_id);
                             $seller['seller_comments_data'] = $SellerCommentsData;
+                            $seller['seller_file_data'] = $SellerFileData;
                             $seller_data[]= $seller;
                         }
                     }
@@ -407,7 +417,14 @@ class BuyerDashboardController extends Controller
     }
 
     public function live_inquiry_seller_allot(Request $request){
-        if($request->allotrate=="yes"){
+            
+            $InquiryAllotmentData = new InquiryAllotmentData;
+            $InquiryAllotmentData->inquiry_id = $request->inquiry_id;
+            $InquiryAllotmentData->user_id = $request->bidder_id;
+            $InquiryAllotmentData->quote = $request->allot_amount;
+            $InquiryAllotmentData->reason = $request->type == 'old' ? $request->reallot_reason : null;
+            $InquiryAllotmentData->save();
+
             $inquiry= Inquiry::findOrFail($request->inquiry_id);
             $inquiry->allot_seller = $request->bidder_id;
             $inquiry->inquiry_amount = $request->allot_amount;
@@ -432,9 +449,9 @@ class BuyerDashboardController extends Controller
                 }
             }
             return redirect()->route('buyer_confirmed_inquiries')->with('success', 'Seller has been successfully allocated.');
-        }else{
-            return redirect()->back()->with('warning', 'Something went wrong. Please try again later.');
-        }
+        // }else{
+        //     return redirect()->back()->with('warning', 'Something went wrong. Please try again later.');
+        // }
     }
 
     public function cancelled_reason(Request $request){

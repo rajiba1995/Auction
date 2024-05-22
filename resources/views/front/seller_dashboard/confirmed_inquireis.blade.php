@@ -57,7 +57,7 @@
                                     </li>
                                     <li class="nav-item" role="presentation">
                                         <a  href="{{ route('seller_live_inquiries') }}" class="nav-link {{ (request()->is('seller/live-inquiries*')) ? 'active' : '' }}" id="liveinquiries-tab">
-                                            Live Inquiries ({{count($live_inquiries_count)}})
+                                            Live Inquiries (0)
                                             <svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <g clip-path="url(#clip0_1151_262)">
                                                 <path d="M19.7983 9.16754L13.2115 2.58068M13.2115 2.58068L9.05138 6.74078M13.2115 2.58068C13.6901 2.10201 13.6901 1.32594 13.2115 0.847278C12.7328 0.368616 11.9568 0.368616 11.4781 0.847278L7.31798 5.00739C6.83932 5.48605 6.83932 6.26212 7.31798 6.74078C7.79664 7.21945 8.57272 7.21945 9.05138 6.74078M9.05138 6.74078L15.6382 13.3276M17.3716 15.061L21.5317 10.9009C22.0104 10.4222 22.0104 9.64615 21.5317 9.16749C21.053 8.68883 20.277 8.68883 19.7983 9.16749L15.6382 13.3276C15.1595 13.8063 15.1595 14.5823 15.6382 15.061C16.1169 15.5397 16.8929 15.5397 17.3716 15.061ZM14.2515 11.9409L10.4381 8.1275C9.67223 8.89337 9.67223 10.1351 10.4381 10.9009L11.4781 11.9409C12.244 12.7068 13.4857 12.7068 14.2515 11.9409Z" stroke="#0076D7" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
@@ -223,15 +223,15 @@
                                                                             <td class="input-location-td">{{$item->location}}</td>
                                                                             <td class="input-start-date-td">{{ date('d M, Y', strtotime($item->start_date)) }} {{ date('g:i A', strtotime($item->start_time)) }}</td>
                                                                             <td class="input-end-date-td">{{ date('d M, Y', strtotime($item->end_date)) }} {{ date('g:i A', strtotime($item->end_time)) }}</td>
-                                                                            <td class="min-quote-td">{{number_format($item->minimum_quote_amount,2, '.', ',')}}</td>
-                                                                            <td class="max-quote-td">{{number_format($item->maximum_quote_amount,2, '.', ',')}}</td>
+                                                                            <td class="min-quote-td">{{$item->minimum_quote_amount?number_format($item->minimum_quote_amount,2, '.', ','):"----"}}</td>
+                                                                            <td class="max-quote-td">{{$item->maximum_quote_amount?number_format($item->maximum_quote_amount,2, '.', ','):"----"}}</td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td colspan="7" class="note-td">
                                                                                 <div class="note-wrap">
                                                                                     <h3>Notepad</h3>
                                                                                     <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
-                                                                                    <button type="button" class="btn btn-animated bg-green">Save</button>
+                                                                                    {{-- <button type="button" class="btn btn-animated bg-green">Save</button> --}}
                                                                                 </div>
                                                                             </td>
                                                                         </tr>
@@ -273,7 +273,35 @@
                                                                                 </div>
                                                                             </td>
                                                                             <td class="comments-td">
-                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#view_CommentModal{{$item['id']}}" class="btn btn-view btn-view-comment">
+                                                                                @if($my_id ==$item->allot_seller)
+                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#Add_comments_modal{{$item['id']}}" class="btn btn-view btn-view-comment">
+                                                                                    <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path d="M1.3 9C0.9425 9 0.636458 8.90208 0.381875 8.70625C0.127292 8.51042 0 8.275 0 8V1C0 0.725 0.127292 0.489583 0.381875 0.29375C0.636458 0.0979167 0.9425 0 1.3 0H10.4C10.7575 0 11.0635 0.0979167 11.3181 0.29375C11.5727 0.489583 11.7 0.725 11.7 1V4.35C11.4942 4.275 11.2829 4.21042 11.0662 4.15625C10.8496 4.10208 10.6275 4.0625 10.4 4.0375V1H1.3V8H5.2325C5.265 8.18333 5.31646 8.35833 5.38687 8.525C5.45729 8.69167 5.54125 8.85 5.63875 9H1.3ZM1.3 7.5V8V1V4.0375V4V7.5ZM2.6 7H5.24875C5.28125 6.825 5.33271 6.65417 5.40312 6.4875C5.47354 6.32083 5.55208 6.15833 5.63875 6H2.6V7ZM2.6 5H6.565C6.91167 4.75 7.29896 4.54167 7.72687 4.375C8.15479 4.20833 8.6125 4.09583 9.1 4.0375V4H2.6V5ZM2.6 3H9.1V2H2.6V3ZM9.75 10C8.85083 10 8.08437 9.75625 7.45062 9.26875C6.81687 8.78125 6.5 8.19167 6.5 7.5C6.5 6.80833 6.81687 6.21875 7.45062 5.73125C8.08437 5.24375 8.85083 5 9.75 5C10.6492 5 11.4156 5.24375 12.0494 5.73125C12.6831 6.21875 13 6.80833 13 7.5C13 8.19167 12.6831 8.78125 12.0494 9.26875C11.4156 9.75625 10.6492 10 9.75 10ZM9.425 9H10.075V7.75H11.7V7.25H10.075V6H9.425V7.25H7.8V7.75H9.425V9Z" fill="#0076D7"/>
+                                                                                    </svg>
+                                                                                    Add Comment
+                                                                                </a>
+                                                                                <div class="modal fade add-comment-modal" id="Add_comments_modal{{$item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                    <div class="modal-dialog">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                <form method="POST" id="new_comment_form{{$item['id']}}">
+                                                                                                    @csrf
+                                                                                                    <h3 class="content-heading">Add your comment</h3>
+                                                                                                    <input type="hidden" name="inquiry_id" value="{{$item['id']}}">
+                                                                                                    <textarea class="form-control" name="new_comment" placeholder="Write here" rows="3"></textarea>
+                                                                                                    <div>
+                                                                                                        <button type="button" class="btn btn-animated btn-add-comment" onclick="return NewComment({{$item['id']}});">Submit</button>
+                                                                                                    </div>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                @endif
+                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#view_CommentModal{{$item['id']}}" class="mt-2 btn btn-view btn-view-comment">
                                                                                     <svg width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                                         <path d="M1.3 9C0.9425 9 0.636458 8.90208 0.381875 8.70625C0.127292 8.51042 0 8.275 0 8V1C0 0.725 0.127292 0.489583 0.381875 0.29375C0.636458 0.0979167 0.9425 0 1.3 0H10.4C10.7575 0 11.0635 0.0979167 11.3181 0.29375C11.5727 0.489583 11.7 0.725 11.7 1V4.35C11.4942 4.275 11.2829 4.21042 11.0662 4.15625C10.8496 4.10208 10.6275 4.0625 10.4 4.0375V1H1.3V8H5.2325C5.265 8.18333 5.31646 8.35833 5.38687 8.525C5.45729 8.69167 5.54125 8.85 5.63875 9H1.3ZM1.3 7.5V8V1V4.0375V4V7.5ZM2.6 7H5.24875C5.28125 6.825 5.33271 6.65417 5.40312 6.4875C5.47354 6.32083 5.55208 6.15833 5.63875 6H2.6V7ZM2.6 5H6.565C6.91167 4.75 7.29896 4.54167 7.72687 4.375C8.15479 4.20833 8.6125 4.09583 9.1 4.0375V4H2.6V5ZM2.6 3H9.1V2H2.6V3ZM9.75 10C8.85083 10 8.08437 9.75625 7.45062 9.26875C6.81687 8.78125 6.5 8.19167 6.5 7.5C6.5 6.80833 6.81687 6.21875 7.45062 5.73125C8.08437 5.24375 8.85083 5 9.75 5C10.6492 5 11.4156 5.24375 12.0494 5.73125C12.6831 6.21875 13 6.80833 13 7.5C13 8.19167 12.6831 8.78125 12.0494 9.26875C11.4156 9.75625 10.6492 10 9.75 10ZM9.425 9H10.075V7.75H11.7V7.25H10.075V6H9.425V7.25H7.8V7.75H9.425V9Z" fill="#0076D7"/>
                                                                                     </svg>
@@ -288,25 +316,45 @@
                                                                                             <div class="modal-body">
                                                                                                 <h3 class="content-heading">{{$item->buyerData?$item->buyerData->business_name:""}}</h3>
                                                                                                 <div class="comment-wrapper">
-                                                                                                     @php $SellerCommentsData=SellerCommentsData($item['id'], $item['my_id']);
+                                                                                                     @php $SellerCommentsData=SellerCommentsData($item['id'], $my_id);
                                                                                                      @endphp
                                                                                                     @if(count($SellerCommentsData)>0)
                                                                                                         @foreach($SellerCommentsData as $k =>$itemValue)
                                                                                                         <p><strong>{{$k+1}}</strong> {{$itemValue->comments}}</p>
                                                                                                         @endforeach
                                                                                                     @endif
-                                                                                                    
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                {{-- <a href="javascript:void(0)" class="btn btn-view btn-view-yellow btn-file-download">
+                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#Send_file_modal{{$item['id']}}" class="mt-2 btn btn-view btn-view-yellow btn-file-download">
                                                                                     <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                                         <path d="M9.16634 11.875H10.833V9.26562L12.1663 10.2656L13.333 9.375L9.99967 6.875L6.66634 9.375L7.85384 10.25L9.16634 9.26562V11.875ZM4.99967 13.75C4.54134 13.75 4.14898 13.6276 3.82259 13.3828C3.4962 13.138 3.33301 12.8438 3.33301 12.5V2.5C3.33301 2.15625 3.4962 1.86198 3.82259 1.61719C4.14898 1.3724 4.54134 1.25 4.99967 1.25H11.6663L16.6663 5V12.5C16.6663 12.8438 16.5031 13.138 16.1768 13.3828C15.8504 13.6276 15.458 13.75 14.9997 13.75H4.99967ZM10.833 5.625V2.5H4.99967V12.5H14.9997V5.625H10.833Z" fill="#FFB800"/>
                                                                                     </svg>
-                                                                                    Download File
-                                                                                </a> --}}
+                                                                                    Send File
+                                                                                </a>
+                                                                                <div class="modal fade add-comment-modal" id="Send_file_modal{{$item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                    <div class="modal-dialog">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                <form method="POST" id="new_send_file_form{{$item['id']}}" enctype="multipart/form-data">
+                                                                                                    @csrf
+                                                                                                    <h3 class="content-heading">Add new file</h3>
+                                                                                                    <input type="hidden" name="inquiry_id" value="{{$item['id']}}">
+                                                                                                    <input type="file" class="form-control" name="new_file" id="new_file{{$item['id']}}">
+                                                                                                    <p class="text-danger text-sm error_file"></p>
+                                                                                                    <div>
+                                                                                                        <button type="button" id="submit_button" onclick="file_submit_button({{$item['id']}})" class="btn btn-animated btn-add-comment">Submit</button>
+                                                                                                    </div>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                             </td>
                                                                         </tr>
                                                                     </tbody>
@@ -325,11 +373,33 @@
                                                                         </tr> --}}
                                                                         <tr>
                                                                             <td class="other-actions-td">
-                                                                                <a href="javascript:void(0)" class="btn btn-yellow bill-download">
+                                                                                <a href="javascript:void(0)" class="btn btn-yellow bill-download" data-bs-toggle="modal" data-bs-target="#Send_bill_modal{{$item['id']}}">
                                                                                     <img src="{{asset('frontend/assets/images/upload.png')}}" alt="Download">
                                                                                     Upload Bill
                                                                                 </a>
+                                                                                
                                                                                 <div class="billing-date-time">24 Jan 2024 12.30 pm</div>
+                                                                                <div class="modal fade add-comment-modal" id="Send_bill_modal{{$item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                    <div class="modal-dialog">
+                                                                                        <div class="modal-content">
+                                                                                            <div class="modal-header">
+                                                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                <form method="POST" id="new_send_bill_form{{$item['id']}}" enctype="multipart/form-data">
+                                                                                                    @csrf
+                                                                                                    <h3 class="content-heading">Add new bill</h3>
+                                                                                                    <input type="hidden" name="inquiry_id" value="{{$item['id']}}">
+                                                                                                    <input type="file" class="form-control" name="new_bill" id="new_bill{{$item['id']}}">
+                                                                                                    <p class="text-danger text-sm error_bill"></p>
+                                                                                                    <div>
+                                                                                                        <button type="button" onclick="bill_submit_button({{$item['id']}})" class="btn btn-animated btn-add-comment">Submit</button>
+                                                                                                    </div>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                                 <a href="javascript:void(0)" class="btn btn-green rate-your-buyer">
                                                                                     Rate your Buyer
                                                                                 </a>
@@ -395,7 +465,140 @@
 
     @endsection
     @section('script')
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
     <script>
+    function file_submit_button(id){
+        var fileInput = $('#new_file'+id);
+        var file = fileInput[0].files[0];
+        // Check if file is selected
+        if (!file) {
+            $('.error_file').html("Please select a file");
+            return;
+        }
+        
+        // Check file type
+        if (!file.type.match('application/pdf') && !file.type.match('image/')) {
+            $('.error_file').html("Please select a PDF or image file");
+            return;
+        }
+        
+        // Check file size
+        var maxSize = 1024 * 1024 * 2; // 2 MB
+        if (file.size > maxSize) {
+            $('.error_file').html("File size must be less than 2 MB");
+            return;
+        }
+        
+        // Perform AJAX form submission
+        var formData = new FormData($('#new_send_file_form'+id)[0]);
+        $.ajax({
+            url: "{{ route('seller_send_new_file') }}",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('.error_file').html("");
+                if (response.status == 200) {
+                    location.reload()
+                } else {
+                    if (response.message) {
+                        $('.error_file').html(response.message);
+                    } else {
+                        location.reload()
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    };
+    function bill_submit_button(id){
+        var fileInput = $('#new_bill'+id);
+        var file = fileInput[0].files[0];
+        // Check if file is selected
+        if (!file) {
+            $('.error_bill').html("Please select a file");
+            return;
+        }
+        
+        // Check file type
+        if (!file.type.match('application/pdf') && !file.type.match('image/')) {
+            $('.error_bill').html("Please select a PDF or image file");
+            return;
+        }
+        
+        // Check file size
+        var maxSize = 1024 * 1024 * 2; // 2 MB
+        if (file.size > maxSize) {
+            $('.error_bill').html("File size must be less than 2 MB");
+            return;
+        }
+        
+        // Perform AJAX form submission
+        var formData = new FormData($('#new_send_bill_form'+id)[0]);
+        $.ajax({
+            url: "{{ route('seller_send_new_bill') }}",
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                $('.error_bill').html("");
+                if (response.status == 200) {
+                    location.reload()
+                } else {
+                    if (response.message) {
+                        $('.error_bill').html(response.message);
+                    } else {
+                        location.reload()
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    };
+    function NewComment(id) {
+        var form = $('#new_comment_form' + id);
+
+       form.validate({
+        rules: {
+            new_comment: "required",
+            inquiry_id: "required"
+        },
+        messages: {
+            new_comment: "Please enter your comment",
+            inquiry_id: "Please provide inquiry ID"
+        },
+        submitHandler: function() {
+            // Form is valid, perform AJAX submit
+            $.ajax({
+                url: "{{ route('seller_new_comment') }}", // Replace with your actual endpoint
+                type: 'POST',
+                data: form.serialize(), // Serialize form data
+                success: function(response) {
+                    if (response.status === 200) {
+                        location.reload()
+                    } else {
+                        location.reload()
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+            return false; // Prevent the default form submission
+        }
+       });
+
+      // Manually trigger form submission
+      form.submit();
+      return false; // Prevent the default button action
+    }
+        
         $(document).ready(function(){
             $('#group_wies_search').keyup(function(){
                 var selectedValue = $(this).val().toLowerCase(); // Convert to lowercase for case-insensitive comparison
