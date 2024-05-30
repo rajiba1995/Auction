@@ -94,14 +94,19 @@ class PackageController extends Controller
          return view('admin.seller_package.create');
      }
      public function SellerPackageStore(Request $request)
-     {
-        //  dd($request->all());    
+     { 
          $request->validate([
-             'package_name' => 'required|max:255',
+             'package_name' => 'required',
              'package_type' => 'required',
+             'package_duration' => 'required',
+             'rupees_prefix' => 'required',
              'package_price' => 'required',
-             'package_prefix' => 'required',
-             'package_description' => 'required',
+             'credit' => 'required|numeric',
+             'bid' => 'required',
+             'badge' => 'required',
+             'group_watchlist_addition' => 'required',
+             'consultation' => 'required',
+             'package_description' => 'nullable',
          ]);
          $params = $request->except('_token');
          $data = $this->packageRepository->CreateSellerPackage($params);
@@ -126,11 +131,17 @@ class PackageController extends Controller
      {
         //  dd($request->all());
          $request->validate([
-            'package_name' => 'required|max:255',
-            //  'package_type' => 'required',
-             'package_price' => 'required',
-             'package_prefix' => 'required',
-             'package_description' => 'required',
+            'package_name' => 'required',
+            'package_type' => 'required',
+            'package_duration' => 'required',
+            'rupees_prefix' => 'required',
+            'package_price' => 'required',
+            'credit' => 'required|numeric',
+            'bid' => 'required',
+            'badge' => 'required',
+            'group_watchlist_addition' => 'required',
+            'consultation' => 'required',
+            'package_description' => 'nullable',
  
          ]);
          $params = $request->except('_token');

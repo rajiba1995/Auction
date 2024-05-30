@@ -40,11 +40,17 @@
     <thead>
         <tr>
             <th>SL.</th>
-            <th>Name</th>
+            <th>Package Name</th>
             <th>Type</th>
             <th>Currency</th>
             <th>Price</th>
-            <th>Description</th>
+            <th>Duration(months)</th>
+            <th>Badge</th>
+            <th>Credit</th>
+            <th>Bid</th>
+            <th>Group watchlist addition</th>
+            <th>Consultation</th>
+            <!-- <th>Description</th> -->
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -55,9 +61,25 @@
             <td> {{ $data->firstItem() + $loop->index }}</td>
             <td>{{ $item->package_name }}</td>
             <td>{{ $item->package_type }}</td>
-            <td>{{ $item->package_prefix }}</td>
+            <td>{{ $item->rupees_prefix }}</td>
             <td>{{ $item->package_price }}</td>
-            <td>{!! $item->package_description !!}</td>
+            <td>{{ $item->package_duration }}</td>
+            <td>
+                @if($item->badge == 0)
+                    No-badge
+                @elseif($item->badge == 1)
+                    Basic
+                @elseif($item->badge == 2)
+                    Intermediate
+                @elseif($item->badge == 3)
+                    Advance
+                @endif
+            </td>
+            <td>{{ $item->credit }}</td>
+            <td>{{ $item->bid == 0?"Yes":"No"}}</td>
+            <td>{{ $item->group_watchlist_addition == 0?"Yes":"No"}}</td>
+            <td>{{ $item->consultation == 0?"Yes":"No"}}</td>
+            <!-- <td>{!! $item->package_description !!}</td> -->
             <td>
                 <a href="{{route('admin.seller.package.status', $item->id)}}"><span class="btn-sm btn-status btn {{$item->status==1?"bg-success":"bg-danger"}}">{{$item->status==1?"Active":"Inactive"}}</span></a>
             </td>
