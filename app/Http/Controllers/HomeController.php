@@ -83,6 +83,65 @@ class HomeController extends Controller
         $route = route('user.global.filter.add_participant', [$location,$keyword,$category,$sub_category]);
         return response()->json(['status'=>200, 'route'=>$route]);
     }
+    
+    public function Suggestion(Request $request){
+        // $location = str_replace('-', ' ', $old_location);
+        // $keyword = str_replace('-', ' ', $old_keyword);
+        $location = $request->location;
+        $keyword = $request->keyword;
+
+        $exist_state = "";
+        $exist_city = "";
+        $exist_product = "";
+        $exist_state = State::where('name', 'like', '%' . $location . '%')->value('id');
+        $exist_city = City::where('name', 'like', '%' . $location . '%')->value('id');
+        // Get user IDs of users who have products matching the keyword
+        $product_user_ids = Product::where('title', 'like', '%' . $keyword . '%')->pluck('user_id');
+
+        // $userIds = User::where('state', $exist_state)
+        //     ->orWhere('city', $exist_city)->whereNotNull('business_name')
+        //     ->pluck('id')
+        //     ->toArray();
+    //     $data = User::where('status',1)->orWhere('state',$exist_state)->orWhere('city', $exist_city)->where(function($query) use ($keyword){
+    //         $query->where('name', 'like', '%'.$keyword.'%')
+    //        ->orWhere('business_name', 'like', '%'.$keyword.'%')
+    //        ->orWhere('mobile', 'like', '%'.$keyword.'%')
+    //        ->orWhere('address', 'like', '%'.$keyword.'%')
+    //        ->orWhere('pincode', 'like', '%'.$keyword.'%')
+    //        ->orWhere('short_bio', 'like', '%'.$keyword.'%')
+    //        ->orWhere('business_type', 'like', '%'.$keyword.'%')
+    //        ->orWhere('employee', 'like', '%'.$keyword.'%')
+    //        ->orWhere('Establishment_year', 'like', '%'.$keyword.'%')
+    //        ->orWhere('legal_status', 'like', '%'.$keyword.'%')
+    //        ->orWhere('email', 'like', '%'.$keyword.'%');
+    //    })->get();
+    //    if(count($data) > 0) {
+    //     return response()->json($data);
+    //    }
+    $data = User::where('status', 1)
+        ->where(function($query) use ($exist_state, $exist_city) {
+            $query->where('state', $exist_state)
+                  ->orWhere('city', $exist_city);
+        })
+        ->where(function($query) use ($keyword,$product_user_ids) {
+            $query->where('name', 'like', '%'.$keyword.'%')
+                  ->orWhere('business_name', 'like', '%'.$keyword.'%')
+                  ->orWhere('mobile', 'like', '%'.$keyword.'%')
+                  ->orWhere('address', 'like', '%'.$keyword.'%')
+                  ->orWhere('pincode', 'like', '%'.$keyword.'%')
+                  ->orWhere('short_bio', 'like', '%'.$keyword.'%')
+                  ->orWhere('business_type', 'like', '%'.$keyword.'%')
+                  ->orWhere('employee', 'like', '%'.$keyword.'%')
+                  ->orWhere('Establishment_year', 'like', '%'.$keyword.'%')
+                  ->orWhere('legal_status', 'like', '%'.$keyword.'%')
+                  ->orWhere('email', 'like', '%'.$keyword.'%')
+                  ->orWhereIn('id', $product_user_ids);
+        })
+        ->get();
+
+    return response()->json($data);
+    }
+
     public function UserGlobalFilter($old_location, $old_keyword){
         $location = str_replace('-', ' ', $old_location);
         $keyword = str_replace('-', ' ', $old_keyword);

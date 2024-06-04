@@ -143,6 +143,7 @@ require 'employee.php';
 require 'admin.php';
 
 // Search User Module
+Route::get('/user/suggestion', [HomeController::class, 'Suggestion'])->name('user.suggestion');
 Route::get('/user/make_slug', [HomeController::class, 'UserGlobalMakeSlug'])->name('user.global.make_slug');
 Route::get('/user/make_slug/add_participant', [HomeController::class, 'UserGlobalMakeSlugParticipant'])->name('user.global.make_slug.participant');
 Route::get('/{location}/{keyword}', [HomeController::class, 'UserGlobalFilter'])->name('user.global.filter');

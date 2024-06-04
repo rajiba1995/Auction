@@ -30,11 +30,21 @@ class PackageController extends Controller
      {
         //  dd($request->all());    
          $request->validate([
-             'package_name' => 'required|max:255',
-             'package_type' => 'required',
+             'package_name' => 'required',
+             'rupees_prefix' => 'required',
              'package_price' => 'required',
-             'package_prefix' => 'required',
-             'package_description' => 'required',
+             'package_type' => 'required',
+             'package_duration' => 'required',
+             'inquiry_auction' => 'required',
+             'total_number_of_auction' => ['required_if:inquiry_auction,0','numeric'],
+             'total_cost_per_inquiry' => 'required|numeric',
+             'appication_cost_per_inquiry' => 'required|numeric',
+             'sms_cost_per_inquiry' => 'required|numeric', 
+             'save_inquiry' => 'required',
+             'supplier_vendor_suggestion' => 'required',
+             'consultation' => 'required',
+             'watchlist' => 'required',
+             'package_description' => 'nullable',
          ]);
          $params = $request->except('_token');
          $data = $this->packageRepository->CreateBuyerPackage($params);
@@ -59,11 +69,21 @@ class PackageController extends Controller
      {
         //  dd($request->all());
          $request->validate([
-            'package_name' => 'required|max:255',
-            //  'package_type' => 'required',
-             'package_price' => 'required',
-             'package_prefix' => 'required',
-             'package_description' => 'required',
+            'package_name' => 'required',
+            'rupees_prefix' => 'required',
+            'package_price' => 'required',
+            'package_type' => 'required',
+            'package_duration' => 'required',
+            'inquiry_auction' => 'required',
+            'total_number_of_auction' => ['required_if:inquiry_auction,0','numeric'],
+            'total_cost_per_inquiry' => 'required|numeric',
+            'appication_cost_per_inquiry' => 'required|numeric',
+            'sms_cost_per_inquiry' => 'required|numeric', 
+            'save_inquiry' => 'required',
+            'supplier_vendor_suggestion' => 'required',
+            'consultation' => 'required',
+            'watchlist' => 'required',
+            'package_description' => 'nullable',
  
          ]);
          $params = $request->except('_token');
