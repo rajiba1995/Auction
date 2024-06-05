@@ -63,7 +63,7 @@ class MasterModuleController extends Controller
     public function BannerStatus($id)
     {
         $data = $this->masterRepository->StatusBanner($id);
-        return redirect()->back();
+        return redirect()->back()->with('toast_success', 'Status has been successfully updated.');
     }
     public function BannerEdit($id)
     {

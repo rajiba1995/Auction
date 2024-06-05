@@ -15,7 +15,7 @@ use App\Models\MyBadge;
 use App\Models\User;
 use App\Models\MyWallet;
 use App\Models\OutsideParticipant;
-use App\Models\MyPackage;
+use App\Models\MySellerPackage;
 use App\Models\Package;
 use App\Models\GroupWatchList;
 use App\Models\UserImage;
@@ -503,7 +503,7 @@ class UserController extends Controller{
     }
     public function wallet_management(){
         $data = $this->AuthCheck();
-        $package = MyPackage::where('user_id',$data->id)->latest()->first();
+        $package = MySellerPackage::where('user_id',$data->id)->latest()->first();
         $walletBalance = MyWallet::where(["user_id"=>$data->id])->latest()->first();
         return view('front.user.wallet_management',compact('data','package','walletBalance'));
     }
@@ -520,7 +520,7 @@ class UserController extends Controller{
                 $expiryDate = Carbon::now()->addDays(365);
             }
              // Check if a package with the same package ID and expiry date exists with the expiry date on or after today's date and time
-            $existingPackage = MyPackage::where('package_id', $request->package_id)
+            $existingPackage = MySellerPackage::where('package_id', $request->package_id)
             ->where('expiry_date', '>=', Carbon::now()) // Check if expiry date is on or after today's date and time
             ->where('user_id', $data->id)
             ->latest()->first();
@@ -532,7 +532,7 @@ class UserController extends Controller{
                 // return response()->json(['message' => 'A package with the same package and expiry date exists with the expiry date on or after today\'s date and time.']);
                 return redirect()->route('user.payment_management')->with('error', 'You Already purchased this Package');  
             }
-            $my_package = new MyPackage();
+            $my_package = new MySellerPackage();
             $my_package->package_id = $request->package_id;
             $my_package->user_id = $data->id;
             $my_package->purchase_amount = $request->package_value;    
@@ -581,7 +581,7 @@ class UserController extends Controller{
     }
     public function settings(){
         $data = $this->AuthCheck();
-        $package = MyPackage::where('user_id',$data->id)->latest()->first();
+        $package = MySellerPackage::where('user_id',$data->id)->latest()->first();
         $walletBalance = MyWallet::where(["user_id"=>$data->id])->latest()->first();
         return view('front.user.settings', compact('data','package','walletBalance'));
     }

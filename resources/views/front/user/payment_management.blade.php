@@ -91,19 +91,44 @@
                                                         <div class="row">
                                                             @foreach ($seller_packages as $item)
                                                             <div class="col-xxl-3 col-md-6 col-12 package-col">
-                                                                <div class="packages-card" style="background: yellowgreen">
+                                                                <div class="packages-card">
                                                                     <form method="post" action="{{ route('user.package_payment_management') }}">
                                                                         @csrf
                                                                         <input type="hidden" name="package_id" value="{{$item->id}}">
                                                                         <input type="hidden" name="package_value" value="{{$item->package_price}}">
-                                                                        <input type="hidden" name="package_duration" value="{{$item->package_type}}">
+                                                                        <input type="hidden" name="package_duration" value="{{$item->package_duration}}">
                                                                         <input type="hidden" name="package_name" value="{{$item->package_name}}">
                                                                         <div class="card-header bg-gradient-free">
                                                                             <h4>{{$item->package_name}}</h4>
-                                                                            <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
+                                                                            <p>{{$item->rupees_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
                                                                         </div>
                                                                         <div class="card-body">
-                                                                            <p>{!! $item->package_description !!}</p>                                                    
+                                                                            @if($item->bid == 0)
+                                                                                <p>Bid : Yes</p> 
+                                                                            @else
+                                                                                <p>Bid : No</p> 
+                                                                            @endif
+                                                                            <p>Credit : {{$item->credit}} /Months</p> 
+                                                                            @if($item->badge == 0)
+                                                                            <p>Badge : No-badge</p> 
+                                                                            @elseif($item->badge == 1)
+                                                                            <p>Badge : Featured Basic</p> 
+                                                                            @elseif($item->badge == 2)
+                                                                            <p>Badge : Featured Intermediate</p> 
+                                                                            @elseif($item->badge == 3)
+                                                                            <p>Badge : Featured Advance</p> 
+                                                                            @endif  
+                                                                            @if($item->group_watchlist_addition == 0)
+                                                                            <p>Group Watchlisdt Addition : Yes</p> 
+                                                                            @else
+                                                                            <p>Group Watchlisdt Addition : No</p> 
+                                                                            @endif 
+                                                                            @if($item->consultation == 0)
+                                                                            <p>Consultation : Yes</p> 
+                                                                            @else
+                                                                            <p>Consultation : No</p> 
+                                                                            @endif 
+                                                                            <p>Duration : {{$item->package_duration}} Months</p> 
                                                                         </div>
                                                                         <div class="card-footer bg-gradient-free">
                                                                             <button type="submit" class="btn btn-animated btn-cta bg-free">Buy Now</button>
