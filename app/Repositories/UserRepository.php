@@ -10,11 +10,12 @@ use App\Models\ReviewRating;
 use App\Models\Package;
 use App\Models\SellerPackage;
 use App\Models\MyBadge;
-use App\Models\MyWallet;
+use App\Models\MySellerWallet;
 use App\Models\Transaction;
 use App\Models\State;
 use App\Models\City;
 use App\Models\Badge;
+use App\Models\MySellerPackage;
 use App\Models\UserDocument;
 use Illuminate\Http\UploadedFile;
 use App\Contracts\UserContract;
@@ -371,7 +372,7 @@ class UserRepository implements UserContract
        
     }
     public function getAllWalletTransactionByUserId($id){
-       return MyWallet::where('user_id',$id)->paginate(20);
+       return MySellerWallet::where('user_id',$id)->paginate(20);
        
     }
     public function getUserAllReviewRating($id){
@@ -393,7 +394,8 @@ class UserRepository implements UserContract
     }
     public function asSellerRatingPoint($id){
        return ReviewRating::where('rated_on',$id)->where('type',1)->sum('overall_rating');
-    //    dd($data);
-       
+    }
+    public function getCurrentSellerPackage($user_id){
+        return MySellerPackage::with('getPackageDetails')->where('user_id', $user_id)->first();
     }
 }

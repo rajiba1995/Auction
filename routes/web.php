@@ -106,22 +106,26 @@ Route::get('/clear-cache', function() {
             Route::post('/live-inquiry-seller-allot', [BuyerDashboardController::class, 'live_inquiry_seller_allot'])->name('live_inquiry_seller_allot');
         });
         // Seller Dashboard
-        Route::group(['prefix'  =>   'seller'], function() {
-            Route::get('/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
-            Route::get('/all-inquiries', [SellerDashboardController::class, 'all_inquiries'])->name('seller_all_inquiries');
-            Route::get('/live-inquiries', [SellerDashboardController::class, 'live_inquiries'])->name('seller_live_inquiries');
-            Route::get('/pending-inquiries', [SellerDashboardController::class, 'pending_inquiries'])->name('seller_pending_inquiries');
-            Route::get('/confirmed-inquiries', [SellerDashboardController::class, 'confirmed_inquiries'])->name('seller_confirmed_inquiries');
-            Route::get('/history-inquiries', [SellerDashboardController::class, 'history_inquiries'])->name('seller_history_inquiries');
-            Route::post('/start-quotes', [SellerDashboardController::class, 'seller_start_quotes'])->name('seller_start_quotes');
-            Route::get('/live-inquiries-fetch-ajax', [SellerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('seller_live_inquiries_by_ajax');
-            Route::post('/new-quote-now', [SellerDashboardController::class, 'new_quote_now'])->name('seller_new_quote_now');
-            Route::post('/cancelled-reason', [SellerDashboardController::class, 'cancelled_reason'])->name('seller_cancelled_inquiry');
-            Route::post('/after-confirm-seller-cancelled-reason', [SellerDashboardController::class, 'after_confirm_seller_cancelled_reason'])->name('after_confirm_seller_cancelled_inquiry');
-            Route::post('/seller-new-comment', [SellerDashboardController::class, 'seller_new_comment'])->name('seller_new_comment');
-            Route::post('/seller-send-new-file', [SellerDashboardController::class, 'seller_send_new_file'])->name('seller_send_new_file');
-            Route::post('/seller-send-new-bill', [SellerDashboardController::class, 'seller_send_new_bill'])->name('seller_send_new_bill');
-        });
+            Route::get('seller/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
+            Route::group(['prefix' => 'seller'], function() {
+                Route::group(['middleware' => 'checkActiveSellerPackage'], function() {
+                    Route::get('/all-inquiries', [SellerDashboardController::class, 'all_inquiries'])->name('seller_all_inquiries');
+                    Route::get('/live-inquiries', [SellerDashboardController::class, 'live_inquiries'])->name('seller_live_inquiries');
+                    Route::post('/start-quotes', [SellerDashboardController::class, 'seller_start_quotes'])->name('seller_start_quotes');
+                    Route::get('/live-inquiries-fetch-ajax', [SellerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('seller_live_inquiries_by_ajax');
+                    Route::post('/new-quote-now', [SellerDashboardController::class, 'new_quote_now'])->name('seller_new_quote_now');
+                    Route::post('/seller-new-comment', [SellerDashboardController::class, 'seller_new_comment'])->name('seller_new_comment');
+                    Route::post('/seller-send-new-file', [SellerDashboardController::class, 'seller_send_new_file'])->name('seller_send_new_file');
+                    Route::post('/seller-send-new-bill', [SellerDashboardController::class, 'seller_send_new_bill'])->name('seller_send_new_bill');
+                });
+
+                Route::get('/pending-inquiries', [SellerDashboardController::class, 'pending_inquiries'])->name('seller_pending_inquiries');
+                Route::get('/confirmed-inquiries', [SellerDashboardController::class, 'confirmed_inquiries'])->name('seller_confirmed_inquiries');
+                Route::get('/history-inquiries', [SellerDashboardController::class, 'history_inquiries'])->name('seller_history_inquiries');
+                Route::post('/cancelled-reason', [SellerDashboardController::class, 'cancelled_reason'])->name('seller_cancelled_inquiry');
+                Route::post('/after-confirm-seller-cancelled-reason', [SellerDashboardController::class, 'after_confirm_seller_cancelled_reason'])->name('after_confirm_seller_cancelled_inquiry');
+                
+            });
     });
 // Admin login routes
 // Route::redirect('/', '/admin/login');
@@ -145,6 +149,7 @@ require 'employee.php';
 require 'admin.php';
 
 // Search User Module
+Route::get('/user/suggestion', [HomeController::class, 'Suggestion'])->name('user.suggestion');
 Route::get('/user/make_slug', [HomeController::class, 'UserGlobalMakeSlug'])->name('user.global.make_slug');
 Route::get('/user/make_slug/add_participant', [HomeController::class, 'UserGlobalMakeSlugParticipant'])->name('user.global.make_slug.participant');
 Route::get('/{location}/{keyword}', [HomeController::class, 'UserGlobalFilter'])->name('user.global.filter');

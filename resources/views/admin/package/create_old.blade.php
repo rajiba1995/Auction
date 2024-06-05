@@ -18,7 +18,7 @@
                         <label for="">Package Name</label>
                         <select class="form-control" name="package_name" id="package_name" value="{{old('package_name')}}">
                             <option selected hidden>--select--</option>
-                            <!-- <option value="Basic">Basic</option> -->
+                            <option value="Basic">Basic</option>
                             <option value="Silver">Silver</option>
                             <option value="Gold">Gold</option>
                             <option value="Platinum">Platinum</option>
@@ -76,31 +76,13 @@
                                 @error('inquiry_auction')<div class="text-danger">{{ $message }}</div>@enderror                       
                             </div>
                             <!-- Conditional input field -->
-                            <div class="col" id="additional_input_field" style="display: none;">
-                                <label for="additional_input_field">Total Number Of Auction/Inquiry</label>
-                                <input type="number" class="form-control" name="total_number_of_auction" id="total_number_of_auction" value="{{ old('total_number_of_auction') }}">
-                                @error('total_number_of_auction')<div class="text-danger">{{ $message }}</div>@enderror
+                            <div class="col" id="number_of_auction" style="display: none;">
+                                <label for="number_of_auction">Number Of Auction</label>
+                                <input type="number" class="form-control" name="number_of_auction" id="number_of_auction" value="{{ old('number_of_auction') }}">
+                                @error('number_of_auction')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
                         </div>                       
                     </div>
-                
-                    <div class="form-wrap mb-3">
-                        <div class="row">
-                            <div class="col">
-                            <label for="">Total Cost/inquiry</label>
-                            <input type="number" class="form-control" name="total_cost_per_inquiry" id="total_cost_per_inquiry" readonly/>
-                            </div>
-                            <div class="col">
-                            <label for="">Application Cost/Inquiry</label>
-                            <input type="number" class="form-control" name="appication_cost_per_inquiry" id="appication_cost_per_inquiry"/>
-                            </div>
-                            <div class="col">
-                            <label for="">Sms Cost/Inquiry</label>
-                            <input type="number" class="form-control" name="sms_cost_per_inquiry" id="sms_cost_per_inquiry" readonly/>
-                            </div>
-                        </div>
-                    </div>
-                
                     <div class="form-wrap mb-3">
                         <div class="row">
                             <div class="col">
@@ -145,7 +127,7 @@
                             </div>
                         </div>                       
                     </div>
-                    <!-- <div class="form-wrap mb-3">
+                    <div class="form-wrap mb-3">
                         <div class="row">
                             <div class="col">
                                 <label for="">Sms</label>
@@ -156,13 +138,14 @@
                                 </select>
                                 @error('sms')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
+                             <!-- Conditional input field for SMS quantity -->
                             <div class="col" id="sms_quantity_field" style="display: none;">
                                 <label for="sms_quantity">Sms Quantity</label>
                                 <input type="number" class="form-control" name="sms_quantity" id="sms_quantity" value="{{ old('sms_quantity') }}">
                                 @error('sms_quantity')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
                         </div>
-                    </div> -->
+                    </div>
                     <div class="form-wrap mb-3">
                     <label for="">Package Description</label>
                         <textarea class="form-control" name="package_description" id="package_description">{{old('package_description')}}</textarea>
@@ -186,7 +169,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         const inquiryAuctionSelect = document.getElementById('inquiry_auction');
-        const additionalInputField = document.getElementById('additional_input_field');
+        const additionalInputField = document.getElementById('number_of_auction');
 
         inquiryAuctionSelect.addEventListener('change', function() {
             if (this.value == '0') {
@@ -200,22 +183,22 @@
         inquiryAuctionSelect.dispatchEvent(new Event('change'));
     });
 
-    //sms
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     const smsSelect = document.getElementById('sms');
-    //     const smsQuantityField = document.getElementById('sms_quantity_field');
 
-    //     smsSelect.addEventListener('change', function() {
-    //         if (this.value == '0') {
-    //             smsQuantityField.style.display = 'block';
-    //         } else {
-    //             smsQuantityField.style.display = 'none';
-    //         }
-    //     });
+    document.addEventListener('DOMContentLoaded', function() {
+        const smsSelect = document.getElementById('sms');
+        const smsQuantityField = document.getElementById('sms_quantity_field');
 
-    //     // Trigger change event to set the initial state
-    //     smsSelect.dispatchEvent(new Event('change'));
-    // });
+        smsSelect.addEventListener('change', function() {
+            if (this.value == '0') {
+                smsQuantityField.style.display = 'block';
+            } else {
+                smsQuantityField.style.display = 'none';
+            }
+        });
+
+        // Trigger change event to set the initial state
+        smsSelect.dispatchEvent(new Event('change'));
+    });
     document.getElementById('package_type').addEventListener('change', function () {
     const packageType = this.value;
     const packageDuration = document.getElementById('package_duration');
@@ -240,22 +223,6 @@
             packageDuration.appendChild(option);
         });
     }
-});
-document.getElementById('total_number_of_auction').addEventListener('keyup', function () {
-    const packagePrice = parseInt(document.getElementById('package_price').value);
-    const totalNumberOfInquiry = parseInt(document.getElementById('total_number_of_auction').value);
-    const totalCostPerInquiry = document.getElementById('total_cost_per_inquiry');
-    if(packagePrice>totalNumberOfInquiry && totalNumberOfInquiry > 0){
-        const totalCost =packagePrice / totalNumberOfInquiry;
-        totalCostPerInquiry.value =totalCost;
-    } 
-});
-
-document.getElementById('appication_cost_per_inquiry').addEventListener('keyup',function(){
-    const totalCostPerInquiry = parseInt(document.getElementById('total_cost_per_inquiry').value);
-    const applicationCostPerInquiry = parseInt(document.getElementById('appication_cost_per_inquiry').value);
-        document.getElementById('sms_cost_per_inquiry').value =(totalCostPerInquiry-applicationCostPerInquiry);
-          
 });
 </script>
 @endpush

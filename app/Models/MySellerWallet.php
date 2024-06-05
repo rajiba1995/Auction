@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MyWallet extends Model{
+class MySellerWallet extends Model{
     use HasFactory;
-    protected $table = 'my_wallets';
+    protected $table = 'my_seller_wallets';
     // function  getPackageDetails(){
     //     return $this->belongsTo('App\Models\Package', 'package_id','id');
     // }

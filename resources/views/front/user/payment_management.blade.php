@@ -1,5 +1,8 @@
 @extends('front.layout.app')
 @section('section')
+@php
+    $package_type = isset($_GET['package']) ? $_GET['package'] : "buyer";
+@endphp
 <div class="main">
     <div class="inner-page">
 
@@ -38,15 +41,15 @@
                                             <div class="page-tabs-row">
                                                 <ul class="nav nav-tabs watchlist-tabs" id="productsServicesTab" role="tablist">
                                                     <li class="nav-item" role="presentation">
-                                                        <button class="nav-link active" id="buyers-tab" data-bs-toggle="tab" data-bs-target="#buyers" type="button" role="tab" aria-controls="buyers" aria-selected="true">Buyer</button>
+                                                        <button class="nav-link {{$package_type=='buyer'?"active":""}}" id="buyers-tab" data-bs-toggle="tab" data-bs-target="#buyers" type="button" role="tab" aria-controls="buyers" aria-selected="true">Buyer</button>
                                                     </li>
                                                     <li class="nav-item" role="presentation">
-                                                        <button class="nav-link" id="sellers-tab" data-bs-toggle="tab" data-bs-target="#sellers" type="button" role="tab" aria-controls="sellers" aria-selected="false">Seller</button>
+                                                        <button class="nav-link {{$package_type=='seller'?"active":""}}" id="sellers-tab" data-bs-toggle="tab" data-bs-target="#sellers" type="button" role="tab" aria-controls="sellers" aria-selected="false">Seller</button>
                                                     </li>
                                                 </ul>
                                             </div>
                                             <div class="tab-content products-services-tab-content">
-                                                <div class="tab-pane fade show active" id="buyers" role="tabpanel" aria-labelledby="buyers-tab" tabindex="0">
+                                                <div class="tab-pane fade {{$package_type=='buyer'?"show active":""}}" id="buyers" role="tabpanel" aria-labelledby="buyers-tab" tabindex="0">
                                                     <h3>Buyer Credit Packages</h3>
                                                     <div class="packages" >
                                                         <div class="row">
@@ -83,21 +86,21 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                
                                                 </div>
-                                                <div class="tab-pane fade" id="sellers" role="tabpanel" aria-labelledby="sellers-tab" tabindex="0">
+                                                <div class="tab-pane fade {{$package_type=='seller'?"show active":""}}" id="sellers" role="tabpanel" aria-labelledby="sellers-tab" tabindex="0">
                                                     <h3>Seller Credit Packages</h3>
                                                     <div class="packages" style="color: red">
                                                         <div class="row">
                                                             @foreach ($seller_packages as $item)
                                                             <div class="col-xxl-3 col-md-6 col-12 package-col">
                                                                 <div class="packages-card">
-                                                                    <form method="post" action="{{ route('user.package_payment_management') }}">
+                                                                    <form method="post" action="{{ route('user.package_payment_management') }}" id="seller_package_form{{$item->id}}">
                                                                         @csrf
                                                                         <input type="hidden" name="package_id" value="{{$item->id}}">
                                                                         <input type="hidden" name="package_value" value="{{$item->package_price}}">
                                                                         <input type="hidden" name="package_duration" value="{{$item->package_duration}}">
                                                                         <input type="hidden" name="package_name" value="{{$item->package_name}}">
+                                                                        <input type="hidden" name="monthly_credit" value="{{$item->credit}}">
                                                                         <div class="card-header bg-gradient-free">
                                                                             <h4>{{$item->package_name}}</h4>
                                                                             <p>{{$item->rupees_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
@@ -131,7 +134,48 @@
                                                                             <p>Duration : {{$item->package_duration}} Months</p> 
                                                                         </div>
                                                                         <div class="card-footer bg-gradient-free">
-                                                                            <button type="submit" class="btn btn-animated btn-cta bg-free">Buy Now</button>
+                                                                            @if($my_cuttent_seller_package)
+                                                                                @if($my_cuttent_seller_package->package_id==$item->id)
+                                                                                    <button type="button" class="btn btn-animated btn-cta bg-free" data-bs-toggle="modal" data-bs-target="#view_currect_package">Current Plan</button>
+                                                                                    <div class="modal fade all-quotes-modal" id="view_currect_package" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                        <div class="modal-dialog modal-lg">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-header">
+                                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                </div>
+                                                                                                <div class="modal-body">
+                                                                                                    <div class="table-responsive">
+                                                                                                        <table class="table badges-data-table">
+                                                                                                            <thead>
+                                                                                                                <tr>
+                                                                                                                    <th>Package</th>
+                                                                                                                    <th>Monthly Credit</th>
+                                                                                                                    <th>Next Credit Date</th>
+                                                                                                                    <th>Expiry Date</th>
+                                                                                                                </tr>
+                                                                                                            </thead>
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td>{{$item->package_name}}</td>
+                                                                                                                    <td>{{$my_cuttent_seller_package->monthly_credit}}</td>
+                                                                                                                    <td>{{date("d-m-Y",strtotime($my_cuttent_seller_package->next_credit_date))}}</td>
+                                                                                                                    <td>{{date("d-m-Y h:i a",strtotime($my_cuttent_seller_package->expiry_date))}}</td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <input type="hidden" name="form_type" value="upgrade">
+                                                                                    <button type="button" class="btn btn-animated btn-cta bg-free" onclick="upgrade_seller_package({{$item->id}})">Upgrade Now</button>
+                                                                                @endif
+                                                                            @else
+                                                                                <input type="hidden" name="form_type" value="new">
+                                                                                <button type="button" class="btn btn-animated btn-cta bg-free" onclick="buy_seller_package({{$item->id}})">Buy Now</button>
+                                                                            @endif
                                                                         </div>
                                                                     </form>
                                                                 </div>
@@ -291,41 +335,72 @@
                 var badge_id = $(this).data('badge_id');             // console.log(id); 
                 var badge_amount = $(this).data('amount');             // console.log(id); 
                 Swal.fire({
-                title: "Are You Sure to Purchase it?",
-                text: "Purchase this Badge?",
+                title: "Are you sure you want to purchase it??",
+                // text: "Purchase this Badge?",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Yes, Purchase it!'
                 }).then((result) => {
-                if (result.isConfirmed) {
-                    var csrfToken = "{{csrf_token()}}";
-                    $.ajax({
-                        type: 'POST',
-                        url: '{{ route("user.purchase.transaction") }}',
-                        data: {
-                            '_token' : csrfToken ,
-                            'id' : badge_id,
-                            'amount' : badge_amount,
-                        },
-                        success: function(response) {
-                            if(response.status==200){
-                                Swal.fire({
-                                    title: 'Success!',
-                                    text: 'Your Badge Successfully Purchased.',
-                                    icon: 'success',
-                                });
-                                    location.reload();
-                            }
-                        },
-                        // error: function(xhr, status, error) {
-                        //     console.error(xhr.responseText);
-                        // }
-                    });
-                }
+                    if (result.isConfirmed) {
+                        var csrfToken = "{{csrf_token()}}";
+                        $.ajax({
+                            type: 'POST',
+                            url: '{{ route("user.purchase.transaction") }}',
+                            data: {
+                                '_token' : csrfToken ,
+                                'id' : badge_id,
+                                'amount' : badge_amount,
+                            },
+                            success: function(response) {
+                                if(response.status==200){
+                                    Swal.fire({
+                                        title: 'Success!',
+                                        text: 'Your Badge Successfully Purchased.',
+                                        icon: 'success',
+                                    });
+                                        location.reload();
+                                }
+                            },
+                            // error: function(xhr, status, error) {
+                            //     console.error(xhr.responseText);
+                            // }
+                        });
+                    }
+                });
             });
-        });
+
+            function buy_seller_package(id){
+                Swal.fire({
+                title: "Are you sure you want to purchase it??",
+                // text: "Purchase this Package?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Purchase it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       $('#seller_package_form'+id).submit();
+                    }
+                });
+            }
+            function upgrade_seller_package(id){
+                Swal.fire({
+                title: "Are you sure you want to upgrade?",
+                // text: "Purchase this Package?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, upgrade it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       $('#seller_package_form'+id).submit();
+                    }
+                });
+            }
     
         
                

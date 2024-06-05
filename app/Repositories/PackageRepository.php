@@ -33,14 +33,24 @@ class PackageRepository implements PackageContract
  }
  public function CreateBuyerPackage(array $data)
  {
-
+    // dd($data);
      try {
          $package = new Package();
          $collection = collect($data);
          $package->package_name = $collection['package_name'];
-         $package->package_type = $collection['package_type'];
+         $package->rupees_prefix = $collection['rupees_prefix'];
          $package->package_price = $collection['package_price'];
-         $package->package_prefix = $collection['package_prefix'];
+         $package->package_type = $collection['package_type'];
+         $package->package_duration = $collection['package_duration'];
+         $package->inquiry_auction = $collection['inquiry_auction'];
+         $package->total_number_of_auction = $collection['total_number_of_auction'];
+         $package->total_cost_per_auction = $collection['total_cost_per_inquiry'];
+         $package->application_cost_per_auction = $collection['appication_cost_per_inquiry'];
+         $package->sms_cost_per_auction = $collection['sms_cost_per_inquiry'];
+         $package->watchlist = $collection['watchlist'];
+         $package->save_inquiry = $collection['save_inquiry'];
+         $package->supplier_vendor_suggestion = $collection['supplier_vendor_suggestion'];
+         $package->consultation = $collection['consultation'];
          $package->package_description = $collection['package_description'];
 
          $package->save();
@@ -63,16 +73,33 @@ class PackageRepository implements PackageContract
  }
  public function updateBuyerPackage(array $data)
  {
-
      try {
          $collection = collect($data);
          $package = Package::findOrFail($collection['id']);
          $package->package_name = $collection['package_name'];
-         $package->package_type = $collection['package_type'];
+         $package->rupees_prefix = $collection['rupees_prefix'];
          $package->package_price = $collection['package_price'];
-         $package->package_prefix = $collection['package_prefix'];
+         $package->package_type = $collection['package_type'];
+         $package->package_duration = $collection['package_duration'];
+         $package->inquiry_auction = $collection['inquiry_auction'];
+         $package->total_number_of_auction = $collection['total_number_of_auction'];
+         $package->total_cost_per_auction = $collection['total_cost_per_inquiry'];
+         $package->application_cost_per_auction = $collection['appication_cost_per_inquiry'];
+         $package->sms_cost_per_auction = $collection['sms_cost_per_inquiry'];
+         $package->watchlist = $collection['watchlist'];
+         $package->save_inquiry = $collection['save_inquiry'];
+         $package->supplier_vendor_suggestion = $collection['supplier_vendor_suggestion'];
+         $package->consultation = $collection['consultation'];
          $package->package_description = $collection['package_description'];
          $package->save();
+         if($package){
+            $websiteLog =new WebsiteLogs();
+            $websiteLog->emp_id = Auth::guard('admin')->user()->id;
+            $websiteLog->logs_type ="UPDATE";
+            $websiteLog->table_name ="packages";
+            $websiteLog->response ="buyer package update successfull";
+            $websiteLog->save();
+         }
          return $package;
      } catch (QueryException $exception) {
          throw new InvalidArgumentException($exception->getMessage());
@@ -83,6 +110,15 @@ class PackageRepository implements PackageContract
      $delete = Package::findOrFail($id);
      $delete->deleted_at=0;
      $delete->save();
+     if($delete){
+        $websiteLog =new WebsiteLogs();
+        $websiteLog->emp_id = Auth::guard('admin')->user()->id;
+        $websiteLog->logs_type ="DELETE";
+        $websiteLog->table_name ="packages";
+        $websiteLog->response ="Buyer package deleted successfull";
+        $websiteLog->save();
+        
+     }
      return $delete;
  }
 

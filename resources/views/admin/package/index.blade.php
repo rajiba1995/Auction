@@ -42,9 +42,16 @@
             <th>SL.</th>
             <th>Name</th>
             <th>Type</th>
+            <th>Duration</th>
             <th>Currency</th>
             <th>Price</th>
-            <th>Description</th>
+            <th>Number of Auction</th>
+            <th>Total cost/Auction</th>
+            <th>Application cost/Auction</th>
+            <th>Sms cost/Auction</th>
+            <th>Supplier/Vandor Suggestion</th>
+            <th>Consultation</th>
+            <!-- <th>Description</th> -->
             <th>Status</th>
             <th>Action</th>
         </tr>
@@ -55,9 +62,16 @@
             <td> {{ $data->firstItem() + $loop->index }}</td>
             <td>{{ $item->package_name }}</td>
             <td>{{ $item->package_type }}</td>
-            <td>{{ $item->package_prefix }}</td>
+            <td>{{ $item->package_duration }} months</td>
+            <td>{{ $item->rupees_prefix }}</td>
             <td>{{ $item->package_price }}</td>
-            <td>{!! $item->package_description !!}</td>
+            <td>{{ $item->total_number_of_auction }}</td>
+            <td>{{ $item->total_cost_per_auction }}</td>
+            <td>{{ $item->application_cost_per_auction }}</td>
+            <td>{{ $item->sms_cost_per_auction }}</td>
+            <td>{{ $item->supplier_vendor_suggestion == 0 ? "Yes" : "No" }}</td>
+            <td>{{ $item->consultation == 0 ? "1 meeting" : "No" }}</td>
+            <!-- <td>{!! $item->package_description !!}</td> -->
             <td>
                 <a href="{{route('admin.buyer.package.status', $item->id)}}"><span class="btn-sm btn-status btn {{$item->status==1?"bg-success":"bg-danger"}}">{{$item->status==1?"Active":"Inactive"}}</span></a>
             </td>

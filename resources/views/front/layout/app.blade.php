@@ -46,6 +46,7 @@
                                     <path d="M20.9999 21.0004L16.6499 16.6504" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </button>
+                        <div id="autocomplete-list" class="autocomplete-items"></div>
                         </form>
                     </div>
                 
@@ -382,6 +383,46 @@
     @yield('script')
     <script src="{{asset('frontend/assets/js/custom.js')}}"></script>
     <script>
+                $('#global_filter_data').on('keyup', function() {
+                var keyword = $(this).val().toLowerCase();
+                var location = $('#stateInput').val();
+                const autocompleteList = $('#autocomplete-list');
+                autocompleteList.empty();
+                if (!keyword) {
+                    return false;
+                }
+                      // Reset border to default
+                $('.location-bar').css('border', '1px solid #ced4da');
+                $('.search-bar').css('border', '1px solid #ced4da');
+
+                
+                // Check if location is empty
+                if(location.trim().length === 0){
+                    $('.location-bar').css('border', '1px solid red');
+                    return; // Stop further execution  
+                }
+                $.ajax({
+                 url: "{{route('user.suggestion')}}", // Replace this with your actual route
+                 type: 'GET',
+                 data: {
+                     location: location,
+                     keyword: keyword
+                 },
+                 success: function(response) {
+                    console.log(response);
+                    //  if(response.status==200){
+                    //      window.location.href = response.route;
+                    //  }
+                     
+                 },
+                 error: function(xhr, status, error) {
+                     console.error(error);
+                     // Handle errors if any
+                 }
+             });
+
+                });
+
         $('#global_form_submit').on('click', function() {
              var location = $('#stateInput').val();
              var keyword = $('#global_filter_data').val();
