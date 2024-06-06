@@ -506,9 +506,9 @@ class UserController extends Controller{
     }
     public function wallet_management(){
         $data = $this->AuthCheck();
-        $package = MySellerPackage::where('user_id',$data->id)->latest()->first();
-        $walletBalance = MySellerWallet::where(["user_id"=>$data->id])->latest()->first();
-        return view('front.user.wallet_management',compact('data','package','walletBalance'));
+        $seller_package = MySellerPackage::where('user_id',$data->id)->latest()->first();
+        $seller_walletBalance = MySellerWallet::where(["user_id"=>$data->id])->latest()->first();
+        return view('front.user.wallet_management',compact('data','seller_package','seller_walletBalance'));
     }
     public function package_payment_management(Request $request){
             // dd($request->all());

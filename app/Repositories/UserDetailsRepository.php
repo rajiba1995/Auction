@@ -10,9 +10,11 @@ use App\Models\MyBadge;
 use App\Models\UserDocument;
 use App\Models\SellerReport;
 use App\Models\Transaction;
+use App\Models\MySellerPackage;
 
 use App\Models\UserImage;
 use App\Models\UserAdditionalDocument;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -144,6 +146,15 @@ class UserDetailsRepository implements UserDetailsContract
             });
         }
         return $data = $query->latest('id')->paginate(25);
+    }
+    public function getUserCurrentPackageById($id)
+    {
+       return MySellerPackage::where('user_id',$id)->first();
+    }
+    public function getUserOldPackageById($id)
+    {
+       $data = DB::table('old_seller_packages')->where('user_id',$id)->get();
+       return $data;
     }
 
 }

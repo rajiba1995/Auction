@@ -168,5 +168,14 @@ class UserDetailsController extends Controller
         return view('admin.user.userTransaction', compact('data','id'));
     }
 
+    public function UserPackageDetailsView(Request $request,int $id)
+    { 
+        $currernt_package = $this->userDetailsRepository->getUserCurrentPackageById($id);
+        $old_package = $this->userDetailsRepository->getUserOldPackageById($id);
+        return view('admin.user.userPackageDetails', compact('currernt_package','old_package'));
+        // return view('admin.user.userPackageDetails');
+
+    }
+
 
 }

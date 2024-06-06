@@ -38,11 +38,13 @@
     <thead>
         <tr class="align-middle">
             <th>SL.</th>
-            <th>Unique Number</th>
+            <th>Unique Id</th>
+            <th>Transaction Id</th>
             <th>Mode</th>
             <th>Purpose</th>
-            <th>Price</th>
-            <th>Transaction Id</th>
+            <th>Actual Amount</th>
+            <th>Negotiable Amount</th>
+            <th>Transaction Amount</th>
             <th>Transaction Source</th>
             <th>Date</th>
 
@@ -53,10 +55,12 @@
         <tr>
             <td> {{ $key+1 }}</td>
             <td> {{ $item->unique_id }}</td>      
+            <td> {{ $item->transaction_id }}</td>      
             <td> {{ $item->transaction_type == 1? 'Online' : 'Offline' }}</td>         
             <td> {{ $item->purpose }}</td>      
-            <td> {{ $item->amount }}</td>      
-            <td> {{ $item->transaction_id??'NULL' }}</td>      
+            <td> {{ $item->actual_amount }}</td>      
+            <td> {{ $item->negotiable_amount }}</td>      
+            <td> {{ $item->amount }}</td>   
             <td> {{ $item->transaction_source }}</td>      
             <td> {{ $item->created_at->format('d-M-Y') }}</td>      
             <td>
