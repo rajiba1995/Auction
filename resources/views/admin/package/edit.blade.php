@@ -13,44 +13,26 @@
         <form action="{{route('admin.buyer.package.update')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <div class="col-md-6 col-12">
-                    
+                <div class="col-md-12 col-12">
                     <div class="form-wrap mb-3">
                         <label for="">Package Name</label>
                         <select class="form-control" name="package_name" id="package_name">
-                            <option selected hidden>--select--</option>
-                            <!-- <option {{$data->package_name == 'Basic'?'selected':''}} value="Basic">Basic</option> -->
+                            <option value="" selected hidden>--select--</option>
+                            @if($data->type == 'basic')
+                                <option {{$data->package_name == 'Basic'?'selected':''}} value="Basic">Basic</option>
+                            @endif
                             <option {{$data->package_name == 'Silver'?'selected':''}} value="Silver">Silver</option>
                             <option {{$data->package_name == 'Gold'?'selected':''}} value="Gold">Gold</option>
                             <option {{$data->package_name == 'Platinum'?'selected':''}} value="Platinum">Platinum</option>
                         </select>
                         @error('package_name')<div class="text-danger">{{ $message }}</div>@enderror                       
                     </div>
-
-                    <div class="form-wrap mb-3">
-                        <div class="row">
-                            <div class="col">
-                                <label for="">Rupees Prefix</label>
-                                <select class="form-control" name="rupees_prefix" id="rupees_prefix">
-                                    <option selected hidden>--select--</option>
-                                    <option {{$data->rupees_prefix == 'INR'?'selected':''}} value="INR">INR</option>
-                                    <option {{$data->rupees_prefix == '₹'?'selected':''}} value="₹">₹</option>
-                                </select>
-                                @error('rupees_prefix')<div class="text-danger">{{ $message }}</div>@enderror                       
-                            </div>
-                            <div class="col">
-                                <label for="">Package Price</label>
-                                <input type="number" class="form-control" name="package_price" id="package_price" value="{{$data->package_price}}">
-                                @error('package_price')<div class="text-danger">{{ $message }}</div>@enderror
-                            </div>
-                        </div>                       
-                    </div>
                     <div class="form-wrap mb-3">
                         <div class="row">
                             <div class="col">
                                 <label for="">Package Type</label>
                                 <select class="form-control" name="package_type" id="package_type">
-                                    <option selected hidden>--select--</option>
+                                    <option value="" selected hidden>--select--</option>
                                     <option {{$data->package_type == 'Monthly'?'selected':''}} value="Monthly">Monthly</option>
                                     <option {{$data->package_type == 'Yearly'?'selected':''}} value="Yearly">Yearly</option>
                                 </select>
@@ -68,17 +50,22 @@
                     <div class="form-wrap mb-3">
                         <div class="row">
                             <div class="col">
-                                <label for="">Inquiry/Auction</label>
-                                <select class="form-control" name="inquiry_auction" id="inquiry_auction" value="{{old('inquiry_auction')}}">
-                                    <option selected hidden>--select--</option>
-                                    <option {{$data->inquiry_auction == '0'?'selected':''}} value="0">Yes</option>
-                                    <option {{$data->inquiry_auction == '1'?'selected':''}} value="1">No</option>
+                                <label for="">Rupees Prefix</label>
+                                <select class="form-control" name="rupees_prefix" id="rupees_prefix">
+                                    <option value="" selected hidden>--select--</option>
+                                    <option {{$data->rupees_prefix == 'INR'?'selected':''}} value="INR">INR</option>
+                                    <option {{$data->rupees_prefix == '₹'?'selected':''}} value="₹">₹</option>
                                 </select>
-                                @error('inquiry_auction')<div class="text-danger">{{ $message }}</div>@enderror                       
+                                @error('rupees_prefix')<div class="text-danger">{{ $message }}</div>@enderror                       
+                            </div>
+                            <div class="col">
+                                <label for="">Package Price</label>
+                                <input type="number" class="form-control" name="package_price" id="package_price" value="{{$data->package_price}}">
+                                @error('package_price')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
                             <!-- Conditional input field -->
-                            <div class="col" id="number_of_auction" style="display: none;">
-                                <label for="number_of_auction">Number Of Auction</label>
+                            <div class="col" id="number_of_auction">
+                                <label for="number_of_auction">Number Of credit</label>
                                 <input type="number" class="form-control" name="total_number_of_auction" id="total_number_of_auction" value="{{ $data->total_number_of_auction }}">
                                 @error('total_number_of_auction')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
@@ -87,16 +74,19 @@
                     <div class="form-wrap mb-3">
                         <div class="row">
                             <div class="col">
-                            <label for="">Total Cost/inquiry</label>
+                            <label for="">Total Cost/credit</label>
                             <input type="number" class="form-control" name="total_cost_per_inquiry" id="total_cost_per_inquiry" value="{{ $data->total_cost_per_auction }}" readonly/>
+                            @error('total_cost_per_inquiry')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
                             <div class="col">
-                            <label for="">Application Cost/Inquiry</label>
-                            <input type="number" class="form-control" name="appication_cost_per_inquiry" value="{{$data->application_cost_per_auction}}" id="appication_cost_per_inquiry"/>
+                            <label for="">Application Cost/credit</label>
+                            <input type="number" class="form-control" name="appication_cost_per_inquiry" value="{{$data->application_cost_per_auction}}" id="appication_cost_per_inquiry" {{ $data->type == 'basic' ? 'readonly' : '' }}/>
+                            @error('appication_cost_per_inquiry')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
                             <div class="col">
-                            <label for="">Sms Cost/Inquiry</label>
+                            <label for="">Sms Cost/credit</label>
                             <input type="number" class="form-control" name="sms_cost_per_inquiry" id="sms_cost_per_inquiry" value="{{$data->sms_cost_per_auction}}" readonly/>
+                            @error('sms_cost_per_inquiry')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
                         </div>
                     </div>

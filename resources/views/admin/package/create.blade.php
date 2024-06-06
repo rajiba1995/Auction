@@ -13,11 +13,11 @@
         <form action="{{route('admin.buyer.package.store')}}" method="POST"  enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <div class="col-md-6 col-12">                   
+                <div class="col-md-12 col-12">                   
                     <div class="form-wrap mb-3">
                         <label for="">Package Name</label>
                         <select class="form-control" name="package_name" id="package_name" value="{{old('package_name')}}">
-                            <option selected hidden>--select--</option>
+                            <option value="" selected hidden>--select--</option>
                             <!-- <option value="Basic">Basic</option> -->
                             <option value="Silver">Silver</option>
                             <option value="Gold">Gold</option>
@@ -25,13 +25,42 @@
                         </select>
                         @error('package_name')<div class="text-danger">{{ $message }}</div>@enderror                       
                     </div>
-
                     <div class="form-wrap mb-3">
                         <div class="row">
                             <div class="col">
+                                <label for="">Package Type</label>
+                                <select class="form-control" name="package_type" id="package_type">
+                                    <option value="" selected hidden>--select--</option>
+                                    <option value="Monthly">Monthly</option>
+                                    <option value="Yearly">Yearly</option>
+                                </select>
+                                @error('package_type')<div class="text-danger">{{ $message }}</div>@enderror
+                            </div>
+                            <div class="col">
+                              <label for="">Package Duration</label>
+                                <select class="form-control" name="package_duration" id="package_duration">
+                                    <option value="" selected hidden>--select--</option>
+                                </select>
+                                @error('package_duration')<div class="text-danger">{{ $message }}</div>@enderror
+                            </div>
+                        </div>                     
+                    </div>
+                    <div class="form-wrap mb-3">
+                        <div class="row">
+                            {{-- <div class="col">
+                                <label for="">Inquiry/Auction</label>
+                                <select class="form-control" name="inquiry_auction" id="inquiry_auction" value="{{old('inquiry_auction')}}">
+                                    <option selected hidden>--select--</option>
+                                    <option value="0" selected>YES</option>
+                                    <option value="1">No</option>
+                                </select>
+                                @error('inquiry_auction')<div class="text-danger">{{ $message }}</div>@enderror                       
+                            </div> --}}
+                            
+                            <div class="col">
                                 <label for="">Rupees Prefix</label>
                                 <select class="form-control" name="rupees_prefix" id="rupees_prefix" value="{{old('rupees_prefix')}}">
-                                    <option selected hidden>--select--</option>
+                                    {{-- <option selected hidden>--select--</option> --}}
                                     <option value="INR">INR</option>
                                     <option value="₹">₹</option>
                                 </select>
@@ -42,61 +71,31 @@
                                 <input type="number" class="form-control" name="package_price" id="package_price" value="{{old('package_price')}}">
                                 @error('package_price')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
-                        </div>                       
-                    </div>
-                    <div class="form-wrap mb-3">
-                        <div class="row">
-                            <div class="col">
-                                <label for="">Package Type</label>
-                                <select class="form-control" name="package_type" id="package_type">
-                                    <option selected hidden>--select--</option>
-                                    <option value="Monthly">Monthly</option>
-                                    <option value="Yearly">Yearly</option>
-                                </select>
-                                @error('package_type')<div class="text-danger">{{ $message }}</div>@enderror
-                            </div>
-                            <div class="col">
-                              <label for="">Package Duration</label>
-                                <select class="form-control" name="package_duration" id="package_duration">
-                                    <option selected hidden>--select--</option>
-                                </select>
-                                @error('package_duration')<div class="text-danger">{{ $message }}</div>@enderror
-                            </div>
-                        </div>                     
-                    </div>
-                    <div class="form-wrap mb-3">
-                        <div class="row">
-                            <div class="col">
-                                <label for="">Inquiry/Auction</label>
-                                <select class="form-control" name="inquiry_auction" id="inquiry_auction" value="{{old('inquiry_auction')}}">
-                                    <option selected hidden>--select--</option>
-                                    <option value="0" selected>YES</option>
-                                    <option value="1">No</option>
-                                </select>
-                                @error('inquiry_auction')<div class="text-danger">{{ $message }}</div>@enderror                       
-                            </div>
                             <!-- Conditional input field -->
-                            <div class="col" id="additional_input_field" style="display: none;">
-                                <label for="additional_input_field">Total Number Of Auction/Inquiry</label>
+                            <div class="col" id="additional_input_field">
+                                <label for="additional_input_field">Total number of credit</label>
                                 <input type="number" class="form-control" name="total_number_of_auction" id="total_number_of_auction" value="{{ old('total_number_of_auction') }}">
                                 @error('total_number_of_auction')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
                         </div>                       
                     </div>
-                
                     <div class="form-wrap mb-3">
                         <div class="row">
                             <div class="col">
-                            <label for="">Total Cost/inquiry</label>
+                            <label for="">Total Cost/credit</label>
                             <input type="number" class="form-control" name="total_cost_per_inquiry" id="total_cost_per_inquiry" readonly/>
+                            @error('total_cost_per_inquiry')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
                             <div class="col">
-                            <label for="">Application Cost/Inquiry</label>
+                            <label for="">Application Cost/credit</label>
                             <input type="number" class="form-control" name="appication_cost_per_inquiry" id="appication_cost_per_inquiry"/>
+                            @error('appication_cost_per_inquiry')<div class="text-danger">{{ $message }}</div>@enderror
                             </div>
                             <div class="col">
-                            <label for="">Sms Cost/Inquiry</label>
+                            <label for="">Sms Cost/credit</label>
                             <input type="number" class="form-control" name="sms_cost_per_inquiry" id="sms_cost_per_inquiry" readonly/>
+                            @error('sms_cost_per_inquiry')<div class="text-danger">{{ $message }}</div>@enderror
+                            <p id="sms_error" style="color: red;"></p>
                             </div>
                         </div>
                     </div>
@@ -106,7 +105,7 @@
                             <div class="col">
                                 <label for="">Save Inquiry</label>
                                 <select class="form-control" name="save_inquiry" id="save_inquiry" value="{{old('save_inquiry')}}">
-                                    <option selected hidden>--select--</option>
+                                    {{-- <option selected hidden>--select--</option> --}}
                                     <option value="0">YES</option>
                                     <option value="1">No</option>
                                 </select>
@@ -115,7 +114,7 @@
                             <div class="col">
                                 <label for="">Supplier/Vendor Suggestion</label>
                                 <select class="form-control" name="supplier_vendor_suggestion" id="supplier_vendor_suggestion" value="{{old('supplier_vendor_suggestion')}}">
-                                    <option selected hidden>--select--</option>
+                                    {{-- <option selected hidden>--select--</option> --}}
                                     <option value="0">YES</option>
                                     <option value="1">No</option>
                                 </select>
@@ -128,7 +127,7 @@
                             <div class="col">
                                 <label for="">Consultation(only 1 meeting)</label>
                                 <select class="form-control" name="consultation" id="consultation" value="{{old('consultation')}}">
-                                    <option selected hidden>--select--</option>
+                                    {{-- <option value="" selected hidden>--select--</option> --}}
                                     <option value="0">YES</option>
                                     <option value="1">No</option>
                                 </select>
@@ -137,7 +136,7 @@
                             <div class="col">
                                 <label for="">Watchlist</label>
                                 <select class="form-control" name="watchlist" id="watchlist" value="{{old('watchlist')}}">
-                                    <option selected hidden>--select--</option>
+                                    {{-- <option selected hidden>--select--</option> --}}
                                     <option value="0">YES</option>
                                     <option value="1">No</option>
                                 </select>
@@ -251,11 +250,24 @@ document.getElementById('total_number_of_auction').addEventListener('keyup', fun
     } 
 });
 
-document.getElementById('appication_cost_per_inquiry').addEventListener('keyup',function(){
+document.getElementById('appication_cost_per_inquiry').addEventListener('keyup', function() {
     const totalCostPerInquiry = parseInt(document.getElementById('total_cost_per_inquiry').value);
     const applicationCostPerInquiry = parseInt(document.getElementById('appication_cost_per_inquiry').value);
-        document.getElementById('sms_cost_per_inquiry').value =(totalCostPerInquiry-applicationCostPerInquiry);
-          
+    const smsCostPerInquiry = totalCostPerInquiry - applicationCostPerInquiry;
+    
+    if (isNaN(totalCostPerInquiry) || isNaN(applicationCostPerInquiry)) {
+        // Handle the case where inputs are not valid numbers
+        document.getElementById('sms_error').innerText = "Please enter valid numbers.";
+    } else if (smsCostPerInquiry < 0) {
+        // Display error message if the result is negative
+        document.getElementById('sms_error').innerText = "The SMS cost per inquiry cannot be negative.";
+        document.getElementById('sms_cost_per_inquiry').value = ''; // Clear the input value
+    } else {
+        // Clear any previous error message
+        document.getElementById('sms_error').innerText = '';
+        document.getElementById('sms_cost_per_inquiry').value = smsCostPerInquiry;
+    }
 });
+
 </script>
 @endpush

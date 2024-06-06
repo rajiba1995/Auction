@@ -729,6 +729,7 @@
     $(document).ready(function() {
         // $('.rajib').on('click', function() {
         setInterval(function() {
+            console.log('Done')
             $.ajax({
                 url: "{{route('buyer_live_inquiries_by_ajax')}}",
                 method: "GET",

@@ -43,13 +43,12 @@
             <th>Name</th>
             <th>Type</th>
             <th>Duration</th>
-            <th>Currency</th>
             <th>Price</th>
-            <th>Number of Auction</th>
-            <th>Total cost/Auction</th>
-            <th>Application cost/Auction</th>
-            <th>Sms cost/Auction</th>
-            <th>Supplier/Vandor Suggestion</th>
+            <th>No. of Cr.</th>
+            <th>Total cost/Cr.</th>
+            <th>Application cost/Cr.</th>
+            <th>Sms cost/Cr.</th>
+            <th>Supplier Suggestion</th>
             <th>Consultation</th>
             <!-- <th>Description</th> -->
             <th>Status</th>
@@ -63,12 +62,11 @@
             <td>{{ $item->package_name }}</td>
             <td>{{ $item->package_type }}</td>
             <td>{{ $item->package_duration }} months</td>
-            <td>{{ $item->rupees_prefix }}</td>
-            <td>{{ $item->package_price }}</td>
+            <td>{{ $item->rupees_prefix }} {{ $item->package_price }}</td>
             <td>{{ $item->total_number_of_auction }}</td>
-            <td>{{ $item->total_cost_per_auction }}</td>
-            <td>{{ $item->application_cost_per_auction }}</td>
-            <td>{{ $item->sms_cost_per_auction }}</td>
+            <td>{{ $item->type==="basic"?"NIL":$item->total_cost_per_auction }}</td>
+            <td>{{ $item->type==="basic"?$item->package_price:$item->application_cost_per_auction }}</td>
+            <td>{{ $item->type==="basic"?"Included":$item->sms_cost_per_auction }}</td>
             <td>{{ $item->supplier_vendor_suggestion == 0 ? "Yes" : "No" }}</td>
             <td>{{ $item->consultation == 0 ? "1 meeting" : "No" }}</td>
             <!-- <td>{!! $item->package_description !!}</td> -->

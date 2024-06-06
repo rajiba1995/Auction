@@ -33,7 +33,6 @@ class PackageRepository implements PackageContract
  }
  public function CreateBuyerPackage(array $data)
  {
-    // dd($data);
      try {
          $package = new Package();
          $collection = collect($data);
@@ -42,7 +41,7 @@ class PackageRepository implements PackageContract
          $package->package_price = $collection['package_price'];
          $package->package_type = $collection['package_type'];
          $package->package_duration = $collection['package_duration'];
-         $package->inquiry_auction = $collection['inquiry_auction'];
+         $package->inquiry_auction = 0;
          $package->total_number_of_auction = $collection['total_number_of_auction'];
          $package->total_cost_per_auction = $collection['total_cost_per_inquiry'];
          $package->application_cost_per_auction = $collection['appication_cost_per_inquiry'];
@@ -81,7 +80,7 @@ class PackageRepository implements PackageContract
          $package->package_price = $collection['package_price'];
          $package->package_type = $collection['package_type'];
          $package->package_duration = $collection['package_duration'];
-         $package->inquiry_auction = $collection['inquiry_auction'];
+         $package->inquiry_auction = 0;
          $package->total_number_of_auction = $collection['total_number_of_auction'];
          $package->total_cost_per_auction = $collection['total_cost_per_inquiry'];
          $package->application_cost_per_auction = $collection['appication_cost_per_inquiry'];
