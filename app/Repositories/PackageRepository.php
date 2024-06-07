@@ -94,11 +94,11 @@ class PackageRepository implements PackageContract
          if($package){
             $websiteLog =new WebsiteLogs();
             $websiteLog->emp_id = Auth::guard('admin')->user()->id;
-            $websiteLog->logs_type ="UPDATE";
+            $websiteLog->logs_type ="UPDATED";
             $websiteLog->table_name ="packages";
-            $websiteLog->response ="buyer package update successfull";
+            $websiteLog->response =json_encode($package);
             $websiteLog->save();
-         }
+        }
          return $package;
      } catch (QueryException $exception) {
          throw new InvalidArgumentException($exception->getMessage());
@@ -110,13 +110,14 @@ class PackageRepository implements PackageContract
      $delete->deleted_at=0;
      $delete->save();
      if($delete){
-        $websiteLog =new WebsiteLogs();
-        $websiteLog->emp_id = Auth::guard('admin')->user()->id;
-        $websiteLog->logs_type ="DELETE";
-        $websiteLog->table_name ="packages";
-        $websiteLog->response ="Buyer package deleted successfull";
-        $websiteLog->save();
-        
+        if($delete){
+            $websiteLog =new WebsiteLogs();
+            $websiteLog->emp_id = Auth::guard('admin')->user()->id;
+            $websiteLog->logs_type ="DELETED";
+            $websiteLog->table_name ="packages";
+            $websiteLog->response =json_encode($delete);
+            $websiteLog->save();
+        }
      }
      return $delete;
  }
@@ -167,7 +168,6 @@ class PackageRepository implements PackageContract
  public function updateSellerPackage(array $data)
  {
     
-
      try {
          $collection = collect($data);
          $package = SellerPackage::findOrFail($collection['id']);
@@ -185,13 +185,11 @@ class PackageRepository implements PackageContract
          $package->save();
          if($package){
             $websiteLog =new WebsiteLogs();
-            $websiteLog->emp_id = Auth::guard('admin')->user()->id;
-            $websiteLog->logs_type ="UPDATE";
+            $websiteLog->logs_type ="UPDATED";
             $websiteLog->table_name ="seller_packages";
-            $websiteLog->response ="Seller package update successfull";
+            $websiteLog->response =json_encode($package);
             $websiteLog->save();
-            
-         }
+        }
          return $package;
      } catch (QueryException $exception) {
          throw new InvalidArgumentException($exception->getMessage());
@@ -205,11 +203,10 @@ class PackageRepository implements PackageContract
      if($delete){
         $websiteLog =new WebsiteLogs();
         $websiteLog->emp_id = Auth::guard('admin')->user()->id;
-        $websiteLog->logs_type ="DELETE";
+        $websiteLog->logs_type ="DELETED";
         $websiteLog->table_name ="seller_packages";
-        $websiteLog->response ="Seller package deleted successfull";
+        $websiteLog->response =json_encode($delete);
         $websiteLog->save();
-        
      }
      return $delete;
  }

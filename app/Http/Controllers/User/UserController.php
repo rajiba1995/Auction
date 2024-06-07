@@ -525,7 +525,6 @@ class UserController extends Controller{
                         }
                     }
                     // Start a database transaction
-                    
                     DB::beginTransaction();
                     $duration = 30*$request->package_duration;
                     $monthly_package_price = $request->package_value/$request->package_duration;
@@ -580,6 +579,7 @@ class UserController extends Controller{
                     $transaction->user_id = $data->id;
                     $transaction->unique_id = rand(100000, 999999).''.time(); // Adjusted range for 8-digit number
                     $transaction->transaction_type = 1; //Online
+                    $transaction->user_type = 1; //Seller
                     $transaction->transaction_id = rand(100000, 999999).''.time(); // Adjusted range for 8-digit number
                     $transaction->purpose = $request->form_type=='upgrade'?'Upgrade seller package':'New seller package';
                     $transaction->actual_amount = $request->package_value;

@@ -319,10 +319,10 @@ class UserRepository implements UserContract
 
     }
     public function getUserAllPackages(){
-        return Package::where('status',1)->where('deleted_at',1)->get();
+        return Package::where('status',1)->where('deleted_at',1)->orderBy('position', 'ASC')->get();
      }
     public function getSellerAllPackages(){
-        return SellerPackage::where('status',1)->where('deleted_at',1)->get();
+        return SellerPackage::where('status',1)->where('deleted_at',1)->orderBy('position', 'ASC')->get();
      }
     public function getAllBadgesById($id){
         return MyBadge::where('user_id',$id)->get('badge_id');
