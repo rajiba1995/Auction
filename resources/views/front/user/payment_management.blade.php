@@ -36,6 +36,13 @@
                                             </div>
                                         @endif
                                     </div>
+                                    <div class="m-2">
+                                        @if (session('warning'))
+                                            <div class="alert alert-warning" id="message_div">
+                                                {{ session('warning') }}
+                                            </div>
+                                        @endif
+                                    </div>
                                     <div class="content-box bg-gray-1">
                                         <div class="inner">
                                             <div class="page-tabs-row">
@@ -56,32 +63,73 @@
                                                             @foreach ($packages as $item)
                                                             <div class="col-xxl-3 col-md-6 col-12 package-col">
                                                                 <div class="packages-card">
-                                                                    <form method="post" action="{{ route('user.package_payment_management') }}">
+                                                                    <form method="post" action="{{ route('user.buyer_package_store') }}" id="buyer_package_form{{$item->id}}">
                                                                         @csrf
                                                                         <input type="hidden" name="package_id" value="{{$item->id}}">
-                                                                        <input type="hidden" name="package_value" value="{{$item->package_price}}">
-                                                                        <input type="hidden" name="package_duration" value="{{$item->package_type}}">
-                                                                        <input type="hidden" name="package_name" value="{{$item->package_name}}">
+                                                                        <input type="hidden" name="package_type" value="{{$item->type}}">
+                                                                        <input type="hidden" name="package_amount" value="{{$item->package_price}}">
+                                                                        <input type="hidden" name="package_duration" value="{{$item->package_duration}}">
+                                                                        <input type="hidden" name="package_credit" value="{{$item->total_number_of_auction}}">
                                                                         <div class="card-header bg-gradient-free">
                                                                             <h4>{{$item->package_name}}</h4>
-                                                                            <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
+                                                                            <p>{{$item->rupees_prefix}} {{$item->package_price}} /{{$item->package_type}}</p>
                                                                         </div>
                                                                         <div class="card-body">
                                                                             <p>No. of credit : {{$item->total_number_of_auction}}</p>
                                                                             @if($item->type =="basic")
-                                                                            <p>Cost per inquiry : "Free"</p>   
-                                                                            <p>Application cost per inquiry:Included+Sms cost per inquiry:Included</p> 
+                                                                                <p>Cost per credit : "Free"</p>   
+                                                                                {{-- <p>Application cost per credit:Included+Sms cost per credit:Included</p>  --}}
                                                                             @else                                                    
-                                                                            <p>Cost per inquiry : {{$item->total_cost_per_auction}}</p>   
-                                                                            <p>Application cost per inquiry({{$item->application_cost_per_auction}})+Sms cost per inquiry({{$item->sms_cost_per_auction}}) => {{$item->total_cost_per_auction}}</p>                                                 
+                                                                                <p>Cost per credit : {{$item->rupees_prefix}} {{$item->total_cost_per_auction}}</p>   
+                                                                                {{-- <p>Application cost per credit({{$item->rupees_prefix}} {{$item->application_cost_per_auction}})+Sms cost per inquiry({{$item->rupees_prefix}} {{$item->sms_cost_per_auction}}) => {{$item->rupees_prefix}} {{$item->total_cost_per_auction}}</p>                                                  --}}
                                                                             @endif
                                                                             <p>Watchlist Added: {{$item->watchlist == 0 ? 'Yes':'No'}}</p>   
                                                                             <p>Supplier Suggestion: {{$item->supplier_vendor_suggestion == 0 ? 'Yes':'No'}}</p>   
                                                                             <p>Added Participants: {{$item->added_participant_per_credits}}/credit</p>   
-                                                                            <p>Consultation: {{$item->consultation == 0 ? '1 meeting':'No'}}</p>   
+                                                                            <p>Consultation: {{$item->consultation == 0 ? '1 meeting':'No'}}</p> 
+                                                                            <p>Duration : {{$item->package_duration}} Months</p>  
                                                                         </div>
                                                                         <div class="card-footer bg-gradient-free">
-                                                                            <button type="submit" class="btn btn-animated btn-cta bg-free">Buy Now</button>
+                                                                            @if($my_cuttent_buyer_package)
+                                                                                @if($my_cuttent_buyer_package->package_id==$item->id)
+                                                                                    <button type="button" class="btn btn-animated btn-cta bg-free" data-bs-toggle="modal" data-bs-target="#view_seller_package{{$item->id}}">Current Plan</button>
+                                                                                    <div class="modal fade all-quotes-modal" id="view_seller_package{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                        <div class="modal-dialog modal-lg">
+                                                                                            <div class="modal-content">
+                                                                                                <div class="modal-header">
+                                                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                                                </div>
+                                                                                                <div class="modal-body">
+                                                                                                    <div class="table-responsive">
+                                                                                                        <table class="table badges-data-table">
+                                                                                                            <thead>
+                                                                                                                <tr>
+                                                                                                                    <th>Package</th>
+                                                                                                                    <th>Duration</th>
+                                                                                                                    <th>Expiry Date</th>
+                                                                                                                </tr>
+                                                                                                            </thead>
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td>{{$item->package_name}}</td>
+                                                                                                                    <td>{{$my_cuttent_buyer_package->package_duration}} Months</td>
+                                                                                                                    <td>{{date("d-m-Y h:i a",strtotime($my_cuttent_buyer_package->expiry_date))}}</td>
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @else
+                                                                                    <input type="hidden" name="form_type" value="upgrade">
+                                                                                    <button type="button" class="btn btn-animated btn-cta bg-free" onclick="upgrade_buyer_package({{$item->id}})">Upgrade Now</button>
+                                                                                @endif
+                                                                            @else
+                                                                                <input type="hidden" name="form_type" value="new">
+                                                                                <button type="button" class="btn btn-animated btn-cta bg-free" onclick="buy_buyer_package({{$item->id}})">Buy Now</button>
+                                                                            @endif
                                                                         </div>
                                                                     </form>
                                                                 </div>
@@ -147,8 +195,8 @@
                                                                         <div class="card-footer bg-gradient-free">
                                                                             @if($my_cuttent_seller_package)
                                                                                 @if($my_cuttent_seller_package->package_id==$item->id)
-                                                                                    <button type="button" class="btn btn-animated btn-cta bg-free" data-bs-toggle="modal" data-bs-target="#view_currect_package">Current Plan</button>
-                                                                                    <div class="modal fade all-quotes-modal" id="view_currect_package" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                                                    <button type="button" class="btn btn-animated btn-cta bg-free" data-bs-toggle="modal" data-bs-target="#view_currect_package{{$item->id}}">Current Plan</button>
+                                                                                    <div class="modal fade all-quotes-modal" id="view_currect_package{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                                         <div class="modal-dialog modal-lg">
                                                                                             <div class="modal-content">
                                                                                                 <div class="modal-header">
@@ -409,6 +457,37 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                        $('#seller_package_form'+id).submit();
+                    }
+                });
+            }
+            // For Buyer
+            function buy_buyer_package(id){
+                Swal.fire({
+                title: "Are you sure you want to purchase it??",
+                // text: "Purchase this Package?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Purchase it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       $('#buyer_package_form'+id).submit();
+                    }
+                });
+            }
+            function upgrade_buyer_package(id){
+                Swal.fire({
+                title: "Are you sure you want to upgrade?",
+                // text: "Purchase this Package?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, upgrade it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                       $('#buyer_package_form'+id).submit();
                     }
                 });
             }

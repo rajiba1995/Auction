@@ -225,6 +225,17 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
             Route::post('/update', [PaymentManageMentController::class, 'BadgeUpdate'])->name('admin.badge.update');
 
         });
+        Route::group(['prefix'  =>   'transaction'], function() {
+            Route::get('', [PaymentManageMentController::class, 'TransactionIndex'])->name('admin.transaction.index');
+            Route::get('/export', [PaymentManageMentController::class, 'TransactionDetailsExport'])->name('admin.transaction.details.export');
+            // Route::get('/create', [PaymentManageMentController::class, 'BadgeCreate'])->name('admin.badge.create');
+            // Route::post('/store', [PaymentManageMentController::class, 'BadgeStore'])->name('admin.badge.store');
+            // Route::get('/status/{id}', [PaymentManageMentController::class, 'BadgeStatus'])->name('admin.badge.status');
+            // Route::get('/delete/{id}', [PaymentManageMentController::class, 'BadgeDelete'])->name('admin.badge.delete');
+            // Route::get('/edit/{id}', [PaymentManageMentController::class, 'BadgeEdit'])->name('admin.badge.edit');
+            // Route::post('/update', [PaymentManageMentController::class, 'BadgeUpdate'])->name('admin.badge.update');
+
+        });
     });
       // Inqury
       Route::group(['prefix'  =>   'inquiry-management'], function() {

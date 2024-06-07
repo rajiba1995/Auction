@@ -15,6 +15,7 @@ use App\Models\Transaction;
 use App\Models\State;
 use App\Models\City;
 use App\Models\Badge;
+use App\Models\MyBuyerPackage;
 use App\Models\MySellerPackage;
 use App\Models\UserDocument;
 use Illuminate\Http\UploadedFile;
@@ -397,5 +398,8 @@ class UserRepository implements UserContract
     }
     public function getCurrentSellerPackage($user_id){
         return MySellerPackage::with('getPackageDetails')->where('user_id', $user_id)->first();
+    }
+    public function getCurrentBuyerPackage($user_id){
+        return MyBuyerPackage::with('package_data')->where('user_id', $user_id)->first();
     }
 }

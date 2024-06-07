@@ -49,6 +49,7 @@ Route::get('/clear-cache', function() {
             Route::get('/payment-management', [UserController::class, 'payment_management'])->name('user.payment_management');
             Route::get('/wallet-management', [UserController::class, 'wallet_management'])->name('user.wallet_management');//wallet
             Route::post('/package/payment-management', [UserController::class, 'package_payment_management'])->name('user.package_payment_management');
+            Route::post('buyer/package/store', [UserController::class, 'buyer_package_store'])->name('user.buyer_package_store');
             Route::get('/settings', [UserController::class, 'settings'])->name('user.settings');
             Route::get('/change-password', [UserController::class, 'changePassword'])->name('user.change_password');
             Route::post('/change-password', [UserController::class, 'changePasswordUpdate'])->name('user.change_password_update');
