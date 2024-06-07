@@ -22,7 +22,7 @@
                             <input type="date" class="form-control form-control-sm" name="end_date" id="end_date" value="{{ request()->input('end_date') }}" >
                         </div>
                         <div class="col-lg-auto col-12">
-                            <input type="text" name="keyword" placeholder="Global Search..." value="{{request()->input('keyword')??""}}" class="form-control"/>
+                            <input type="text" name="keyword" placeholder="Global Search..." value="{{request()->input('keyword')??''}}" class="form-control"/>
                         </div>
                         <div class="col-lg-auto col-12 text-end">
                             <button type="submit" class="btn btn-sm btn-primary"><i class="fa-solid fa-magnifying-glass"></i>Search</button>

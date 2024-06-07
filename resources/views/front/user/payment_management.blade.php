@@ -64,7 +64,7 @@
                                                                         <input type="hidden" name="package_name" value="{{$item->package_name}}">
                                                                         <div class="card-header bg-gradient-free">
                                                                             <h4>{{$item->package_name}}</h4>
-                                                                            <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
+                                                                            <p>{{$item->rupees_prefix}} {{$item->package_price}} /{{$item->package_duration}} {{$item->package_type}}</p>
                                                                         </div>
                                                                         <div class="card-body">
                                                                             <p>No. of credit : {{$item->total_number_of_auction}}</p>

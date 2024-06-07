@@ -5,6 +5,7 @@ namespace App\Repositories;
 use Illuminate\Http\Request;
 use App\Contracts\PaymentManageMentContract;
 use App\Models\Badge;
+use App\Models\Transaction;
 
 
 class PaymentManageMentRepository implements PaymentManageMentContract
@@ -106,4 +107,28 @@ class PaymentManageMentRepository implements PaymentManageMentContract
 
     // }
 
+    public function  getAllTransaction(){
+      return Transaction::latest('id')->paginate(20);
+    }
+    public function getSearchTransaction($keyword,$startDate,$endDate)
+    {
+        $query = Transaction::query();
+        
+        $query->when($keyword, function ($query) use ($keyword) {
+            $query->where('unique_id', 'like', '%' . $keyword . '%')
+            ->orWhere('transaction_id', 'like', '%' . $keyword . '%')
+            ->orWhere('amount', 'like', '%' . $keyword . '%');
+            // ->orWhere('role', 'like', '%' . $term . '%');
+        });
+        if (!is_null($startDate) && !is_null($endDate)) {
+      
+            $query->when($startDate && $endDate, function($query) use ($startDate, $endDate) {
+                $query->where('created_at', '>=', $startDate." 00:00:00")
+                      ->where('created_at', '<=', date("Y-m-d 23:59:59",strtotime($endDate)));
+            });
+        }
+        return $data = $query->latest('id')->paginate(25);
+
+        
+    }
 }

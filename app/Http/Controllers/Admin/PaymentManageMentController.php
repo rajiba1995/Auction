@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Contracts\PaymentManageMentContract;
 use Illuminate\Validation\Rule;
+use App\Models\Transaction;
 use Auth;
 
 class PaymentManageMentController extends Controller
@@ -112,4 +113,79 @@ class PaymentManageMentController extends Controller
     //     dd($userId);
     //     $data = $this->payment_management_Repository->getAllBadgesByUserId($userId);
     // }
+
+    // badge
+    public function TransactionIndex(Request $request)
+    {
+        $startDate = $request->start_date ?? '';
+        $endDate = $request->end_date ?? '';
+        $keyword = $request->keyword ?? '';
+        if (!empty($keyword) || !empty($startDate) || !empty($endDate)) {     
+            $data = $this->payment_management_Repository->getSearchTransaction($keyword,$startDate,$endDate);            
+            }else{
+             $data = $this->payment_management_Repository->getAllTransaction();
+            }
+        return view('admin.transaction.index',compact('data'));
+    }
+    public function TransactionDetailsExport(Request $request)
+    {
+        $startDate = $request->start_date ?? '';
+        $endDate = $request->end_date ?? '';
+        $keyword = $request->keyword ?? '';
+
+        $query = Transaction::query();
+
+        $query->when($keyword, function ($query) use ($keyword) {
+            $query->where('unique_id', 'like', '%' . $keyword . '%')
+            ->orWhere('transaction_id', 'like', '%' . $keyword . '%')
+            ->orWhere('amount', 'like', '%' . $keyword . '%');
+            // ->orWhere('role', 'like', '%' . $term . '%');
+        });
+        if (!is_null($startDate) && !is_null($endDate)) {
+      
+            $query->when($startDate && $endDate, function($query) use ($startDate, $endDate) {
+                $query->where('created_at', '>=', $startDate." 00:00:00")
+                      ->where('created_at', '<=', date("Y-m-d 23:59:59",strtotime($endDate)));
+            });
+        }
+        $data = $query->latest('id')->get();
+
+        if(count($data)>0){
+            $delimiter = ",";
+            $fileName = "Transaction Details-".date('d-m-Y').".csv";
+            // Create a file pointer
+            $f = fopen('php://memory', 'w');
+
+            // Set Column Headers
+            $header = array("UniqueId","TransactionId","UserName","Email","Mobile","Amount","Date");
+            fputcsv($f,$header,$delimiter);
+
+            $count =1;
+            foreach($data as $key => $row){
+                $exportData = array(
+                    $row->unique_id ? $row->unique_id : '',
+                    $row->transaction_id ? $row->transaction_id : '',
+                    $row->getUserAllDetails ? $row->getUserAllDetails->name : '',
+                    $row->getUserAllDetails ? $row->getUserAllDetails->email : '',
+                    $row->getUserAllDetails ? $row->getUserAllDetails->phone : '',          
+                    $row->amount ? $row->amount : '',          
+                    date("Y-m-d h:i a",strtotime($row->created_at)) ? date("d-m-Y h:i a",strtotime($row->created_at)) : ''
+                    
+                );
+                // dd($exportData);
+                fputcsv($f,$exportData,$delimiter);
+                $count++;
+            }
+            fseek($f,0);
+            // Set headers to download file rather than displayed
+            header('Content-Type: text/csv');
+            header('Content-Disposition: attachment; filename="' . $fileName . '";');
+
+            //output all remaining data on a file pointer
+            fpassthru($f);
+
+        }
+
+
+    }
 }

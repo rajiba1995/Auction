@@ -110,6 +110,9 @@
           <li class="nav-item">
             <a class="nav-link {{ (request()->is('admin/payment-management/badge*')) ? 'active' : '' }}" aria-current="page" href="{{route('admin.badge.index')}}">Badge List</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{ (request()->is('admin/payment-management/transaction*')) ? 'active' : '' }}" aria-current="page" href="{{route('admin.transaction.index')}}">Transaction</a>
+          </li>
         </ul>
       </div>
     </div> 
