@@ -67,7 +67,18 @@
                                                                             <p>{{$item->package_prefix}} {{$item->package_price}} / {{$item->package_type}}</p>
                                                                         </div>
                                                                         <div class="card-body">
-                                                                            <p>{!! $item->package_description !!}</p>                                                    
+                                                                            <p>No. of credit : {{$item->total_number_of_auction}}</p>
+                                                                            @if($item->type =="basic")
+                                                                            <p>Cost per inquiry : "Free"</p>   
+                                                                            <p>Application cost per inquiry:Included+Sms cost per inquiry:Included</p> 
+                                                                            @else                                                    
+                                                                            <p>Cost per inquiry : {{$item->total_cost_per_auction}}</p>   
+                                                                            <p>Application cost per inquiry({{$item->application_cost_per_auction}})+Sms cost per inquiry({{$item->sms_cost_per_auction}}) => {{$item->total_cost_per_auction}}</p>                                                 
+                                                                            @endif
+                                                                            <p>Watchlist Added: {{$item->watchlist == 0 ? 'Yes':'No'}}</p>   
+                                                                            <p>Supplier Suggestion: {{$item->supplier_vendor_suggestion == 0 ? 'Yes':'No'}}</p>   
+                                                                            <p>Added Participants: {{$item->added_participant_per_credits}}/credit</p>   
+                                                                            <p>Consultation: {{$item->consultation == 0 ? '1 meeting':'No'}}</p>   
                                                                         </div>
                                                                         <div class="card-footer bg-gradient-free">
                                                                             <button type="submit" class="btn btn-animated btn-cta bg-free">Buy Now</button>
