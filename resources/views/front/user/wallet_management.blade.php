@@ -45,9 +45,9 @@
                                                         <div class="cta-row">
                                                             <a href="#">
                                                                 <span>Current Package</span>
-                                                                @if($seller_package)
-                                                                    @if($seller_package->getPackageDetails)
-                                                                        <h5>{{$seller_package->getPackageDetails->package_name}}</h5> 
+                                                                @if($my_current_buyer_package)
+                                                                    @if($my_current_buyer_package->package_data)
+                                                                        <h5>{{$my_current_buyer_package->package_data->package_name}}</h5> 
                                                                     @endif
                                                                 @else
                                                                     <h5>No Package Availabe Yet!</h5>   
@@ -57,8 +57,8 @@
                                                         <div class="cta-row">
                                                             <a href="#">
                                                                 <span>Expiry Date</span>
-                                                                @if($seller_package)
-                                                                <h5>{{ date('d M, Y H:i:s A', strtotime($seller_package->expiry_date)) }}</h5>
+                                                                @if($my_current_buyer_package)
+                                                                <h5>{{ date('d M, Y H:i:s A', strtotime($my_current_buyer_package->expiry_date)) }}</h5>
                                                                  @else
                                                                  <h5>###</h5>   
                                                                 @endif
@@ -67,18 +67,22 @@
                                                         <div class="cta-row">
                                                             <a href="#">
                                                                 <span>Available Balance</span>
-                                                                @if($seller_walletBalance)
-                                                                 
-                                                                <h5>&#8377; {{$seller_walletBalance->current_amount}}</h5>
-                                                                  
+                                                                @if($buyer_walletBalance)  
+                                                                <h5>{{$buyer_walletBalance->current_unit}}</h5> 
                                                                 @else
                                                                 <h5>0.00</h5>   
                                                                @endif
                                                             </a>
                                                         </div>
                                                         <div class="cta-row">
-                                                            <a href="{{ route('user.wallet_transaction')}}">
+                                                            <a href="{{ route('user.buyer_wallet_transaction')}}">
                                                                 <span>Wallet History</span>
+                                                                <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt="">
+                                                            </a>
+                                                        </div>
+                                                        <div class="cta-row">
+                                                            <a href="{{ route('user.buyer_package_history')}}">
+                                                                <span>Package History</span>
                                                                 <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt="">
                                                             </a>
                                                         </div>
@@ -88,9 +92,9 @@
                                                         <div class="cta-row">
                                                             <a href="#">
                                                                 <span>Current Package</span>
-                                                                @if($seller_package)
-                                                                    @if($seller_package->getPackageDetails)
-                                                                        <h5>{{$seller_package->getPackageDetails->package_name}}</h5> 
+                                                                @if($my_current_seller_package)
+                                                                    @if($my_current_seller_package->getPackageDetails)
+                                                                        <h5>{{$my_current_seller_package->getPackageDetails->package_name}}</h5> 
                                                                     @endif
                                                                 @else
                                                                     <h5>No Package Availabe Yet!</h5>   
@@ -100,8 +104,8 @@
                                                         <div class="cta-row">
                                                             <a href="#">
                                                                 <span>Expiry Date</span>
-                                                                @if($seller_package)
-                                                                <h5>{{ date('d M, Y H:i:s A', strtotime($seller_package->expiry_date)) }}</h5>
+                                                                @if($my_current_seller_package)
+                                                                <h5>{{ date('d M, Y H:i:s A', strtotime($my_current_seller_package->expiry_date)) }}</h5>
                                                                  @else
                                                                  <h5>###</h5>   
                                                                 @endif
@@ -120,8 +124,14 @@
                                                             </a>
                                                         </div>
                                                         <div class="cta-row">
-                                                            <a href="{{ route('user.wallet_transaction')}}">
+                                                            <a href="{{ route('user.seller_wallet_transaction')}}">
                                                                 <span>Wallet History</span>
+                                                                <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt="">
+                                                            </a>
+                                                        </div>
+                                                        <div class="cta-row">
+                                                            <a href="{{ route('user.seller_package_history')}}">
+                                                                <span>Package History</span>
                                                                 <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt="">
                                                             </a>
                                                         </div>

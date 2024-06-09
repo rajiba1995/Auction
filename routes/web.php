@@ -54,7 +54,10 @@ Route::get('/clear-cache', function() {
             Route::get('/change-password', [UserController::class, 'changePassword'])->name('user.change_password');
             Route::post('/change-password', [UserController::class, 'changePasswordUpdate'])->name('user.change_password_update');
             Route::get('/transaction', [UserController::class, 'transaction'])->name('user.transaction');
-            Route::get('/wallet_transaction', [UserController::class, 'wallet_transaction'])->name('user.wallet_transaction');
+            Route::get('/seller_wallet_transaction', [UserController::class, 'seller_wallet_transaction'])->name('user.seller_wallet_transaction');
+            Route::get('/buyer_wallet_transaction', [UserController::class, 'buyer_wallet_transaction'])->name('user.buyer_wallet_transaction');
+            Route::get('/seller_package_history', [UserController::class, 'seller_package_history'])->name('user.seller_package_history');
+            Route::get('/buyer_package_history', [UserController::class, 'buyer_package_history'])->name('user.buyer_package_history');
             Route::post('/transaction/purchase', [UserController::class, 'purchase'])->name('user.purchase.transaction');
             Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
             Route::get('/profile/edit', [UserController::class, 'ProfileEdit'])->name('user.profile.edit');

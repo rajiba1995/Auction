@@ -16,8 +16,8 @@
                             <div class="tab-content">
                                 <div class="tab-content-wrapper">
                                     <div class="top-content-bar">
-                                        <h5 class="text-light">My Wallet History</h5>
-                                        <a href="{{route('user.wallet_management')}}" class="btn btn-normal btn-cta"><i class="fa-solid fa-backward"></i>                                              
+                                        <h5 class="text-light">My Seller Wallet History</h5>
+                                        <a href="{{route('user.wallet_management', ['package' => 'seller'])}}" class="btn btn-normal btn-cta"><i class="fa-solid fa-backward"></i>                                              
                                         Back
                                         </a>
                                     </div>
@@ -26,20 +26,20 @@
                                             <thead>
                                                 <tr>
                                                     <th>SL.</th>        
-                                                    <th>Credit Amount</th>
-                                                    <th>Debit Amount</th>                                               
-                                                    <th>Current Amount</th>
+                                                    <th>Credit Unit</th>
+                                                    <th>Debit Unit</th>                                               
+                                                    <th>Current Unit</th>
                                                     <th>Date</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="align-middle">
-                                                @forelse ($wallet_transactions as $key =>$item)
+                                                @forelse ($seller_wallet_transactions as $key =>$item)
                                                 <tr>
                                                     <td> {{ $key+1 }}</td>
-                                                    <td>{{ number_format($item->credit_amount, 2) }}</td>
-                                                    <td>{{ number_format($item->debit_amount, 2) }}</td>
-                                                    <td>{{ number_format($item->current_amount, 2) }}</td>
-                                                    <td> {{ $item->created_at->format('d-M-Y') }}</td>
+                                                    <td>{{ number_format($item->credit_unit, 2) }}</td>
+                                                    <td>{{ number_format($item->debit_unit, 2) }}</td>
+                                                    <td>{{ number_format($item->current_unit, 2) }}</td>
+                                                    <td> {{ $item->created_at->format('d-M-Y h:i:s A') }}</td>
                                                 </tr>
                                                 @empty
                                                 <tr>
@@ -49,7 +49,7 @@
                                         
                                             </tbody>
                                         </table>
-                                        {{$wallet_transactions->appends($_GET)->links()}}
+                                        {{$seller_wallet_transactions->appends($_GET)->links()}}
                                     </div>
                                 </div>
                             </div>

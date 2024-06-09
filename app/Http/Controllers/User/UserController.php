@@ -510,9 +510,11 @@ class UserController extends Controller{
     }
     public function wallet_management(){
         $data = $this->AuthCheck();
-        $seller_package = MySellerPackage::where('user_id',$data->id)->latest()->first();
+        $my_current_seller_package = MySellerPackage::where('user_id',$data->id)->latest()->first();
+        $my_current_buyer_package = MyBuyerPackage::where('user_id',$data->id)->latest()->first();
         $seller_walletBalance = MySellerWallet::where(["user_id"=>$data->id])->latest()->first();
-        return view('front.user.wallet_management',compact('data','seller_package','seller_walletBalance'));
+        $buyer_walletBalance = MyBuyerWallet::where(["user_id"=>$data->id])->latest()->first();
+        return view('front.user.wallet_management',compact('data','my_current_seller_package','seller_walletBalance','my_current_buyer_package','buyer_walletBalance'));
     }
     public function package_payment_management(Request $request){
         $data = $this->AuthCheck();
@@ -760,10 +762,25 @@ class UserController extends Controller{
         }
         return view('front.user.transaction',compact('data','transactions'));
     }
-    public function wallet_transaction(){
+    public function seller_wallet_transaction(){
         $data = $this->AuthCheck();
-        $wallet_transactions = $this->userRepository->getAllWalletTransactionByUserId($data->id);
-        return view('front.user.wallet',compact('data','wallet_transactions'));
+        $seller_wallet_transactions = $this->userRepository->getSellerAllWalletTransactionByUserId($data->id);
+        return view('front.user.seller_wallet',compact('data','seller_wallet_transactions'));
+    }
+    public function buyer_wallet_transaction(){
+        $data = $this->AuthCheck();
+        $buyer_wallet_transactions = $this->userRepository->getBuyerAllWalletTransactionByUserId($data->id);
+        return view('front.user.buyer_wallet',compact('data','buyer_wallet_transactions'));
+    }
+    public function seller_package_history(){
+        $data = $this->AuthCheck();
+        $seller_package_history = $this->userRepository->getSellerPackagehistory($data->id);
+        return view('front.user.seller_package_history',compact('data','seller_package_history'));
+    }
+    public function buyer_package_history(){
+        $data = $this->AuthCheck();
+        $buyer_package_history = $this->userRepository->getBuyerPackagehistory($data->id);
+        return view('front.user.buyer_package_history',compact('data','buyer_package_history'));
     }
     public function changePassword(){
         $data = $this->AuthCheck();

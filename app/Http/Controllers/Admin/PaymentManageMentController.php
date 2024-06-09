@@ -167,7 +167,7 @@ class PaymentManageMentController extends Controller
                     $row->transaction_id ? $row->transaction_id : '',
                     $row->getUserAllDetails ? $row->getUserAllDetails->name : '',
                     $row->getUserAllDetails ? $row->getUserAllDetails->email : '',
-                    $row->getUserAllDetails ? $row->getUserAllDetails->phone : '',          
+                    $row->getUserAllDetails ? $row->getUserAllDetails->mobile : '',          
                     $row->amount ? $row->amount : '',          
                     date("Y-m-d h:i a",strtotime($row->created_at)) ? date("d-m-Y h:i a",strtotime($row->created_at)) : ''
                     

@@ -16,6 +16,7 @@ use App\Models\State;
 use App\Models\City;
 use App\Models\Badge;
 use App\Models\MyBuyerPackage;
+use App\Models\MyBuyerWallet;
 use App\Models\MySellerPackage;
 use App\Models\UserDocument;
 use Illuminate\Http\UploadedFile;
@@ -372,8 +373,22 @@ class UserRepository implements UserContract
     return $query->paginate(25);
        
     }
-    public function getAllWalletTransactionByUserId($id){
+    public function getSellerAllWalletTransactionByUserId($id){
        return MySellerWallet::where('user_id',$id)->paginate(20);
+       
+    }
+    public function getBuyerAllWalletTransactionByUserId($id){
+       return MyBuyerWallet::where('user_id',$id)->paginate(20);
+       
+    }
+    public function getSellerPackagehistory($id){
+       $data = DB::table('old_seller_packages')->where('user_id',$id)->paginate(20);
+       return $data;
+       
+    }
+    public function getBuyerPackagehistory($id){
+       $data = DB::table('old_buyer_packages')->where('user_id',$id)->paginate(20);
+       return $data;
        
     }
     public function getUserAllReviewRating($id){
