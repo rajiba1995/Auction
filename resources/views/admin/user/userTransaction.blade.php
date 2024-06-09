@@ -24,6 +24,13 @@
                             <input type="date" class="form-control form-control-sm" name="end_date" id="end_date" value="{{ request()->input('end_date') }}" >
                         </div>
                         <div class="col-lg-auto col-12">
+                            <select name="status" class="form-control" class="w-100">
+                                <option value="0" selected>All</option>
+                                <option value="1">Seller</option>
+                                <option value="2">Buyer</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-auto col-12">
                             <input type="text" name="keyword" placeholder="Global Search..." value="{{request()->input('keyword')??""}}" class="w-100"/>
                         </div>
                         <div class="col-lg-auto col-12 text-end">

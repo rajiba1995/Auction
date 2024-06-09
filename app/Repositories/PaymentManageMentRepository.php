@@ -110,7 +110,7 @@ class PaymentManageMentRepository implements PaymentManageMentContract
     public function  getAllTransaction(){
       return Transaction::latest('id')->paginate(20);
     }
-    public function getSearchTransaction($keyword,$startDate,$endDate)
+    public function getSearchTransaction($keyword,$startDate,$endDate,$status)
     {
         $query = Transaction::query();
         
@@ -126,6 +126,12 @@ class PaymentManageMentRepository implements PaymentManageMentContract
                 $query->where('created_at', '>=', $startDate." 00:00:00")
                       ->where('created_at', '<=', date("Y-m-d 23:59:59",strtotime($endDate)));
             });
+            
+        if ($status == 1) {
+            $query->where('user_type', 1); // Seller
+        } elseif ($status == 2) {
+            $query->where('user_type', 2); // Buyer
+        }
         }
         return $data = $query->latest('id')->paginate(25);
 

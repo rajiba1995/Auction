@@ -126,7 +126,7 @@ class UserDetailsRepository implements UserDetailsContract
        return Transaction::where('user_id',$id)->paginate(20);
     }
     
-    public function getSearchUsersTransaction($keyword,$startDate,$endDate)
+    public function getSearchUsersTransaction($keyword,$startDate,$endDate,$status,$id)
     {
         $query = Transaction::query();
 
@@ -145,7 +145,12 @@ class UserDetailsRepository implements UserDetailsContract
                       ->where('created_at', '<=', date("Y-m-d 23:59:59",strtotime($endDate)));
             });
         }
-        return $data = $query->latest('id')->paginate(25);
+        if ($status == 1) {
+            $query->where('user_type', 1); // Seller
+        } elseif ($status == 2) {
+            $query->where('user_type', 2); // Buyer
+        }
+        return $data = $query->where('user_id',$id)->latest('id')->paginate(25);
     }
     public function getUserCurrentPackageById($id)
     {

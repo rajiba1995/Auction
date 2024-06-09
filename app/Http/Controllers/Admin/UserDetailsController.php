@@ -160,8 +160,9 @@ class UserDetailsController extends Controller
         $startDate = $request->start_date ?? '';
         $endDate = $request->end_date ?? '';
         $keyword = $request->keyword ?? '';
-        if (!empty($keyword) || !empty($startDate) || !empty($endDate)) {  
-            $data = $this->userDetailsRepository->getSearchUsersTransaction($keyword,$startDate,$endDate);
+        $status = $request->status ?? '';
+        if (!empty($keyword) || !empty($startDate) || !empty($endDate) || !empty($status)) {  
+            $data = $this->userDetailsRepository->getSearchUsersTransaction($keyword,$startDate,$endDate,$status,$id);
             }else{
             $data = $this->userDetailsRepository->getUserAllTransactionById($id);
             }

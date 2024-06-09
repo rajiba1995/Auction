@@ -120,8 +120,9 @@ class PaymentManageMentController extends Controller
         $startDate = $request->start_date ?? '';
         $endDate = $request->end_date ?? '';
         $keyword = $request->keyword ?? '';
-        if (!empty($keyword) || !empty($startDate) || !empty($endDate)) {     
-            $data = $this->payment_management_Repository->getSearchTransaction($keyword,$startDate,$endDate);            
+        $status = $request->status ?? '';
+        if (!empty($keyword) || !empty($startDate) || !empty($endDate) || !empty($status) ) {     
+            $data = $this->payment_management_Repository->getSearchTransaction($keyword,$startDate,$endDate,$status);            
             }else{
              $data = $this->payment_management_Repository->getAllTransaction();
             }
@@ -132,6 +133,7 @@ class PaymentManageMentController extends Controller
         $startDate = $request->start_date ?? '';
         $endDate = $request->end_date ?? '';
         $keyword = $request->keyword ?? '';
+        $status = $request->status ?? '';
 
         $query = Transaction::query();
 
@@ -147,6 +149,11 @@ class PaymentManageMentController extends Controller
                 $query->where('created_at', '>=', $startDate." 00:00:00")
                       ->where('created_at', '<=', date("Y-m-d 23:59:59",strtotime($endDate)));
             });
+        }
+        if ($status == 1) {
+            $query->where('user_type', 1); // Seller
+        } elseif ($status == 2) {
+            $query->where('user_type', 2); // Buyer
         }
         $data = $query->latest('id')->get();
 

@@ -20,6 +20,13 @@
                             <input type="date" class="form-control form-control-sm" name="end_date" id="end_date" value="{{ request()->input('end_date') }}" >
                         </div>
                         <div class="col-lg-auto col-12">
+                            <select name="status" class="form-control" class="w-100">
+                                <option value="0" selected>All</option>
+                                <option value="1">Seller</option>
+                                <option value="2">Buyer</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-auto col-12">
                             <input type="text" name="keyword" placeholder="Global Search..." value="{{request()->input('keyword')??''}}" class="w-100"/>
                         </div>
                         <div class="col-lg-auto col-12 text-end">
@@ -40,6 +47,7 @@
             <th>User Name</th>
             <th>User Details</th>
             <th>Mode</th>
+            <th>Purpose</th>
             <th>Transaction Amount</th>
             <th>Transaction Source</th>
             <th>Date</th>
@@ -67,6 +75,7 @@
                 @endif
             </td>      
             <td> {{ $item->transaction_type == 1? 'Online' : 'Offline' }}</td>              
+            <td> {{ $item->purpose}}</td>              
             <td>&#8377; {{ number_format($item->amount, 2, '.', ',') }}</td>  
             <td> {{ $item->transaction_source }}</td>      
             <td> {{ $item->created_at->format('d-M-Y') }}</td>      
