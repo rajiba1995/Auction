@@ -25,9 +25,9 @@
                         </div>
                         <div class="col-lg-auto col-12">
                             <select name="status" class="form-control" class="w-100">
-                                <option value="0" selected>All</option>
-                                <option value="1">Seller</option>
-                                <option value="2">Buyer</option>
+                                <option {{$status == 0?"selected":""}}  value="0" >All</option>
+                                <option {{$status == 1?"selected":""}} value="1">Seller</option>
+                                <option {{$status == 2?"selected":""}} value="2">Buyer</option>
                             </select>
                         </div>
                         <div class="col-lg-auto col-12">

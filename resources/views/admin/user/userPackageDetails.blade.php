@@ -37,38 +37,38 @@
                         <th>Package Name</th>
                         <th>Duration</th>
                         <th>Amount</th>
-                        <th>Monthly Credit unit</th>
+                        <th>Package Credit unit</th>
                         <th>Start date</th>
                         <th>Expiry date</th>
 
                     </tr>
                 </thead>
                 <tbody class="align-middle">
-                    @if($currernt_package)
+                    @if($buyer_currernt_package)
                     <tr>
-                        <td> {{ 1 }}</td>
-                        <td> {{ $currernt_package->getPackageDetails ? $currernt_package->getPackageDetails->package_name :"" }}</td>      
-                        <td> {{ $currernt_package->package_duration}} Months</td>         
-                        <td> {{ $currernt_package->purchase_amount }}</td>      
-                        <td> {{ $currernt_package->monthly_credit }}</td>    
-                        <td>{{date("d-m-Y",strtotime($currernt_package->created_at))}}</td>
-                        <td>{{date("d-m-Y",strtotime($currernt_package->expiry_date))}}</td>
+                        <td> {{ '#' }}</td>
+                        <td> {{ $buyer_currernt_package->package_data ? $buyer_currernt_package->package_data->package_name :"" }}</td>      
+                        <td> {{ $buyer_currernt_package->package_duration}} Months</td>         
+                        <td> {{ $buyer_currernt_package->purchase_amount }}</td>      
+                        <td> {{ $buyer_currernt_package->monthly_credit }}</td>    
+                        <td>{{date("d-m-Y",strtotime($buyer_currernt_package->created_at))}}</td>
+                        <td>{{date("d-m-Y",strtotime($buyer_currernt_package->expiry_date))}}</td>
                     </tr>
                     @endif
-                
-                    @forelse ($old_package as $key =>$item)
-                    @php
-                        $seller_Package = App\Models\SellerPackage::where('id',$item->package_id)->first();
-                    @endphp
                     <tr class="bg-primary text-white">
-                        <td colspan="100%" class="text-center">User old Seller Package</td>
+                        <td colspan="100%" class="text-center">User old Buyer Package</td>
                     </tr>
+                    @forelse ($buyer_old_package as $key =>$item)
+                    @php
+                        $seller_Package = App\Models\SellerPackage::where('id',$item->package_Id)->first();
+                    @endphp
+             
                     <tr>
-                        <td> {{ $loop->index+2 }}</td>
+                        <td> {{ $loop->index+1 }}</td>
                         <td> {{ $seller_Package->package_name}}</td>      
                         <td> {{ $item->package_duration }}</td>      
-                        <td> {{ $item->purchase_amount }}</td>      
-                        <td> {{ $item->monthly_credit }}</td>     
+                        <td> {{ $item->package_amount }}</td>      
+                        <td> {{ $item->package_credit }}</td>     
                         <td>{{date("d-m-Y",strtotime($item->purchase_date))}}</td>
                         <td>{{date("d-m-Y",strtotime($item->expiry_date))}}</td>
                         
@@ -107,27 +107,26 @@
                     </tr>
                 </thead>
                 <tbody class="align-middle">
-                    @if($currernt_package)
+                    @if($seller_currernt_package)
                     <tr>
-                        <td> {{ 1 }}</td>
-                        <td> {{ $currernt_package->getPackageDetails ? $currernt_package->getPackageDetails->package_name :"" }}</td>      
-                        <td> {{ $currernt_package->package_duration}} Months</td>         
-                        <td> {{ $currernt_package->purchase_amount }}</td>      
-                        <td> {{ $currernt_package->monthly_credit }}</td>    
-                        <td>{{date("d-m-Y",strtotime($currernt_package->created_at))}}</td>
-                        <td>{{date("d-m-Y",strtotime($currernt_package->expiry_date))}}</td>
+                        <td> {{ '#' }}</td>
+                        <td> {{ $seller_currernt_package->getPackageDetails ? $seller_currernt_package->getPackageDetails->package_name :"" }}</td>      
+                        <td> {{ $seller_currernt_package->package_duration}} Months</td>         
+                        <td> {{ $seller_currernt_package->purchase_amount }}</td>      
+                        <td> {{ $seller_currernt_package->monthly_credit }}</td>    
+                        <td>{{date("d-m-Y",strtotime($seller_currernt_package->created_at))}}</td>
+                        <td>{{date("d-m-Y",strtotime($seller_currernt_package->expiry_date))}}</td>
                     </tr>
                     @endif
-                
-                    @forelse ($old_package as $key =>$item)
-                    @php
-                        $seller_Package = App\Models\SellerPackage::where('id',$item->package_id)->first();
-                    @endphp
                     <tr class="bg-primary text-white">
                         <td colspan="100%" class="text-center">User old Seller Package</td>
                     </tr>
+                    @forelse ($seller_old_package as $key =>$item)
+                    @php
+                        $seller_Package = App\Models\SellerPackage::where('id',$item->package_id)->first();
+                    @endphp
                     <tr>
-                        <td> {{ $loop->index+2 }}</td>
+                        <td> {{ $loop->index+1 }}</td>
                         <td> {{ $seller_Package->package_name}}</td>      
                         <td> {{ $item->package_duration }}</td>      
                         <td> {{ $item->purchase_amount }}</td>      

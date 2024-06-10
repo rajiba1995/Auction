@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Contracts\UserDetailsContract;
+use App\Contracts\UserContract;
+use App\Models\MyBuyerWallet;
+use App\Models\MySellerWallet;
+use App\Models\WebsiteLogs;
 use Auth;
 use App\Models\User;
 
@@ -13,10 +17,21 @@ use App\Models\User;
 class UserDetailsController extends Controller
 {
     protected $userDetailsRepository;
+    protected $userRepository;
 
-    public function __construct(UserDetailsContract $userDetailsRepository)
+
+    public function __construct(UserDetailsContract $userDetailsRepository,UserContract $userRepository)
     {
         $this->userDetailsRepository = $userDetailsRepository;
+        $this->userRepository = $userRepository;
+
+    }
+    public function AuthCheck(){
+        if(Auth::guard('web')->check()){
+            return Auth::guard('web')->user();
+        } else{
+           return "";
+        }
     }
 
     // Banner
@@ -166,15 +181,101 @@ class UserDetailsController extends Controller
             }else{
             $data = $this->userDetailsRepository->getUserAllTransactionById($id);
             }
-        return view('admin.user.userTransaction', compact('data','id'));
+        return view('admin.user.userTransaction', compact('data','id','status'));
+    }
+    public function UserWalletView(Request $request,int $user_id)
+    { 
+        $seller_wallet_transactions = $this->userRepository->getSellerAllWalletTransactionByUserId($user_id);
+        $buyer_wallet_transactions = $this->userRepository->getBuyerAllWalletTransactionByUserId($user_id);
+        return view('admin.user.userWallet', compact('seller_wallet_transactions','buyer_wallet_transactions','user_id'));
+       
+    }
+    public function GiftBuyerCredit(Request $request)
+    { 
+     
+        $request->validate([
+            'buyer_gift_credit' => 'required|numeric',    
+        ]);
+        // Retrieve the latest wallet record for the user
+        $latest_wallet = MyBuyerWallet::where('user_id', $request->user_id)->latest()->first();
+        // Calculate the current balance based on the latest wallet record
+        $current_balance = $latest_wallet ? $latest_wallet->current_unit : 0;
+        // Update Wallet
+        $wallet_credit = $request->buyer_gift_credit;
+        $buyer_gift_credit = new MyBuyerWallet();
+        $buyer_gift_credit->user_id = $request->user_id;
+        $buyer_gift_credit->type = 1;
+        $buyer_gift_credit->debit_unit = 0;
+        $buyer_gift_credit->credit_unit = $request->buyer_gift_credit;
+        $buyer_gift_credit->current_unit = $current_balance + $wallet_credit;
+        $buyer_gift_credit->status = 1;
+        $buyer_gift_credit->save();
+
+        if($buyer_gift_credit){
+            $json_data = [
+                'gifted_by' =>'Admin' ,
+                'gifted_to_buyer' =>$request->user_id ,
+                'credit_amount' => $request->buyer_gift_credit,
+                
+            ];
+          
+            $websiteLog =new WebsiteLogs();
+            $websiteLog->logs_type ="GIFT CREDIT TO BUYER";
+            $websiteLog->table_name ="my_buyer_wallets";
+            $websiteLog->response =json_encode($json_data);
+            $websiteLog->save();
+        }
+    return redirect()->back()->with('success',"You gift free credit to this buyer");
+       
+    }
+    public function GiftSellerCredit(Request $request)
+    { 
+     
+        $request->validate([
+            'seller_gift_credit' => 'required|numeric',    
+        ]);
+        // Retrieve the latest wallet record for the user
+        $latest_wallet = MySellerWallet::where('user_id', $request->user_id)->latest()->first();
+        // Calculate the current balance based on the latest wallet record
+        $current_balance = $latest_wallet ? $latest_wallet->current_unit : 0;
+        // Update Wallet
+        $wallet_credit = $request->seller_gift_credit;
+        $seller_gift_credit = new MySellerWallet();
+        $seller_gift_credit->user_id = $request->user_id;
+        $seller_gift_credit->type = 1;
+        $seller_gift_credit->debit_unit = 0;
+        $seller_gift_credit->credit_unit = $request->seller_gift_credit;
+        $seller_gift_credit->current_unit = $current_balance + $wallet_credit;
+        $seller_gift_credit->status = 1;
+        $seller_gift_credit->save();
+
+        if($seller_gift_credit){
+            $json_data = [
+                'gifted_by' =>'Admin' ,
+                'gifted_to_seller' =>$request->user_id ,
+                'credit_amount' => $request->seller_gift_credit,
+                
+            ];
+          
+            $websiteLog =new WebsiteLogs();
+            $websiteLog->logs_type ="GIFT CREDIT TO SELLER";
+            $websiteLog->table_name ="my_seller_wallets";
+            $websiteLog->response =json_encode($json_data);
+            $websiteLog->save();
+        }
+        return redirect()->route('admin.user.wallet.view', ['id' => $request->user_id, 'package' => 'seller'])->with('success', "You gifted free credit to this seller");
+
+       
     }
 
     public function UserPackageDetailsView(Request $request,int $id)
     { 
-        $currernt_package = $this->userDetailsRepository->getUserCurrentPackageById($id);
-        $old_package = $this->userDetailsRepository->getUserOldPackageById($id);
-        return view('admin.user.userPackageDetails', compact('currernt_package','old_package'));
-        // return view('admin.user.userPackageDetails');
+        $seller_currernt_package = $this->userDetailsRepository->getUserSellerCurrentPackageById($id);
+        $seller_old_package = $this->userDetailsRepository->getUserSellerOldPackageById($id);
+        $buyer_currernt_package = $this->userDetailsRepository->getUserBuyerCurrentPackageById($id);
+        $buyer_old_package = $this->userDetailsRepository->getUserBuyerOldPackageById($id);
+        return view('admin.user.userPackageDetails', compact('seller_currernt_package','seller_old_package','buyer_currernt_package','buyer_old_package'));
+        
 
     }
 
