@@ -231,12 +231,13 @@
                                                             $maskedNumber = substr_replace($mobile, 'xxxxxxxx', 0, -3);
                                                             // $business_name_slug = optional($item->SellerData)->business_name
                                                             // ? Str::slug($item->SellerData->business_name, '-') : '';
+                                                           
                                                             if($item->SellerData){
-                                                                $seller_city = getCitySlug($item->SellerData?$item->SellerData->city:"");
+                                                                $seller_city = getCitySlug($item->SellerData->city?$item->SellerData->city:"");
                                                             }
                                                         @endphp
                                                         +91-{{ $maskedNumber }}
-
+                                                        
                                                     </div>
                                                     <div class="cta">
                                                         <a href="{{ route('user.profile.fetch', [$seller_city,$item->SellerData->slug_business_name]) }}"

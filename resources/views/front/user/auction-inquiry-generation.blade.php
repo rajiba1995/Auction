@@ -415,11 +415,9 @@
                                             </label>
                                             <select id="selectRegion" class="form-control border-red select-region {{ ($existing_inquiry && $existing_inquiry->location_type == "region") || (old('auctionfrom') == "region") ? "show" : "" }}" name="region">
                                                 <option value="" selected hidden>Select Region</option>
-                                                <option value="Delhi" {{ $existing_inquiry && $existing_inquiry->location == "Delhi" ? 'selected' : '' }}>Delhi</option>
-                                                <option value="Mumbai" {{ $existing_inquiry && $existing_inquiry->location == "Mumbai" ? 'selected' : '' }}>Mumbai</option>
-                                                <option value="Kolkata" {{ $existing_inquiry && $existing_inquiry->location == "Kolkata" ? 'selected' : '' }}>Kolkata</option>
-                                                <option value="Pune" {{ $existing_inquiry && $existing_inquiry->location == "Pune" ? 'selected' : '' }}>Pune</option>
-                                                <option value="Bangalore" {{ $existing_inquiry && $existing_inquiry->location == "Bangalore" ? 'selected' : '' }}>Bangalore</option>
+                                                @foreach ($States as $item)
+                                                    <option value="{{$item->name}}" {{ $existing_inquiry && $existing_inquiry->location == $item->name ? 'selected' : '' }}>{{$item->name}}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>

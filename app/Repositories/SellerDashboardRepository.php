@@ -35,7 +35,7 @@ class SellerDashboardRepository implements SellerDashboardContract{
     
     public function all_participants_inquiries_of_seller($id){
         return DB::table('inquiries')
-            ->select('users.name as buyer_name', 'inquiry_participants.user_id as my_id', 'inquiries.*')
+            ->select('users.name as buyer_name', 'inquiry_participants.status as status','inquiry_participants.selected_from as selected_from', 'inquiry_participants.user_id as my_id', 'inquiries.*')
             ->join('inquiry_participants', 'inquiry_participants.inquiry_id', '=', 'inquiries.id')
             ->join('users', 'users.id', '=', 'inquiries.created_by')
             ->where('inquiry_participants.user_id', $id)

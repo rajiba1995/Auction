@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\InquiryParticipant;
+use App\Models\InquiryOutsideParticipant;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -99,6 +101,22 @@ class RegisteredUserController extends Controller
             $userUpdate  = User::findOrFail($user->id);
             $userUpdate->mobile_status = 1;
             $userUpdate->save();
+            if($userUpdate){
+                $Exist_outside_participant = InquiryOutsideParticipant::where('mobile', $userUpdate->mobile)->get();
+                if(isset($Exist_outside_participant)){
+                    foreach($Exist_outside_participant as $k =>$item){
+                        $outside_participant_data = InquiryOutsideParticipant::where('mobile', $item->mobile)->where('inquiry_id', $item->inquiry_id)->first();
+                        $inqOutParti =  new InquiryParticipant;
+                        $inqOutParti->inquiry_id = $item->inquiry_id;
+                        $inqOutParti->user_id = $userUpdate->id;
+                        $inqOutParti->selected_from = 1;//1 for Close Inquiry
+                        $inqOutParti->save();
+                        if($inqOutParti){
+                            $outside_participant_data->delete();
+                        }
+                    }
+                }
+            }
             Session::forget('otp');
             session(['user' => $userUpdate]);
             return response()->json(['status'=>200]);

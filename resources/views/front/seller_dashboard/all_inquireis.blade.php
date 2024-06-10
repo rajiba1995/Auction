@@ -202,6 +202,9 @@
                                                                         <li>
                                                                             <label>Inquiry Type</label>
                                                                             <p>{{$item->inquiry_type}}</p>
+                                                                            @if($item->selected_from==1)
+                                                                            <p class="badge bg-success text-light">Buyer select you</p>
+                                                                            @endif
                                                                         </li>
                                                                         <li>
                                                                             <label>Category</label>

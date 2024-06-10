@@ -72,5 +72,6 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'client' => \App\Http\Middleware\ClientMiddleware::class,
         'checkActiveSellerPackage' => \App\Http\Middleware\CheckActiveSellerPackage::class,
+        'check.user.profile' => \App\Http\Middleware\CheckUserProfile::class,
     ];
 }

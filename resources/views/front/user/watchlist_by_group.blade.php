@@ -11,6 +11,13 @@
                             <ul>
                                 <li><a href="{{route('user.watchlist')}}" class="text-primary">Home</a></li>
                                 <li>&nbsp;>&nbsp;{{$GroupWatchList->group_name}}</span></li>
+                                <li>
+                                     @if (session('warning'))
+                                        <div class="alert alert-warning" id="successAlert">
+                                            {{ session('warning') }}
+                                        </div>
+                                    @endif
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -644,7 +651,6 @@
                 url: ' {{route("user.invite_outside_participants.store") }} ',
                 data: formData,
                 success: function(response) {
-                    // Handle success response
                     location.reload();
                 },
                 error: function(xhr, status, error) {

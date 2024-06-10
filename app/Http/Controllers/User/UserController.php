@@ -1136,26 +1136,42 @@ class UserController extends Controller{
     }
 
     public function InviteOutSideParticipants(Request $request){
-        $data = $this->AuthCheck();
+    $data = $this->AuthCheck();
         // Make sure both arrays have the same number of elements
       if(count($request->name) !== count($request->phone)) {
           return response()->json(['error' => 'Names and phones arrays must have the same number of elements'], 400);
       }
         $goupId = $request->groupId;
-        $name = $request->name;
-        $phone = $request->phone;
-
         // Iterate over the arrays and save each participant
         foreach($request->name as $key => $name) {
             $phone = $request->phone[$key]; // Get corresponding phone number
-            $outSide_participants = new OutsideParticipant();
-            $outSide_participants->group_id = $request->groupId; // Use groupId directly
-            $outSide_participants->buyer_id = $data->id;
-            $outSide_participants->name = $name;
-            $outSide_participants->mobile = $phone;
-            $outSide_participants->save();
+            $User = User::where('mobile', $phone)->first();
+            if($User){
+                if($request->groupId){
+                    $exist_user = WatchList::with('SellerData')->where('buyer_id', $data->id)->where('seller_id', $User->id)->where('group_id', $request->groupId)->first();
+                }else{
+                    $exist_user = WatchList::with('SellerData')->where('buyer_id', $data->id)->where('seller_id', $User->id)->first();
+                }
+                if(!isset($exist_user)){
+                    $WatchList = new WatchList;
+                    $WatchList->buyer_id = $data->id;
+                    $WatchList->seller_id = $User->id;
+                    $WatchList->group_id = $request->groupId?$request->groupId:NULL;
+                    $WatchList->save();
+                }else{
+                    // $business_name = $exist_user->SellerData?$exist_user->SellerData->business_name:"";
+                    session()->flash('warning', ''.$name.' seller already exists');
+                }
+            }else{
+                $outSide_participants = new OutsideParticipant();
+                $outSide_participants->group_id = $request->groupId; // Use groupId directly
+                $outSide_participants->buyer_id = $data->id;
+                $outSide_participants->name = $name;
+                $outSide_participants->mobile = $phone;
+                $outSide_participants->save();
+            }
+           
         }
-
         return response()->json(['status' => 200]);
         }
 }

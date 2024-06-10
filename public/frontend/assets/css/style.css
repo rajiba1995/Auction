@@ -5271,3 +5271,9 @@ table.all-inquiry-wrapper-table > tbody > tr td:last-child {
   font-weight: 600;
   }
   /* notification page dropdown end */
+  div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+    background-color: #0076D7 !important;
+  }
+  div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
+    background-color: #c35850 !important;
+  }

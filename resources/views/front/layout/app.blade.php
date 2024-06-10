@@ -414,7 +414,24 @@
             </div>
         </div>
     </footer>
-    
+    <!-- Modal -->
+    <div class="modal fade" id="profileModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            ...
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Understood</button>
+            </div>
+        </div>
+        </div>
+    </div>
     <script src="{{asset('frontend/assets/js/jquery.min.js')}}"></script>
     <script src="{{asset('frontend/assets/js/fontawesome.min.js')}}"></script>
     <script src="{{asset('frontend/assets/js/bootstrap.bundle.min.js')}}"></script>
@@ -426,6 +443,41 @@
     @yield('script')
     <script src="{{asset('frontend/assets/js/custom.js')}}"></script>
     <script>
+         $(document).ready(function() {
+            @if(session('showProfileModal'))
+            Swal.fire({
+                title: "Please update your profile!",
+                showClass: {
+                    popup: `
+                        animate__animated
+                        animate__fadeInUp
+                        animate__faster
+                    `
+                },
+                hideClass: {
+                    popup: `
+                        animate__animated
+                        animate__fadeOutDown
+                        animate__faster
+                    `
+                },
+                showCancelButton: true, // Show cancel button
+                cancelButtonText: "Cancel",
+                confirmButtonText: "OK"
+                
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "{{ route('user.profile.edit') }}";
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Handle cancel button clicked
+                    // You can add any specific action here if needed
+                }
+            });
+
+
+            @endif
+        });
+
                 $('#global_filter_data').on('keyup', function() {
                 var keyword = $(this).val().toLowerCase();
                 var location = $('#stateInput').val();

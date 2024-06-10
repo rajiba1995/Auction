@@ -31,7 +31,7 @@ Route::get('/clear-cache', function() {
     Route::get('/verify/check',[RegisteredUserController::class,'UserVerifyDataCheck'])->name('front.otp_validation.check');
 
 
-    Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => ['auth', 'check.user.profile']], function () {
         Route::prefix('my')->group(function () {
             Route::get('/rating-and-reviews', [UserController::class, 'RatingAndReview'])->name('user.rating_and_reviews');        
             Route::get('/requirements-and-consumption', [UserController::class, 'RConsumption'])->name('user.requirements_and_consumption');
@@ -60,9 +60,9 @@ Route::get('/clear-cache', function() {
             Route::get('/buyer_package_history', [UserController::class, 'buyer_package_history'])->name('user.buyer_package_history');
             Route::post('/transaction/purchase', [UserController::class, 'purchase'])->name('user.purchase.transaction');
             Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
-            Route::get('/profile/edit', [UserController::class, 'ProfileEdit'])->name('user.profile.edit');
+            // Route::get('/profile/edit', [UserController::class, 'ProfileEdit'])->name('user.profile.edit');
             Route::get('/state_wise_city', [UserController::class, 'StateWiseCity'])->name('user.state_wise_city');
-            Route::post('/profile/update', [UserController::class, 'ProfileUpdate'])->name('user.profile.update');
+            // Route::post('/profile/update', [UserController::class, 'ProfileUpdate'])->name('user.profile.update');
             Route::get('/product-and-service', [UserController::class, 'ProductAndService'])->name('user.product_and_service');
             Route::get('/collection_wise_category', [UserController::class, 'CollectionWiseCategory'])->name('user.collection_wise_category');
             Route::get('/collection_wise_category_by_title', [UserController::class, 'CollectionWiseCategoryBytitle'])->name('user.collection_wise_category_by_title');
@@ -112,7 +112,7 @@ Route::get('/clear-cache', function() {
         // Seller Dashboard
             Route::get('seller/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
             Route::group(['prefix' => 'seller'], function() {
-                Route::group(['middleware' => 'checkActiveSellerPackage'], function() {
+                // Route::group(['middleware' => 'checkActiveSellerPackage'], function() {
                     Route::get('/all-inquiries', [SellerDashboardController::class, 'all_inquiries'])->name('seller_all_inquiries');
                     Route::get('/live-inquiries', [SellerDashboardController::class, 'live_inquiries'])->name('seller_live_inquiries');
                     Route::post('/start-quotes', [SellerDashboardController::class, 'seller_start_quotes'])->name('seller_start_quotes');
@@ -121,7 +121,7 @@ Route::get('/clear-cache', function() {
                     Route::post('/seller-new-comment', [SellerDashboardController::class, 'seller_new_comment'])->name('seller_new_comment');
                     Route::post('/seller-send-new-file', [SellerDashboardController::class, 'seller_send_new_file'])->name('seller_send_new_file');
                     Route::post('/seller-send-new-bill', [SellerDashboardController::class, 'seller_send_new_bill'])->name('seller_send_new_bill');
-                });
+                // });
 
                 Route::get('/pending-inquiries', [SellerDashboardController::class, 'pending_inquiries'])->name('seller_pending_inquiries');
                 Route::get('/confirmed-inquiries', [SellerDashboardController::class, 'confirmed_inquiries'])->name('seller_confirmed_inquiries');
@@ -130,6 +130,12 @@ Route::get('/clear-cache', function() {
                 Route::post('/after-confirm-seller-cancelled-reason', [SellerDashboardController::class, 'after_confirm_seller_cancelled_reason'])->name('after_confirm_seller_cancelled_inquiry');
                 
             });
+    });
+    Route::group(['middleware' => ['auth']], function () {
+        Route::prefix('my')->group(function () {
+            Route::get('/profile/edit', [UserController::class, 'ProfileEdit'])->name('user.profile.edit');
+            Route::post('/profile/update', [UserController::class, 'ProfileUpdate'])->name('user.profile.update');
+        });
     });
 // Admin login routes
 // Route::redirect('/', '/admin/login');

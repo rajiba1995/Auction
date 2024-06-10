@@ -6,6 +6,7 @@ use App\Models\Career;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Blog;
+use App\Models\User;
 use App\Models\State;
 use App\Models\City;
 use App\Models\InquirySellerQuotes;
@@ -239,4 +240,44 @@ function valid_execution_time($execution_time){
 }
 function GetAllQuotesData($inquiry_id){
     return InquiryAllotmentData::with('SellerData')->latest()->where('inquiry_id', $inquiry_id)->get();
+}
+function get_open_sellers($my_city,$my_state,$created_by,$category_id,$sub_category_id){
+    $query = DB::table('users')
+    ->select('users.id as seller_id')
+    ->where(function($query) use ($my_city, $my_state) {
+        $query->where('users.city', $my_city)
+              ->orWhere('users.state', $my_state);
+    })
+    ->where('users.id', '!=', $created_by) // Exclude specific user ID
+    ->distinct(); // Remove duplicate users
+    // Get the user IDs as an array
+    $user_ids = $query->pluck('seller_id')->toArray();
+    $query = DB::table('products')
+    ->select('products.user_id as seller_id')
+    ->where(function($query) use ($category_id, $sub_category_id) {
+        $query->where('products.category_id', $category_id)
+              ->orWhere('products.sub_category_id', $sub_category_id);
+    })->whereIN('products.user_id',$user_ids)
+    ->distinct(); // Remove duplicate users
+    // Get the user IDs as an array
+    return $query->pluck('seller_id')->toArray();
+
+}
+function get_open_sellers_by_country($created_by,$category_id,$sub_category_id){
+    $query = DB::table('users')
+    ->select('users.id as seller_id')
+    ->where('users.id', '!=', $created_by) // Exclude specific user ID
+    ->distinct(); // Remove duplicate users
+    // Get the user IDs as an array
+    $user_ids = $query->pluck('seller_id')->toArray();
+    $query = DB::table('products')
+    ->select('products.user_id as seller_id')
+    ->where(function($query) use ($category_id, $sub_category_id) {
+        $query->where('products.category_id', $category_id)
+              ->orWhere('products.sub_category_id', $sub_category_id);
+    })->whereIN('products.user_id',$user_ids)
+    ->distinct(); // Remove duplicate users
+    // Get the user IDs as an array
+    return $query->pluck('seller_id')->toArray();
+
 }

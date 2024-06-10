@@ -9,7 +9,11 @@ use App\Contracts\UserContract;
 use App\Contracts\MasterContract;
 use App\Models\WatchList;
 use App\Models\User;
+use App\Models\City;
+use App\Models\State;
 use App\Models\Inquiry;
+use App\Models\Collection;
+use App\Models\Category;
 use App\Models\InquiryParticipant;
 use App\Models\OutsideParticipant;
 use App\Models\InquiryOutsideParticipant;
@@ -19,6 +23,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Encryption\DecryptException;
+use DB;
 
 
 
@@ -87,10 +92,10 @@ class AuctionGenerationController extends Controller
             $outside_participant_data = [];
             $outside_participant_without_group = [];
         }
-        
-        
+
         $outside_participant_without_group = OutsideParticipant::where('group_id', null)->where('buyer_id', $user->id)->get();
-        return view('front.user.auction-inquiry-generation', compact('group_id', 'user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group','exsisting_outside_participant'));
+        $States = State::orderBy('name')->select('name')->get();
+        return view('front.user.auction-inquiry-generation', compact('group_id', 'user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group','exsisting_outside_participant', 'States'));
     }
 
     public function auction_inquiry_generation_store(Request $request){
@@ -104,7 +109,7 @@ class AuctionGenerationController extends Controller
             'category' => 'required',
             'sub_category' => 'required',
             // 'description' => 'nullable|string',
-            'execution_date' => 'required|date',
+           'execution_date' => 'required|date|after:end_date',
             'quotes_per_participants' => 'required|numeric',    
             'minimum_quote_amount' => 'nullable|numeric',
             'maximum_quote_amount' => 'nullable|numeric|gt:minimum_quote_amount',
@@ -154,16 +159,15 @@ class AuctionGenerationController extends Controller
             } elseif($request->auctionfrom == "country") {
                 $inquiry->location = "India"; 
             } elseif($request->auctionfrom == "city") {
-                $inquiry->location = $request->city; 
+                $City = City::where('id', $request->city)->first();
+                $inquiry->location = $City?$City->name:""; 
             }
             if($inquiry->inquiry_type=="close auction"){
                 $user = User::findOrFail($request->created_by)->with('CityData')->first();
-                // dd($user);
                 $inquiry->location = $user->city?$user->CityData->name:"";
             }
             $inquiry->location_type =$request->auctionfrom;
             $inquiry->save();
-            // dd($request->all());
             if($inquiry && isset($request->participant) && count($request->participant) > 0){
                 foreach($request->participant as $key => $item){
                     $exist_participants = InquiryParticipant::where('inquiry_id', $inquiry->id)->where('user_id', $item)->get();
@@ -171,31 +175,75 @@ class AuctionGenerationController extends Controller
                         $participant = new InquiryParticipant;
                         $participant->inquiry_id = $inquiry->id;
                         $participant->user_id = $item;
+                        $participant->selected_from = 1;//1 for Close Inquiry & 0 for OPen Inquiry
                         $participant->save();
+                    }else{
+                        $exist_participants->selected_from = 1;//1 for Close Inquiry & 0 for OPen Inquiry
+                        $exist_participants->save(); 
                     }
-                  
                 }
             }
             
             if($inquiry && isset($request->outside_participant) && count($request->outside_participant) > 0){
-              
                 foreach($request->outside_participant as $key => $item){
                     $outside_participant_data = OutsideParticipant::where('id', $item)->first();
                     if($outside_participant_data ){
-                        // $Exist_outside_participant = InquiryOutsideParticipant::where('inquiry_id', $inquiry->id)->where('mobile', $outside_participant_data->mobile)->first();
-                        // if(!isset($Exist_outside_participant)){
+                        $Exist_outside_participant = InquiryOutsideParticipant::where('inquiry_id', $inquiry->id)->where('mobile', $outside_participant_data->mobile)->first();
+                        if(!isset($Exist_outside_participant)){
                             $inqOutParti =  new InquiryOutsideParticipant;
                             $inqOutParti->inquiry_id = $inquiry->id;
                             $inqOutParti->buyer_id = $outside_participant_data->buyer_id;
                             $inqOutParti->name = $outside_participant_data->name;
                             $inqOutParti->mobile = $outside_participant_data->mobile;
+                            $inqOutParti->selected_from = $request->auction_type=="close auction"?1:0;//1 for Close Inquiry & 0 for OPen Inquiry
                             $inqOutParti->save();
                             if($inqOutParti){
                                 $outside_participant_data->delete();
                             }
-                        // }
+                        }else{
+                            $Exist_outside_participant->selected_from = $request->auction_type=="close auction"?1:0;//1 for Close Inquiry & 0 for OPen Inquiry
+                            $Exist_outside_participant->save(); 
+                            if($Exist_outside_participant){
+                                $outside_participant_data->delete();
+                            }
+                        }
                     }
-                  
+                }
+            }
+
+            $my_category = $request->category;
+            $my_sub_category = $request->sub_category;
+
+            // Fetch the category and sub-category IDs
+            $category = Collection::where('title', $my_category)->first();
+            $category_id = $category ? $category->id : null;
+
+            $sub_category = Category::where('title', $my_sub_category)->first();
+            $sub_category_id = $sub_category ? $sub_category->id : null;
+
+            if ($request->auction_type === "open auction") {
+                // dd($request->all());
+                $my_city = $request->auctionfrom=="city"?$request->city:null;
+                $my_state_name = $request->auctionfrom=="region"?$request->region:null;
+                $States = State::where('name', $my_state_name)->first();
+                $my_state = $States?$States->id:null;
+                // Build the query
+                if($request->auctionfrom=="country"){
+                    $open_sellers = get_open_sellers_by_country($request->created_by,$category_id,$sub_category_id);
+                }else{
+                    $open_sellers = get_open_sellers($my_city,$my_state,$request->created_by,$category_id,$sub_category_id);
+                }
+                if(count($open_sellers)>0){
+                    foreach($open_sellers as $k =>$items){
+                        $exist_participants = InquiryParticipant::where('inquiry_id', $inquiry->id)->where('user_id', $items)->get();
+                        if(count($exist_participants)==0){
+                            $participant = new InquiryParticipant;
+                            $participant->inquiry_id = $inquiry->id;
+                            $participant->user_id = $items;
+                            $participant->selected_from = 0;//1 for Close Inquiry & 0 for OPen Inquiry
+                            $participant->save();
+                        }
+                    }
                 }
             }
 
