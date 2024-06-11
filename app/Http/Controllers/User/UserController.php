@@ -9,6 +9,7 @@ use App\Contracts\UserContract;
 use App\Contracts\MasterContract;
 use App\Contracts\BuyerDashboardContract;
 use App\Models\Product;
+use App\Models\Notification;
 use App\Models\Category;
 use App\Models\WatchList;
 use App\Models\MyBadge;
@@ -855,6 +856,19 @@ class UserController extends Controller{
             $WatchList->seller_id =$request->seller_id;
             $WatchList->buyer_id =$request->buyer_id;
             $WatchList->save();
+
+            if($WatchList){
+                // Retrieve the buyer's name
+                $buyer = User::find($request->buyer_id);
+                $buyerName = $buyer ? $buyer->first_name : '';
+
+                $notification = new Notification();
+                $notification->buyer_id =$request->buyer_id;
+                $notification->seller_id =$request->seller_id;
+                $notification->title = $buyerName . ' added you to a watchlist';
+                $notification->save();
+
+            }
             return redirect()->back()->with('success', 'Seller has been successfully added to the watchlist..');
         }
     }
@@ -886,6 +900,23 @@ class UserController extends Controller{
             $WatchList->group_id =$request->group_id;
             $WatchList->status =2;
             $WatchList->save();
+
+            if($WatchList){
+                // Retrieve the buyer's name
+                $buyer = User::find($request->buyer_id);
+                $buyerName = $buyer ? $buyer->first_name : '';
+                $group = GroupWatchList::find($request->group_id);
+                $groupName = $group ? $group->group_name : '';
+
+                $notification = new Notification();
+                $notification->buyer_id =$request->buyer_id;
+                $notification->seller_id =$request->seller_id;
+                $notification->title = $buyerName . ' added you to '.'<strong>'.$groupName.'</strong>'.' watchlist';
+                $notification->link =route('user_seller_dashboard');
+                $notification->save();
+
+            }
+
             return redirect()->back()->with('success', 'Seller has been successfully added to the watchlist..');
         }
     }
@@ -931,11 +962,28 @@ class UserController extends Controller{
         }
         return response()->json(['status'=>200]);     
     }
-    public function DeleteSingleWatchlist(Request $request){
+    public function DeleteSingleWatchlist(Request $request)
+    {
+        // Find the watchlist entry or fail if not found
         $watchList = WatchList::findOrFail($request->id);
-        $watchList->delete();
-        return response()->json(['status'=>200]);     
+        
+        // Retrieve the buyer's name before deleting the watchlist entry
+        $buyer = User::find($watchList->buyer_id);
+        $buyerName = $buyer ? $buyer->first_name : '';
+
+        $wasDeleted = $watchList->delete();
+        if ($wasDeleted) {
+            $notification = new Notification();
+            $notification->buyer_id = $watchList->buyer_id;
+            $notification->seller_id = $watchList->seller_id;
+            $notification->title = $buyerName . ' removed you from watchlist';
+            $notification->save();
+        }
+    
+        // Return a JSON response indicating success
+        return response()->json(['status' => 200]);
     }
+    
     public function MyWatchlistDataDelete($id){
         $WatchList = WatchList::findOrFail($id);
         $WatchList->delete();
