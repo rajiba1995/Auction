@@ -83,6 +83,7 @@
                 <a href="{{route('admin.user.transaction.view', $item->id)}}" class="btn btn-sm btn-outline-primary">Transaction</a>
                 <a href="{{route('admin.user.report', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Reports</a>
                 <a href="{{route('admin.user.package.view', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Package</a>
+                <a href="{{route('admin.user.wallet.view', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Wallet</a>
                 {{-- <button type="button" class="btn btn-delete itemremove" data-id="{{$item->id}}" title="Delete"><i class="fa-regular fa-trash-can"></i></button> --}}
             </td>
 

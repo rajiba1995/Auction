@@ -78,7 +78,7 @@ class AdminInquiryController extends Controller
             $f = fopen('php://memory', 'w');
 
             // Set Column Headers
-            $header = array("Inquiry Id","Buyer Name","Title","Inquiry Type","Location","Category","Sub-Category","Start Date & Time","End Date & Time","Description","Execution Date","Participants","Minimum Quote Amount","Maximum Quote Amount","Final Quote","Date");
+            $header = array("Inquiry Id","Buyer Name","Title","Inquiry Type","Location","Category","Sub-Category","Start Date & Time","End Date & Time","Description","Execution Date","Participants","Minimum Quote Amount","Maximum Quote Amount","Final Quote","Allot Seller","Date");
             fputcsv($f,$header,$delimiter);
 
             $count =1;
@@ -99,6 +99,7 @@ class AdminInquiryController extends Controller
                     $row->minimum_quote_amount ? number_format($row->minimum_quote_amount,2, '.', ',') : '',      
                     $row->maximum_quote_amount ? number_format($row->maximum_quote_amount,2, '.', ',') : '',      
                     $row->inquiry_amount ? number_format($row->inquiry_amount,2, '.', ',') : '',      
+                    $row->allot_seller ? $row->BuyerData->name : '',      
                     date("Y-m-d h:i a",strtotime($row->created_at)) ? date("d-m-Y h:i a",strtotime($row->created_at)) : ''
                     
                 );

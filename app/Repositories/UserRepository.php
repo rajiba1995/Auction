@@ -374,21 +374,28 @@ class UserRepository implements UserContract
        
     }
     public function getSellerAllWalletTransactionByUserId($id){
-       return MySellerWallet::where('user_id',$id)->paginate(20);
+       return MySellerWallet::where('user_id',$id)->latest('id')->paginate(20);
+       
+    }
+    public function getSellerCurrentCreditByUserId($id){
+       return MySellerWallet::where('user_id',$id)->latest('id')->first();
        
     }
     public function getBuyerAllWalletTransactionByUserId($id){
-       return MyBuyerWallet::where('user_id',$id)->paginate(20);
+       return MyBuyerWallet::where('user_id',$id)->latest('id')->paginate(20);
+       
+    }
+    public function getBuyerCurrentCreditByUserId($id){
+       return MyBuyerWallet::where('user_id',$id)->latest('id')->first();
        
     }
     public function getSellerPackagehistory($id){
-       $data = DB::table('old_seller_packages')->where('user_id',$id)->paginate(20);
+       $data = DB::table('old_seller_packages')->where('user_id',$id)->latest('id')->paginate(20);
        return $data;
        
     }
     public function getBuyerPackagehistory($id){
-       $data = DB::table('old_buyer_packages')->where('user_id',$id)->paginate(20);
-       return $data;
+       $data = DB::table('old_buyer_packages')->where('user_id',$id)->latest('id')->paginate(20);
        
     }
     public function getUserAllReviewRating($id){

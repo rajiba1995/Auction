@@ -126,7 +126,7 @@ class PaymentManageMentController extends Controller
             }else{
              $data = $this->payment_management_Repository->getAllTransaction();
             }
-        return view('admin.transaction.index',compact('data'));
+        return view('admin.transaction.index',compact('data','status'));
     }
     public function TransactionDetailsExport(Request $request)
     {

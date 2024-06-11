@@ -167,12 +167,15 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::get('/package/{id}', [UserDetailsController::class, 'UserPackageDetailsView'])->name('admin.user.package.view');
         Route::get('/document/view/{id}', [UserDetailsController::class, 'UserDocumentView'])->name('admin.user.document.view');
         Route::get('/transaction/view/{id}', [UserDetailsController::class, 'UserTransactionView'])->name('admin.user.transaction.view');
+        Route::get('/wallet/view/{id}', [UserDetailsController::class, 'UserWalletView'])->name('admin.user.wallet.view');
         Route::get('/report/view/{id}', [UserDetailsController::class, 'UserReportView'])->name('admin.user.report');
         Route::get('/report/status/{id}', [UserDetailsController::class, 'UserReportStatus'])->name('admin.user.report.status');
         Route::get('/document/status', [UserDetailsController::class, 'UserDocumentStatus'])->name('admin.user.document.status');
         Route::get('/user/block-status/{id}', [UserDetailsController::class, 'UserBlockStatus'])->name('admin.user.block.status');
         Route::get('/export', [UserDetailsController::class, 'UserDetailsExport'])->name('admin.user.details.export');
         Route::get('/status/{id}', [UserDetailsController::class, 'UserStatus'])->name('admin.user.status');
+        Route::post('/gift-buyer-credit', [UserDetailsController::class, 'GiftBuyerCredit'])->name('admin.user.gift.buyer.credit');
+        Route::post('/gift-seller-credit', [UserDetailsController::class, 'GiftSellerCredit'])->name('admin.user.gift.seller.credit');
     });
     //employee details
     Route::group(['prefix'  =>   'employee'], function() {

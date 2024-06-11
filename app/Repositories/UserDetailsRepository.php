@@ -11,6 +11,7 @@ use App\Models\UserDocument;
 use App\Models\SellerReport;
 use App\Models\Transaction;
 use App\Models\MySellerPackage;
+use App\Models\MyBuyerPackage;
 
 use App\Models\UserImage;
 use App\Models\UserAdditionalDocument;
@@ -152,14 +153,26 @@ class UserDetailsRepository implements UserDetailsContract
         }
         return $data = $query->where('user_id',$id)->latest('id')->paginate(25);
     }
-    public function getUserCurrentPackageById($id)
+    public function getUserSellerCurrentPackageById($id)
     {
        return MySellerPackage::where('user_id',$id)->first();
     }
-    public function getUserOldPackageById($id)
+    public function getUserSellerOldPackageById($id)
     {
-       $data = DB::table('old_seller_packages')->where('user_id',$id)->get();
+       $data = DB::table('old_seller_packages')->where('user_id',$id)->latest('id')->paginate(20);
        return $data;
+
+    }
+    public function getUserBuyerCurrentPackageById($id)
+    {
+       return MyBuyerPackage::where('user_id',$id)->first();
+    }
+    public function getUserBuyerOldPackageById($id)
+    {
+    //    $data = DB::table('old_seller_packages')->where('user_id',$id)->get();
+       $data = DB::table('old_buyer_packages')->where('user_id',$id)->latest('id')->paginate(20);
+       return $data;
+
     }
 
 }
