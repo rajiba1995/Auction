@@ -246,6 +246,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
             Route::get('', [AdminInquiryController::class, 'InquiryIndex'])->name('admin.inquiry.index');
             Route::get('/view/{id}', [AdminInquiryController::class, 'InquiryDetailsView'])->name('admin.inquiry.view');
             Route::get('/participants/{id}', [AdminInquiryController::class, 'InquiryParticipantsView'])->name('admin.inquiry.participants');
+            Route::get('/inquiry-pdf/{id}', [AdminInquiryController::class, 'InquiryPdfGenarate'])->name('admin.inquiry.pdf');
             Route::get('/export', [AdminInquiryController::class, 'InquiryDetailsExport'])->name('admin.inquiry.details.export');
         });
     });
