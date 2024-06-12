@@ -255,31 +255,48 @@ class AuctionGenerationController extends Controller
                     }
                 }
             }
-           
             if($request->submit_type == "generate"){
                 $exist_total_participants = InquiryParticipant::where('inquiry_id', $inquiry->id)->count();
                 $buyer_active_credit = $this->MasterRepository->getBuyerActiveCredit($request->created_by);
+                $link = route('user.buyer_wallet_transaction');
                     if($request->auction_type === "open auction" && $exist_total_participants>0){
                         $sets_of_25 = ceil($exist_total_participants / 25);
                         // Calculate the credit based on the number of sets
                         $credit = 1 * $sets_of_25; // Adjust with your logic
+                        if($buyer_active_credit<$credit){
+                            DB::rollBack();
+                            return redirect()->back()->with('warning', 'You don\'t have sufficient credit in your wallet');
+                        }
+                        $MyBuyerWallet =new MyBuyerWallet;
+                        $MyBuyerWallet->user_id = $request->created_by;
+                        $MyBuyerWallet->type = 0;//Debit
+                        $MyBuyerWallet->debit_unit = $credit;//for per inquiry
+                        $MyBuyerWallet->current_unit = $buyer_active_credit-$credit;
+                        $MyBuyerWallet->save();
+                        notification_push(NULL,$request->created_by,$request->created_by,$credit." credit used for a new inquiry generation",NULL,$link);
                     }
                     if($request->auction_type === "close auction" && $exist_total_participants>0){
                         $sets_of_25 = ceil($exist_total_participants / 25);
                         // Calculate the credit based on the number of sets
                         $credit = 1 * $sets_of_25;
+
+                        if($buyer_active_credit<$credit){
+                            DB::rollBack();
+                            return redirect()->back()->with('warning', 'You don\'t have sufficient credit in your wallet');
+                        }
                         $MyBuyerWallet =new MyBuyerWallet;
                         $MyBuyerWallet->user_id = $request->created_by;
                         $MyBuyerWallet->type = 0;//Debit
-                        $MyBuyerWallet->debit_unit = 1;//for per inquiry
-                        $MyBuyerWallet->current_unit = $buyer_active_credit-1;
+                        $MyBuyerWallet->debit_unit = $credit;//for per inquiry
+                        $MyBuyerWallet->current_unit = $buyer_active_credit-$credit;
                         $MyBuyerWallet->save();
+                        notification_push(NULL,$request->created_by,$request->created_by,$credit." credit used for a new inquiry generation",NULL,$link);
                     }
                
                 DB::commit();
                 return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry has been generated successfully.');
-
             }else{
+                DB::commit();
                 return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry data has been saved successfully.');
             }
         } catch (\Exception $e) {

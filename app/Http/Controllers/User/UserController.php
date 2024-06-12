@@ -763,6 +763,24 @@ class UserController extends Controller{
         }
         return view('front.user.transaction',compact('data','transactions'));
     }
+    public function notifications(Request $request){
+        $data = $this->AuthCheck();
+        // $startDate = $request->start_date ?? '';
+        // $endDate = $request->end_date ?? '';
+        // $mode = $request->mode ?? '';
+        // $purpose = $request->purpose ?? '';
+        // // Check if any of the parameters are provided
+        // // If keyword is provided or both start_date and end_date are provided
+        // if (!empty($mode) || !empty($startDate) || !empty($endDate)|| !empty($purpose)) {  
+        //     $transactions = $this->userRepository->getSearchTransactionByUserId($data->id,$startDate, $endDate,$mode,$purpose);
+        // }else{
+        //     $transactions = $this->userRepository->getAllTransactionByUserId($data->id);
+        // }
+        // return view('front.user.transaction',compact('data','transactions'));
+        $notification = Notification::where('seller_id',$data->id)->latest('id')->get();
+        return view('front.user.notifiction',compact('data','notification'));
+
+    }
     public function seller_wallet_transaction(){
         $data = $this->AuthCheck();
         $seller_wallet_transactions = $this->userRepository->getSellerAllWalletTransactionByUserId($data->id);
@@ -861,12 +879,8 @@ class UserController extends Controller{
                 // Retrieve the buyer's name
                 $buyer = User::find($request->buyer_id);
                 $buyerName = $buyer ? $buyer->first_name : '';
-
-                $notification = new Notification();
-                $notification->buyer_id =$request->buyer_id;
-                $notification->seller_id =$request->seller_id;
-                $notification->title = $buyerName . ' added you to a watchlist';
-                $notification->save();
+                $title = $buyerName . ' added you to a watchlist';
+                notification_push(NULL,$request->buyer_id,$request->seller_id,$title,NULL,NULL);
 
             }
             return redirect()->back()->with('success', 'Seller has been successfully added to the watchlist..');
@@ -907,13 +921,11 @@ class UserController extends Controller{
                 $buyerName = $buyer ? $buyer->first_name : '';
                 $group = GroupWatchList::find($request->group_id);
                 $groupName = $group ? $group->group_name : '';
+                $title = $buyerName . ' added you to '.'<strong>'.$groupName.'</strong>'.' group watchlist';
+                $link = route('user.watchlist');
 
-                $notification = new Notification();
-                $notification->buyer_id =$request->buyer_id;
-                $notification->seller_id =$request->seller_id;
-                $notification->title = $buyerName . ' added you to '.'<strong>'.$groupName.'</strong>'.' watchlist';
-                $notification->link =route('user_seller_dashboard');
-                $notification->save();
+
+                notification_push(NULL,$request->buyer_id,$request->seller_id,$title,NULL,$link);
 
             }
 
@@ -973,11 +985,9 @@ class UserController extends Controller{
 
         $wasDeleted = $watchList->delete();
         if ($wasDeleted) {
-            $notification = new Notification();
-            $notification->buyer_id = $watchList->buyer_id;
-            $notification->seller_id = $watchList->seller_id;
-            $notification->title = $buyerName . ' removed you from watchlist';
-            $notification->save();
+            $title = $buyerName . ' removed you from his watchlist';
+
+            notification_push(NULL,$watchList->buyer_id,$watchList->seller_id,$title,NULL,NULL);
         }
     
         // Return a JSON response indicating success

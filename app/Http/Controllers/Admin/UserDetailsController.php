@@ -212,8 +212,12 @@ class UserDetailsController extends Controller
         $buyer_gift_credit->save();
 
         if($buyer_gift_credit){
+            $title = "Admin give you ".$wallet_credit." buyer free credits";
+            $link = route('user.buyer_wallet_transaction');
+            notification_push("Admin",NULL,$request->user_id,$title,NULL,$link); //admin,buyer,seller,title,desc,link
+
             $json_data = [
-                'gifted_by' =>'Admin' ,
+                'gifted_by' =>'Admin',
                 'gifted_to_buyer' =>$request->user_id ,
                 'credit_amount' => $request->buyer_gift_credit,
                 
@@ -250,6 +254,9 @@ class UserDetailsController extends Controller
         $seller_gift_credit->save();
 
         if($seller_gift_credit){
+            $title = "Admin give you ".$wallet_credit." seller free credits";
+            $link = route('user.seller_wallet_transaction');
+            notification_push("Admin",NULL,$request->user_id,$title,NULL,$link); //admin,buyer,seller,title,desc,link
             $json_data = [
                 'gifted_by' =>'Admin' ,
                 'gifted_to_seller' =>$request->user_id ,

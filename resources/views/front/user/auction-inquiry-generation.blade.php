@@ -549,8 +549,9 @@
         $('#auction_requirement_form button[type="submit"]').click(function(event){
             event.preventDefault();
             var participantsInside = $('[name="participant[]"]').length;
+            var exist_participant = $('[name="exist_participant[]"]').length;
             var participantsOutside = $('[name="outside_participant[]"]').length;
-            var totalCount = participantsInside + participantsOutside;
+            var totalCount = participantsInside + participantsOutside+exist_participant;
             var submitType = $(this).data('value');
             $('#submit_type').val(submitType); 
             // Set the value of the hidden input field based on the clicked button

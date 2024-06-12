@@ -6,6 +6,7 @@ use App\Models\Career;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Blog;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\State;
 use App\Models\City;
@@ -278,4 +279,16 @@ function get_open_sellers_by_country($created_by,$category_id,$sub_category_id){
     // Get the user IDs as an array
     return $query->pluck('seller_id')->toArray();
 
+}
+
+function notification_push($admin_id,$buyer_id,$seller_id,$title,$description,$link){
+    $notification = new Notification();
+    $notification->admin_id = $admin_id;
+    $notification->buyer_id = $buyer_id;
+    $notification->seller_id = $seller_id;
+    $notification->title = $title;
+    $notification->description = $description;
+    $notification->link = $link;
+    $notification->save();
+    return $notification;
 }

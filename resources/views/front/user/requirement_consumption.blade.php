@@ -31,8 +31,8 @@
                                             {{-- @if (session('success'))
                                             <div class="alert alert-success" id="message_div">
                                                 {{ session('success') }}
-                                            </div> --}}
-                                            @endif
+                                            </div>
+                                            @endif --}}
                                         </div>
                                         <div class="row consumption-row">
                                             <div class="col-md-6 col-12 left-col">
