@@ -139,7 +139,7 @@
                             </li>
                             @endforeach
                             <li class="dropdown-item-all">
-                                <a class="dropdown-item" href="#">Show All Notification</a>
+                                <a class="dropdown-item" href="{{route('user.notifications')}}">Show All Notification</a>
                             </li>
                             @else
                             <li class="dropdown-item-all">

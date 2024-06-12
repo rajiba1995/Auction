@@ -5210,8 +5210,11 @@ table.all-inquiry-wrapper-table > tbody > tr td:last-child {
     font-weight: 600;
   }
   .notification-icon {
-    width: 100px;
-    height: 100px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .notification-icon img {
     width: 100%;
@@ -5235,15 +5238,37 @@ table.all-inquiry-wrapper-table > tbody > tr td:last-child {
     margin-bottom: 10px;
   }
   .notification-content {
-    padding-left: 30px;
-    max-width: 600px;
+    padding-left: 20px;
   }
   .notified_time {
     font-size: 16px;
     font-weight: 500;
     color: #444444;
+    opacity: .5;
   }
-  
+  .all_notification .notified:hover{
+    color: #fff ;
+    background-color: #0076D7;
+    border-color: #0076D7;
+  }
+  .all_notification .notified:hover .notification-message{
+    color: #fff ;
+    background-color: #0076D7;
+    border-color: #0076D7;
+  }
+  .all_notification .notified:hover .notified_time{
+    color: #fff ;
+    background-color: #0076D7;
+    border-color: #0076D7;
+  }
+  .notification-icon svg{
+    stroke:#0076D7;
+    
+  }
+  .all_notification .notified:hover .notification-icon svg{
+    stroke:#fff;
+    
+  }
   .notification_content_box{
     max-width: 250px;
   }

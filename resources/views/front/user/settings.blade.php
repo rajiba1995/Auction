@@ -43,12 +43,9 @@
                                                         </div>
                                                         
                                                         <div class="cta-row">
-                                                            <a href="#">
+                                                            <a href="{{ route('user.notification')}}">
                                                                 <span>Notifications</span>
-                                                                <label for="notifyCheck" class="toggler-custom-checkbox">
-                                                                    <input type="checkbox" id="notifyCheck">
-                                                                    <span class="toggler"></span>
-                                                                </label>
+                                                                <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt="">
                                                             </a>
                                                         </div>
                                                         <div class="cta-row">

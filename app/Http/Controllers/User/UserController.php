@@ -763,6 +763,24 @@ class UserController extends Controller{
         }
         return view('front.user.transaction',compact('data','transactions'));
     }
+    public function notifications(Request $request){
+        $data = $this->AuthCheck();
+        // $startDate = $request->start_date ?? '';
+        // $endDate = $request->end_date ?? '';
+        // $mode = $request->mode ?? '';
+        // $purpose = $request->purpose ?? '';
+        // // Check if any of the parameters are provided
+        // // If keyword is provided or both start_date and end_date are provided
+        // if (!empty($mode) || !empty($startDate) || !empty($endDate)|| !empty($purpose)) {  
+        //     $transactions = $this->userRepository->getSearchTransactionByUserId($data->id,$startDate, $endDate,$mode,$purpose);
+        // }else{
+        //     $transactions = $this->userRepository->getAllTransactionByUserId($data->id);
+        // }
+        // return view('front.user.transaction',compact('data','transactions'));
+        $notification = Notification::where('seller_id',$data->id)->latest('id')->get();
+        return view('front.user.notifiction',compact('data','notification'));
+
+    }
     public function seller_wallet_transaction(){
         $data = $this->AuthCheck();
         $seller_wallet_transactions = $this->userRepository->getSellerAllWalletTransactionByUserId($data->id);
