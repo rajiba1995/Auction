@@ -115,36 +115,37 @@
                                     d="M17.1629 26.25C16.9431 26.6288 16.6277 26.9433 16.2482 27.1619C15.8687 27.3805 15.4384 27.4956 15.0004 27.4956C14.5624 27.4956 14.1321 27.3805 13.7526 27.1619C13.3731 26.9433 13.0577 26.6288 12.8379 26.25"
                                     stroke="#ee2737" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
-                            <span class="indicator"></span>
+                        @if(Auth::guard('web')->check())
+                            <span class="indicator">{{$notificationCount}}</span>
+                            @else
+                            <span class="indicator">0</span>
+                        @endif    
                         </a>
                         <ul class="dropdown-menu notification_menu_ul" aria-labelledby="Link">
+                            @if(count($notificationData)>0)
+                            @foreach($notificationData as $data)
                             <li class="notification_all">
-                                <div class="notification_img_info">
-                                    <div class="notification_content_box">
-                                        <h5>Lorem ipsum dolor.</h5>
-                                        <p>Lorem ipsum dolor.</p>
+                                <a href="{{$data->link}}">
+                                    <div class="notification_img_info">
+                                        <div class="notification_content_box">
+                                            <h5>{{$data->title}}</h5>
+                                        </div>
+                                        <ul class="notification_update">
+                                            <li class="notified_td_date">{{date('d/m/y' ,strtotime($data->created_at))}}</li>
+                                            <li class="notified_td">{{date('h:i A' ,strtotime($data->created_at))}}</li>
+                                        </ul>
                                     </div>
-                                    <ul class="notification_update">
-                                        <li class="notified_td_date">05-06-2024</li>
-                                        <li class="notified_td">16:00 PM</li>
-                                    </ul>
-                                </div>
+                                </a>
                             </li>
-                            <li class="notification_all">
-                                <div class="notification_img_info">
-                                    <div class="notification_content_box">
-                                        <h5>Lorem ipsum dolor.</h5>
-                                        <p>Lorem ipsum dolor.</p>
-                                    </div>
-                                    <ul class="notification_update">
-                                        <li class="notified_td_date">05-06-2024</li>
-                                        <li class="notified_td">16:00 PM</li>
-                                    </ul>
-                                </div>
-                            </li>
+                            @endforeach
                             <li class="dropdown-item-all">
                                 <a class="dropdown-item" href="#">Show All Notification</a>
                             </li>
+                            @else
+                            <li class="dropdown-item-all">
+                                <a class="dropdown-item" href="#">No Notification</a>
+                            </li>
+                            @endif
                         </ul>
                 </div>
                 <!-- <a href="#" class="notification">

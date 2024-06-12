@@ -610,13 +610,18 @@ header .notification svg path {
 header .notification .indicator {
     display: block;
     position: absolute;
-    top: -3px;
-    right: -2px;
-    width: 15px;
-    height: 15px;
+    top: -8px;
+    right: -5px;
+    width: 22px;
+    height:22px;
     border-radius: 50%;
     border: 2px solid #FFF;
     background-color: #DF1818;
+    color: #Fff;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 header .menu-cta {
     display: flex;
@@ -5243,13 +5248,21 @@ table.all-inquiry-wrapper-table > tbody > tr td:last-child {
     max-width: 250px;
   }
   .notification_content_box h5{
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 500;
     margin-bottom: 0;
   }
   .notification_content_box p{
-    font-size: 13px;
+    font-size: 12px;
     margin-bottom: 0;
+  }
+  .notification_all a .notification_img_info:hover{
+    color: #fff;
+    background-color: #0076D7;
+    border-color: #0076D7;
+  }
+  .notification_content_box p a{
+    color: #1b37d7;
   }
   .notified_succes{
     color: #009949;
@@ -5267,8 +5280,9 @@ table.all-inquiry-wrapper-table > tbody > tr td:last-child {
     padding-left: 0;
   }
   .notification_update li{
-  font-size: 12px;
+  font-size: 8.5px;
   font-weight: 600;
+  opacity: .5;
   }
   /* notification page dropdown end */
   div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {

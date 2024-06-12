@@ -14,6 +14,7 @@ use App\Models\Collection;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\State;
+use App\Models\Notification;
 use App\Models\City;
 use Illuminate\Support\Str;
 class AppServiceProvider extends ServiceProvider
@@ -76,8 +77,32 @@ class AppServiceProvider extends ServiceProvider
             }
             $allLocation = array_merge($cityNames, $stateNames);
             $allTitles = array_merge($products, $collections, $categories);
+
+               // Notification count
+               $wishlistExists = Schema::hasTable('notifications');
+               if ($wishlistExists) {
+                   if (Auth::guard('web')->check()) {
+                       $user_id = Auth::guard('web')->user()->id;
+                       $notificationCount = Notification::where('seller_id', $user_id)->count();
+                   } else {
+                       $notificationCount = 0;
+                   }
+               }
+               // Notification data
+               $wishlistExists = Schema::hasTable('notifications');
+               if ($wishlistExists) {
+                   if (Auth::guard('web')->check()) {
+                       $user_id = Auth::guard('web')->user()->id;
+                       $notificationData = Notification::where('seller_id', $user_id)->latest('id')->take(5)->get();
+                   } else {
+                       $notificationData = collect();
+                   }
+               }
             view()->share('global_filter_location', $allLocation);
             view()->share('global_filter_data', $allTitles);
+            view()->share('notificationCount', $notificationCount);
+            view()->share('notificationData', $notificationData);
+
         });
     }
 }
