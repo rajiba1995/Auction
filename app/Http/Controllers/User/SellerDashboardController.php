@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class SellerDashboardController extends Controller
@@ -63,6 +64,7 @@ class SellerDashboardController extends Controller
     }
     public function all_inquiries(Request $request){
         $seller_cancell_reasons = $this->MasterRepository->getAllSellerReason();
+        $seller_active_credit = $this->MasterRepository->getSellerActiveCredit($this->getAuthenticatedUserId());
         $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
         $all_inquery =  $this->SellerDashboardRepository->all_participants_inquiries_of_seller($this->getAuthenticatedUserId());
         $live_inquiries_count =  $this->SellerDashboardRepository->live_inquiries_by_seller();
@@ -81,7 +83,7 @@ class SellerDashboardController extends Controller
                 $rejected_inquiries_count+=1;
             }
         }
-        return view('front.seller_dashboard.all_inquireis',compact('all_inquery', 'all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count','seller_cancell_reasons'));
+        return view('front.seller_dashboard.all_inquireis',compact('seller_active_credit','all_inquery', 'all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count','seller_cancell_reasons'));
     }
     public function live_inquiries(Request $request){
         $group_wise_list_count =  $this->SellerDashboardRepository->group_wise_inquiries_by_user($this->getAuthenticatedUserId());
@@ -541,5 +543,16 @@ class SellerDashboardController extends Controller
        }else{
         return redirect()->back();
        }
+    }
+    public function setSessionAndRedirect(){
+         // Set the intended URL in the session
+         Session::put('url.intended', $request->intended_url);
+        
+         // Return the JSON response for redirect
+         return response()->json([
+             'redirect' => true,
+             'redirect_url' => route('user.payment_management', ['package' => 'seller']),
+             'error' => 'You do not have an active seller package.'
+         ]);
     }
 }

@@ -111,6 +111,7 @@ Route::get('/clear-cache', function() {
         });
         // Seller Dashboard
             Route::get('seller/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
+            Route::get('seller/set-session-and-redirect', [SellerDashboardController::class, 'setSessionAndRedirect']);
             Route::group(['prefix' => 'seller'], function() {
                 // Route::group(['middleware' => 'checkActiveSellerPackage'], function() {
                     Route::get('/all-inquiries', [SellerDashboardController::class, 'all_inquiries'])->name('seller_all_inquiries');

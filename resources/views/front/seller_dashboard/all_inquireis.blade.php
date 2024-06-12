@@ -294,10 +294,11 @@
                                                                 </td>
                                                                 <td class="other-actions-td">
                                                                     {{-- @if(valid_live_time($item->start_date.' '.$item->start_time, $item->end_date.' '.$item->end_time)) --}}
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_startQuotingModal{{$item->id}}" class="btn btn-yellow btn-allot-offline">
+                                                                    <a href="javascript:void(0)" onclick="CheckExistPackage('{{$item->my_id}}', '{{$item->id}}', '{{$item->selected_from}}')" class="btn btn-yellow btn-allot-offline" >
                                                                         <img src="{{ asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
                                                                         Start Quoting
                                                                     </a>
+                                                                    {{-- data-bs-toggle="modal" data-bs-target="#all_startQuotingModal{{$item->id}}" --}}
                                                                     {{-- @endif --}}
 
                                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_cancelInquiryModal{{$item->id}}" class="btn btn-red btn-cancel-inquiry">
@@ -416,9 +417,31 @@
     @endsection
     @section('script')
     <script>
+        function CheckExistPackage(my_id, id, selected_from){
+            var seller_active_credit = "{{$seller_active_credit}}";
+            if(selected_from==0 && seller_active_credit==0){
+                $.ajax({
+                url: '/set-session-and-redirect',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}', // Laravel CSRF token
+                    intended_url: window.location.href // Current URL
+                },
+                success: function(response) {
+                    if (response.redirect) {
+                        window.location.href = response.redirect_url;
+                    } else {
+                        // Handle the error message
+                        alert(response.error);
+                    }
+                }
+            });
+            }else{
+                $('#all_startQuotingModal' + id).modal('show');
+            }
+        }
      $('.difference_btn_submit').click(function() {
             var id = $(this).data('id');
-            
             // Get the values
             var bit_difference = $('#bit_difference'+id).val();
             var minimum_quote_amount = parseFloat($('#minimum_quote_amount'+id).val());

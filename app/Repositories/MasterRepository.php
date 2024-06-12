@@ -21,8 +21,11 @@ use App\Models\State;
 use App\Models\EmployeeAttandance;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\MySellerWallet;
+use App\Models\MySellerPackage;
 use App\Models\LegalStatus;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
 use Hash;
 
@@ -956,6 +959,24 @@ class MasterRepository implements MasterContract
         $delete->delete();
         return $delete;
     }
-
-    
+    public function getSellerActiveCredit($id){
+        // Get the current date and time
+        $currentDateTime = Carbon::now();
+        // Check if there is an active package for the user
+        $hasActivePackage = MySellerPackage::where('expiry_date', '>', $currentDateTime)
+            ->where('user_id', $id)
+            ->exists();
+        // Get the latest wallet entry with current_unit > 0 for the user
+        $latestWallet = MySellerWallet::latest()
+            ->where('user_id', $id)
+            ->where('current_unit', '>', 0)
+            ->first();
+        // Determine the current unit to return
+        if ($hasActivePackage && $latestWallet) {
+            $currentUnit = $latestWallet->current_unit;
+        } else {
+            $currentUnit = 0;
+        }
+        return $currentUnit;
+    }
 }
