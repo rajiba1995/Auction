@@ -16,7 +16,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+   
 
 
     
@@ -439,11 +441,25 @@
     <script src="{{asset('frontend/assets/js/chart.min.js')}}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
     @yield('script')
     <script src="{{asset('frontend/assets/js/custom.js')}}"></script>
     <script>
+         
          $(document).ready(function() {
+            @if (session('success'))
+                toastr.success('{{ session('success') }}');
+            @endif
+            @if (session('warning'))
+                toastr.warning('{{ session('warning') }}');
+            @endif
+            @if (session('error'))
+                toastr.error('{{ session('error') }}');
+            @endif
+        });
+
+        $(document).ready(function() {
             @if(session('showProfileModal'))
             Swal.fire({
                 title: "Please update your profile!",
@@ -473,8 +489,6 @@
                     // You can add any specific action here if needed
                 }
             });
-
-
             @endif
         });
 

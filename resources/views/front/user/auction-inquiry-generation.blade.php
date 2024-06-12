@@ -34,7 +34,7 @@
                                 <ul>
                                     @if (session('success') || session('warning'))
                                         <li id="message_li"> 
-                                            @if (session('success'))
+                                            {{-- @if (session('success'))
                                                 <div class="alert alert-success" id="successAlert">
                                                     {{ session('success') }}
                                                 </div>
@@ -43,7 +43,7 @@
                                                 <div class="alert alert-warning" id="successAlert">
                                                     {{ session('warning') }}
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </li>
                                     @endif
                                 </ul>
@@ -125,7 +125,7 @@
                                 <div class="row input-row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label class="form-label">Description of the Service*</label>
+                                            <label class="form-label">Description of the Service</label>
                                             <textarea class="form-control border-red" rows="9" placeholder="Ex, transport service, Parlour, etc " name="description">{{$existing_inquiry ? $existing_inquiry->description : old('description')}}</textarea>
                                             @error('description')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
                                             @enderror
@@ -372,13 +372,17 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <div>
+                                        @error('auction_type')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
                                 </div>
 
                                 <div class="row input-row open-auction-options {{ ($existing_inquiry && $existing_inquiry->inquiry_type == "open auction") || (old('auction_type') == "open auction") ? "show" : "" }}" id="openAuctionOptions">
                                     <div class="col-lg-4 col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="fromcountry" class="modal-custom-radio">
-                                                <input type="radio" name="auctionfrom" id="fromcountry" value="country" {{ ($existing_inquiry && $existing_inquiry->location_type == "country") || (old('auctionfrom') == "country") ? "checked" : "" }}>
+                                                <input type="radio" name="supplier_location" id="fromcountry" value="country" {{ ($existing_inquiry && $existing_inquiry->location_type == "country") || (old('supplier_location') == "country") ? "checked" : "" }}>
                                                 <span class="checkmark">
                                                     <span class="checkedmark"></span>
                                                 </span>
@@ -391,7 +395,7 @@
                                     <div class="col-lg-4 col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="fromcity" class="modal-custom-radio">
-                                                <input type="radio" name="auctionfrom" id="fromcity" value="city" {{ ($existing_inquiry && $existing_inquiry->location_type == "city") || (old('auctionfrom') == "city") ? "checked" : "" }}>
+                                                <input type="radio" name="supplier_location" id="fromcity" value="city" {{ ($existing_inquiry && $existing_inquiry->location_type == "city") || (old('supplier_location') == "city") ? "checked" : "" }}>
                                                 <span class="checkmark">
                                                     <span class="checkedmark"></span>
                                                 </span>
@@ -405,7 +409,7 @@
                                     <div class="col-lg-4 col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="fromregion" class="modal-custom-radio">
-                                                <input type="radio" name="auctionfrom" id="fromregion" value="region" {{ ($existing_inquiry && $existing_inquiry->location_type == "region") || (old('auctionfrom') == "region") ? "checked" : "" }}>
+                                                <input type="radio" name="supplier_location" id="fromregion" value="region" {{ ($existing_inquiry && $existing_inquiry->location_type == "region") || (old('supplier_location') == "region") ? "checked" : "" }}>
                                                 <span class="checkmark">
                                                     <span class="checkedmark"></span>
                                                 </span>
@@ -413,13 +417,17 @@
                                                     <label for="fromregion">Choose from Region</label>
                                                 </div>
                                             </label>
-                                            <select id="selectRegion" class="form-control border-red select-region {{ ($existing_inquiry && $existing_inquiry->location_type == "region") || (old('auctionfrom') == "region") ? "show" : "" }}" name="region">
+                                            <select id="selectRegion" class="form-control border-red select-region {{ ($existing_inquiry && $existing_inquiry->location_type == "region") || (old('supplier_location') == "region") ? "show" : "" }}" name="region">
                                                 <option value="" selected hidden>Select Region</option>
                                                 @foreach ($States as $item)
                                                     <option value="{{$item->name}}" {{ $existing_inquiry && $existing_inquiry->location == $item->name ? 'selected' : '' }}>{{$item->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
+                                    </div>
+                                    <div>
+                                        @error('supplier_location')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="form-save-row">
@@ -540,22 +548,80 @@
     $(document).ready(function(){
         $('#auction_requirement_form button[type="submit"]').click(function(event){
             event.preventDefault();
+            var participantsInside = $('[name="participant[]"]').length;
+            var participantsOutside = $('[name="outside_participant[]"]').length;
+            var totalCount = participantsInside + participantsOutside;
             var submitType = $(this).data('value');
             $('#submit_type').val(submitType); 
             // Set the value of the hidden input field based on the clicked button
             var closedauction = $('input[name="auction_type"]:checked').val();
-            if (closedauction == "close auction") {
+            var buyer_active_credit = "{{$buyer_active_credit}}";
+            if(buyer_active_credit==0){
                 Swal.fire({
                     title: "Warning!",
-                    text: "Credit will be used!",
+                    text: "You don't have active package or wallet balance.!",
                     icon: "warning"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        $('#auction_requirement_form').submit(); // Submit the form
+                        $.ajax({
+                            url: '/seller/set-session-and-redirect',
+                            type: 'POST',
+                            data: {
+                                _token: '{{ csrf_token() }}', // Laravel CSRF token
+                                type: 'buyer',
+                                intended_url: window.location.href // Current URL
+                            },
+                            success: function(response) {
+                                toastr.error(response.error);
+                                if (response.redirect) {
+                                    window.location.href = response.redirect_url;
+                                } else {
+                                    // Handle the error message
+                                    toastr.error(response.error);
+                                }
+                            }
+                        });
                     }
                 });
+                return false;
+            }
+            if (closedauction == "close auction") {
+                if(submitType=="generate"){
+                    if(totalCount==0){
+                        Swal.fire({
+                            title: "Warning!",
+                            text: "Please select a participant for this inquiry!",
+                            icon: "warning"
+                        });
+                        return false;
+                    }else{
+                        Swal.fire({
+                            title: "Warning!",
+                            text: "Credit will be used!",
+                            icon: "warning"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#auction_requirement_form').submit(); // Submit the form
+                            }
+                        });
+                    }
+                }else{
+                    $('#auction_requirement_form').submit(); // Submit the form
+                }
             } else{
-                $('#auction_requirement_form').submit(); // Submit the form
+                if(totalCount>0 && submitType=="generate"){
+                    Swal.fire({
+                        title: "Warning!",
+                        text: "Credit will be used for selected participants!",
+                        icon: "warning"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#auction_requirement_form').submit(); // Submit the form
+                        }
+                    });
+                }else{
+                    $('#auction_requirement_form').submit(); // Submit the form
+                }
             }
            
         });

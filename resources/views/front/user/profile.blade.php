@@ -24,11 +24,11 @@
                                             @endif
                                         </div>
                                         <div class="m-2">
-                                            @if (session('success'))
+                                            {{-- @if (session('success'))
                                                 <div class="alert alert-success" id="message_div">
                                                     {{ session('success') }}
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                         <div class="content-box">
                                             <div class="basic-info-banner">

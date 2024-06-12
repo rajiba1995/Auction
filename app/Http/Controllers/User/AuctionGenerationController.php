@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\City;
 use App\Models\State;
 use App\Models\Inquiry;
+use App\Models\MyBuyerWallet;
 use App\Models\Collection;
 use App\Models\Category;
 use App\Models\InquiryParticipant;
@@ -45,8 +46,9 @@ class AuctionGenerationController extends Controller
     }
 
     public function auction_inquiry_generation(Request $request){
-        $all_category = $this->MasterRepository->getAllActiveCollections();
         $user = $this->AuthCheck();
+        $buyer_active_credit = $this->MasterRepository->getBuyerActiveCredit($user->id);
+        $all_category = $this->MasterRepository->getAllActiveCollections();
         $inquiry_id = "";
         $group_id = "";
         $watch_list_data = [];
@@ -95,11 +97,10 @@ class AuctionGenerationController extends Controller
 
         $outside_participant_without_group = OutsideParticipant::where('group_id', null)->where('buyer_id', $user->id)->get();
         $States = State::orderBy('name')->select('name')->get();
-        return view('front.user.auction-inquiry-generation', compact('group_id', 'user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group','exsisting_outside_participant', 'States'));
+        return view('front.user.auction-inquiry-generation', compact('group_id', 'user','watch_list_data', 'inquiry_id', 'all_category', 'existing_inquiry', 'outside_participant_data', 'outside_participant_without_group','exsisting_outside_participant', 'States', 'buyer_active_credit'));
     }
 
     public function auction_inquiry_generation_store(Request $request){
-        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
             'start_date' => 'required|date',
@@ -108,17 +109,25 @@ class AuctionGenerationController extends Controller
             'end_time' => 'required|date_format:H:i',
             'category' => 'required',
             'sub_category' => 'required',
-            // 'description' => 'nullable|string',
-           'execution_date' => 'required|date|after:end_date',
-            'quotes_per_participants' => 'required|numeric',    
+            'auction_type' => 'required',
+            'execution_date' => 'required|date|after:end_date',
+            'quotes_per_participants' => 'required|numeric',
             'minimum_quote_amount' => 'nullable|numeric',
             'maximum_quote_amount' => 'nullable|numeric|gt:minimum_quote_amount',
-            'bid_difference_quote_amount' => 'required|numeric|gt:0', // Ensure bid difference is positive
+            'bid_difference_quote_amount' => 'required|numeric|gt:0',
+        ], [
+            'supplier_location.required_if' => 'Please select any one location',
         ]);
-       
+    
+        // Add conditional validation for 'supplier_location'
+        $validator->sometimes('supplier_location', 'required', function ($input) {
+            return $input->auction_type === 'open auction';
+        });
+    
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        DB::beginTransaction();
         try {
             $inquiry_id = $request->saved_inquiry_id?$request->saved_inquiry_id:"";
             $inquiry = Inquiry::where('id', $inquiry_id)->first();
@@ -154,11 +163,11 @@ class AuctionGenerationController extends Controller
             $inquiry->inquiry_type = $request->auction_type?$request->auction_type:$inquiry->inquiry_type;
             
 
-            if($request->auctionfrom == "region"){
+            if($request->supplier_location == "region"){
                 $inquiry->location = $request->region; 
-            } elseif($request->auctionfrom == "country") {
+            } elseif($request->supplier_location == "country") {
                 $inquiry->location = "India"; 
-            } elseif($request->auctionfrom == "city") {
+            } elseif($request->supplier_location == "city") {
                 $City = City::where('id', $request->city)->first();
                 $inquiry->location = $City?$City->name:""; 
             }
@@ -166,7 +175,7 @@ class AuctionGenerationController extends Controller
                 $user = User::findOrFail($request->created_by)->with('CityData')->first();
                 $inquiry->location = $user->city?$user->CityData->name:"";
             }
-            $inquiry->location_type =$request->auctionfrom;
+            $inquiry->location_type =$request->supplier_location;
             $inquiry->save();
             if($inquiry && isset($request->participant) && count($request->participant) > 0){
                 foreach($request->participant as $key => $item){
@@ -223,12 +232,12 @@ class AuctionGenerationController extends Controller
 
             if ($request->auction_type === "open auction") {
                 // dd($request->all());
-                $my_city = $request->auctionfrom=="city"?$request->city:null;
-                $my_state_name = $request->auctionfrom=="region"?$request->region:null;
+                $my_city = $request->supplier_location=="city"?$request->city:null;
+                $my_state_name = $request->supplier_location=="region"?$request->region:null;
                 $States = State::where('name', $my_state_name)->first();
                 $my_state = $States?$States->id:null;
                 // Build the query
-                if($request->auctionfrom=="country"){
+                if($request->supplier_location=="country"){
                     $open_sellers = get_open_sellers_by_country($request->created_by,$category_id,$sub_category_id);
                 }else{
                     $open_sellers = get_open_sellers($my_city,$my_state,$request->created_by,$category_id,$sub_category_id);
@@ -246,14 +255,35 @@ class AuctionGenerationController extends Controller
                     }
                 }
             }
-
+           
             if($request->submit_type == "generate"){
+                $exist_total_participants = InquiryParticipant::where('inquiry_id', $inquiry->id)->count();
+                $buyer_active_credit = $this->MasterRepository->getBuyerActiveCredit($request->created_by);
+                    if($request->auction_type === "open auction" && $exist_total_participants>0){
+                        $sets_of_25 = ceil($exist_total_participants / 25);
+                        // Calculate the credit based on the number of sets
+                        $credit = 1 * $sets_of_25; // Adjust with your logic
+                    }
+                    if($request->auction_type === "close auction" && $exist_total_participants>0){
+                        $sets_of_25 = ceil($exist_total_participants / 25);
+                        // Calculate the credit based on the number of sets
+                        $credit = 1 * $sets_of_25;
+                        $MyBuyerWallet =new MyBuyerWallet;
+                        $MyBuyerWallet->user_id = $request->created_by;
+                        $MyBuyerWallet->type = 0;//Debit
+                        $MyBuyerWallet->debit_unit = 1;//for per inquiry
+                        $MyBuyerWallet->current_unit = $buyer_active_credit-1;
+                        $MyBuyerWallet->save();
+                    }
+               
+                DB::commit();
                 return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry has been generated successfully.');
 
             }else{
                 return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry data has been saved successfully.');
             }
         } catch (\Exception $e) {
+            DB::rollBack();
             // dd($e->getMessage());
              return abort(404);
          }

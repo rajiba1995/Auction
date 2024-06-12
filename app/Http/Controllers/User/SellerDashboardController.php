@@ -12,12 +12,14 @@ use App\Models\InquirySellerQuotes;
 use App\Models\InquiryParticipant;
 use App\Models\InquirySellerComments;
 use App\Models\Inquiry;
+use App\Models\MySellerWallet;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Encryption\DecryptException;
 
 class SellerDashboardController extends Controller
@@ -136,9 +138,11 @@ class SellerDashboardController extends Controller
                             $hours = $startRemainingTime->h;
                             $minutes = $startRemainingTime->i;
                             $seconds = $startRemainingTime->s;
+                            $all_inquiries['live_status'] = 0;
                             $all_inquiries['start_remaining_time'] = "Starts in: $days d $hours h $minutes m $seconds s";
                         } else {
                             $all_inquiries['start_remaining_time'] = null;
+                            $all_inquiries['live_status'] = 1;
                         }
 
                         if ($currentDateTime < $endDateTime) {
@@ -211,7 +215,6 @@ class SellerDashboardController extends Controller
                         $all_inquiries['quote_difference'] = $value->bid_difference_quote_amount;
 
                         $all_inquiries['left_quotes'] = $value->quotes_per_participants - get_my_all_quotes($value->id,$value->my_id);
-
                         $inquiries[] = $all_inquiries;
                     }
                 }
@@ -399,34 +402,62 @@ class SellerDashboardController extends Controller
         return view('front.seller_dashboard.history_inquireis', compact('rejected_inquiries', 'distinct','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function seller_start_quotes(Request $request){
-        // Define validation rules
-        $rules = [
-            // 'minimum_quote_amount' => 'required|numeric',
-            // 'maximum_quote_amount' => 'required|numeric|gt:minimum_quote_amount', // Ensure maximum is greater than minimum
-            'bit_difference' => 'required|numeric'
-        ];
+        // Start the transaction
+        DB::beginTransaction();
+        try {
+            // Define validation rules
+            $rules = [
+                'bit_difference' => 'required|numeric'
+            ];
+        
+            // Run the validator
+            $validator = Validator::make($request->all(), $rules);
+        
+            // Additional validation to check if the input values are numeric
+            if (!is_numeric($request->bit_difference)) {
+                DB::rollBack(); // Roll back the transaction
+                return redirect()->back()->with('error', 'Amount must be a valid number.');
+            }
+        
+            // Check if validation fails
+            if ($validator->fails()) {
+                DB::rollBack(); // Roll back the transaction
+                return redirect()->back()->with('error', 'Amount must be a valid number.');
+            }
+        
+            // Validation passed, proceed to store data
+            $store = new InquirySellerQuotes;
+            $store->inquiry_id = $request->inquiry_id;
+            $store->seller_id = $request->seller_id;
+            $store->quotes = $request->bit_difference;
+            $store->save();
+            
+            // Additional logic
+            $seller_active_credit = $this->MasterRepository->getSellerActiveCredit($this->getAuthenticatedUserId());
+            // selected_from==0 means open seller
+            if($seller_active_credit > 0 && $request->selected_from==0){
+                $MySellerWallet =new MySellerWallet;
+                $MySellerWallet->user_id = $this->getAuthenticatedUserId();
+                $MySellerWallet->type = 0;//Debit
+                $MySellerWallet->debit_unit = 1;//for per inquiry
+                $MySellerWallet->current_unit = $seller_active_credit-1;
+                $MySellerWallet->save();
+                // SMS Notifications
+            } else {
+                DB::rollBack(); // Roll back the transaction
+                return redirect()->back()->with('error', 'You don\'t have active package or wallet balance.');
+                // Code to handle zero or negative active credit
+            }
     
-        // Run the validator
-        $validator = Validator::make($request->all(), $rules);
-    
-        // Additional validation to check if the input values are numeric
-        if (!is_numeric($request->bit_difference)) {
-            return redirect()->back()->with('warning', 'Amount must be a valid number.');
+            // Commit the transaction
+            DB::commit();
+            
+            return redirect()->route('seller_live_inquiries')->with('success', 'Quote submitted successfully.');
+        } catch (\Exception $e) {
+            // Roll back the transaction
+            DB::rollBack();
+            return redirect()->back()->with('error', 'An error occurred while submitting the quote. Please try again.');
         }
-    
-        // Check if validation fails
-        if ($validator->fails()) {
-            return redirect()->back()->with('warning', 'Amount must be a valid number.');
-        }
-    
-        // Validation passed, proceed to store data
-        $store = new InquirySellerQuotes;
-        $store->inquiry_id = $request->inquiry_id;
-        $store->seller_id = $request->seller_id;
-        $store->quotes = $request->bit_difference;
-        $store->save();
-    
-        return redirect()->route('seller_live_inquiries');
     }
 
     public function new_quote_now(Request $request){
@@ -544,14 +575,13 @@ class SellerDashboardController extends Controller
         return redirect()->back();
        }
     }
-    public function setSessionAndRedirect(){
+    public function setSessionAndRedirect(Request $request){
          // Set the intended URL in the session
          Session::put('url.intended', $request->intended_url);
-        
          // Return the JSON response for redirect
          return response()->json([
              'redirect' => true,
-             'redirect_url' => route('user.payment_management', ['package' => 'seller']),
+             'redirect_url' => route('user.payment_management', ['package' => $request->type]),
              'error' => 'You do not have an active seller package.'
          ]);
     }

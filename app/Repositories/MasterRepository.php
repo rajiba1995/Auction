@@ -21,6 +21,8 @@ use App\Models\State;
 use App\Models\EmployeeAttandance;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\MyBuyerPackage;
+use App\Models\MyBuyerWallet;
 use App\Models\MySellerWallet;
 use App\Models\MySellerPackage;
 use App\Models\LegalStatus;
@@ -968,6 +970,26 @@ class MasterRepository implements MasterContract
             ->exists();
         // Get the latest wallet entry with current_unit > 0 for the user
         $latestWallet = MySellerWallet::latest()
+            ->where('user_id', $id)
+            ->where('current_unit', '>', 0)
+            ->first();
+        // Determine the current unit to return
+        if ($hasActivePackage && $latestWallet) {
+            $currentUnit = $latestWallet->current_unit;
+        } else {
+            $currentUnit = 0;
+        }
+        return $currentUnit;
+    }
+    public function getBuyerActiveCredit($id){
+        // Get the current date and time
+        $currentDateTime = Carbon::now();
+        // Check if there is an active package for the user
+        $hasActivePackage = MyBuyerPackage::where('expiry_date', '>', $currentDateTime)
+            ->where('user_id', $id)
+            ->exists();
+        // Get the latest wallet entry with current_unit > 0 for the user
+        $latestWallet = MyBuyerWallet::latest()
             ->where('user_id', $id)
             ->where('current_unit', '>', 0)
             ->first();

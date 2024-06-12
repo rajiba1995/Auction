@@ -61,13 +61,11 @@ function genAutoIncreNoYearWiseInquiry($length=4,$table='inquiries',$year,$month
     # PO , GRN, SALES ORDER , RETURN ORDER
     $val = 1;    
     $data = DB::table($table)->whereRaw("DATE_FORMAT(created_at, '%Y-%m') = '".$year."-".$month."'  ")->count();
-
     if(!empty($data)){
         $val = ($data + 1);
     }
-
     $number = str_pad($val,$length,"0",STR_PAD_LEFT);
-    
+
     return $year.''.$month.''.$number;
 }
 

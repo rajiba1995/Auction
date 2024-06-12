@@ -14,7 +14,7 @@
                                 <li>{{$location}}</li>
                                 <li>&nbsp;>&nbsp;{{$keyword}} <span class="color-red">({{count($data)}} results)</span></li>
                                 <li> 
-                                    @if (session('success'))
+                                    {{-- @if (session('success'))
                                         <div class="alert alert-success" id="successAlert">
                                             {{ session('success') }}
                                         </div>
@@ -23,7 +23,7 @@
                                         <div class="alert alert-warning" id="successAlert">
                                             {{ session('warning') }}
                                         </div>
-                                    @endif
+                                    @endif --}}
                                 </li>
                             </ul>
                         </div>

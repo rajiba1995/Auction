@@ -35,11 +35,11 @@
                                         </div>
                                         <div class="content-box">
                                             <div class="m-2">
-                                                @if (session('success'))
+                                                {{-- @if (session('success'))
                                                     <div class="alert alert-success" id="message_div">
                                                         {{ session('success') }}
                                                     </div>
-                                                @endif
+                                                @endif --}}
                                             </div>
                                             <div class="inner">
                                                 <div class="page-tabs-row">

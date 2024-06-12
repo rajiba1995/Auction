@@ -75,6 +75,7 @@
             <td>
                 <a href="{{route('admin.inquiry.view', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">View</a>               
                 <a href="{{route('admin.inquiry.participants', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Participants</a>               
+                <a href="{{route('admin.inquiry.pdf', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">PDF</a>               
                 {{-- <a href="{{route('admin.user.document.view', $item->id)}}" class="btn btn-sm btn-outline-{{$doc_color}}" title="View">Documents</a>
                 <a href="{{route('admin.user.transaction.view', $item->id)}}" class="btn btn-sm btn-outline-primary">Transaction</a>
                 <a href="{{route('admin.user.report', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Reports</a> --}}
