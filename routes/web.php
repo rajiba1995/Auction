@@ -34,6 +34,7 @@ Route::get('/clear-cache', function() {
     Route::group(['middleware' => ['auth', 'check.user.profile']], function () {
         Route::prefix('my')->group(function () {
      
+            Route::get('/mail', [UserController::class, 'mail'])->name('user.rating_and_reviews');        
             Route::get('/rating-and-reviews', [UserController::class, 'RatingAndReview'])->name('user.rating_and_reviews');        
             Route::get('/requirements-and-consumption', [UserController::class, 'RConsumption'])->name('user.requirements_and_consumption');
             Route::get('/requirements-and-consumption/add', [UserController::class, 'RConsumptionAdd'])->name('user.requirements_and_consumption.add');

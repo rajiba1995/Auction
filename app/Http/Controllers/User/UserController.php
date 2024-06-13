@@ -37,6 +37,7 @@ use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Hash;
+use Mail;
 
 class UserController extends Controller{
 
@@ -1231,5 +1232,15 @@ class UserController extends Controller{
            
         }
         return response()->json(['status' => 200]);
+        }
+
+    public function mail(){
+        $data =['name'=>'amit','data'=>'hellow sir'];
+        $user['to']='amit.s@techmantra.co';
+        Mail::send('front.user.mail',$data,function($message) use ($user){
+            $message->to($user['to']);
+            // $message->subject('hellow dev');
+        });
+
         }
 }

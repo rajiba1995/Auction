@@ -43,7 +43,7 @@
                                                         </div>
                                                         
                                                         <div class="cta-row">
-                                                            <a href="{{ route('user.notification')}}">
+                                                            <a href="{{ route('user.notifications')}}">
                                                                 <span>Notifications</span>
                                                                 <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt="">
                                                             </a>

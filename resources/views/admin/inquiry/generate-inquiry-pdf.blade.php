@@ -20,10 +20,11 @@
                         <thead>
                             <tr class="allotment_th_tr" style="border: 1px solid #000;border-left: none;border-right: none;">
                                 <th>ID</th>
-                                <th>Date</th>
-                                <th>Description</th>
+                                <th>Date</th> 
+                                <th>Title</th>
                                 <th>Category</th>
                                 <th>Subcategory</th>
+                                <th>Extension Date</th>
                                 <th>Max rate</th>
                                 <th>Min rate</th>
                                 <th>Allotment</th>
@@ -32,10 +33,11 @@
                         <tbody>
                             <tr>
                                 <td style=" border: none;font-weight: 500;">{{$inquiry->inquiry_id}}</td>
-                                <td style=" border: none;font-weight: 500;"> {{ date('d-M-Y h:i:s A', strtotime($inquiry->created_at)) }}<span style="display: block;">09:10 PM</span></td>
-                                <td style=" border: none;font-weight: 500;max-width: 250px;">{{$inquiry->description}}</td>
+                                <td style=" border: none;font-weight: 500;"> {{ date('d-M-Y', strtotime($inquiry->created_at)) }}<span style="display: block;">{{ date('h:i A', strtotime($inquiry->created_at)) }}</span></td>
+                                <td style=" border: none;font-weight: 500;">{{$inquiry->title}}</td>
                                 <td style=" border: none;font-weight: 500;max-width: 250px;">{{$inquiry->category}}</td>
                                 <td style=" border: none;font-weight: 500;max-width: 250px;">{{$inquiry->sub_category}}</td>
+                                <td style=" border: none;font-weight: 500;"> {{ date('d-M-Y', strtotime($inquiry->execution_date)) }}</td>
                                 <td style=" border: none;font-weight: 500;">{{$max_rate}}</td>
                                 <td style=" border: none;font-weight: 500;">{{$min_rate}}</td>
                                 <!-- <td style=" border: none;font-weight: 500;">{{$inquiry->inquiry_amount}}</td> -->
@@ -45,6 +47,9 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="description">
+                <h4 style="font-size: 20px;font-weight: 500;margin-bottom: 15px;">Description: <span class="description_info" style="font-size: 12px;margin-left: 5px;">{{$inquiry->description}}</span></h4>
             </div>
             <div class="quotes_received" style="margin-bottom: 30px;">
                 <h4 style="font-size: 20px;font-weight: 500;margin-bottom: 15px;">Quotes Received (PMT)</h4>
@@ -75,9 +80,9 @@
                                     L{{ $loop->iteration }}
                                 @endif
                                 </td>
-                                <td style="text-align: center;border: 1px solid #000;font-weight: 500;">₹{{$data['first_quote']}} </td>
-                                <td style="text-align: center;border: 1px solid #000;font-weight: 500;">₹{{$data['latest_quote']}}</td>
-                                <td style="text-align: center;border: 1px solid #000;font-weight: 500;">₹{{$data['latest_quote']}}</td>
+                                <td style="text-align: center;border: 1px solid #000;font-weight: 500;">Rs.{{$data['first_quote']}} </td>
+                                <td style="text-align: center;border: 1px solid #000;font-weight: 500;">Rs.{{$data['latest_quote']}}</td>
+                                <td style="text-align: center;border: 1px solid #000;font-weight: 500;">Rs.{{$data['latest_quote']}}</td>
                              
                             </tr>
                        @endforeach
