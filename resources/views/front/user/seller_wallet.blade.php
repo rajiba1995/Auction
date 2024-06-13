@@ -25,10 +25,12 @@
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>SL.</th>        
+                                                    <th>SL.</th>
+                                                    <th>Inquiry Id</th>    
                                                     <th>Credit Unit</th>
                                                     <th>Debit Unit</th>                                               
                                                     <th>Current Unit</th>
+                                                    <th>Purpose</th>    
                                                     <th>Date</th>
                                                 </tr>
                                             </thead>
@@ -36,10 +38,12 @@
                                                 @forelse ($seller_wallet_transactions as $key =>$item)
                                                 <tr>
                                                     <td> {{ $key+1 }}</td>
+                                                    <td> {{ $item->inquiry_id?$item->inquiry_id:"##" }}</td>
                                                     <td>{{ number_format($item->credit_unit, 2) }}</td>
                                                     <td>{{ number_format($item->debit_unit, 2) }}</td>
                                                     <td>{{ number_format($item->current_unit, 2) }}</td>
-                                                    <td> {{ $item->created_at->format('d-M-Y h:i:s A') }}</td>
+                                                    <td> {{ $item->purpose }}</td>
+                                                    <td> {{ $item->created_at->format('d-M-Y h:i A') }}</td>
                                                 </tr>
                                                 @empty
                                                 <tr>

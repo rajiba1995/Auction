@@ -22,7 +22,7 @@
                                     <div class="top-content-bar">
                                         <a href="#" class="btn btn-animated btn-yellow btn-cta btn-download">Download Invoice</a>
                                     </div>
-                                    <div class="m-2">
+                                    <!-- <div class="m-2">
                                         @if (session('success'))
                                             <div class="alert alert-success" id="message_div">
                                                 {{ session('success') }}
@@ -42,7 +42,7 @@
                                                 {{ session('warning') }}
                                             </div>
                                         @endif
-                                    </div>
+                                    </div> -->
                                     <div class="content-box bg-gray-1">
                                         <div class="inner">
                                             <div class="page-tabs-row">

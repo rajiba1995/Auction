@@ -22,18 +22,6 @@
                                 <ul>
                                     <li><a href="{{asset('')}}">Home</a></li>
                                     <li>&nbsp;>&nbsp;<a href="{{route('user_seller_dashboard')}}">Supplier Dashboard</a></span></li>
-                                    <li id="message_li"> 
-                                        @if (session('success'))
-                                            <div class="alert alert-success" id="successAlert">
-                                                {{ session('success') }}
-                                            </div>
-                                        @endif
-                                        @if (session('warning'))
-                                            <div class="alert alert-warning" id="successAlert">
-                                                {{ session('warning') }}
-                                            </div>
-                                        @endif
-                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -294,10 +282,11 @@
                                                                 </td>
                                                                 <td class="other-actions-td">
                                                                     {{-- @if(valid_live_time($item->start_date.' '.$item->start_time, $item->end_date.' '.$item->end_time)) --}}
-                                                                    <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_startQuotingModal{{$item->id}}" class="btn btn-yellow btn-allot-offline">
+                                                                    <a href="javascript:void(0)" onclick="CheckExistPackage('{{$item->my_id}}', '{{$item->id}}', '{{$item->selected_from}}')" class="btn btn-yellow btn-allot-offline" >
                                                                         <img src="{{ asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
                                                                         Start Quoting
                                                                     </a>
+                                                                    {{-- data-bs-toggle="modal" data-bs-target="#all_startQuotingModal{{$item->id}}" --}}
                                                                     {{-- @endif --}}
 
                                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#all_cancelInquiryModal{{$item->id}}" class="btn btn-red btn-cancel-inquiry">
@@ -306,6 +295,7 @@
                                                                     </a>
                                                                 </td>
                                                             </tr>
+                                                            {{-- {{dd($item)}} --}}
                                                             {{-- start Quotting model --}}
                                                             <div class="modal fade allot-rate-modal start-quoting-modal" id="all_startQuotingModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog">
@@ -317,14 +307,16 @@
                                                                             <form action="{{route('seller_start_quotes')}}" method="POST" id="bit_difference_form{{$item->id}}">
                                                                                 @csrf
                                                                                 <input type="hidden" name="inquiry_id" value="{{$item->id}}">
+                                                                                <input type="hidden" name="inquiry_code_id" value="{{$item->inquiry_id}}">
                                                                                 <input type="hidden" name="minimum_quote_amount" id="minimum_quote_amount{{$item->id}}" value="{{$item->minimum_quote_amount}}">
                                                                                 <input type="hidden" id="maximum_quote_amount{{$item->id}}" name="maximum_quote_amount"  value="{{$item->maximum_quote_amount}}">
                                                                                 <input type="hidden" name="seller_id" value="{{$item->my_id}}">
+                                                                                <input type="hidden" name="selected_from" value="{{$item->selected_from}}">
                                                                                 {{-- <h4 class="content-heading">Credit will be used</h4> --}}
                                                                                 <label for="">Quote</label>
                                                                                 <div class="bit_difference">
                                                                                     <input type="text" class="form-control" name="bit_difference" id="bit_difference{{$item->id}}" value="{{$item->maximum_quote_amount}}">
-                                                                                    <p class="error"></p>
+                                                                                    <p class="error" id="error{{$item->id}}"></p>
                                                                                 </div>
                                                                                 <div class="bottom-cta-row">
                                                                                     <button type="button" class="btn btn-proceed difference_btn_submit" data-id="{{$item->id}}">Proceed</button>
@@ -416,9 +408,40 @@
     @endsection
     @section('script')
     <script>
+        function CheckExistPackage(my_id, id, selected_from){
+            $('#error'+id).text('');
+            var seller_active_credit = "{{$seller_active_credit}}";
+            if(selected_from==0 && seller_active_credit==0){
+                $.ajax({
+                    url: '/seller/set-session-and-redirect',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}', // Laravel CSRF token
+                        type: 'seller',
+                        intended_url: window.location.href // Current URL
+                    },
+                    success: function(response) {
+                        toastr.error(response.error);
+                        if (response.redirect) {
+                            window.location.href = response.redirect_url;
+                        } else {
+                            // Handle the error message
+                            toastr.error(response.error);
+                        }
+                    }
+                });
+            }else{
+                if(selected_from==0){
+                    $('#error'+id).text('1 credit will be used');
+                    // setTimeout(function() {
+                    //     $('#error'+id).text('');
+                    // }, 5000);
+                }
+                $('#all_startQuotingModal' + id).modal('show');
+            }
+        }
      $('.difference_btn_submit').click(function() {
             var id = $(this).data('id');
-            
             // Get the values
             var bit_difference = $('#bit_difference'+id).val();
             var minimum_quote_amount = parseFloat($('#minimum_quote_amount'+id).val());

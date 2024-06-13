@@ -227,13 +227,13 @@
                                                                             <td class="max-quote-td">{{$item->maximum_quote_amount?number_format($item->maximum_quote_amount,2, '.', ','):"----"}}</td>
                                                                         </tr>
                                                                         <tr>
-                                                                            <td colspan="7" class="note-td">
+                                                                            <!-- <td colspan="7" class="note-td">
                                                                                 <div class="note-wrap">
                                                                                     <h3>Notepad</h3>
                                                                                     <textarea class="form-control note-textarea">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed</textarea>
                                                                                     {{-- <button type="button" class="btn btn-animated bg-green">Save</button> --}}
                                                                                 </div>
-                                                                            </td>
+                                                                            </td> -->
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>
@@ -242,7 +242,7 @@
                                                                 <table class="table output-table">
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td class="quotes-supplier-td">
+                                                                            <!-- <td class="quotes-supplier-td">
                                                                                 <div class="quote">
                                                                                     <input type="text" class="quote-amount" value="₹ 3500" disabled>
                                                                                     <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#allQuotesModal">
@@ -281,7 +281,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </td>
+                                                                            </td> -->
                                                                         </tr>
                                                                     </tbody>
                                                                 </table>

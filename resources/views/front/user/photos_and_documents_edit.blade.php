@@ -23,11 +23,11 @@
                                         <div class="my-4">
                                             <p>UPLOAD<strong>->YOUR PHOTOS &amp; DOCUMENTS</strong> </p>
                                         </div>
-                                            @if (session('success'))
+                                            {{-- @if (session('success'))
                                                 <div class="alert alert-success" id="message_div">
                                                     {{ session('success') }}
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         <form action="{{ route('user.photos_and_documents_update') }}" class="input-form" method="post" enctype="multipart/form-data">
                                             @csrf
                                             <div class="upload-photos-block">

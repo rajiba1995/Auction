@@ -4,32 +4,14 @@
 <div class="inner-content">
     <div class="report-table-box">
         <div class="heading-row">
-            <h3>Users List</h3>
-            <div class="d-flex">              
+            <h3>Users By Employee (List)</h3>
+            <div class="d-flex">    
+            <a href="{{route('admin.user.index')}}" class="btn btn-danger btn-sm">
+                <iconify-icon icon="icon-park-twotone:back"></iconify-icon>
+                Back 
+            </a>          
             </div>
-        </div>
-            <form action="" method="get" id="">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-auto col-12">
-                            <input type="date" class="form-control form-control-sm" name="start_date" id="start_date" value="{{ request()->input('start_date') }}" >
-                        </div>
-                        <div class="col-lg-auto col-12">
-                            <input type="date" class="form-control form-control-sm" name="end_date" id="end_date" value="{{ request()->input('end_date') }}" >
-                        </div>
-                        <div class="col-lg-auto col-12">
-                            <input type="text" name="keyword" placeholder="Global Search..." value="{{request()->input('keyword')??""}}" class="w-100"/>
-                        </div>
-                        <div class="col-lg-auto col-12 text-end">
-                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
-                            <a href="{{route('admin.user.index')}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-xmark"></i></a>
-                            <a href="{{ route('admin.user.details.export',['start_date'=>request()->input('start_date'),'end_date'=>request()->input('end_date'),'keyword'=>request()->input('keyword')]) }}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Export">Export</a>
-                            <a href="{{ route('admin.user.add.by.employee')}}" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Export">Users added by emp</a>
-
-                        </div>
-                    </div>
-                </div>
-            </form>
+        </div>     
 
 <table class="table">
     <thead>
@@ -41,6 +23,7 @@
             <th>Email</th>
             <th>Action</th>
             <th>Status</th>
+            <th>Added by</th>
             <th>Date</th>
         </tr>
     </thead>
@@ -94,6 +77,7 @@
                  <span class="btn-sm btn-status btn btn btn-sm btn-outline-danger">Blocked
                 @endif
             </td>
+            <td>{{$item->getEmployeeName?$item->getEmployeeName->name:""}}</td>
             <td>{{ date('d-M-Y',strtotime($item->created_at)) }}</td>
             
         </tr>

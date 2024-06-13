@@ -23,7 +23,11 @@ class UserDetailsRepository implements UserDetailsContract
 {
     public function getAllUsers()
     {
-        return User::with('UserDocumentData')->orderBy('name', 'ASC')->paginate(20);
+        return User::with('UserDocumentData')->orderBy('name', 'ASC')->where('added_by',NULL)->paginate(20);
+    }
+    public function getAllUsersByEmployee()
+    {
+        return User::with('UserDocumentData')->whereNotNull('added_by')->latest('id')->paginate(20);
     }
     public function getUserDetailsById(int $id)
     {

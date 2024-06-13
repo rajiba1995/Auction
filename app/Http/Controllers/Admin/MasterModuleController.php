@@ -10,16 +10,22 @@ use App\Models\City;
 use App\Models\Category;
 use App\Models\Feeback;
 use App\Contracts\MasterContract;
+use App\Contracts\AdminInquiryContract;
+
 use Auth;
 use Illuminate\Validation\Rule;
 
 class MasterModuleController extends Controller
 {
     protected $masterRepository;
+    protected $adminInquiryRepository;
 
-    public function __construct(MasterContract $masterRepository)
+
+    public function __construct(MasterContract $masterRepository,AdminInquiryContract $adminInquiryRepository)
     {
         $this->masterRepository = $masterRepository;
+        $this->adminInquiryRepository = $adminInquiryRepository;
+
     }
 
 
@@ -851,33 +857,45 @@ class MasterModuleController extends Controller
         return view('employee.sellers.edit', compact('data'));
      }
      public function SellersUpdate(Request $request){
-        // dd($request->all());
-        $request->validate([
+         // dd($request->all());
+         $request->validate([
             'fname' => 'required',
             'lname' => 'required',
             'email' => 'required|unique:users,email,' . $request->user_id,
             'phone' => 'required|min:10|unique:users,mobile,' . $request->user_id,
             'business_name' => 'required',
             'pass' => 'nullable|min:6|max:15'
-        ],[
-           'fname.required'=>"First name is required",
-           'lname.required'=>"Last name is required",
-           'email.required'=>"Email is required",  
+            ],[
+                'fname.required'=>"First name is required",
+                'lname.required'=>"Last name is required",
+                'email.required'=>"Email is required",  
            'email.unique'=>"This email has already been taken.",  
            'phone.required'=>"Phone number is required",  
            'phone.unique'=>"This Phone number has already been used.",          
            'business_name.required'=>"Business Name is required",  
            'pass.min'=>"Minimum 6 characters are allowed in password field.",                       
            'pass.max'=>"Maximum 15 characters are allowed in password field.",                       
-        ]);
+           ]);
         $params = $request->except('_token');
         $data = $this->masterRepository->UpdateSellers($params);
         if ($data) {
             return redirect()->route('employee.sellers.index', $request->id)->with('success', 'Sellers data has been successfully updated!');
-        } else {
-            return redirect()->route('employee.sellers.edit', $request->id)->with('error', 'Something went wrong please try again!');
-        }
-     }
+            } else {
+                return redirect()->route('employee.sellers.edit', $request->id)->with('error', 'Something went wrong please try again!');
+                }
+    }
+                
+                
+    public function EmployeeShowBuyerActivity(int $id){
+      $data =$this->masterRepository->AuctionCreateByUserId($id);
+      return view('employee.sellers.activity_as_buyer',compact('data'));
+    }
+    public function EmployeeViewBuyerInquiry(int $id){
+        
+        $data= $this->adminInquiryRepository->getInquiryDetailsById($id);
+        $userId =$data->created_by;
+      return view('employee.sellers.buyer_inquiry_details',compact('data','userId'));
+    }
 
      //Buyer cancell reason
      public function BuyerCancellReasonIndex()

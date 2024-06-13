@@ -163,6 +163,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
     //user details
     Route::group(['prefix'  =>   'user'], function() {
         Route::get('', [UserDetailsController::class, 'UserDetailsIndex'])->name('admin.user.index');
+        Route::get('/add-by-employee', [UserDetailsController::class, 'UserAddByEmployee'])->name('admin.user.add.by.employee');
         Route::get('/view/{id}', [UserDetailsController::class, 'UserDetailsView'])->name('admin.user.view');
         Route::get('/package/{id}', [UserDetailsController::class, 'UserPackageDetailsView'])->name('admin.user.package.view');
         Route::get('/document/view/{id}', [UserDetailsController::class, 'UserDocumentView'])->name('admin.user.document.view');

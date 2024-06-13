@@ -24,6 +24,8 @@ Route::group(['middleware' => 'client', 'prefix' => 'employee'], function () {
                 Route::post('/store', [MasterModuleController::class, 'SellersStore'])->name('employee.sellers.store');
                 Route::get('/edit/{id}', [MasterModuleController::class, 'SellersEdit'])->name('employee.sellers.edit');
                 Route::post('/update', [MasterModuleController::class, 'SellersUpdate'])->name('employee.sellers.update');
+                Route::get('/employee-user-buyer-activity/{id}', [MasterModuleController::class, 'EmployeeShowBuyerActivity'])->name('show.user.buyer.activity');
+                Route::get('/employee-buyer-inquiry-view/{id}', [MasterModuleController::class, 'EmployeeViewBuyerInquiry'])->name('employee.buyer.inquiry.view');
             });
 
         });

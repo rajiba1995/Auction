@@ -103,7 +103,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    $("input[name='auctionfrom']").click(function () {
+    // $("input[name='auctionfrom']").click(function () {
+    //     var inputval = $(this).val();
+    //     if (inputval == "region") {
+    //         $("#selectRegion").addClass('show');
+    //     } else {
+    //         $("#selectRegion").removeClass('show');
+    //     }
+    // });
+    $("input[name='supplier_location']").click(function () {
         var inputval = $(this).val();
         if (inputval == "region") {
             $("#selectRegion").addClass('show');

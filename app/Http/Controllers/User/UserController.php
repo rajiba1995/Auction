@@ -83,10 +83,11 @@ class UserController extends Controller{
             'state' => 'required',
             'city' => 'required',
             'pincode' => 'required',
-            'employee' => 'required',
-            'Establishment_year' => 'required',
+            'employee' => 'nullable',
+            'Establishment_year' => 'nullable',
             'email' => 'required|email',
             'phone_number' => 'required|numeric',
+            'legal_status' => 'nullable',
             // Add more rules for other fields as needed
         ];
         
@@ -691,6 +692,8 @@ class UserController extends Controller{
             $my_wallet = new MyBuyerWallet();
             $my_wallet->user_id = $data->id;
             $my_wallet->type = 1; //Credit
+            // $my_wallet->inquiry_id = null;
+            $my_wallet->purpose = "For purchase package";
             $my_wallet->credit_unit = $request->package_credit;
             $my_wallet->current_unit = $current_balance + $package_credit;
             $my_wallet->save();
@@ -800,6 +803,7 @@ class UserController extends Controller{
     public function buyer_package_history(){
         $data = $this->AuthCheck();
         $buyer_package_history = $this->userRepository->getBuyerPackagehistory($data->id);
+        // dd($buyer_package_history);
         return view('front.user.buyer_package_history',compact('data','buyer_package_history'));
     }
     public function changePassword(){

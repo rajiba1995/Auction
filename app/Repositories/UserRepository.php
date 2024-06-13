@@ -396,7 +396,7 @@ class UserRepository implements UserContract
     }
     public function getBuyerPackagehistory($id){
        $data = DB::table('old_buyer_packages')->where('user_id',$id)->latest('id')->paginate(20);
-       
+       return $data;
     }
     public function getUserAllReviewRating($id){
        return ReviewRating::orderBy('id', 'DESC')->where('rated_on',$id)->limit(10)->get();

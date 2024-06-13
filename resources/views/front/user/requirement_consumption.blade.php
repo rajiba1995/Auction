@@ -28,11 +28,11 @@
                                             </a>
                                         </div>
                                         <div class="mt-2">
-                                            @if (session('success'))
+                                            {{-- @if (session('success'))
                                             <div class="alert alert-success" id="message_div">
                                                 {{ session('success') }}
                                             </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                         <div class="row consumption-row">
                                             <div class="col-md-6 col-12 left-col">
@@ -121,11 +121,11 @@
                                         <div class="top-content-bar">
                                         </div>
                                         <div class="mt-2">
-                                            @if (session('success'))
+                                            {{-- @if (session('success'))
                                             <div class="alert alert-success" id="message_div">
                                                 {{ session('success') }}
                                             </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                         <div class="row consumption-row">
                                             <div class="col-md-6 col-12 left-col">

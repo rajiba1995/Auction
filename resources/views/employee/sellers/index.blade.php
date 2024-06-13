@@ -4,7 +4,7 @@
 <div class="inner-content">
     <div class="report-table-box">
         <div class="heading-row">
-            <h3>Employee's -> Sellers Sheet</h3>
+            <h3>Employee's -> Users Sheet</h3>
             <div class="d-flex">
                 <a href="{{route('employee.sellers.create')}}" class="btn btn-add btn-sm">
                     <i class="fa-solid fa-plus"></i>
@@ -64,8 +64,11 @@
                 {{-- <button type="button" class="btn btn-view" title="View"><i class="fa-regular fa-eye"></i></button> --}}
                 @if ($item->status==0)                  
                 <a href="{{route('employee.sellers.edit', $item->id)}}" class="btn btn-edit" title="Edit">Edit</a>
+                @else
+                
+                <a href="{{route('show.user.buyer.activity',$item->id)}}" class="btn btn-outline-primary" >As a buyer</a>
+                <a href="" class="btn btn-outline-primary" >As a seller</a>
                 @endif
-                {{-- <button type="button" class="btn btn-delete itemremove" data-id="{{$item->id}}" title="Delete"><i class="fa-regular fa-trash-can"></i></button> --}}
             </td>
         </tr>
         @empty

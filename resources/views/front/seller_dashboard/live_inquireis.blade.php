@@ -386,10 +386,9 @@
                                                     <td class="quotes-supplier-td">
                                                         <div class="quote">
                                                             <button type="button" class="quote-amount" data-bs-toggle="modal" data-bs-target=".allQuotesModal" onclick="allQuotesModal(${item.id})">${item.my_last_quotes}</button>
-                                                            ${item.left_quotes > 0 ?
-                                                                `<button type="button" class="quote-amount mt-2" data-bs-toggle="modal" data-bs-target="#New_Quotes_Modal" onclick="NewQuotesModal(${item.id},${item.minimum_quote},${item.maximum_quote},${item.quote_difference},${item.my_last_quotes})">Quote Now</button>` :
-                                                                ``
-                                                            }
+                                                           ${item.left_quotes > 0 && item.live_status == 1 
+                                                            ? `<button type="button" class="quote-amount mt-2" data-bs-toggle="modal" data-bs-target="#New_Quotes_Modal" onclick="NewQuotesModal(${item.id}, ${item.minimum_quote}, ${item.maximum_quote}, ${item.quote_difference}, ${item.my_last_quotes})">Quote Now</button>` 
+                                                            : ``}
                                                             
                                                             <a href="javacsript:void(0)" data-bs-toggle="modal" data-bs-target=".allQuotesModal" onclick="allQuotesModal(${item.id})" class="quotes-left">${item.left_quotes} Quotes Left</a>
                                                             <div class="modal fade all-quotes-modal" id="allQuotesModal${item.id}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

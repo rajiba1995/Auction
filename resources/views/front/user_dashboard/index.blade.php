@@ -20,7 +20,7 @@
                                 <li>Home</li>
                                 <li>&nbsp;>&nbsp;Buyer Dashboard</span></li>
                                 <li id="message_li"> 
-                                    @if (session('success'))
+                                    {{-- @if (session('success'))
                                         <div class="alert alert-success" id="successAlert">
                                             {{ session('success') }}
                                         </div>
@@ -29,7 +29,7 @@
                                         <div class="alert alert-warning" id="successAlert">
                                             {{ session('warning') }}
                                         </div>
-                                    @endif
+                                    @endif --}}
                                 </li>
                             </ul>
                         </div>

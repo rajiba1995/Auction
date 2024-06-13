@@ -114,6 +114,7 @@ Route::get('/clear-cache', function() {
         });
         // Seller Dashboard
             Route::get('seller/groups', [SellerDashboardController::class, 'index'])->name('user_seller_dashboard');
+            Route::post('seller/set-session-and-redirect', [SellerDashboardController::class, 'setSessionAndRedirect']);
             Route::group(['prefix' => 'seller'], function() {
                 // Route::group(['middleware' => 'checkActiveSellerPackage'], function() {
                     Route::get('/all-inquiries', [SellerDashboardController::class, 'all_inquiries'])->name('seller_all_inquiries');
@@ -161,12 +162,12 @@ Route::get('employee/attendance/logout', [LoginController::class, 'employeeAtten
 require 'employee.php';
 require 'admin.php';
 
+Auth::routes();
+
 // Search User Module
 Route::get('/user/suggestion', [HomeController::class, 'Suggestion'])->name('user.suggestion');
 Route::get('/user/make_slug', [HomeController::class, 'UserGlobalMakeSlug'])->name('user.global.make_slug');
 Route::get('/user/make_slug/add_participant', [HomeController::class, 'UserGlobalMakeSlugParticipant'])->name('user.global.make_slug.participant');
-Route::get('/{location}/{keyword}', [HomeController::class, 'UserGlobalFilter'])->name('user.global.filter');
-Route::get('/{location}/{keyword}/{category}/{subcategory}', [HomeController::class, 'UserGlobalFilterAddParticipant'])->name('user.global.filter.add_participant');
 Route::get('/profile/{location}/{keyword}', [HomeController::class, 'UserProfileFetch'])->name('user.profile.fetch');
 Route::get('/rating-and-reviews/{location}/{keyword}', [HomeController::class, 'UserReviewAndRating'])->name('user.profile.review_and_rating');
 Route::get('/rating-and-reviews/write/{location}/{keyword}', [HomeController::class, 'UserReviewAndRatingWrite'])->name('user.profile.review_and_rating.write');
@@ -175,7 +176,5 @@ Route::get('/photos-and-documents/{location}/{keyword}', [HomeController::class,
 Route::get('/product-and-service/{location}/{keyword}', [HomeController::class, 'UserProductService'])->name('user.profile.product_and_service');
 Route::get('/requirements-and-consumption/{location}/{keyword}', [HomeController::class, 'RequirementsAndConsumption'])->name('user.profile.requirements_and_consumption');
 
-Route::post('lux/cozi/test', [HomeController::class, 'CoziTest']);
-Route::get('lux/cozi/user/data', [HomeController::class, 'CoziUserData']); 
-Route::post('lux/cozi/send-message', [HomeController::class, 'SendWhatsAppMessage']);
-Auth::routes();
+Route::get('/{location}/{keyword}', [HomeController::class, 'UserGlobalFilter'])->name('user.global.filter');
+Route::get('/{location}/{keyword}/{category}/{subcategory}', [HomeController::class, 'UserGlobalFilterAddParticipant'])->name('user.global.filter.add_participant');
