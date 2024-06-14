@@ -190,6 +190,7 @@ Route::group(['middleware' => 'admin', 'prefix' => 'admin'], function () {
         Route::post('/update', [EmployeeDetailsController::class, 'EmployeeUpdate'])->name('admin.employee.update');
         Route::get('/delete/{id}', [EmployeeDetailsController::class, 'EmployeeDelete'])->name('admin.employee.delete');
         Route::get('/export', [EmployeeDetailsController::class, 'EmployeeDetailsExport'])->name('admin.employee.details.export');
+        Route::post('/user-transfer', [EmployeeDetailsController::class, 'UserTransfer'])->name('admin.employee.user_transfer');
     });
     // Role
     Route::group(['prefix'  =>   'role'], function() {

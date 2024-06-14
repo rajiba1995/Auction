@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Contracts\EmployeeDetailsContract;
 use App\Models\Admin;
+use App\Models\User;
+use App\Models\WebsiteLogs;
 use Auth;
 
 
@@ -40,7 +42,7 @@ class EmployeeDetailsController extends Controller
         $data = $this->employeeDetailsRepository->getAllUsersByEmployeeId($id);
         $employees = $this->employeeDetailsRepository->getAllEmployees();
         
-        return view('admin.employee.sellers',compact('data','employees'));
+        return view('admin.employee.sellers',compact('data','employees', 'id'));
 
     }
     public function AttendanceIndexOfEmployee($id)
@@ -243,5 +245,23 @@ class EmployeeDetailsController extends Controller
         } else {
             return redirect()->route('admin.role.index')->with('error', 'Something went wrong please try again!');
         }
+    }
+    public function UserTransfer(Request $request){
+        foreach($request->selected_items as $item){
+            $user = User::findOrFail($item);
+            if($user){
+                $user->added_by = $request->emp_id;
+                $user->save();
+                if($user){
+                    $websiteLog = new WebsiteLogs();
+                    $websiteLog->emp_id = Auth::guard('admin')->user()->id;
+                    $websiteLog->logs_type = "USER TRANSFER";
+                    $websiteLog->table_name = "users";
+                    $websiteLog->response = json_encode($request->all());
+                    $websiteLog->save();
+                }
+            }
+        }
+        return response()->json(['status'=>200]);
     }
 }

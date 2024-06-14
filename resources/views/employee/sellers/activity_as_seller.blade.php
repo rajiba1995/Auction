@@ -31,8 +31,6 @@
     </thead>
     <tbody class="align-middle">
         @forelse ($data as $key =>$item)
-        
-       
         <tr>
             <td> {{ $key+1 }}</td>
             <td> {{ $item->InquriesData?$item->InquriesData->inquiry_id:"" }}</td>     
@@ -48,11 +46,20 @@
                 @endif
             </td>  
             <td> 
-                <button type="button" class="btn btn-outline-primary">
+                @php
+                    $get_all_quotes =get_my_all_quotes_by_user($item->inquiry_id, $item->user_id);
+                        $quotesString = '';
+                        foreach ($get_all_quotes as $key => $value) {
+                            // Concatenate quotes with '--' separator
+                            $quotesString .= $value->quotes . ' -> ';
+                        }
+                    // Remove the last ' -- ' from the concatenated string
+                    $quotesString = rtrim($quotesString, ' -> '); 
+                @endphp
+                <button type="button" class="btn btn-outline-primary" onclick="GetQuotes('{{$quotesString}}')">
                 Quotes    
                 <!-- pending -->
                 </button>
-         
             </td>     
             <td>{{ date('d-M-Y',strtotime($item->created_at)) }}</td>
         </tr>
@@ -70,6 +77,18 @@
 @endsection
 @push('scripts')
 <script>
+    function GetQuotes(id){
+        if(id){
+            Swal.fire({
+                text: id,
+            })
+        }else{
+            Swal.fire({
+                text: "No quotes found!",
+            })
+        }
+    }
+   
     $('.itemremove').on("click", function() {
         var id = $(this).data('id');
         Swal.fire({

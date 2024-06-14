@@ -202,6 +202,14 @@ function get_last_three_quotes($inquiry_id, $seller_id){
 function get_my_all_quotes($inquiry_id, $seller_id){
    return InquirySellerQuotes::latest()->where('inquiry_id', $inquiry_id)->where('seller_id', $seller_id)->get()->count();
 }
+function get_my_all_quotes_by_user($inquiry_id, $seller_id){
+    return InquirySellerQuotes::where('inquiry_id', $inquiry_id)
+    ->where('seller_id', $seller_id)
+    ->orderBy('created_at', 'ASC')
+    ->get('quotes');
+
+
+}
 function get_inquiry_seller_quotes($seller_id, $inquiry_id){
     return InquirySellerQuotes::where('inquiry_id', $inquiry_id)->where('seller_id', $seller_id)->first();
 }

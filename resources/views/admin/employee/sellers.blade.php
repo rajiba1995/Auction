@@ -45,7 +45,7 @@
         @forelse ($data as $key =>$item)
         <tr>
             <td>
-                <input type="checkbox" class="select-item" name="selected_items[]" value="{{ $item->id }}">
+                <input type="checkbox" class="select-item" name="selected_items[]"  id="selected_items{{$item->id}}" value="{{ $item->id }}">
             </td>
             <td> {{ $data->firstItem() + $loop->index }}</td>
             <td> {{ $item->name }}</td>
@@ -75,23 +75,62 @@
 </table>
 {{$data->appends($_GET)->links()}}
 </div>
-<div style="display: flex; justify-content: flex-end; align-items: flex-end;">
-<select class="form-control" style="width: 400px;">
+    <div id="transfer_user" class="row justify-content-end">
+        <div class="col-md-4 text-end">
+            <select class="form-control js-example-basic-single" name="emp_id" id="emp_id" style="width: 400px;">
                 @if(count($employees)>0)
-                @foreach($employees as $employee)
-                <option value="{{$employee->id}}">{{$employee->name}}</option>
-                @endforeach
+                    @foreach($employees as $key=>$employee)
+                        @if($employee->id!=$id)
+                            <option value="{{$employee->id}}" {{$key==0?"selected":""}}>{{$employee->name}}</option>
+                        @endif
+                    @endforeach
                 @endif
-</select>
-<a href="{{route('admin.employee.index')}}" id="transferButton" class="btn btn-primary btn-sm transfer">
-                    Tranfer 
-                    <iconify-icon icon="tabler:transfer-in" width="1.2rem" height="1.2rem"></iconify-icon>
-</a>
-</div>
+            </select>
+        </div>
+        <div class="col-md-2 text-end" style="width: 8.666667% !important;">
+            <button id="transferButton" class="btn btn-primary btn-sm">Transfer<iconify-icon icon="tabler:transfer-in" width="1.2rem" height="1.2rem"></iconify-icon></button>
+        </div>
+    </div>
 </div>
 @endsection
 @push('scripts')
 <script>
+    // In your Javascript (external .js resource or <script> tag)
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
+</script>
+<script>
+    $('#transferButton').on("click", function(){
+        var multiple_ids = $('input[name="selected_items[]"]:checked').map(function(){
+            return this.value;
+        }).get();
+        var emp_id = $('#emp_id').val();
+        if(emp_id && multiple_ids.length>0){
+            $.ajax({
+                url: "{{route('admin.employee.user_transfer')}}", // Replace with your server endpoint
+                method: 'POST',
+                data: {
+                    emp_id: emp_id,
+                    _token:"{{csrf_token()}}",
+                    selected_items: multiple_ids
+                },
+                success: function(response) {
+                    toastr.success("Data successfully transferred!");
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                    console.log(response); // Handle the response from the server
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    toastr.error("An error occurred. Please try again.");
+                    console.log(textStatus, errorThrown); // Handle errors here
+                }
+            });
+        }else{
+            toastr.error("Please select at least one item and enter an employee ID.");
+        }
+    })
     $('.itemremove').on("click", function() {
         var id = $(this).data('id');
         Swal.fire({
@@ -111,11 +150,12 @@
         });
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 <script>
-    $(document).ready(function() {
+   $(document).ready(function() {
         $('#select-all').click(function() {
             $('.select-item').prop('checked', this.checked);
+            toggleTransferUserDiv();
         });
 
         $('.select-item').change(function() {
@@ -124,8 +164,21 @@
             } else {
                 $('#select-all').prop('checked', false);
             }
+            toggleTransferUserDiv();
         });
+
+        function toggleTransferUserDiv() {
+            if ($('.select-item:checked').length > 0) {
+                $('#transfer_user').show();
+            } else {
+                $('#transfer_user').hide();
+            }
+        }
+
+        // Initial check in case any checkboxes are pre-checked
+        toggleTransferUserDiv();
     });
+
 </script>
 
 @endpush
