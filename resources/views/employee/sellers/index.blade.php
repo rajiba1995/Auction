@@ -67,7 +67,7 @@
                 @else
                 
                 <a href="{{route('show.user.buyer.activity',$item->id)}}" class="btn btn-outline-primary" >As a buyer</a>
-                <a href="" class="btn btn-outline-primary" >As a seller</a>
+                <a href="{{route('show.user.seller.activity',$item->id)}}" class="btn btn-outline-primary" >As a seller</a>
                 @endif
             </td>
         </tr>

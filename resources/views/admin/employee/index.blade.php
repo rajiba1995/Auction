@@ -63,7 +63,7 @@
                 <a href="{{route('admin.employee.edit', $item->id)}}" class="btn btn-edit" title="Edit">Edit</a>
                 <button type="button" class="btn btn-delete itemremove" data-id="{{$item->id}}" title="Delete"><i class="fa-regular fa-trash-can"></i></button>
                 @if ($item->getSellers && count($item->getSellers)>0)
-                <a href="{{route('admin.employee.sellers', $item->id)}}" class="btn btn-edit" title="Edit">Sellers</a>
+                <a href="{{route('admin.employee.sellers', $item->id)}}" class="btn btn-edit" title="Edit">Users</a>
                 @endif
                 <a href="{{route('admin.employee.attandance', $item->id)}}" class="btn btn-edit" title="Edit">Attendance</a>
             </td>

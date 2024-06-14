@@ -19,7 +19,7 @@
                     <a class="nav-link {{ (request()->is('employee/master/attandance*')) ? 'active' : '' }}" aria-current="page" href="{{route('employee.attandance.index')}}">Attandance</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link {{ (request()->is('employee/master/sellers*')) ? 'active' : '' }}" aria-current="page" href="{{ route('employee.sellers.index') }}">Sellers</a>
+                    <a class="nav-link {{ (request()->is('employee/master/sellers*')) ? 'active' : '' }}" aria-current="page" href="{{ route('employee.sellers.index') }}">Users</a>
                   </li>
                  
               </ul>

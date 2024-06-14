@@ -26,6 +26,8 @@ Route::group(['middleware' => 'client', 'prefix' => 'employee'], function () {
                 Route::post('/update', [MasterModuleController::class, 'SellersUpdate'])->name('employee.sellers.update');
                 Route::get('/employee-user-buyer-activity/{id}', [MasterModuleController::class, 'EmployeeShowBuyerActivity'])->name('show.user.buyer.activity');
                 Route::get('/employee-buyer-inquiry-view/{id}', [MasterModuleController::class, 'EmployeeViewBuyerInquiry'])->name('employee.buyer.inquiry.view');
+                Route::get('/employee-buyer-inquiry-participants-view/{id}', [MasterModuleController::class, 'EmployeeBuyerInquiryParticipantsView'])->name('employee.buyer.inquiry.participants.view');
+                Route::get('/employee-user-seller-activity/{id}', [MasterModuleController::class, 'EmployeeShowSellerActivity'])->name('show.user.seller.activity');
             });
 
         });

@@ -29,6 +29,9 @@
 <table class="table">
     <thead>
         <tr class="align-middle">
+            <th>
+            <input type="checkbox" id="select-all"> All
+            </th>
             <th>SL.</th>
             <th>Name</th>
             <th>Phone</th>
@@ -41,6 +44,9 @@
     <tbody class="align-middle">
         @forelse ($data as $key =>$item)
         <tr>
+            <td>
+                <input type="checkbox" class="select-item" name="selected_items[]" value="{{ $item->id }}">
+            </td>
             <td> {{ $data->firstItem() + $loop->index }}</td>
             <td> {{ $item->name }}</td>
             <td>{{ $item->mobile }}</td>
@@ -69,6 +75,19 @@
 </table>
 {{$data->appends($_GET)->links()}}
 </div>
+<div style="display: flex; justify-content: flex-end; align-items: flex-end;">
+<select class="form-control" style="width: 400px;">
+                @if(count($employees)>0)
+                @foreach($employees as $employee)
+                <option value="{{$employee->id}}">{{$employee->name}}</option>
+                @endforeach
+                @endif
+</select>
+<a href="{{route('admin.employee.index')}}" id="transferButton" class="btn btn-primary btn-sm transfer">
+                    Tranfer 
+                    <iconify-icon icon="tabler:transfer-in" width="1.2rem" height="1.2rem"></iconify-icon>
+</a>
+</div>
 </div>
 @endsection
 @push('scripts')
@@ -92,4 +111,21 @@
         });
     });
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#select-all').click(function() {
+            $('.select-item').prop('checked', this.checked);
+        });
+
+        $('.select-item').change(function() {
+            if ($('.select-item:checked').length == $('.select-item').length) {
+                $('#select-all').prop('checked', true);
+            } else {
+                $('#select-all').prop('checked', false);
+            }
+        });
+    });
+</script>
+
 @endpush

@@ -5,7 +5,7 @@
     <div class="report-table-box">
         <div class="heading-row">
             @if($data[0])
-            <h3>{{$data[0]->BuyerData?$data[0]->BuyerData->name : ""}} -> Inquiry List (As a buyer)</h3>
+            <h3>{{$data[0]->SellerData?$data[0]->SellerData->name : ""}} -> Inquiry List (As a seller)</h3>
             @endif
             <div class="d-flex">      
             <a href="{{route('employee.sellers.index')}}" class="btn btn-danger btn-sm">
@@ -25,8 +25,8 @@
             <th>Inquiry Type</th>
             <th>Amount</th>
             <th>Alloted</th>
+            <th>Quote</th>
             <th>Date</th>
-            <th>Action</th>
         </tr>
     </thead>
     <tbody class="align-middle">
@@ -35,23 +35,26 @@
        
         <tr>
             <td> {{ $key+1 }}</td>
-            <td> {{ $item->inquiry_id }}</td>     
-            <td> {{ $item->location }}</td>      
-            <td> {{ $item->title }}</td>      
-            <td> {{ $item->inquiry_type }}</td>      
-            <td>{{number_format($item->inquiry_amount,2, '.', ',')}}</td>      
+            <td> {{ $item->InquriesData?$item->InquriesData->inquiry_id:"" }}</td>     
+            <td>{{ $item->InquriesData?$item->InquriesData->location:"" }}</td>      
+            <td> {{ $item->InquriesData?$item->InquriesData->title:"" }}</td>      
+            <td> {{ $item->InquriesData?$item->InquriesData->inquiry_type:"" }}</td>
+            <td>{{ $item->InquriesData ? number_format($item->InquriesData->inquiry_amount, 2, '.', ',') : '' }}</td>      
             <td>
-                @if(isset($item->SellerData->name))
-                <div  class="alert alert-success p-1 text-center" role="alert">{{ $item->SellerData->name }}</div>
+                @if($item->status == 4)
+                <div  class="alert alert-success p-1 text-center" role="alert">Alloted</div>
                 @else
                 <div class="alert alert-danger p-1 text-center" role="alert">Not-Allot</div>
                 @endif
             </td>  
+            <td> 
+                <button type="button" class="btn btn-outline-primary">
+                Quotes    
+                <!-- pending -->
+                </button>
+         
+            </td>     
             <td>{{ date('d-M-Y',strtotime($item->created_at)) }}</td>
-            <td>
-                <a href="{{route('employee.buyer.inquiry.view', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">View</a>               
-                <a href="{{route('employee.buyer.inquiry.participants.view', $item->id)}}" class="btn btn-sm btn-outline-primary" title="View">Participants</a>
-            </td>
         </tr>
         @empty
         <tr>

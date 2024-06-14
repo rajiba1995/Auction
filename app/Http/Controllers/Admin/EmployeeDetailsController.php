@@ -21,7 +21,6 @@ class EmployeeDetailsController extends Controller
 
     public function EmployeeDetailsIndex(Request $request)
     { 
-
         $startDate = $request->start_date ?? '';
         $endDate = $request->end_date ?? '';
         $keyword = $request->keyword ?? '';
@@ -39,7 +38,9 @@ class EmployeeDetailsController extends Controller
     { 
         // return $id;
         $data = $this->employeeDetailsRepository->getAllUsersByEmployeeId($id);
-        return view('admin.employee.sellers',compact('data'));
+        $employees = $this->employeeDetailsRepository->getAllEmployees();
+        
+        return view('admin.employee.sellers',compact('data','employees'));
 
     }
     public function AttendanceIndexOfEmployee($id)

@@ -10,6 +10,7 @@ use App\Models\Collection;
 use App\Models\Category;
 use App\Models\Tutorial;
 use App\Models\Inquiry;
+use App\Models\InquiryParticipant;
 use App\Models\Client;
 use App\Models\Feedback;
 use App\Models\SocialMedia;
@@ -1004,7 +1005,15 @@ class MasterRepository implements MasterContract
     }
 
     public function AuctionCreateByUserId($id){
-        return Inquiry::where('created_by',$id)->latest('id')->paginate(20);
+        return Inquiry::with('BuyerData')->where('created_by',$id)->whereNotNull('inquiry_id')->latest('id')->paginate(20);
+    }
+    public function AuctionParticipateByUserId($id){
+        return InquiryParticipant::with('SellerData')->where('user_id', $id)
+        ->whereHas('InquriesData', function($query) {
+            $query->whereNotNull('inquiry_id');
+        })
+        ->latest('id')
+        ->paginate(20);
     }
     
     }

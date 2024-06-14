@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Banner;
 use App\Models\Collection;
+use App\Models\Inquiry;
 use App\Models\City;
 use App\Models\Category;
 use App\Models\Feeback;
@@ -890,11 +891,22 @@ class MasterModuleController extends Controller
       $data =$this->masterRepository->AuctionCreateByUserId($id);
       return view('employee.sellers.activity_as_buyer',compact('data'));
     }
+    public function EmployeeShowSellerActivity(int $id){
+      $data =$this->masterRepository->AuctionParticipateByUserId($id);
+    //   dd($data);
+      return view('employee.sellers.activity_as_seller',compact('data'));
+    }
     public function EmployeeViewBuyerInquiry(int $id){
         
         $data= $this->adminInquiryRepository->getInquiryDetailsById($id);
         $userId =$data->created_by;
       return view('employee.sellers.buyer_inquiry_details',compact('data','userId'));
+    }
+    public function EmployeeBuyerInquiryParticipantsView(int $id){
+      $data=$this->adminInquiryRepository->getAllParticipantsByInquiryId($id);
+      $userId = Inquiry::where('id', $id)->pluck('created_by')->first();
+    //   dd($userId);
+        return view('employee.sellers.buyer_inquiry_participants_view',compact('data','userId'));;
     }
 
      //Buyer cancell reason
