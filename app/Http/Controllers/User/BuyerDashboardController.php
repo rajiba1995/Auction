@@ -5,12 +5,16 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Contracts\UserContract;
 use App\Contracts\BuyerDashboardContract;
 use App\Contracts\MasterContract;
 use App\Models\Inquiry;
 use App\Models\InquiryAllotmentData;
 use App\Models\InquiryParticipant;
+use App\Models\User;
+use App\Models\InquirySellerQuotes;
+use App\Models\InquirySellerComments;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
@@ -473,5 +477,46 @@ class BuyerDashboardController extends Controller
             return redirect()->back()->with('warning','Please select the cancell reason.');
     }
     
+    }
+    public function InquiryPdfGenarate($id){
+        // dd($id);
+        $inquiry = Inquiry::where('id',$id)->first();
+        $final_seller_details = User::where('id',$inquiry->allot_seller)->first();
+        $buyer_details = User::where('id',$inquiry->created_by)->first();
+        $max_rate = InquirySellerQuotes::where('inquiry_id', $id)->max('quotes');
+        $min_rate = InquirySellerQuotes::where('inquiry_id', $id)->min('quotes');
+        $seller_ids = InquirySellerQuotes::select('seller_id')
+        ->where('inquiry_id', $id)
+        ->groupBy('seller_id')
+        ->pluck('seller_id')
+        ->toArray();
+        $seller_data = [];
+        foreach($seller_ids as $key =>$seller_id){
+            $latest_quote = InquirySellerQuotes::where('seller_id', $seller_id)->where('inquiry_id', $id)->latest()->first()->quotes;
+            $first_quote = InquirySellerQuotes::where('seller_id', $seller_id)->where('inquiry_id', $id)->orderBy('id', 'ASC')->first()->quotes;
+            $seller_comments = InquirySellerComments::where('seller_id', $seller_id)->where('inquiry_id', $id)->latest()->take(2)->get();
+            // Get seller details from the User table
+            $seller_details = User::find($seller_id);
+            //  dd($seller_details);
+        // Store the seller data
+        $seller_data[$seller_id] = [
+            'latest_quote' => $latest_quote,
+            'first_quote' => $first_quote,
+            'seller_details' => $seller_details,
+            'seller_comments'=>$seller_comments
+        ];
+        
+        }
+        $data = [
+            'inquiry' => $inquiry,
+            'max_rate' => $max_rate,
+            'min_rate' => $min_rate,
+            'buyer_details' => $buyer_details,
+            'final_seller_details' => $final_seller_details,
+            'seller_data' => $seller_data,
+            'seller_count' => count($seller_ids)
+        ];
+        $pdf = Pdf::loadView('admin.inquiry.generate-inquiry-pdf', $data);
+        return $pdf->download('inquiry-pdf.pdf');
     }
 }

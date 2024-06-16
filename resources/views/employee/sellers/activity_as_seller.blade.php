@@ -7,6 +7,20 @@
             @if($data[0])
             <h3>{{$data[0]->SellerData?$data[0]->SellerData->name : ""}} -> Inquiry List (As a seller)</h3>
             @endif
+
+            <form action="" method="get" id="">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-auto col-12">
+                            <input type="text" name="keyword" placeholder="Search..." value="{{request()->input('keyword')??""}}" class="w-100"/>
+                        </div>
+                        <div class="col-lg-auto col-12 text-end">
+                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+                            <a href="{{route('show.user.seller.activity',$id)}}" class="btn btn-danger btn-sm"><i class="fa-solid fa-xmark"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
             <div class="d-flex">      
             <a href="{{route('employee.sellers.index')}}" class="btn btn-danger btn-sm">
                 <iconify-icon icon="icon-park-twotone:back"></iconify-icon>

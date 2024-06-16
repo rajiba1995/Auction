@@ -99,6 +99,7 @@ Route::get('/clear-cache', function() {
         Route::get('/auction-inquiry-generation', [AuctionGenerationController::class, 'auction_inquiry_generation'])->name('front.auction_inquiry_generation');
         Route::post('/auction-inquiry-generation/store', [AuctionGenerationController::class, 'auction_inquiry_generation_store'])->name('front.auction_inquiry_generation_store');
         Route::get('/auction-inquiry-generation/participants/delete', [AuctionGenerationController::class, 'auction_participants_delete'])->name('front.auction_participants_delete');
+        Route::post('/restart-inquiry/strore', [AuctionGenerationController::class, 'auction_inquiry_restart'])->name('front.auction_inquiry_restart');
 
         // Buyer Dashboard
         Route::group(['prefix'  =>   'buyer'], function() {
@@ -107,6 +108,7 @@ Route::get('/clear-cache', function() {
             Route::get('/live-inquiries', [BuyerDashboardController::class, 'live_inquiries'])->name('buyer_live_inquiries');
             Route::get('/pending-inquiries', [BuyerDashboardController::class, 'pending_inquiries'])->name('buyer_pending_inquiries');
             Route::get('/confirmed-inquiries', [BuyerDashboardController::class, 'confirmed_inquiries'])->name('buyer_confirmed_inquiries');
+            Route::get('/inquiry-pdf/{id}', [BuyerDashboardController::class, 'InquiryPdfGenarate'])->name('buyer.inquiry.pdf');
             Route::get('/cancelled-inquiries', [BuyerDashboardController::class, 'cancelled_inquiries'])->name('buyer_cancelled_inquiries');
             Route::post('/cancelled-reason', [BuyerDashboardController::class, 'cancelled_reason'])->name('buyer_cancelled_reason');
             Route::get('/live-inquiries-fetch-ajax', [BuyerDashboardController::class, 'live_inquiries_fetch_ajax'])->name('buyer_live_inquiries_by_ajax');

@@ -314,6 +314,29 @@ class AuctionGenerationController extends Controller
         InquiryParticipant::destroy($request->id);
         return response()->json(['status'=>200]);  
     }
+    public function auction_inquiry_restart(Request $request){
+        // dd($request->all());
+        $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i',
+            'execution_date' => 'required|date|after:end_date',                       
+           ]);
+        $inquiry = Inquiry::findOrFail($request->auction_id);
+
+            $inquiry->start_date = $request->start_date;
+            $inquiry->end_date = $request->end_date;
+            $inquiry->start_time = $request->start_time;
+            $inquiry->end_time = $request->end_time;
+            $inquiry->execution_date = $request->execution_date;
+            $inquiry->status = 1;
+            $inquiry->save();
+            return redirect()->route('user_buyer_dashboard')->with('success', 'Inquiry has been restart successfully.');
+
+        // InquiryParticipant::destroy($request->id);
+        // return response()->json(['status'=>200]);  
+    }
     
     
 }

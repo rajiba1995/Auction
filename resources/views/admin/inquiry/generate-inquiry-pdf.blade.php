@@ -41,7 +41,11 @@
                                 <td style=" border: none;font-weight: 500;">{{$max_rate}}</td>
                                 <td style=" border: none;font-weight: 500;">{{$min_rate}}</td>
                                 <!-- <td style=" border: none;font-weight: 500;">{{$inquiry->inquiry_amount}}</td> -->
-                                <td style="font-size: 12px; border: none;font-weight: 500;">{{$inquiry->inquiry_amount}} <span style="display: block;">{{$final_seller_details['name']}}</span><span style="display: block;">| {{$final_seller_details['mobile']}}</span></td>
+                                 @if($inquiry->status == 4){
+                                     <td style="font-size: 12px; border: none;font-weight: 500;">Inquiry Cancelled <span style="display: block;"> | {{$inquiry->cancelled_reason}}</span></td>
+                                 @else
+                                     <td style="font-size: 12px; border: none;font-weight: 500;">{{$inquiry->inquiry_amount}} <span style="display: block;">{{$final_seller_details['name']}}</span><span style="display: block;">| {{$final_seller_details['mobile']}}</span></td>
+                                 @endif
 
                             </tr>
                         </tbody>

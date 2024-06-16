@@ -454,6 +454,10 @@
                                                                             <img src="{{asset('frontend/assets/images/white-circle-cross.png')}}" alt="Cancel">
                                                                             Cancel Inquiry
                                                                         </a>
+                                                                        <a href="{{route('buyer.inquiry.pdf',$item['id'])}}" class="btn btn-success btn-allot-offline">
+                                                                            <img src="{{asset('frontend/assets/images/pdf.png')}}" alt="Pdf">
+                                                                            Download Pdf
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>

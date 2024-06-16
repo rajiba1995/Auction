@@ -887,14 +887,23 @@ class MasterModuleController extends Controller
     }
                 
                 
-    public function EmployeeShowBuyerActivity(int $id){
-      $data =$this->masterRepository->AuctionCreateByUserId($id);
-      return view('employee.sellers.activity_as_buyer',compact('data'));
+    public function EmployeeShowBuyerActivity(Request $request,int $id){
+    $keyword = $request->keyword ?? '';
+    if (!empty($keyword)){
+        $data =$this->masterRepository->AuctionCreateByUserIdSearch($keyword,$id);
+    }else{
+        $data =$this->masterRepository->AuctionCreateByUserId($id);
     }
-    public function EmployeeShowSellerActivity(int $id){
-      $data =$this->masterRepository->AuctionParticipateByUserId($id);
-    //   dd($data);
-      return view('employee.sellers.activity_as_seller',compact('data'));
+      return view('employee.sellers.activity_as_buyer',compact('data','id'));
+    }
+    public function EmployeeShowSellerActivity(Request $request,int $id){
+    $keyword = $request->keyword ?? '';
+    if (!empty($keyword)){
+        $data =$this->masterRepository->AuctionParticipateByUserIdSearch($keyword,$id);
+    }else{
+        $data =$this->masterRepository->AuctionParticipateByUserId($id);
+    }
+      return view('employee.sellers.activity_as_seller',compact('data','id'));
     }
     public function EmployeeViewBuyerInquiry(int $id){
         

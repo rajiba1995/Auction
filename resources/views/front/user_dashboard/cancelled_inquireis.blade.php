@@ -428,9 +428,13 @@
                                                                                     <img src="{{asset('frontend/assets/images/green-circle-tick.png')}}" alt="Allot Offline">
                                                                                     Allot Offline
                                                                                 </a>
-                                                                                <a href="javascript:void(0)" class="btn btn-blue btn-restart-auction">
-                                                                                    <img src="{{asset('frontend/assets/images/white-circle-tick.png')}}" alt="Allot Offline">
+                                                                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#RestartAuctionModal{{$item['id']}}" class="btn btn-blue btn-restart-auction">
+                                                                                    <img src="{{asset('frontend/assets/images/restart.png')}}" alt="Allot Offline">
                                                                                     Restart Inquiry
+                                                                                </a>
+                                                                                <a href="{{route('buyer.inquiry.pdf',$item['id'])}}" class="btn btn-success btn-allot-offline">
+                                                                                    <img src="{{asset('frontend/assets/images/pdf.png')}}" alt="Pdf">
+                                                                                    Download Pdf
                                                                                 </a>
                                                                             </td>
                                                                         </tr>
@@ -438,7 +442,7 @@
                                                                 </table>
                                                             </td>
                                                         </tr>
-                                                        <!-- modal -->
+                                                        <!-- Allot-offline -modal -->
                                                         <div class="modal fade allot-rate-modal offline-allot" id="PendingallotOfflineModal{{$item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
@@ -467,63 +471,62 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                        <div class="modal fade allot-rate-modal cancel-inquiry" id="PendingcancelInquiryModal{{$item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <!-- restart Auction modsl  -->
+                                                        <div class="modal fade allot-rate-modal offline-allot" id="RestartAuctionModal{{$item['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                             <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">Restart Auction Form</h5>
                                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                     </div>
                                                                     <div class="modal-body">
-                                                                        
                                                                         <div class="container-fluid">
+                                                                            <form method="post" action="{{route('front.auction_inquiry_restart')}}">
+                                                                                @csrf
                                                                             <div class="row">
-                                                                                <div class="col-12">
-                                                                                    <h4 class="content-heading">Are you sure you want to cancel this Inquiry?</h4>
+                                                                                <div class="col-sm-6 col-12">
+                                                                                    <h4 class="content-heading">Start date*</h4>
+                                                                                    <input type="date" class="form-control border-red" name="start_date" value="">
+                                                                                    @error('start_date')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
+                                                                                    @enderror
                                                                                 </div>
-                                                                                <div class="col-md-6 col-sm-4 col-6">
-                                                                                    <label for="cancelInquiryYes" class="modal-custom-radio">
-                                                                                        <input type="radio" name="cancelinquiry" id="cancelInquiryYes" value="yes" checked>
-                                                                                        <span class="checkmark">
-                                                                                            <span class="checkedmark"></span>
-                                                                                        </span>
-                                                                                        <div class="radio-text">
-                                                                                            <label>Yes</label>
-                                                                                        </div>
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="col-md-6 col-sm-4 col-6">
-                                                                                    <label for="cancelInquiryNo" class="modal-custom-radio">
-                                                                                        <input type="radio" name="cancelinquiry" id="cancelInquiryNo" value="no">
-                                                                                        <span class="checkmark">
-                                                                                            <span class="checkedmark"></span>
-                                                                                        </span>
-                                                                                        <div class="radio-text">
-                                                                                            <label>No</label>
-                                                                                        </div>
-                                                                                    </label>
+                                                                                <div class="col-sm-6 col-12 mt-3 mt-sm-0">
+                                                                                    <h4 class="content-heading">End date*</h4>
+                                                                                    <input type="date" class="form-control border-red" name="end_date" value="">
+                                                                                    @error('end_date')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
+                                                                                    @enderror
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="row mt-3">
-                                                                                <div class="col-12">
-                                                                                    <h4 class="content-heading">Select a Reason*</h4>
-                                                                                    <select class="form-control">
-                                                                                        <option selected disabled>Select</option>
-                                                                                        <option value="">Withdrawn by Supplier</option>
-                                                                                        <option value="">Supplier Unavailable</option>
-                                                                                        <option value="">Duplicate Inquiry</option>
-                                                                                        <option value="">Not Interested Anymore</option>
-                                                                                        <option value="">My Reason is not listed here</option>
-                                                                                    </select>
+                                                                            <div class="row">
+                                                                                <div class="col-sm-6 col-12">
+                                                                                    <h4 class="content-heading">Start time*</h4>
+                                                                                        <input type="time" class="form-control border-red" name="start_time" value="">
+                                                                                        @error('start_time')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
+                                                                                        @enderror
+                                                                                    </div>
+                                                                                    <div class="col-sm-6 col-12 mt-3 mt-sm-0">
+                                                                                        <h4 class="content-heading">End time*</h4>
+                                                                                        <input type="time" class="form-control border-red" name="end_time" value="">
+                                                                                        @error('end_time')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
+                                                                                        @enderror
                                                                                 </div>
                                                                             </div>
+                                                                            <div class="form-group">
+                                                                                    <h4 class="content-heading">Date of execution of the task*</h4>
+                                                                                    <input type="date" class="form-control border-red" name="execution_date" value="">
+                                                                                    @error('execution_date')<span class="text-danger" role="alert"><strong>{{ $message }}</strong></span>
+                                                                                    @enderror
+                                                                            </div>
+                                                                            <input type="hidden" name="auction_id" value="{{$item['id']}}">
+                                                                            <button type="submit" class="btn btn-animated btn-submit w-50">Submit</button>
+                                                                            </form>
                                                                         </div>
-                                                                        
-                                                                        <button type="button" class="btn btn-animated btn-submit w-50">Submit</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
+
+                                                        
                                                         @endforeach
                                                     @endif
                                                 </tbody>

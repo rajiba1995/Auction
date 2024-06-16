@@ -1007,6 +1007,19 @@ class MasterRepository implements MasterContract
     public function AuctionCreateByUserId($id){
         return Inquiry::with('BuyerData')->where('created_by',$id)->whereNotNull('inquiry_id')->latest('id')->paginate(20);
     }
+    public function AuctionCreateByUserIdSearch($keyword,$id){
+
+        $query = Inquiry::query();
+
+        $query->when($keyword, function ($query) use ($keyword) {
+            $query->where('inquiry_id', 'like', '%' . $keyword . '%')
+                ->orWhere('title', 'like', '%' . $keyword . '%')
+                ->orWhere('inquiry_amount', 'like', '%' . $keyword . '%')
+                ->orWhere('category', 'like', '%' . $keyword . '%')
+                ->orWhere('sub_category', 'like', '%' . $keyword . '%');
+        });
+        return $data = $query->with('BuyerData')->where('created_by',$id)->whereNotNull('inquiry_id')->latest('id')->paginate(20);
+    }
     public function AuctionParticipateByUserId($id){
         return InquiryParticipant::with('SellerData')->where('user_id', $id)
         ->whereHas('InquriesData', function($query) {
@@ -1014,6 +1027,15 @@ class MasterRepository implements MasterContract
         })
         ->latest('id')
         ->paginate(20);
+    }
+    public function AuctionParticipateByUserIdSearch($keyword,$id){
+        dd($id);
+        // return InquiryParticipant::with('SellerData')->where('user_id', $id)
+        // ->whereHas('InquriesData', function($query) {
+        //     $query->whereNotNull('inquiry_id');
+        // })
+        // ->latest('id')
+        // ->paginate(20);
     }
     
     }
