@@ -36,8 +36,10 @@ use Illuminate\Support\Facades\DB;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
+use App\Mail\welcomeMail;
+use Illuminate\Support\Facades\Mail;
 use Hash;
-use Mail;
+
 
 class UserController extends Controller{
 
@@ -1244,13 +1246,35 @@ class UserController extends Controller{
         return response()->json(['status' => 200]);
         }
 
-    public function mail(){
-        $data =['name'=>'amit','data'=>'hellow sir'];
-        $user['to']='amit.s@techmantra.co';
-        Mail::send('front.user.mail',$data,function($message) use ($user){
-            $message->to($user['to']);
-            // $message->subject('hellow dev');
-        });
+    // public function mail(){
+    //     // dd('mail');
+    //     $data =['name'=>'amit','data'=>'hellow sir'];
+    //     $user['to']='amit.s@techmantra.co';
+    //     $response = Mail::raw('front.user.mail',$data,function($message) use ($user){
+    //         $message->to($user['to']);
+    //         $message->subject('hellow dev');
+    //     });
+    //     dd($response);
 
-        }
+    //     }
+//     public function mail()
+// {
+//     $data = ['name' => 'amit', 'data' => 'hello sir'];
+//     $user = ['to' => 'amit.s@techmantra.co'];
+    
+//     Mail::send('front.user.mail', $data, function($message) use ($user) {
+//         $message->to($user['to'])
+//                 ->subject('Hello Dev');
+//     });
+
+//     dd("Mail sent successfully!"); // Optional: Check if the mail sending is successful
+// }
+    public function mail()
+{
+    Mail::to('amit.s@techmantra.co')
+    ->send(new welcomeMail());
+  
+    dd("Mail sent successfully!"); // Optional: Check if the mail sending is successful
+}
+
 }
