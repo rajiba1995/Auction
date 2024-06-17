@@ -400,12 +400,18 @@ class UserController extends Controller{
         $data = $this->AuthCheck();
         $review_rating = $this->userRepository->getUserAllReviewRating($data->id);
         $asBuyer = $this->userRepository->asBuyer($data->id);
-        $asBuyerRatingPoint = $this->userRepository->asBuyerRatingPoint($data->id);
+        $on_time_payment_rating = $this->userRepository->on_time_payment_rating($data->id);
+        $delivery_cooperation_rating = $this->userRepository->delivery_cooperation_rating($data->id);
+        $genuiness_rating = $this->userRepository->genuiness_rating($data->id);
+        $asBuyerOverallRatingPoint = $this->userRepository->asBuyerOverallRatingPoint($data->id);
         $asSeller = $this->userRepository->asSeller($data->id);
-        $asSellerRatingPoint = $this->userRepository->asSellerRatingPoint($data->id);
+        $on_time_delivery_rating = $this->userRepository->on_time_delivery_rating($data->id);
+        $right_product_rating = $this->userRepository->right_product_rating($data->id);
+        $post_delivery_service_rating = $this->userRepository->post_delivery_service_rating($data->id);
+        $asSellerOverallRatingPoint = $this->userRepository->asSellerOverallRatingPoint($data->id);
         $old_location="";
         $old_keyword="";
-        return view('front.user.rating', compact('data','old_location','old_keyword','review_rating','asBuyer', 'asSeller','asBuyerRatingPoint','asSellerRatingPoint'));
+        return view('front.user.rating', compact('data','old_location','old_keyword','review_rating','asBuyer','on_time_payment_rating','delivery_cooperation_rating','genuiness_rating', 'asSeller','on_time_delivery_rating','right_product_rating','post_delivery_service_rating','asBuyerOverallRatingPoint','asSellerOverallRatingPoint'));
     }
     public function RConsumption(){ 
         $data = $this->AuthCheck();

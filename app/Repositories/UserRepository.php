@@ -399,24 +399,39 @@ class UserRepository implements UserContract
        return $data;
     }
     public function getUserAllReviewRating($id){
-       return ReviewRating::orderBy('id', 'DESC')->where('rated_on',$id)->limit(10)->get();
-       
+       return ReviewRating::where('rated_on',$id)->latest('id')->limit(10)->get();  
     }
     public function asBuyer($id){
-       return ReviewRating::where('rated_on',$id)->where('type',2)->count();
-       
+       return ReviewRating::where('rated_on',$id)->where('type',1)->count();
     }
-    public function asBuyerRatingPoint($id){
-        return ReviewRating::where('rated_on',$id)->where('type',2)->sum('overall_rating');
+    public function on_time_payment_rating($id){
+        return ReviewRating::where('rated_on',$id)->where('type',1)->sum('on_time_payment_rating');
+    }
+    public function delivery_cooperation_rating($id){
+        return ReviewRating::where('rated_on',$id)->where('type',1)->sum('delivery_cooperation_rating');
+    }
+    public function genuiness_rating($id){
+        return ReviewRating::where('rated_on',$id)->where('type',1)->sum('genuiness_rating');
+    }
+    public function asBuyerOverallRatingPoint($id){
+        return ReviewRating::where('rated_on',$id)->where('type',1)->sum('overall_rating');
         // dd($data);
        
     }
     public function asSeller($id){
-       return ReviewRating::where('rated_on',$id)->where('type',1)->count();
-       
+       return ReviewRating::where('rated_on',$id)->where('type',2)->count();  
     }
-    public function asSellerRatingPoint($id){
-       return ReviewRating::where('rated_on',$id)->where('type',1)->sum('overall_rating');
+    public function on_time_delivery_rating($id){
+       return ReviewRating::where('rated_on',$id)->where('type',2)->sum('on_time_delivery_rating');   
+    }
+    public function right_product_rating($id){
+       return ReviewRating::where('rated_on',$id)->where('type',2)->sum('right_product_rating');   
+    }
+    public function post_delivery_service_rating($id){
+       return ReviewRating::where('rated_on',$id)->where('type',2)->sum('post_delivery_service_rating');   
+    }
+    public function asSellerOverallRatingPoint($id){
+       return ReviewRating::where('rated_on',$id)->where('type',2)->sum('overall_rating');
     }
     public function getCurrentSellerPackage($user_id){
         return MySellerPackage::with('getPackageDetails')->where('user_id', $user_id)->first();

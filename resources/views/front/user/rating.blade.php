@@ -20,12 +20,12 @@
                                     <div class="content-box">
                                         <div class="inner">
                                             <h3>Review Summary</h3>
-                                            <div class="review-desc-box">
+                                            <!-- <div class="review-desc-box">
                                                 <h3>Overall Rating</h3>
                                                 <div class="rating-display-box">
                                                     <div class="left-col">
-                                                        @if($asSellerRatingPoint> 0)
-                                                        <div class="rating-value">{{ number_format(round((($asSellerRatingPoint / $asSeller) + ($asBuyerRatingPoint / $asBuyer)) / 2, 2), 1) }}</div>
+                                                        @if($asSellerOverallRatingPoint> 0)
+                                                        <div class="rating-value">{{ number_format(round((($asSellerOverallRatingPoint / $asSeller) + ($asBuyerOverallRatingPoint / $asBuyer)) / 2, 2), 1) }}</div>
                                                         @else
                                                         <div class="rating-value">0</div>
                                                         @endif
@@ -113,17 +113,20 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="review-desc-box auctioneer-review-desc-box">
                                                 <h3>Rated as Supplier</h3>
                                                 <div class="rating-display-box">
                                                     <div class="left-col">
-                                                        @if ($asSellerRatingPoint >0)
-                                                        <div class="rating-value">{{number_format(round($asSellerRatingPoint / $asSeller),1)}}</div>
-                                                        @else
-                                                        <div class="rating-value">0</div>                                                    
-                                                        @endif
+                                                    @php
+                                                        if ($asSeller > 0) {
+                                                            $sellerOverAllRating = number_format(($asSellerOverallRatingPoint / $asSeller), 1);
+                                                        } else {
+                                                            $sellerOverAllRating = 0;
+                                                        }
+                                                    @endphp
+                                                    <div class="rating-value">{{ $sellerOverAllRating }}</div>
                                                         <div class="rating-star-values">
                                                             <ul class="rating-stars blank-stars">
                                                                 <li>
@@ -147,7 +150,7 @@
                                                                         "></path></g></svg>
                                                                 </li>
                                                             </ul>
-                                                            <ul class="rating-stars solid-stars" data-rating="4.7">
+                                                            <ul class="rating-stars solid-stars" data-rating="{{$sellerOverAllRating}}">
                                                                 <li>
                                                                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m29.911 13.75-6.229 6.072 1.471 8.576a1 1 0 0 1-1.451 1.054L16 25.403l-7.701 4.048a1 1 0 0 1-1.451-1.054l1.471-8.576-6.23-6.071a1 1 0 0 1 .555-1.706l8.609-1.25 3.85-7.802c.337-.683 1.457-.683 1.794 0l3.85 7.802 8.609 1.25a1.002 1.002 0 0 1 .555 1.706z" fill="#000000" opacity="1" data-original="#000000" class="" style="
                                                                         "></path></g></svg>
@@ -175,33 +178,48 @@
                                                     <div class="right-col">
                                                         <ul class="ratingBars">
                                                             <li>
-                                                                <span class="ratingNumber">5</span>
+                                                            @if($on_time_delivery_rating && $asSeller)
+                                                                @php
+                                                                    $on_time_delivery_rating_percentage = floor(($on_time_delivery_rating / $asSeller) * 20);
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $on_time_delivery_rating_percentage = 0;
+                                                                @endphp
+                                                            @endif
+                                                                <span class="ratingNumber">On-time Delivery</span>
                                                                 <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 80%"></div>
+                                                                    <div class="progress-bar" style="width: {{$on_time_delivery_rating_percentage}}%"></div>
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <span class="ratingNumber">4</span>
+                                                            @if($right_product_rating && $asSeller)
+                                                                @php
+                                                                    $right_product_rating_percentage = floor(($right_product_rating / $asSeller) * 20);
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $right_product_rating_percentage = 0;
+                                                                @endphp
+                                                            @endif
+                                                                <span class="ratingNumber">Right Product/ Service Delivered</span>
                                                                 <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 23%"></div>
+                                                                    <div class="progress-bar" style="width: {{$right_product_rating_percentage}}%"></div>
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <span class="ratingNumber">3</span>
+                                                            @if($post_delivery_service_rating && $asSeller)
+                                                                @php
+                                                                    $post_delivery_service_rating_percentage = floor(($post_delivery_service_rating / $asSeller) * 20);
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $post_delivery_service_rating_percentage = 0;
+                                                                @endphp
+                                                            @endif
+                                                                <span class="ratingNumber">Post delivery Services</span>
                                                                 <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 15%"></div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <span class="ratingNumber">2</span>
-                                                                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 7%"></div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <span class="ratingNumber">1</span>
-                                                                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 12%"></div>
+                                                                    <div class="progress-bar" style="width: {{$post_delivery_service_rating_percentage}}%"></div>
                                                                 </div>
                                                             </li>
                                                         </ul>
@@ -213,11 +231,15 @@
                                                 <h3>Rated as Buyer</h3>
                                                 <div class="rating-display-box">
                                                     <div class="left-col">
-                                                        @if ($asBuyerRatingPoint>0)
-                                                        <div class="rating-value">{{number_format(round($asBuyerRatingPoint / $asBuyer),1),1}}</div>
-                                                        @else
-                                                        <div class="rating-value">0</div>
-                                                        @endif
+                                                        @php
+                                                            if ($asBuyer > 0) {
+                                                                $buyerOverAllRating = number_format(($asBuyerOverallRatingPoint / $asBuyer), 1);
+                                                            } else {
+                                                                $buyerOverAllRating = 0;
+                                                            }
+                                                        @endphp
+                                                    <div class="rating-value">{{ $buyerOverAllRating }}</div>
+                                                     
                                                         <div class="rating-star-values">
                                                             <ul class="rating-stars blank-stars">
                                                                 <li>
@@ -241,7 +263,7 @@
                                                                         "></path></g></svg>
                                                                 </li>
                                                             </ul>
-                                                            <ul class="rating-stars solid-stars" data-rating="4.1">
+                                                            <ul class="rating-stars solid-stars" data-rating="{{$buyerOverAllRating}}">
                                                                 <li>
                                                                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m29.911 13.75-6.229 6.072 1.471 8.576a1 1 0 0 1-1.451 1.054L16 25.403l-7.701 4.048a1 1 0 0 1-1.451-1.054l1.471-8.576-6.23-6.071a1 1 0 0 1 .555-1.706l8.609-1.25 3.85-7.802c.337-.683 1.457-.683 1.794 0l3.85 7.802 8.609 1.25a1.002 1.002 0 0 1 .555 1.706z" fill="#000000" opacity="1" data-original="#000000" class="" style="
                                                                         "></path></g></svg>
@@ -269,33 +291,48 @@
                                                     <div class="right-col">
                                                         <ul class="ratingBars">
                                                             <li>
-                                                                <span class="ratingNumber">5</span>
+                                                            @if($on_time_payment_rating && $asBuyer)
+                                                                @php
+                                                                    $on_time_payment_rating_percentage = floor(($on_time_payment_rating / $asBuyer) * 20);
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $on_time_payment_rating_percentage = 0;
+                                                                @endphp
+                                                            @endif
+                                                                <span class="ratingNumber">On-time payment</span>
                                                                 <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 80%"></div>
+                                                                    <div class="progress-bar" style="width: {{$on_time_payment_rating_percentage}}%"></div>
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <span class="ratingNumber">4</span>
+                                                            @if($delivery_cooperation_rating && $asBuyer)
+                                                                @php
+                                                                    $delivery_cooperation_rating_percentage = floor(($delivery_cooperation_rating / $asBuyer) * 20);
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $delivery_cooperation_rating_percentage = 0;
+                                                                @endphp
+                                                            @endif
+                                                                <span class="ratingNumber">Post/during Delivery Cooperation</span>
                                                                 <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 23%"></div>
+                                                                    <div class="progress-bar" style="width: {{$delivery_cooperation_rating_percentage}}%"></div>
                                                                 </div>
                                                             </li>
                                                             <li>
-                                                                <span class="ratingNumber">3</span>
+                                                            @if($genuiness_rating && $asBuyer)
+                                                                @php
+                                                                    $genuiness_rating_percentage = floor(($genuiness_rating / $asBuyer) * 20);
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $genuiness_rating_percentage = 0;
+                                                                @endphp
+                                                            @endif
+                                                                <span class="ratingNumber">Auctioneer Performance/ Genuineness</span>
                                                                 <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 15%"></div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <span class="ratingNumber">2</span>
-                                                                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 7%"></div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <span class="ratingNumber">1</span>
-                                                                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                                                    <div class="progress-bar" style="width: 12%"></div>
+                                                                    <div class="progress-bar" style="width: {{$genuiness_rating_percentage}}%"></div>
                                                                 </div>
                                                             </li>
                                                         </ul>
@@ -325,34 +362,25 @@
                                                         <div class="row-2">
                                                             {{ $item->created_at->format('d M Y')}}
                                                             @if($item->type == 2)
-                                                            <span class="rated-as bidder">Rated as Supplier</span>
-                                                            @else
                                                             <span class="rated-as actioneer">Rated as Buyer</span>
+                                                            @else
+                                                            <span class="rated-as bidder">Rated as Supplier</span>
                                                             @endif
                                                         </div>
                                                     </div>
                                                     <div class="right-col">
                                                         <ul class="rating-stars">
-                                                            <li class="star three">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m29.911 13.75-6.229 6.072 1.471 8.576a1 1 0 0 1-1.451 1.054L16 25.403l-7.701 4.048a1 1 0 0 1-1.451-1.054l1.471-8.576-6.23-6.071a1 1 0 0 1 .555-1.706l8.609-1.25 3.85-7.802c.337-.683 1.457-.683 1.794 0l3.85 7.802 8.609 1.25a1.002 1.002 0 0 1 .555 1.706z" fill="#000000" opacity="1" data-original="#000000" class="" style="
-                                                                    "></path></g></svg>
-                                                            </li>
-                                                            <li class="star three">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m29.911 13.75-6.229 6.072 1.471 8.576a1 1 0 0 1-1.451 1.054L16 25.403l-7.701 4.048a1 1 0 0 1-1.451-1.054l1.471-8.576-6.23-6.071a1 1 0 0 1 .555-1.706l8.609-1.25 3.85-7.802c.337-.683 1.457-.683 1.794 0l3.85 7.802 8.609 1.25a1.002 1.002 0 0 1 .555 1.706z" fill="#000000" opacity="1" data-original="#000000" class="" style="
-                                                                    "></path></g></svg>
-                                                            </li>
-                                                            <li class="star three">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m29.911 13.75-6.229 6.072 1.471 8.576a1 1 0 0 1-1.451 1.054L16 25.403l-7.701 4.048a1 1 0 0 1-1.451-1.054l1.471-8.576-6.23-6.071a1 1 0 0 1 .555-1.706l8.609-1.25 3.85-7.802c.337-.683 1.457-.683 1.794 0l3.85 7.802 8.609 1.25a1.002 1.002 0 0 1 .555 1.706z" fill="#000000" opacity="1" data-original="#000000" class="" style="
-                                                                    "></path></g></svg>
-                                                            </li>
-                                                            <li class="star">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m29.911 13.75-6.229 6.072 1.471 8.576a1 1 0 0 1-1.451 1.054L16 25.403l-7.701 4.048a1 1 0 0 1-1.451-1.054l1.471-8.576-6.23-6.071a1 1 0 0 1 .555-1.706l8.609-1.25 3.85-7.802c.337-.683 1.457-.683 1.794 0l3.85 7.802 8.609 1.25a1.002 1.002 0 0 1 .555 1.706z" fill="#000000" opacity="1" data-original="#000000" class="" style="
-                                                                    "></path></g></svg>
-                                                            </li>
-                                                            <li class="star">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m29.911 13.75-6.229 6.072 1.471 8.576a1 1 0 0 1-1.451 1.054L16 25.403l-7.701 4.048a1 1 0 0 1-1.451-1.054l1.471-8.576-6.23-6.071a1 1 0 0 1 .555-1.706l8.609-1.25 3.85-7.802c.337-.683 1.457-.683 1.794 0l3.85 7.802 8.609 1.25a1.002 1.002 0 0 1 .555 1.706z" fill="#000000" opacity="1" data-original="#000000" class="" style="
-                                                                    "></path></g></svg>
-                                                            </li>
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                @if ($i <= $item->overall_rating)
+                                                                <li class="star three">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m29.911 13.75-6.229 6.072 1.471 8.576a1 1 0 0 1-1.451 1.054L16 25.403l-7.701 4.048a1 1 0 0 1-1.451-1.054l1.471-8.576-6.23-6.071a1 1 0 0 1 .555-1.706l8.609-1.25 3.85-7.802c.337-.683 1.457-.683 1.794 0l3.85 7.802 8.609 1.25a1.002 1.002 0 0 1 .555 1.706z" fill="#000000" opacity="1" data-original="#000000" class="" style=""></path></g></svg>
+                                                                </li>
+                                                                @else
+                                                                <li class="star">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 32 32" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g><path d="m29.911 13.75-6.229 6.072 1.471 8.576a1 1 0 0 1-1.451 1.054L16 25.403l-7.701 4.048a1 1 0 0 1-1.451-1.054l1.471-8.576-6.23-6.071a1 1 0 0 1 .555-1.706l8.609-1.25 3.85-7.802c.337-.683 1.457-.683 1.794 0l3.85 7.802 8.609 1.25a1.002 1.002 0 0 1 .555 1.706z" fill="#000000" opacity="1" data-original="#000000" class="" style=""></path></g></svg>
+                                                                </li>
+                                                                @endif
+                                                            @endfor
                                                         </ul>
                                                     </div>
                                                 </div>
