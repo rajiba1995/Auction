@@ -35,12 +35,12 @@
                                                             </a>
                                                             
                                                         </div>
-                                                        <!-- <div class="cta-row">
+                                                        <div class="cta-row">
                                                             <a href="{{ route('user.transaction')}}">
                                                                 <span>Transation Report</span>
                                                                 <img src="{{asset('frontend/assets/images/angle-right.png')}}" alt="">
                                                             </a>               
-                                                        </div> -->
+                                                        </div>
                                                         
                                                         <div class="cta-row">
                                                             <a href="{{ route('user.notifications')}}">

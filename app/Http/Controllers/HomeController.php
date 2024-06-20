@@ -387,7 +387,7 @@ class HomeController extends Controller
         $exist_city = City::where('slug', 'like', '%' . $location . '%')->value('id');
         $data = User::where(function($query) use ($location, $exist_state, $exist_city) {
             $query->where('state', $exist_state)
-                  ->orWhere('city', $exist_city);
+            ->orWhere('city', $exist_city);
         })
         ->where('slug_business_name', $keyword)
         ->first();
@@ -398,6 +398,13 @@ class HomeController extends Controller
             return redirect()->back();
         }
     }   
+    public function TermsConditions(){
+        return view('front.user.terms_conditions');
+    }
+    public function PrivacyPolicy(){
+        return view('front.user.privacy_policy');
+
+    }
     
     public function CoziTest(Request $request){
         try {

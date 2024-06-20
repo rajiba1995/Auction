@@ -103,20 +103,20 @@
                                                 @foreach ($item->MyBadgeData as $item_badge)
                                                     @if($item_badge->getBadgeDetails)
                                                         <li>
-                                                            <img src="{{asset($item_badge->getBadgeDetails->logo)}}" alt="" width="20px"> <span class="text-sm info" style="margin-bottom:0px;"></span>
+                                                            <img src="{{asset($item_badge->getBadgeDetails->logo)}}" alt="" width="20px"> <span class="text-sm info" style="margin-bottom:0px;">{{ucwords($item_badge->getBadgeDetails->title)}}</span>
                                                             <div class="infotip"><span>{{ Str::limit($item_badge->getBadgeDetails->short_desc, 50) }}</span></div>
                                                         </li>
                                                     @endif
                                                 @endforeach
                                             @endif
-                                            {{-- <li>
+                                            <li>
                                                 <img src="{{asset('frontend/assets/images/trusted.png')}}" alt="">
                                                 <div class="infotip"><span>It is a long established fact</span></div>
                                             </li>
                                             <li>
                                                 <img src="{{asset('frontend/assets/images/featured.png')}}" alt="">
                                                 <div class="infotip"><span>It is a long established fact</span></div>
-                                            </li> --}}
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="name">{{$item->business_name}}</div>
@@ -181,154 +181,81 @@
                                     </div>
                                     
                                     <div class="cta">
-                                        <a href="{{route('user.profile.fetch', [$old_location,$item->slug_business_name])}}" class="btn btn-cta btn-normal">View Profile</a>
-
                                         @if(Auth::guard('web')->check())
                                             <button type="button" class="btn btn-cta btn-animated" data-bs-toggle="modal" data-bs-target="#sendToWatchlistModal{{$item->id}}">Send to Watchlist</button>
-                                            <div class="modal fade send-to-modal" id="sendToWatchlistModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <div class="container-fluid">
-                                                                <div class="row">
-                                                                    <div class="col-sm-6 col-12">
-                                                                        <label for="sendWatchlist" class="modal-custom-radio">
-                                                                            <input type="radio" name="sendwatchlist" id="sendWatchlist{{$item->id}}" value="sendwatchlist" checked>
-                                                                            <span class="checkmark">
-                                                                                <span class="checkedmark"></span>
-                                                                            </span>
-                                                                            <div class="radio-text">
-                                                                                <label for="sendWatchlist{{$item->id}}">Send to Watchlist</label>
-                                                                                <span>The shortlisted businesses are showcased here</span>
-                                                                            </div>
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="col-sm-6 col-12">
-                                                                        <label for="sendWatchlistGroup" class="modal-custom-radio">
-                                                                            <input type="radio" name="sendwatchlist" id="sendWatchlistGroup{{$item->id}}" value="sendwatchlistgroup">
-                                                                            <span class="checkmark">
-                                                                                <span class="checkedmark"></span>
-                                                                            </span>
-                                                                            <div class="radio-text">
-                                                                                <label for="sendWatchlistGroup{{$item->id}}">Send to Watchlist Groups</label>
-                                                                                <span>The shortlisted businesses are sent into different groups here</span>
-                                                                            </div>
-                                                                        </label>
-                                                                    </div>
+                                        <div class="modal fade send-to-modal" id="sendToWatchlistModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-12">
+                                                                    <label for="sendWatchlist" class="modal-custom-radio">
+                                                                        <input type="radio" name="sendwatchlist" id="sendWatchlist{{$item->id}}" value="sendwatchlist" checked>
+                                                                        <span class="checkmark">
+                                                                            <span class="checkedmark"></span>
+                                                                        </span>
+                                                                        <div class="radio-text">
+                                                                            <label for="sendWatchlist{{$item->id}}">Send to Watchlist</label>
+                                                                            <span>The shortlisted businesses are showcased here</span>
+                                                                        </div>
+                                                                    </label>
                                                                 </div>
-                                                                <div id="watchlistoptions">
-                                                                    <h5>Select Groups</h5>
-                                                                    <form id="group_watchlist_div" action="{{ route('user.group.watchlist.store') }}" method="POST">
-                                                                        @csrf
-                                                                    <div class="dropdown watchlistgroups">
-                                                                        <select class="btn btn-secondary dropdown-toggle" name="group_id">
-                                                                            {{-- <option selected hidden> Select </option> --}}
-                                                                            @foreach($groupWatchList as $gropu_item)
-                                                                                <option value="{{ $gropu_item->id }}"> {{ $gropu_item->group_name }} </option>
-                                                                            @endforeach
-                                                                        </select>
-                                                                    </div>
-                                                                        <input type="hidden" name="seller_id" value="{{$item->id}}">
-                                                                        <input type="hidden" name="buyer_id" value="{{Auth::guard('web')->check()?Auth::guard('web')->user()->id:""}}">
-                                                                        <button type="submit" class="btn btn-animated btn-submit w-100">Submit</button>
-                                                                    </form>
+                                                                <div class="col-sm-6 col-12">
+                                                                    <label for="sendWatchlistGroup" class="modal-custom-radio">
+                                                                        <input type="radio" name="sendwatchlist" id="sendWatchlistGroup{{$item->id}}" value="sendwatchlistgroup">
+                                                                        <span class="checkmark">
+                                                                            <span class="checkedmark"></span>
+                                                                        </span>
+                                                                        <div class="radio-text">
+                                                                            <label for="sendWatchlistGroup{{$item->id}}">Send to Watchlist Groups</label>
+                                                                            <span>The shortlisted businesses are sent into different groups here</span>
+                                                                        </div>
+                                                                    </label>
                                                                 </div>
-                                                                <div id="single_watchlist_div">
-                                                                    <form action="{{route('user.watchlist.store')}}" method="POST">
-                                                                        @csrf
-                                                                        <input type="hidden" name="seller_id" value="{{$item->id}}">
-                                                                        <input type="hidden" name="buyer_id" value="{{Auth::guard('web')->check()?Auth::guard('web')->user()->id:""}}">
-                                                                        <button type="submit" class="btn btn-animated btn-submit w-100">Submit</button>
-                                                                    </form>
+                                                            </div>
+                                                            <div id="watchlistoptions">
+                                                                <h5>Select Groups</h5>
+                                                                <form id="group_watchlist_div" action="{{ route('user.group.watchlist.store') }}" method="POST">
+                                                                    @csrf
+                                                                <div class="dropdown watchlistgroups">
+                                                                    <select class="btn btn-secondary dropdown-toggle" name="group_id">
+                                                                        {{-- <option selected hidden> Select </option> --}}
+                                                                        @foreach($groupWatchList as $gropu_item)
+                                                                            <option value="{{ $gropu_item->id }}"> {{ $gropu_item->group_name }} </option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
+                                                                    <input type="hidden" name="seller_id" value="{{$item->id}}">
+                                                                    <input type="hidden" name="buyer_id" value="{{Auth::guard('web')->check()?Auth::guard('web')->user()->id:""}}">
+                                                                    <button type="submit" class="btn btn-animated btn-submit w-100">Submit</button>
+                                                                </form>
+                                                            </div>
+                                                            <div id="single_watchlist_div">
+                                                                <form action="{{route('user.watchlist.store')}}" method="POST">
+                                                                    @csrf
+                                                                    <input type="hidden" name="seller_id" value="{{$item->id}}">
+                                                                    <input type="hidden" name="buyer_id" value="{{Auth::guard('web')->check()?Auth::guard('web')->user()->id:""}}">
+                                                                    <button type="submit" class="btn btn-animated btn-submit w-100">Submit</button>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
                                         @else
                                         <a class="btn btn-cta btn-animated" href="{{ route('login') }}">send to watchlist</a>
                                         @endif
                                         {{-- @php
                                              $business_name_slug = Str::slug($item->business_name, '-');
                                         @endphp --}}
-                                        
-
-                                        @if(Auth::guard('web')->check())
-                                            <!-- <button type="button" class="btn btn-cta btn-animated btn-yellow">Previously Worked</button> -->
-                                            <button type="button" class="btn btn-cta btn-animated" data-bs-toggle="modal" data-bs-target="#sendToInquiryModal{{$item->id}}">Send to Inquiry</button>
-
-                                            <div class="modal fade send-to-modal" id="sendToInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form action="{{ route('front.auction_inquiry_generation') }}" method="GET">
-                                                                <div class="container-fluid">
-                                                                    <div class="row">
-                                                                        <div class="col-xl-6 col-12">
-                                                                            <label for="sendInquiry" class="modal-custom-radio">
-                                                                                <input type="radio" name="inquiry_type" id="sendInquiry" value="new-inquiry" checked>
-                                                                                <span class="checkmark">
-                                                                                    <span class="checkedmark"></span>
-                                                                                </span>
-                                                                                <div class="radio-text">
-                                                                                    <label for="sendInquiry">New Inquiry</label>
-                                                                                    <span>Generate a new auction inquiry</span>
-                                                                                </div>
-                                                                            </label>
-                                                                        </div>
-                                                                        <div class="col-xl-6 col-12">
-                                                                            <label for="sendInquiryExisting" class="modal-custom-radio">
-                                                                                <input type="radio" name="inquiry_type" id="sendInquiryExisting" value="existing-inquiry">
-                                                                                <span class="checkmark">
-                                                                                    <span class="checkedmark"></span>
-                                                                                </span>
-                                                                                <div class="radio-text">
-                                                                                    <label for="sendInquiryExisting">Existing Inquiry</label>
-                                                                                    <span>Send to previously generated auction inquiry</span>
-                                                                                </div>
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div id="inquiryoptions">
-                                                                        <h5>Select Inquiry</h5>
-                                                                        <div class="dropdown watchlistgroups">
-                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                                Select
-                                                                                <img src="{{asset('frontend/assets/images/chevron-down.png')}}" alt="">
-                                                                                <select name="inquiry_id" class="form-control">
-                                                                                    @if(count($existing_inquiries)>0)
-                                                                                        <option value="" selected hidden>select inquiry..</option>
-                                                                                        @foreach ($existing_inquiries as $eitem)
-                                                                                        <option value="{{$eitem->inquiry_id}}">{{$eitem->inquiry_id}}</option>
-                                                                                        @endforeach
-                                                                                    @else
-                                                                                    <option value="" selected hidden>No inquiry found.</option>
-                                                                                    @endif
-                                                                                </select>
-                                                                            </button>
-                                                                            
-                                                                        </div>
-                                                                    </div>
-                                                                    
-                                                                    <input type="hidden" name="seller" value="{{Crypt::encrypt($item->id)}}">
-                                                                    <button type="submit" class="btn btn-animated btn-submit w-100">Submit</button>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
+                                        <a href="{{route('user.profile.fetch', [$old_location,$item->slug_business_name])}}" class="btn btn-cta btn-normal">View Profile</a>
                                     </div>
-                                    <!-- <div class="cta logged-cta">
+                                    <div class="cta logged-cta">
                                         @if(Auth::guard('web')->check())
                                             <button type="button" class="btn btn-cta btn-animated btn-yellow">Previously Worked</button>
                                             <button type="button" class="btn btn-cta btn-animated" data-bs-toggle="modal" data-bs-target="#sendToInquiryModal{{$item->id}}">Send to Inquiry</button>
@@ -399,7 +326,7 @@
                                                 </div>
                                             </div>
                                         @endif
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div> 
                             {{-- dynamic Report modal call --}}

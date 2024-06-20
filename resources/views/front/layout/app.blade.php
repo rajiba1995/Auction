@@ -403,8 +403,8 @@
                         <div class="content">
                             <div class="copyright">Copyright &copy; 2024 | All rights reserved.</div>
                             <ul class="policy-menu">
-                                <li><a href="#">Privacy Policy</a></li>
-                                <li><a href="#">Cookie Policy</a></li>
+                                <li><a href="{{route('terms_conditions')}}">Terms & Conditions</a></li>
+                                <li><a href="{{route('privacy_policy')}}">Privacy & Policy</a></li>
                             </ul>
                         </div>
                     </div>

@@ -385,18 +385,30 @@
                                                     </div>
                                                 </div>
                                                 <div class="review-desc-text">
-                                                    @if($item->type == 0)
                                                     <p>{{ $item->comment }}</p>
-                                                    @endif
                                                 </div>
-                                                @if(Auth::guard('web')->user()->id == $item->user_id || Auth::guard('web')->user()->id == $item->rated_on)
-                                                <div class="bottom-row">
-                                                    <button  type="button"  class="btn btn-primary comment-cta" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">
-                                                        <img src="assets/images/comment.png" alt="">
-                                                        Comment
+                                                <div class="reply-place">
+                                                    <div class="top-row">
+                                                        <div class="left-col">
+                                                            <div class="row-1">
+                                                                Joy mondal
+                                                                <span class="verified-rating">Verified by author</span>
+                                                            </div>
+                                                            <div class="row-2">17 Jun 2024</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="review-desc-text">
+                                                        <p>This my fast comment to supplier with start pattern</p>
+                                                    </div>
+                                                </div>
+
+                                                @if(Auth::guard('web')->user()->id == $item->rated_on)
+                                                    <button  type="button"  class="reply-button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">
+                                                        Reply
                                                     </button >
-                                                </div>
                                                 @endif
+
+                                               
                                             </div>
 
                                             <!--Comment Modal -->

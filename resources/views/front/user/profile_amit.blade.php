@@ -31,25 +31,20 @@
                                             @endif --}}
                                         </div>
                                         <div class="content-box">
-                                            <!-- <div class="basic-info-banner">
+                                            <div class="basic-info-banner">
                                                 <img src="{{asset('frontend/assets/images/basic-info-banner.png')}}" alt="">
-                                            </div> -->
+                                            </div>
                                             <div class="basic-info-desc">
                                                 <div class="top-info-row">
                                                     <div class="person-img">
                                                         <img src="{{$data->image?asset($data->image):asset('frontend/assets/images/person.png')}}" alt="User">
                                                     </div>
                                                     <div class="person-info">
-                                                        <h2>{{$data->name}}</h2>
-                                                        <h6>{{$data->business_name}}</h6>
-                                                        <div class="about-place">
-                                                            <h3>About Me</h3>
-                                                            <p class="person-desc">{{Str::limit($data->short_bio, 1000)}}</p>
-                                                        </div>
+                                                        <p>{{$data->name}}<strong>{{$data->business_name}}</strong></p>
                                                     </div>
                                                 </div>
-                                                <!-- <h3>About Me</h3>
-                                                <p class="person-desc">{{Str::limit($data->short_bio, 1000)}}</p> -->
+                                                <h3>About Me</h3>
+                                                <p class="person-desc">{{Str::limit($data->short_bio, 1000)}}</p>
                                             </div>
                                         </div>
                                         <div class="content-box">

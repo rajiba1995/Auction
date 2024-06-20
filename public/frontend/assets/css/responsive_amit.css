@@ -1,70 +1,18 @@
 
-@media only screen and (min-width: 280px) {
-    .single-category-section {
-        padding-left: 0;
-    }
-    .tutorials-block {
-        padding-left: 0;
-    }
-    .single-category-section .section-header {
-        padding-right: 0;
-    }
-}
-@media only screen and (min-width: 576px) {
-    .single-category-section {
-        padding-left: calc((100% - 540px) / 2);
-    }
-    .tutorials-block {
-        padding-left: calc((100% - 540px) / 2);
-    }
-    .single-category-section .section-header {
-        padding-right: calc(100% - 516px);
-    }
-}
-@media only screen and (min-width: 768px) {
-    .single-category-section {
-        padding-left: calc((100% - 720px) / 2);
-    }
-    .tutorials-block {
-        padding-left: calc((100% - 720px) / 2);
-    }
-    .single-category-section .section-header {
-        padding-right: 0;
-    }
-}
-@media only screen and (min-width: 992px) {
-    .single-category-section {
-        padding-left: calc((100% - 960px) / 2);
-    }
-    .tutorials-block {
-        padding-left: calc((100% - 960px) / 2);
-    }
-}
-@media only screen and (min-width: 1200px) {
-    .single-category-section {
-        padding-left: calc((100% - 1140px) / 2);
-    }
-    .tutorials-block {
-        padding-left: calc((100% - 1320px) / 2);
-    }
-}
-@media only screen and (min-width: 1400px) {
-    .single-category-section {
-        padding-left: calc((100% - 1320px) / 2);
-    }
-    .tutorials-block {
-        padding-left: calc((100% - 1320px) / 2);
-    }
-}
-
 @media only screen and (max-width: 1399px) {
     header .search-bar {
         margin-right: 30px;
     }
+    header.logged .location-bar {
+        margin-left: 50px;
+        margin-right: auto;
+    }
     header.logged .search-bar {
         max-width: 50%;
         order: 10;
+        margin-left: auto;
         margin-right: auto;
+        margin-top: 20px;
     }
     .bidder-box .logged-cta {
         position: relative;
@@ -112,7 +60,7 @@
 }
 @media only screen and (max-width: 1199px) {
     .home-banner-slider {
-        /*height: 400px;*/
+        height: 400px;
     }
     .category-card {
         height: 330px;
@@ -129,7 +77,7 @@
         line-height: 33px;
     }
     .tutorials-section .tutorial-content {
-        /*height: 330px;*/
+        height: 330px;
     }
     .blog-card .card-img {
         height: 200px;
@@ -262,7 +210,7 @@
         margin-left: auto;
     }
     .home-banner-slider {
-        /*height: 300px;*/
+        height: 300px;
     }
     .cat-subcat-section .parent-col + .parent-col{
         margin-top: 20px;
@@ -384,24 +332,6 @@
         min-width: 160px;
         width: 160px;
     }
-    
-    .header-inner.without-login .brand {
-        order: 1;
-    }
-    .header-inner.without-login .btn-login {
-        order: 2;
-        margin-left: auto;
-    }
-    .header-inner.without-login .search-section {
-        order: 3;
-        width: 100%;
-        flex: none;
-        justify-content: space-between;
-        margin-top: 10px;
-    }
-    .header-inner.without-login .search-bar {
-        margin-top: 0;
-    }
 }
 
 @media only screen and (max-width: 810px) {
@@ -418,13 +348,13 @@
         width: 90%;
     }
     .home-banner-slider {
-        /*height: 220px;*/
+        height: 220px;
     }
     .home-banner-slider .slider-img {
-        /*border-radius: 18px;*/
+        border-radius: 18px;
     }
     .home-banner-slider .slider-video {
-        /*border-radius: 18px;*/
+        border-radius: 18px;
     }
     .swiper-pagination-bullet {
         height: 10px;
@@ -435,7 +365,7 @@
         width: 33px;
     }
     .cat-subcat-box {
-        /*padding: 15px;*/
+        padding: 15px;
     }
     .cat-subcat-box h4 {
         font-size: 24px;
@@ -445,7 +375,7 @@
         margin-top: 20px;
     }
     .tutorials-section .tutorial-content {
-        /*height: 220px;*/
+        height: 220px;
     }
     .tutorials-section .tutorial-content .bottom-content {
         padding: 20px 15px;
@@ -742,55 +672,6 @@
         margin-top: 12px;
         margin-left: 0px;
     }
-    .header-inner.without-login .location-bar {
-        max-width: 200px;
-        margin-top: 0;
-    }
-    .header-inner.without-login .search-bar {
-        max-width: 300px;   
-    }
-    .section-header h2 {
-        font-size: 22px;
-        line-height: 38px;
-    }
-    .section-header a {
-        font-size:14px;
-    }
-    .section-header a svg {
-        width: 16px;
-        height: 16px;
-    }
-    .tutorials-section .section-header h2 {
-        font-size: 22px;
-        line-height: 38px;
-    }
-    .section-heading {
-        font-size: 22px;
-        line-height: 38px;
-    }
-    .single-category-section .section-header {
-        flex-direction: row;
-        align-items: center;
-        flex-wrap: wrap;
-        justify-content: normal;
-        padding-bottom: 30px;
-    }
-    .single-category-section .section-header h2 {
-        width: 70%;
-        margin-bottom: 0;
-    }
-    .sub-cat-swiper-navigation {
-        width: auto;
-        margin-bottom: 0;
-        margin-left: auto;
-    }
-    .single-category-section .section-header a {
-        margin-left: auto;
-        margin-top: 10px;
-    }
-    .banner-swiper-pagination {
-        bottom: 10px !important;
-    }
 }
 
 @media only screen and (max-width: 667px) {
@@ -1008,7 +889,7 @@
         flex-direction: column;
     }
     .home-banner-slider {
-        /*height: 180px;*/
+        height: 180px;
     }
     .section-header h2 {
         font-size: 20px;

@@ -20,8 +20,7 @@
                             <div class="tab-content">
                                 <div class="tab-content-wrapper">
                                     <div class="top-content-bar">
-                                        <a href="{{ route('user.transaction')}}" class="btn btn-animated btn-yellow btn-cta btn-download">Transaction History</a>
-                                        <!-- <a href="#" class="btn btn-animated btn-yellow btn-cta btn-download">Download Invoice</a> -->
+                                        <a href="#" class="btn btn-animated btn-yellow btn-cta btn-download">Download Invoice</a>
                                     </div>
                                     <!-- <div class="m-2">
                                         @if (session('success'))
@@ -58,7 +57,7 @@
                                             </div>
                                             <div class="tab-content products-services-tab-content">
                                                 <div class="tab-pane fade {{$package_type=='buyer'?"show active":""}}" id="buyers" role="tabpanel" aria-labelledby="buyers-tab" tabindex="0">
-                                                    <h3 class="mb-4">Buyer Credit Packages</h3>
+                                                    <h3>Buyer Credit Packages</h3>
                                                     <div class="packages" >
                                                         <div class="row">
                                                             @foreach ($packages as $item)
@@ -138,18 +137,17 @@
                                                             @endforeach
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="content-box bg-gray-1">
+                                                    <div class="content-box bg-gray-1">
                                                         <div class="inner">
-                                                            <h3 class="mb-4">Credit Usages As a Buyer</h3>
+                                                            <h3>Credit Usages As a Buyer</h3>
                                                             <div class="credit-charts">
                                                                 <canvas id="buyer-creditChart" style="width:632px;height:632px;"></canvas>
                                                             </div>
                                                         </div>
-                                                    </div> -->
+                                                    </div>
                                                 </div>
-
                                                 <div class="tab-pane fade {{$package_type=='seller'?"show active":""}}" id="sellers" role="tabpanel" aria-labelledby="sellers-tab" tabindex="0">
-                                                    <h3 class="mb-4">Seller Credit Packages</h3>
+                                                    <h3>Seller Credit Packages</h3>
                                                     <div class="packages" style="color: red">
                                                         <div class="row">
                                                             @foreach ($seller_packages as $item)
@@ -244,14 +242,14 @@
                                                             @endforeach
                                                         </div>
                                                     </div>
-                                                    <!-- <div class="content-box bg-gray-1">
+                                                    <div class="content-box bg-gray-1">
                                                         <div class="inner">
                                                             <h3>Credit Usages As a Seller</h3>
                                                             <div class="credit-charts">
-                                                                <canvas id="seller-creditChart"></canvas>
+                                                                <canvas id="seller-creditChart" style="width:632px;height:632px;"></canvas>
                                                             </div>
                                                         </div>
-                                                    </div>                -->
+                                                    </div>               
                                                 </div>
                                             </div>
                                         </div>

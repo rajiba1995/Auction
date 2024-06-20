@@ -35,7 +35,7 @@ class PaymentManageMentController extends Controller
            // dd($request->all());
            $request->validate([
                 'title'=>'required| unique:badges,title',
-                'logo' => 'required|image|dimensions:width=64,height=64',
+                'logo' => 'required|image|dimensions:width=250,height=250',
                 'short_desc'=>'required',
                 'long_desc'=>'required',
                 'price'=>'required',
@@ -47,7 +47,7 @@ class PaymentManageMentController extends Controller
             'title.unique'=>"Title has already been taken.",
             'logo.image' => 'The file must be an image.',
             'logo.required' => 'The file must be required.',
-            'logo.dimensions' => 'The image must be 64px width and 64px height.',
+            'logo.dimensions' => 'The image must be 250px width and 250px height.',
             'short_desc.required'=>"Short Description is required",  
             'long_desc.unique'=>"Long Description is required",   
             'price.required'=>"Phone number is required",  
