@@ -422,16 +422,11 @@ class UserController extends Controller{
             'comment' => 'required',
         ]);
 
-        $comment = new ReviewRating();
-        $comment->user_id = $data->id;
-        $comment->type = 0;
-        $comment->rated_on =$request->rated_on ;
-        $comment->comment =$request->comment ;
-        $comment->comment =$request->comment ;
-        $comment->replied_id =$request->revirew_id ;
+        $comment = ReviewRating::findOrFail($request->revirew_id);
+        $comment->replied_comment_author =$request->comment ;
         $comment->save();
         if($comment){
-            return redirect()->back()->with('success','Your comment posted successfully');
+            return redirect()->back()->with('success','You replied on this review successfully');
         }
 
     }

@@ -352,7 +352,7 @@
                                     <div class="content-box">   
                                         <div class="inner">
                                         @foreach ( $review_rating as $item )
-                                            <div class="reviews-box">
+                                        <div class="reviews-box">
                                                 <div class="top-row">
                                                     <div class="left-col">
                                                         <div class="row-1">
@@ -387,22 +387,32 @@
                                                 <div class="review-desc-text">
                                                     <p>{{ $item->comment }}</p>
                                                 </div>
-                                                <div class="reply-place">
-                                                    <div class="top-row">
-                                                        <div class="left-col">
-                                                            <div class="row-1">
-                                                                Joy mondal
-                                                                <span class="verified-rating">Verified by author</span>
+                                                    @if($item->replied_comment_author != NULL)
+                                                        <div class="reply-place">
+                                                            <div class="top-row">
+                                                                <div class="left-col">
+                                                                    <div class="row-1">
+                                                                        <span class="verified-rating">Replied by author</span>
+                                                                    </div>
+                                                                    <div class="row-2">{{$item->updated_at->format('d M Y')}}</div>
+                                                                </div>
                                                             </div>
-                                                            <div class="row-2">17 Jun 2024</div>
+                                                                <div class="review-desc-text">
+                                                                    <p>{{$item->replied_comment_author}}</p>
+                                                                </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="review-desc-text">
-                                                        <p>This my fast comment to supplier with start pattern</p>
-                                                    </div>
-                                                </div>
+                                                    @endif
 
-                                                @if(Auth::guard('web')->user()->id == $item->rated_on)
+                                                @if(Auth::guard('web')->user()->id == $item->rated_on && $item->replied_comment_author == NULL)
+                                                    <button  type="button"  class="reply-button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">
+                                                        Reply
+                                                    </button >
+                                                @endif
+
+                                               
+                                            </div>
+
+                                                @if(Auth::guard('web')->user()->id == $item->rated_on && $item->replied_comment_author == NULL)
                                                     <button  type="button"  class="reply-button" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">
                                                         Reply
                                                     </button >
@@ -413,27 +423,22 @@
 
                                             <!--Comment Modal -->
                                             <div class="modal fade" id="exampleModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Comment</h5>
+                                                <div class="modal-dialog custom-comment">
+                                                    <div class="modal-content">
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <form method="post" action="{{route('user.rating_and_reviews.comment')}}">
+                                                        @csrf
+                                                    <div class="modal-body comment-section">
+                                                        <label>Comment here</label>
+                                                        <textarea name="comment" class="form-control" cols="5" rows="2"></textarea>
+                                                        <input type="hidden" name="revirew_id" value="{{$item->id}}">
+                                                        <input type="hidden" name="rated_on" value="{{$item->rated_on}}">
+                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                    </div>
+                                                    
+                                                    </form>
+                                                    </div>
                                                 </div>
-                                                <form method="post" action="{{route('user.rating_and_reviews.comment')}}">
-                                                    @csrf
-                                                <div class="modal-body">
-                                                    <label>Comment here</label>
-                                                    <textarea name="comment" class="form-control" cols="5" rows="2"></textarea>
-                                                </div>
-                                                <input type="hidden" name="revirew_id" value="{{$item->id}}">
-                                                <input type="hidden" name="rated_on" value="{{$item->rated_on}}">
-                                                <div class="modal-footer">
-                                                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-                                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                                </div>
-                                                </form>
-                                                </div>
-                                            </div>
                                             </div>
                                         @endforeach 
 

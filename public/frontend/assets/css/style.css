@@ -3546,7 +3546,7 @@ textarea.review {
     margin-left: auto;
 }
 .tab-content-wrapper .reviews-box .review-desc-text {
-    margin-top: 23px;
+    margin-top: 16px;
 }
 .tab-content-wrapper .reviews-box .review-desc-text p {
     font-size: 15px;
@@ -5895,8 +5895,46 @@ header.logged .search-bar {
 }
 
 .reply-place {
-    padding-left: 15px;
+    padding-left: 20px;
     border-left: 4px solid #e9e9e9;
-    margin-left: 15px;
+    margin-left: 20px;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+.reply-place .verified-rating {
+    margin-left: 0 !important;
+    background: #cdcdcd;
+    padding: 2px 8px;
+    color: #000 !important;
+    font-size: 11px !important;
+    margin-bottom: 6px;
+}
+
+.reply-button {
+    background-color: #0076D7;
+    color: #fff;
+    border: none;
+    font-size: 14px;
+    padding: 9px 26px;
+    border-radius: 50px;
+}
+
+.reply-button:hover {
+    background-color: #014397;
+}
+
+.custom-comment .btn-close {
+    position: absolute;
+    right:8px;
+    top:8px;
+}
+
+.comment-section {
+    padding:20px;
+}
+.comment-section label {
+    font-size: 13px;
+    text-transform: capitalize;
+    margin-bottom: 7px;
 }
 
