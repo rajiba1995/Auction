@@ -349,7 +349,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="content-box">
+                                    <div class="content-box">   
                                         <div class="inner">
                                         @foreach ( $review_rating as $item )
                                             <div class="reviews-box">
@@ -385,19 +385,45 @@
                                                     </div>
                                                 </div>
                                                 <div class="review-desc-text">
+                                                    @if($item->type == 0)
                                                     <p>{{ $item->comment }}</p>
+                                                    @endif
                                                 </div>
+                                                @if(Auth::guard('web')->user()->id == $item->user_id || Auth::guard('web')->user()->id == $item->rated_on)
                                                 <div class="bottom-row">
-                                                    <a href="#" class="comment-cta">
+                                                    <button  type="button"  class="btn btn-primary comment-cta" data-bs-toggle="modal" data-bs-target="#exampleModal{{$item->id}}">
                                                         <img src="assets/images/comment.png" alt="">
                                                         Comment
-                                                    </a>
+                                                    </button >
+                                                </div>
+                                                @endif
+                                            </div>
+
+                                            <!--Comment Modal -->
+                                            <div class="modal fade" id="exampleModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Comment</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form method="post" action="{{route('user.rating_and_reviews.comment')}}">
+                                                    @csrf
+                                                <div class="modal-body">
+                                                    <label>Comment here</label>
+                                                    <textarea name="comment" class="form-control" cols="5" rows="2"></textarea>
+                                                </div>
+                                                <input type="hidden" name="revirew_id" value="{{$item->id}}">
+                                                <input type="hidden" name="rated_on" value="{{$item->rated_on}}">
+                                                <div class="modal-footer">
+                                                    <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </div>
+                                                </form>
                                                 </div>
                                             </div>
-                                        @endforeach
-
-
-                                            
+                                            </div>
+                                        @endforeach 
 
                                         </div>
                                     </div>

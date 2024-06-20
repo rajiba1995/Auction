@@ -18,29 +18,8 @@
                 <div class="form-content">
                     <h1 class="color-red">Auction</h1>
                     <p>It is a long established fact that a reader will be distracted</p>
-                    <div class="m-2">
-                        @if (session('success'))
-                            <div class="alert alert-success" id="message_div">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="m-2">
-                        @if (session('error'))
-                            <div class="alert alert-danger" id="message_div">
-                                {{ session('error') }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="m-2">
-                        @if (session('warning'))
-                            <div class="alert alert-warning" id="message_div">
-                                {{ session('warning') }}
-                            </div>
-                        @endif
-                    </div>
                     <h2>Sign In your Account</h2>
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('user_forgot_password') }}">
                         @csrf <!-- CSRF protection -->
     
                         <div class="form-group">
@@ -60,12 +39,20 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                            <a href="{{route('user_forgot_password')}}">Forget password?</a>
                         </div>
-                        <button type="submit" class="btn btn-animated">Login</button>
+                        <div class="form-group">
+                            <label class="form-label">Confirm Password*</label>
+                            <input type="password" name="confirm_password" class="form-control border-red @error('confirm_password') is-invalid @enderror" placeholder="............."> 
+                            @error('confirm_password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <button type="submit" class="btn btn-animated">Submit</button>
                         <div class="resend-block mt-2">
                             <label>If you haven't registered yet,</label>
-                            <a href="{{route('register')}}">register here</a>
+                            <a href="{{route('login')}}">Back</a>
                         </div>
                     </form>
                 </div>

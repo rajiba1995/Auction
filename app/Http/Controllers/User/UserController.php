@@ -18,6 +18,7 @@ use App\Models\MySellerWallet;
 use App\Models\OutsideParticipant;
 use App\Models\MySellerPackage;
 use App\Models\Package;
+use App\Models\ReviewRating;
 use App\Models\GroupWatchList;
 use App\Models\UserImage;
 use App\Models\SellerReport;
@@ -414,6 +415,25 @@ class UserController extends Controller{
         $old_location="";
         $old_keyword="";
         return view('front.user.rating', compact('data','old_location','old_keyword','review_rating','asBuyer','on_time_payment_rating','delivery_cooperation_rating','genuiness_rating', 'asSeller','on_time_delivery_rating','right_product_rating','post_delivery_service_rating','asBuyerOverallRatingPoint','asSellerOverallRatingPoint'));
+    }
+    public function RatingAndReviewComment(Request $request){
+        $data = $this->AuthCheck();
+        $request->validate([
+            'comment' => 'required',
+        ]);
+
+        $comment = new ReviewRating();
+        $comment->user_id = $data->id;
+        $comment->type = 0;
+        $comment->rated_on =$request->rated_on ;
+        $comment->comment =$request->comment ;
+        $comment->comment =$request->comment ;
+        $comment->replied_id =$request->revirew_id ;
+        $comment->save();
+        if($comment){
+            return redirect()->back()->with('success','Your comment posted successfully');
+        }
+
     }
     public function RConsumption(){ 
         $data = $this->AuthCheck();

@@ -7,6 +7,7 @@ use App\Http\Controllers\User\{UserController, AuctionGenerationController, Buye
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\{AdminController, VendorController, InspectorController, ClientController,MasterModuleController,BlogController,PackageController,UserDetailsController,WebsiteSettingController,EmployeeDetailsController};
+use App\Http\Controllers\CornController;
 use App\Http\Controllers\HomeController;
 require __DIR__.'/auth.php';
 /*
@@ -29,13 +30,20 @@ Route::get('/clear-cache', function() {
     Route::post('/register-check',[RegisteredUserController::class,'RegisterCheck'])->name('register-check');
     Route::get('/verify',[RegisteredUserController::class,'UserVerifyData'])->name('front.otp_validation');
     Route::get('/verify/check',[RegisteredUserController::class,'UserVerifyDataCheck'])->name('front.otp_validation.check');
-
+    // corn Controller
+    Route::prefix('cron')->group(function () {
+        Route::get('/seller-monthly-package-check',[CornController::class,'SellerMothlyPackageCheckCron'])->name('seller_monthly_package_chcek_cron');
+        Route::get('/seller-expiry-package-check',[CornController::class,'SellerExpiryPackageCheckCron'])->name('seller_expiry_package_chcek_cron');
+        Route::get('/buyer-package-current-unit-check',[CornController::class,'BuyerPackageCurrentUnitCheckCron'])->name('buyer_package_current_unit_chcek_cron');
+        Route::get('/buyer-expiry-package-check',[CornController::class,'BuyerExpiryPackageCheckCron'])->name('buyer_expiry_package_chcek_cron');
+    });   
 
     Route::group(['middleware' => ['auth', 'check.user.profile']], function () {
         Route::prefix('my')->group(function () {
      
             Route::get('/mail', [UserController::class, 'mail'])->name('user.mail');        
             Route::get('/rating-and-reviews', [UserController::class, 'RatingAndReview'])->name('user.rating_and_reviews');        
+            Route::post('/rating-and-reviews/comment', [UserController::class, 'RatingAndReviewComment'])->name('user.rating_and_reviews.comment');        
             Route::get('/requirements-and-consumption', [UserController::class, 'RConsumption'])->name('user.requirements_and_consumption');
             Route::get('/requirements-and-consumption/add', [UserController::class, 'RConsumptionAdd'])->name('user.requirements_and_consumption.add');
             Route::post('/requirements-and-consumption/store', [UserController::class, 'RConsumptionStore'])->name('user.requirements_and_consumption.store');

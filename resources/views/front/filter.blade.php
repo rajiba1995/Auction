@@ -109,14 +109,14 @@
                                                     @endif
                                                 @endforeach
                                             @endif
-                                            {{-- <li>
+                                            <li>
                                                 <img src="{{asset('frontend/assets/images/trusted.png')}}" alt="">
                                                 <div class="infotip"><span>It is a long established fact</span></div>
                                             </li>
                                             <li>
                                                 <img src="{{asset('frontend/assets/images/featured.png')}}" alt="">
                                                 <div class="infotip"><span>It is a long established fact</span></div>
-                                            </li> --}}
+                                            </li>
                                         </ul>
                                     </div>
                                     <div class="name">{{$item->business_name}}</div>
@@ -257,7 +257,7 @@
                                     </div>
                                     <div class="cta logged-cta">
                                         @if(Auth::guard('web')->check())
-                                            <!-- <button type="button" class="btn btn-cta btn-animated btn-yellow">Previously Worked</button> -->
+                                            <button type="button" class="btn btn-cta btn-animated btn-yellow">Previously Worked</button>
                                             <button type="button" class="btn btn-cta btn-animated" data-bs-toggle="modal" data-bs-target="#sendToInquiryModal{{$item->id}}">Send to Inquiry</button>
 
                                             <div class="modal fade send-to-modal" id="sendToInquiryModal{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
