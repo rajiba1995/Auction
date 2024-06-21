@@ -2688,12 +2688,13 @@ form input[type="date"]::-webkit-calendar-picker-indicator {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 184px;
+    /* height: 184px; */
+    margin-bottom: 36px;
 }
 .create-watchlist-group .btn-create {
-    width: 212px;
-    height: 56px;
-    font-size: 16px;
+    width: 144px;
+    height: 38px;
+    font-size: 14px;
     font-weight: 400;
 }
 .create-group-modal .form-label {
@@ -2741,14 +2742,14 @@ form input[type="date"]::-webkit-calendar-picker-indicator {
     flex-wrap: wrap;
     border: 1px solid #E1E1E1;
     border-radius: 10px;
-    padding: 15px 10px 15px 17px;
+    padding:12px;
 }
 .watchlist-group-list li + li {
     margin-top: 24px;
 }
 .watchlist-group-list label {
-    font-size: 24px;
-    font-weight: 400;
+    font-size: 16px;
+    font-weight: 500;
     margin-right: auto;
 }
 .watchlist-group-list .btn-cta {
@@ -2756,13 +2757,17 @@ form input[type="date"]::-webkit-calendar-picker-indicator {
     box-shadow: none;
     outline: none;
     padding: 0;
-    margin-right: 25px;
+    margin-right: 17px;
 }
+.watchlist-group-list .btn-cta  svg {
+    width: 19px;
+    height: 19px;
+}
+
 .watchlist-group-list .btn-view {
-    width: 130px;
-    height: 45px;
+    width: 75px;
     border-radius: 50px;
-    font-size: 17px;
+    font-size: 12px;
     font-weight: 400;
     text-transform: uppercase;
 }
@@ -4317,7 +4322,7 @@ textarea.review {
     flex-wrap: wrap;
     border: 1px solid #E1E1E1;
     border-radius: 6px;
-    padding: 15px 22px;
+    padding: 14px;
 }
 .dashboard-groups li + li {
     margin-top: 16px;
@@ -4332,13 +4337,13 @@ textarea.review {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    margin-right: 16px;
+    width: 26px;
+    height:26px;
+    margin-right:10px;
 }
 .dashboard-groups li .group-name {
-    font-size: 17px;
-    font-weight: 400;
+    font-size: 13px;
+    font-weight: 500;
     line-height: 32px;
     margin-right: auto;
 }
@@ -4349,10 +4354,11 @@ textarea.review {
     height: 46px;
 }
 .dashboard-groups li .btn-view {
-    font-size: 17px;
+    font-size: 14px;
     font-weight: 400;
     text-transform: uppercase;
-    width: 130px;
+    width: 77px;
+    height: 29px;
 }
 .dashboard-groups li .btn-inquiry {
     font-size: 16px;
@@ -4385,6 +4391,13 @@ textarea.review {
     background-color: transparent;
     padding: 0;
 }
+.inquiry-wrapper-table td span {
+    overflow-wrap: break-word;
+}
+.inquiry-wrapper-table td span.inquiry_title {
+    font-weight: 600;
+}
+
 .inquiry-wrapper-table > tbody > tr > td {
     border-left: 1px solid #CACACA;
     border-right: 1px solid #CACACA;
@@ -4443,9 +4456,14 @@ td.output-table-column{
     margin: 0;
 }
 .input-data-list li p {
-    color: #959595;
+    color: #464646;
     margin-bottom: 10px;
 }
+
+.input-data-list li label {
+    font-weight: 500;
+}
+
 .input-data-list li p.hidden { 
     width: 100%;
     display: -webkit-box;
@@ -4456,10 +4474,11 @@ td.output-table-column{
 }
 .input-data-list li .read-more {
     font-weight: 700;
-    color: #959595;
-    text-align: center;
+    color: #0076d7;
+
     margin-top: -10px;
     margin-bottom: 10px;
+    text-transform: capitalize;
 }
 .input-data-list li .read-more span {
     display: inline-block;
@@ -4976,7 +4995,7 @@ ul.quotes-list li + li:before {
     font-size: 13px;
     font-weight: 500;
     color: #fff;
-    min-height: 68px;
+    /* min-height: 68px; */
     padding: 14px 24px; 
 }
 .supplier-groups-table li.data-row {
@@ -4991,9 +5010,9 @@ ul.quotes-list li + li:before {
     background-color: rgba(246, 246, 246, 0.5);
 }
 .supplier-groups-table li.data-row > div { 
-    font-size: 17px;
-    font-weight: 400;
-    padding: 24px;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 14px;
 }
 .groups-th, 
 .groups-td {
@@ -5012,8 +5031,8 @@ ul.quotes-list li + li:before {
     width: 20%;
 }
 .groups-td img {
-    max-width: 32px;
-    margin-right: 16px;
+    max-width: 26px;
+    margin-right: 10px;
 }
 .created-by-name-td {
     color: #0DB561 !important;

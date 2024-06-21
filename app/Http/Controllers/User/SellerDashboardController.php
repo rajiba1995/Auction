@@ -402,7 +402,6 @@ class SellerDashboardController extends Controller
         return view('front.seller_dashboard.history_inquireis', compact('rejected_inquiries', 'distinct','all_inquery_count', 'group_wise_list_count', 'live_inquiries_count', 'pending_inquiries_count', 'confirmed_inquiries_count', 'rejected_inquiries_count'));
     }
     public function seller_start_quotes(Request $request){
-        // dd($request->all());
         // Start the transaction
         DB::beginTransaction();
         try {
@@ -448,6 +447,10 @@ class SellerDashboardController extends Controller
                 $MySellerWallet->save();
                 // SMS Notifications
             } else {
+                if($seller_active_credit > 0 && $request->selected_from=="1"){
+                    DB::commit();
+                   return redirect()->route('seller_live_inquiries')->with('success', 'Quote submitted successfully.'); 
+                }
                 DB::rollBack(); // Roll back the transaction
                 return redirect()->back()->with('error', 'You don\'t have active package or wallet balance.');
                 // Code to handle zero or negative active credit
