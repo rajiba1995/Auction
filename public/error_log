@@ -1,0 +1,254 @@
+[17-Jun-2024 13:28:22 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[17-Jun-2024 13:28:43 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[20-Jun-2024 11:28:45 UTC] PHP Warning:  require(/home/yuvgsnvwp8n9/public_html/vendor/composer/../../app/Helper/helper.php): Failed to open stream: No such file or directory in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php on line 71
+[20-Jun-2024 11:28:45 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/yuvgsnvwp8n9/public_html/vendor/composer/../../app/Helper/helper.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php(61): composerRequiree07ea8072bb35ffb7c2eefdf0e8c6a92()
+#1 /home/yuvgsnvwp8n9/public_html/vendor/autoload.php(7): ComposerAutoloaderInite07ea8072bb35ffb7c2eefdf0e8c6a92::getLoader()
+#2 /home/yuvgsnvwp8n9/public_html/public/index.php(34): require('/home/yuvgsnvwp...')
+#3 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php on line 71
+[20-Jun-2024 11:28:49 UTC] PHP Warning:  require(/home/yuvgsnvwp8n9/public_html/vendor/composer/../../app/Helper/helper.php): Failed to open stream: No such file or directory in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php on line 71
+[20-Jun-2024 11:28:49 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/yuvgsnvwp8n9/public_html/vendor/composer/../../app/Helper/helper.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php(61): composerRequiree07ea8072bb35ffb7c2eefdf0e8c6a92()
+#1 /home/yuvgsnvwp8n9/public_html/vendor/autoload.php(7): ComposerAutoloaderInite07ea8072bb35ffb7c2eefdf0e8c6a92::getLoader()
+#2 /home/yuvgsnvwp8n9/public_html/public/index.php(34): require('/home/yuvgsnvwp...')
+#3 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php on line 71
+[20-Jun-2024 11:29:06 UTC] PHP Warning:  require(/home/yuvgsnvwp8n9/public_html/vendor/composer/../../app/Helper/helper.php): Failed to open stream: No such file or directory in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php on line 71
+[20-Jun-2024 11:29:06 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/yuvgsnvwp8n9/public_html/vendor/composer/../../app/Helper/helper.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php(61): composerRequiree07ea8072bb35ffb7c2eefdf0e8c6a92()
+#1 /home/yuvgsnvwp8n9/public_html/vendor/autoload.php(7): ComposerAutoloaderInite07ea8072bb35ffb7c2eefdf0e8c6a92::getLoader()
+#2 /home/yuvgsnvwp8n9/public_html/public/index.php(34): require('/home/yuvgsnvwp...')
+#3 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php on line 71
+[20-Jun-2024 11:29:16 UTC] PHP Warning:  require(/home/yuvgsnvwp8n9/public_html/vendor/composer/../../app/Helper/helper.php): Failed to open stream: No such file or directory in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php on line 71
+[20-Jun-2024 11:29:16 UTC] PHP Fatal error:  Uncaught Error: Failed opening required '/home/yuvgsnvwp8n9/public_html/vendor/composer/../../app/Helper/helper.php' (include_path='.:/opt/alt/php82/usr/share/pear:/opt/alt/php82/usr/share/php:/usr/share/pear:/usr/share/php') in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php:71
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php(61): composerRequiree07ea8072bb35ffb7c2eefdf0e8c6a92()
+#1 /home/yuvgsnvwp8n9/public_html/vendor/autoload.php(7): ComposerAutoloaderInite07ea8072bb35ffb7c2eefdf0e8c6a92::getLoader()
+#2 /home/yuvgsnvwp8n9/public_html/public/index.php(34): require('/home/yuvgsnvwp...')
+#3 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/composer/autoload_real.php on line 71
+[21-Jun-2024 00:22:37 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:26 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:27 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:27 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:27 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:28 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:29 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:29 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:29 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:32 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:32 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:32 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:33 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:34 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:34 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:36 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:36 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:37 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:37 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:37 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:38 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:38 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:38 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:40 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:40 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:42 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:43 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:43 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:43 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:45 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:45 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:46 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:46 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 04:03:47 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196
+[21-Jun-2024 10:37:08 Asia/Kolkata] PHP Fatal error:  Uncaught Error: Call to a member function send() on null in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php:196
+Stack trace:
+#0 /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php(173): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#2 {main}
+  thrown in /home/yuvgsnvwp8n9/public_html/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php on line 196

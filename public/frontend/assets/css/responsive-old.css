@@ -1,0 +1,766 @@
+
+@media only screen and (max-width: 1399px) {
+    header .search-bar {
+        margin-right: 30px;
+    }
+    header.logged .location-bar {
+        margin-left: 50px;
+        margin-right: auto;
+    }
+    header.logged .search-bar {
+        max-width: 50%;
+        order: 10;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+    }
+    .bidder-box .logged-cta {
+        position: relative;
+        top: auto;
+        right: auto;
+        flex-direction: row;
+        margin-top: 20px;
+    }
+    .bidder-box .logged-cta .btn + .btn {
+        margin: 0 0 0 11px;
+    }
+    .watchlist-page-section .bidder-box .logged-cta {
+        position: absolute;
+        right: 17px;
+        top: 158px;
+        flex-direction: column;
+        margin: 0;
+    }
+    .watchlist-page-section .bidder-box .logged-cta .btn + .btn {
+        margin: 14px 0 0;
+    }
+}
+
+@media only screen and (max-width: 1199px) {
+    .home-banner-slider {
+        height: 400px;
+    }
+    .category-card {
+        height: 330px;
+    }
+    .cat-subcat-box .category-card {
+        height: 220px;
+    }
+    .category-card .category-content h5 {
+        font-size: 23px;
+        line-height: 33px;
+    }
+    .category-card .category-content a {
+        font-size: 16px;
+        line-height: 33px;
+    }
+    .tutorials-section .tutorial-content {
+        height: 330px;
+    }
+    .blog-card .card-img {
+        height: 200px;
+    }
+    .footer-top .content h2 {
+        font-size: 34px;
+    }
+    footer .fourth-col {
+        padding-top: 20px;
+    }
+    .search-bar input {
+        width: calc(100% - 44px);
+    }
+    .bidder-box {
+        padding: 20px;
+    }
+    .bidder-box .img-holder {
+        width: 200px;
+        height: 200px;
+    }
+    .bidder-box .content-holder {
+        width: calc(100% - 200px);
+        padding-left: 20px;
+    }
+    .bidder-box .dots-cta {
+        top: 16px;
+        right: 16px;
+    }
+    .top-cta-row .btn {
+        margin-bottom: 10px;
+    }
+    .bidder-box.type-2 .img-holder {
+        width: 140px;
+        height: 140px;
+    }
+    .bidder-box.type-2 .content-holder {
+        width: calc(100% - 140px - 40px);
+    }
+    .bidder-box.type-2 .dots-cta {
+        top: 20px;
+        right: 11px;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    header .search-bar {
+        order: 6;
+        width: 100%;
+        max-width: 100%;
+        margin-right: 0;
+        margin-top: 20px;
+    }
+    header .location-bar {
+        order: 2;
+        max-width: 25%;
+        margin-left: auto;
+    }
+    header .btn-start {
+        order: 3;
+        margin-left: 13px;
+    }
+    header .btn-login {
+        order: 4;
+    }
+    header .hamburger {
+        order: 5;
+    }
+    header.logged .location-bar {
+        order: 9;
+        max-width: 30%; 
+        margin-left: 0;
+        margin-top: 20px;
+    }
+    header.logged .search-bar { 
+        margin-right: 0;
+    }
+    header.logged .btn-dashboard {
+        margin-left: auto;
+    }
+    .home-banner-slider {
+        height: 300px;
+    }
+    .cat-subcat-section .parent-col + .parent-col{
+        margin-top: 20px;
+    }
+    .popular-categories-section .content-col {
+        margin-bottom: 20px;
+    }
+    .customer-saying-section .left-col .logo-holder {
+        position: relative;
+        top: auto;
+        left: auto;
+        padding: 50px 0;
+    }
+    .customer-saying-section .left-col .inner {
+        height: auto;
+    }
+    .blogs-section .blog-col {
+        margin-bottom: 20px;
+    }
+    .footer-top .content {
+        flex-direction: column;
+    }
+    .footer-top .content .btn-cta {
+        margin-top: 20px;
+    }
+    footer .footer-bottom h4 {
+        margin-top: 40px;
+    }
+    footer .fourth-col {
+        padding-top: 0px;
+    }
+    .section-header {
+        flex-wrap: wrap;
+    }
+    .section-header .filter-panel {
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+    .search-list-before-login .right-col {
+        order: 1;
+        margin-bottom: 20px;
+    }
+    .search-list-before-login .left-col {
+        order: 2;
+    }
+    .search-list-after-login .right-col {
+        order: 1;
+        margin-bottom: 20px;
+    }
+    .search-list-after-login .left-col {
+        order: 2;
+    }
+    .add-for-watchlist .dots-cta {
+        flex-direction: column;
+    }
+    .add-for-watchlist .dots-cta .btn-remove {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    .bidder-box .content-holder {
+        width: calc(100% - 200px - 30px);
+    }
+    .add-invite-row .btn-add-invite {
+        padding: 0 20px;
+    }
+    .add-invite-row .btn-add-invite svg {
+        width: 30px;
+        margin-right: 10px;
+    }
+    .customer-saying-section .heading-row h2 {
+        padding-left: 106px;
+    }
+    .customer-saying-logo {
+        padding: 140px 0 0 94px;
+    }
+    .customer-saying-content {
+        height: 400px;
+    }
+}
+
+@media only screen and (max-width: 810px) {
+    .invite-modal .modal-dialog {
+        max-width: 90%;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .outer-page-wrapper .page-content {
+        padding: 50px 0;
+    }
+    .page-inner-content {
+        width: 90%;
+    }
+    .home-banner-slider {
+        height: 220px;
+    }
+    .home-banner-slider .slider-img {
+        border-radius: 18px;
+    }
+    .home-banner-slider .slider-video {
+        border-radius: 18px;
+    }
+    .swiper-pagination-bullet {
+        height: 10px;
+        width: 10px;
+        border-radius: 30px;
+    }
+    .swiper-pagination-bullet-active {
+        width: 33px;
+    }
+    .cat-subcat-box {
+        padding: 15px;
+    }
+    .cat-subcat-box h4 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+    .cat-subcat-section .child-col + .child-col {
+        margin-top: 20px;
+    }
+    .tutorials-section .tutorial-content {
+        height: 220px;
+    }
+    .tutorials-section .tutorial-content .bottom-content {
+        padding: 20px 15px;
+    }
+    .tutorials-section .tutorial-content .bottom-content h5 {
+        font-size: 24px;
+        line-height: 30.5px;
+    }
+    .tutorials-section .tutorial-content .bottom-content a {
+        font-size: 16px;
+    }
+    .our-brands-section {
+        padding: 30px 0;
+    }
+    .customer-saying-section .left-col {
+        padding-top: 0px;
+    }
+    .footer-top .content {
+        padding: 48px 0;
+    }
+    header .location-bar {
+        order: 5;
+        max-width: 39%;
+        margin-left: 0;
+        margin-top: 20px;
+    }
+    header .search-bar {
+        width: 59%;
+        margin-left: auto;
+    }
+    header .btn-start {
+        order: 2;
+        margin-left: auto;
+    }
+    header .btn-login {
+        order: 3;
+    }
+    header .hamburger {
+        order: 4;
+    }
+    header.logged .location-bar {
+        order: 2;
+        max-width: 40%;
+        margin-top:0;
+        margin-left: 20px;
+    }
+    header.logged .notification {
+        order: 3;
+        margin-left: auto;
+    }
+    header.logged .myaccount-dropdown {
+        order: 4;
+    }
+    header.logged .hamburger {
+        order: 5;
+        margin-left: 21px;
+    }
+    header.logged .search-bar {
+        order: 6;
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0; 
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    header.logged .btn-dashboard {
+        order: 7;
+        margin-left: 0;
+    }
+    header.logged .helpdesk {
+        order: 8;
+        margin-left: auto;
+    }
+    header.logged .watchlist {
+        order: 9;
+    }
+    header.logged .start-auction {
+        order: 10;
+    }
+    .section-header .filter-panel > * + * {
+        margin-left: 16px;
+    }
+    .bidder-search-results-section .category-list li {
+        line-height: 24px;
+    }
+    .bidder-box {
+        flex-wrap: wrap;
+    }
+    .bidder-box .content-holder {
+        width: 100%;
+        padding: 20px 0 0;
+    }
+    .watchlist-page-section .bidder-box .logged-cta {
+        position: relative;
+        top: auto;
+        right: auto;
+        flex-direction: row;
+        margin-top: 20px;
+    }
+    .watchlist-page-section .bidder-box .logged-cta .btn + .btn {
+        margin: 0 0 0 11px;
+    }
+    .watchlist-group-list label {
+        font-size: 20px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .watchlist-group-list .btn-view {
+        font-size: 12px;
+        height: 36px;
+        margin-left: auto;
+    }
+    .top-cta-row .btn {
+        font-size: 12px;
+        height: 36px;
+    }
+    .top-cta-row .btn:not(:last-child) {
+        width: 242px;
+    }
+    .watchlistgroup-tabs .nav-link {
+        min-width: 110px;
+        padding: 0 16px;
+    }
+    .watchlistgroup-tabs .nav-link.active {
+        padding: 0 20px;
+    }
+    .bidder-box.type-2 .content-holder {
+        width: 100%;
+        padding-left: 0;
+    }
+    .auction-requirement-section h2 {
+        font-size: 24px;
+    }
+    .auction-requirement-form {
+        padding: 30px 20px;
+    }
+    .participants-block .participant {
+        font-size: 12px;
+        width: auto;
+        margin: 0 10px 10px 0
+    }
+    .participants-block .participant .remove { 
+        margin-left: 10px;
+    }
+    .add-invite-row {
+        margin-bottom: 20px;
+    }
+    .add-invite-row .btn-add-invite {
+        margin-bottom: 10px;
+    }
+    .modal-dialog {
+        max-width: 90% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .send-to-modal .btn-submit {
+        max-width: 100%;
+    }
+    .invite-modal .input-row {
+        flex-wrap: wrap;
+    }
+    .invite-modal .input-wrap {
+        width: calc((100% - 20px) / 2);
+    }
+    .invite-modal .input-row button {
+        margin-top: 10px;
+    }
+    .invite-modal .input-row .btn-add {
+        margin-left: auto;
+    }
+    .customer-saying-section .heading-row h2 {
+        font-size: 24px;
+        padding-left: 62px;
+    }
+    .customer-saying-logo {
+        padding: 112px 0 0 50px;
+    }
+    .customer-saying-content {
+        height: 430px;
+        padding-left: 50px;
+    }
+    .customer-saying-content .saying {
+        font-size: 16px;
+        line-height: 32px;
+    }
+}
+
+@media only screen and (max-width: 667px) {
+    header.logged .location-bar {
+        order: 5;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 10px;
+    }
+    header.logged .notification {
+        order: 2;
+    }
+    header.logged .myaccount-dropdown {
+        order: 3;
+    }
+    header.logged .hamburger {
+        order: 4;
+    }
+}
+
+@media only screen and (max-width: 575px) {
+    .outer-page-wrapper .form-content {
+        min-width: 90%;
+        padding: 25px 15px;
+    } 
+    body.modal-open {
+        padding-right: 0px !important;
+    }
+    .register-otp-modal .modal-dialog {
+        max-width: 90%;
+        margin: 20px auto;
+    }
+    .register-otp-modal .form-content {
+        min-width: 100%;
+        padding: 20px 15px;
+    }
+    .form-input-group input.form-control {
+        width: 40px;
+        height: 46px;
+    }
+    .page-inner-content {
+        padding: 25px 15px;
+    }
+    .page-inner-content h3 {
+        font-size: 20px;
+        line-height: 32.5px;
+    }
+    .page-inner-content p {
+        font-size: 14px;
+        line-height: 24px;
+    }
+    .section-header h2 {
+        font-size: 28px;
+    }
+    .customer-saying-section {
+        padding: 30px 0;
+    }
+    .customer-saying-section .right-col .inner {
+        padding: 0px 20px;
+    }
+    .customer-saying-content  {
+        height: 430px;
+    }
+    .section-header {
+        margin-bottom: 20px;
+    }
+    .customer-saying-section .left-col .logo-holder {
+        padding-top: 0px;
+    }
+    header .hamburger {
+        order: 2;
+        margin-left: auto;
+    }
+    header .location-bar {
+        order: 3;
+        height: 36px;
+        max-width: 100%;
+        margin-top: 10px;
+    }
+    header .search-bar {
+        order: 4;
+        height: 36px;
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 0;
+    }
+    .search-bar input {
+        font-size: 12px;
+    }
+    .btn-search[type="submit"] {
+        width: 28px;
+        height: 28px;
+    }
+    .btn-search[type="submit"] svg {
+        width: 16px;
+        height: 16px;
+    }
+    header .btn-start {
+        order: 4;
+        margin-left: 0;
+    }
+    header .btn-login {
+        order: 5;
+        margin-left: auto;
+    }
+    .section-header .filter-panel {
+        justify-content: space-between;
+    }
+    .section-header .filter-panel select {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .section-header .filter-panel > * + * {
+        margin-left: 0;
+    }
+    .bidder-box .img-holder {
+        margin: 0 auto;
+    }
+    .bidder-box .btn-cta {
+        width: 100%;
+    }
+    .bidder-box .btn-cta + .btn-cta {
+        margin: 10px 0 0;
+    }
+    .bidder-box.type-2 .cta {
+        flex-wrap: wrap;
+    }
+    .top-cta-row {
+        margin-bottom: 32px;
+    }
+    .watchlistgroup-tabs {
+        flex-direction: column;
+        height: auto;
+        width: 100%;
+        border-radius: 19px;
+    }
+    .watchlistgroup-tabs .nav-link {
+        width: 100%;
+    }
+    .watchlistgroup-tabs .nav-link.active {
+        width: 100%;
+    }
+    .bidder-check .checkmark {
+        margin-right: 16px;
+    }
+    .bidder-check .bidder-box .img-holder {
+        margin: 0;
+    }
+    .bidder-check .bidder-box .logged-cta {
+        flex-wrap: wrap;
+    }
+    .bidder-check .bidder-box .logged-cta .btn + .btn {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    .register-now-modal .btn-animated {
+        height: 68px;
+        font-size: 24px;
+    }
+    .send-to-modal .modal-body {
+        padding: 0 8px 20px;
+    }
+    .invite-modal .input-wrap {
+        width: 100%;
+    }
+    .invite-modal .input-wrap + .input-wrap {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    .invite-modal .modal-header {
+        padding: 38px 20px 0;
+    }
+    .invite-modal .modal-body {
+        padding: 20px;
+    }
+}
+
+@media only screen and (max-width: 479px) {
+    .register-otp-modal .resend-block {
+        flex-direction: column;
+    }
+    .home-banner-slider {
+        height: 180px;
+    }
+    .section-header h2 {
+        font-size: 20px;
+    }
+    .section-header a {
+        font-size: 13px;
+    }
+    .section-header a svg {
+        width: 16px;
+        height: 16px;
+        margin-left: 3px;
+    }
+    .tutorials-section .tutorial-content {
+        height: 180px;
+    }
+    .tutorials-section .tutorial-content .bottom-content h5 {
+        font-size: 18px;
+    }
+    .tutorials-section .tutorial-content .bottom-content a {
+        font-size: 13px;
+        line-height: 20px;
+    }
+    .tutorials-section .tutorial-content .bottom-content a img {
+        max-width: 16px;
+        max-height: 16px;
+    }
+    .customer-saying-content .quote-icon img {
+        max-width: 40px;
+        max-height: 40px;
+        margin-left: -3px;
+    }
+    .customer-saying-content .saying {
+        font-size: 16px;
+        line-height: 29px;
+    }
+    .footer-top .content h2 {
+        font-size: 24px;
+    }
+    .footer-top .content .btn-cta {
+        font-size: 16px;
+        padding: 16px 53px;
+    }
+    footer .footer-bottom h4 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    .footer-copyright .content {
+        flex-direction: column;
+    }
+    header {
+        padding: 12px; 
+    }
+    header .brand {
+        max-width: 110px;
+    }
+    header.logged .myaccount-dropdown .dropdown-toggle .icon {
+        width: 36px;
+        height: 36px;
+    }
+    header.logged .btn-dashboard {
+        width: 84px;
+        padding: 0 12px;
+    }
+    header.logged .menu-cta {
+        font-size: 11px;
+    }
+    .bidder-box .dots-cta {
+        flex-direction: column;
+        align-items: center;
+    }
+    .dots-cta .btn-remove {
+        margin: 10px 0 0;
+    }
+    .watchlist-tabs .nav-link {
+        width: 148px;
+    }
+    .watchlist-tabs .nav-link.active {
+        width: 158px;
+    }
+    .watchlist-groups .top-cta-bar .btn-create {
+        font-size: 14px;
+    }
+    .watchlist-groups .top-cta-bar .btn-create svg { 
+        width: 20px;
+        height: 20px;
+    }
+    .watchlist-group-list label {
+        font-size: 16px;
+    }
+    .watchlist-group-list .btn-cta svg {
+        width: 20px;
+        height: 20px;
+    }
+    .top-cta-row .btn {
+        width: 100%;
+    }
+    .top-cta-row .btn:not(:last-child) {
+        width: 100%;
+        margin-right: 0;
+    }
+    .watchlistgroup-tabs .nav-item {
+        height: 36px;
+    }
+    .watchlistgroup-tabs .nav-link,
+    .watchlistgroup-tabs .nav-link.active {
+        width: 100%;
+        height: 36px;
+    }
+    .auction-requirement-section h2 {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+    .inquiry-id-row span {
+        font-size: 16px;
+    }
+    .register-now-modal .modal-body {
+        padding: 0 20px;
+    }
+    .register-now-modal h4 {
+        text-align: center;
+        font-size: 16px;
+    }
+    .customer-saying-section .heading-row h2 {
+        font-size: 18px;
+        padding-left: 24px;
+    }
+    .customer-saying-logo {
+        padding-left: 12px;
+    }
+    .customer-saying-content {
+        height: 360px;
+        padding-left: 12px;
+    }
+}

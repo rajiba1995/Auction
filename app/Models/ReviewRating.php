@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class ReviewRating extends Model
+{
+    use HasFactory;
+    protected $table ="reviews_ratings";
+    public function userAllDetails() {
+        return $this->belongsTo(User::class, 'user_id','id');
+    }
+}
