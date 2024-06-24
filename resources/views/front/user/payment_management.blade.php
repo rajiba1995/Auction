@@ -270,10 +270,11 @@
                                                                 <th>Badge Name</th>
                                                                 <th>Descriptions</th>
                                                                 <th>Instructions to get it</th>
+                                                                <th>Expiry Date</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach ($myBadges as $item)
+                                                            @foreach ($myBadgesFullDetails as $item)
                                                             @if($item->getBadgeDetails)
                                                             <tr>
                                                                 <td>
@@ -312,6 +313,13 @@
                                                                         {{$item->getBadgeDetails->long_desc}}
                                                                     </p>
                                                                 </td>
+                                                                <td>
+                                                                
+                                                                    <p> 
+                                                                        {{date('d-m-Y H:i:s A', strtotime($item->expiry_date))}}
+                                                                        
+                                                                    </p>
+                                                                </td>
                                                             </tr>
                                                             @endif
                                                             @endforeach
@@ -329,6 +337,7 @@
                                                                 <th>Badge Name</th>
                                                                 <th>Descriptions</th>
                                                                 <th>Instructions to get it</th>
+                                                                <th class="price-th">Validity</th>
                                                                 <th class="price-th">Price</th>
                                                             </tr>
                                                         </thead>
@@ -365,9 +374,10 @@
                                                                         {{ Str::limit($item->long_desc,200) }}
                                                                     </p>
                                                                 </td>
+                                                                <td class="name"><label class="price-label">{{$item->duration}}</label></td>
                                                                 <td class="price-td">
                                                                     <label class="price-label">{{ $item->price_prefix }} - {{ $item->price }}</label>
-                                                                    <a href="#"  class="btn btn-animated btn-yellow btn-cta purchase" data-badge_id="{{$item->id}}" data-amount={{ $item->price }}>Buy Now</a>
+                                                                    <a href="#"  class="btn btn-animated btn-yellow btn-cta purchase" data-badge_id="{{$item->id}}" data-amount="{{ $item->price }}" data-duration="{{$item->duration}}" >Buy Now</a>
                                                                 </td>
                                                             </tr>
                                                             @endforeach
@@ -395,6 +405,7 @@
             $('.purchase').on("click", function() {
                 var badge_id = $(this).data('badge_id');             // console.log(id); 
                 var badge_amount = $(this).data('amount');             // console.log(id); 
+                var badge_duration = $(this).data('duration');             // console.log(id); 
                 Swal.fire({
                 title: "Are you sure you want to purchase it??",
                 // text: "Purchase this Badge?",
@@ -413,6 +424,7 @@
                                 '_token' : csrfToken ,
                                 'id' : badge_id,
                                 'amount' : badge_amount,
+                                'duration' : badge_duration,
                             },
                             success: function(response) {
                                 if(response.status==200){

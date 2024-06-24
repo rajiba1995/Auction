@@ -529,10 +529,11 @@ class UserController extends Controller{
         $packages = $this->userRepository->getUserAllPackages();
         $seller_packages = $this->userRepository->getSellerAllPackages();
         $myBadges = $this->userRepository->getAllBadgesById($data->id);
+        $myBadgesFullDetails = $this->userRepository->myBadgesFullDetails($data->id);
         $allBadges = $this->userRepository->getAllBadges($myBadges);
         $my_cuttent_seller_package = $this->userRepository->getCurrentSellerPackage($data->id);
         $my_cuttent_buyer_package = $this->userRepository->getCurrentBuyerPackage($data->id);
-        return view('front.user.payment_management', compact('data','packages','seller_packages','myBadges','allBadges', 'my_cuttent_seller_package', 'my_cuttent_buyer_package'));
+        return view('front.user.payment_management', compact('data','packages','seller_packages','myBadges','allBadges', 'my_cuttent_seller_package', 'my_cuttent_buyer_package','myBadgesFullDetails'));
     }
     public function wallet_management(){
         $data = $this->AuthCheck();
@@ -1208,6 +1209,8 @@ class UserController extends Controller{
             $myBadge = new MyBadge();
             $myBadge->user_id = $data->id;
             $myBadge->badge_id = $request->id;
+            $myBadge->duration = $request->duration;
+            $myBadge->expiry_date = Carbon::now()->addDays($request->duration * 30);
             $myBadge->save();
             // Return success response
             return response()->json(['status' => 200]);

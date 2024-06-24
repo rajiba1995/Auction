@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Contracts\PaymentManageMentContract;
 use App\Models\Badge;
 use App\Models\Transaction;
+use App\Models\WebsiteLogs;
+use Auth;
 
 
 class PaymentManageMentRepository implements PaymentManageMentContract
@@ -25,6 +27,11 @@ class PaymentManageMentRepository implements PaymentManageMentContract
             $collection = collect($data);
             $badge->title = $collection['title'];
             $badge->type = $collection['type'];
+            if ($collection['type'] == 0) {
+                $badge->duration = NULL;
+            }else{
+                $badge->duration = $collection['duration'];
+            }
             $badge->short_desc = $collection['short_desc'];
             $badge->long_desc = $collection['long_desc'];
             $badge->price = $collection['price'];
@@ -63,6 +70,11 @@ class PaymentManageMentRepository implements PaymentManageMentContract
             $badge = Badge::findOrFail($collection['id']);
             $badge->title = $collection['title'];
             $badge->type = $collection['type'];
+            if ($collection['type'] == 0) {
+                $badge->duration = NULL;
+            }else{
+                $badge->duration = $collection['duration'];
+            }
             $badge->short_desc = $collection['short_desc'];
             $badge->long_desc = $collection['long_desc'];
             $badge->price = $collection['price'];
@@ -81,6 +93,15 @@ class PaymentManageMentRepository implements PaymentManageMentContract
             
     
             $badge->save();
+
+            if($badge){
+                $websiteLog =new WebsiteLogs();
+                $websiteLog->emp_id = Auth::guard('admin')->user()->id;
+                $websiteLog->logs_type ="UPDATED";
+                $websiteLog->table_name ="badges";
+                $websiteLog->response =json_encode($badge);
+                $websiteLog->save();
+            }
             return $badge;
         } catch (QueryException $exception) {
             throw new InvalidArgumentException($exception->getMessage());

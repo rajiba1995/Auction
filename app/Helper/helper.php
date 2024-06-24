@@ -309,6 +309,7 @@ if (!function_exists('previously_worked')) {
         $matchingInquiriesCount = InquiryParticipant::where('user_id', $seller_id)
         ->whereIn('inquiry_id', $buyerInquiries)
         ->count();
+        
         if($matchingInquiriesCount>0){
             return true;
         }

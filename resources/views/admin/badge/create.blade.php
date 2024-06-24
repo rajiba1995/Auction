@@ -27,14 +27,23 @@
                         @error('title')<div class="text-danger">{{ $message }}</div>@enderror                      
                     </div>
                     <div class="form-wrap mb-3">
-                    <label for="">Badge Type</label>
-                    <select name="type" class="form-select">
-                        <option selected value="0">Free</option>
-                        <option value="1">Basic</option>
-                        <option value="2">Intermideate</option>
-                        <option value="3">Advance</option>
-                    </select>
-                        @error('type')<div class="text-danger">{{ $message }}</div>@enderror                      
+                        <div class="row">
+                            <div class="col">
+                                <label for="">Badge Type</label>
+                                <select name="type" class="form-select"  id="type">
+                                    <option selected value="0">Free</option>
+                                    <option value="1">Basic</option>
+                                    <option value="2">Intermideate</option>
+                                    <option value="3">Advance</option>
+                                </select>
+                                    @error('type')<div class="text-danger">{{ $message }}</div>@enderror  
+                            </div>
+                            <div class="col" id="duration-container">
+                            <label for="">Duration(in monthes)</label>
+                                <input type="number" class="form-control" name="duration" id="duration" value="{{old('duration')}}">
+                                @error('duration')<div class="text-danger">{{ $message }}</div>@enderror   
+                            </div>   
+                        </div>                    
                     </div>
                     <div class="form-wrap mb-3">
                         <label for="">Short Description</label>
@@ -74,4 +83,25 @@
 </div>
 @endsection
 @push('scripts')
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const typeSelect = document.getElementById('type');
+        const durationContainer = document.getElementById('duration-container');
+
+        function toggleDurationField() {
+            if (typeSelect.value == '0') {
+                durationContainer.style.display = 'none';
+            } else {
+                durationContainer.style.display = 'block';
+            }
+        }
+
+        // Initial check
+        toggleDurationField();
+
+        // Add event listener
+        typeSelect.addEventListener('change', toggleDurationField);
+    });
+</script>
 @endpush

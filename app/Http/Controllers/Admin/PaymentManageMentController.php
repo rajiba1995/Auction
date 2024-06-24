@@ -67,7 +67,7 @@ class PaymentManageMentController extends Controller
     }
     public function BadgeUpdate(Request $request)
     {
-      
+
             $request->validate([
                 'title'=>'required', Rule::unique('badges', 'title')->ignore($request->id),
                 'short_desc'=>'required',
@@ -86,6 +86,7 @@ class PaymentManageMentController extends Controller
                 'price.required'=>"Phone number is required",  
                 'price_prefix.required'=>"Currency type is required",    
             ]);    
+
         $params = $request->except('_token');
         $data = $this->payment_management_Repository->updateBadge($params);
         if ($data) {

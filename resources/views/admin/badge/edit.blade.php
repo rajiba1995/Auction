@@ -28,15 +28,26 @@
                         @error('title')<div class="text-danger">{{ $message }}</div>@enderror                      
                     </div>
                     <div class="form-wrap mb-3">
-                    <label for="">Badge Type</label>
-                    <select name="type" class="form-select">
+                        <div class="row">
+                            <div class="col">
+                                <label for="">Badge Type</label>
+                                <select name="type" class="form-select">
 
-                        <option  value="0" {{$data->type==0? "selected" : ""}}>Free</option>
-                        <option value="1" {{$data->type==1? "selected" : ""}}>Basic</option>
-                        <option value="2" {{$data->type==2? "selected" : ""}}>Intermideate</option>
-                        <option value="3" {{$data->type==3? "selected" : ""}}>Advance</option>
-                    </select>
-                        @error('type')<div class="text-danger">{{ $message }}</div>@enderror                      
+                                    <option  value="0" {{$data->type==0? "selected" : ""}}>Free</option>
+                                    <option value="1" {{$data->type==1? "selected" : ""}}>Basic</option>
+                                    <option value="2" {{$data->type==2? "selected" : ""}}>Intermideate</option>
+                                    <option value="3" {{$data->type==3? "selected" : ""}}>Advance</option>
+                                </select>
+                                    @error('type')<div class="text-danger">{{ $message }}</div>@enderror                      
+                            </div>
+                            @if($data->type != 0)  
+                            <div class="col">
+                                <label for="">Duration(in monthes)</label>
+                                <input type="number" class="form-control" name="duration" id="duration" value="{{$data->duration}}">
+                                @error('duration')<div class="text-danger">{{ $message }}</div>@enderror                      
+                            </div>
+                            @endif
+                        </div>
                     </div>
                     <div class="form-wrap mb-3">
                         <label for="">Short Description</label>

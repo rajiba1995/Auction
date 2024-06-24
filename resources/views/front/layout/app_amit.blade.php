@@ -39,22 +39,19 @@
                     <div id="stateSuggestions"></div>
                     <div class="search-bar">
                         <form>
-                            <!-- <input type="search" name="keyword" id="global_filter_data" placeholder="Search for Service, Category, etc" value="@yield('keyword')"> -->
-                            <input type="search" name="keyword" id="autocomplete-input" placeholder="Search for Service, Category, etc" >
-                            
+                            <input type="search" name="keyword" id="global_filter_data" placeholder="Search for Service, Category, etc" value="@yield('keyword')">
                             <button type="button" class="btn-search btn-animated" id="global_form_submit">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                     <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M20.9999 21.0004L16.6499 16.6504" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </button>
-                        <!-- <div id="autocomplete-list" class="autocomplete-items"></div> -->
-                        <div id="autocomplete-suggestions" class="autocomplete-suggestions"></div>
+                        <div id="autocomplete-list" class="autocomplete-items"></div>
                         </form>
                     </div>
                 
-                     <!-- <div id="filterSuggestions"></div> -->
-                    
+                     <div id="filterSuggestions"></div>
+
                 </div>
 
                 {{-- <a herf="{{route('user.profile')}}" class="btn btn-cta btn-animated btn-dashboard">Dashboard</a> --}}

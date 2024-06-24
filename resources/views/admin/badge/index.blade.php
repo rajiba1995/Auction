@@ -19,9 +19,9 @@
         <tr>
             <th>SL.</th>
             <th>Logo</th>
-
             <th>Title</th>
             <th>Type</th>
+            <th>Duration</th>
             <th>Short Descripton</th>
             <th>Long Desccription</th>
             <th>Price</th>
@@ -47,7 +47,9 @@
                     Advance
                 @endif
             </td>
-                 
+ 
+            <td>{{ $item->duration }}</td>
+
             <td>{{ Str::limit($item->short_desc, 200) }}</td>
             <td>{{ Str::limit($item->long_desc, 200) }}</td>
             <td>{{ $item->price }}</td>

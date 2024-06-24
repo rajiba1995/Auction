@@ -329,6 +329,9 @@ class UserRepository implements UserContract
     public function getAllBadgesById($id){
         return MyBadge::where('user_id',$id)->get('badge_id');
      }
+    public function myBadgesFullDetails($id){
+        return MyBadge::where('user_id',$id)->get();
+     }
     public function getAllBadges($myBadges){
         if(isset($myBadges)){
             return Badge::whereNotIn('id',$myBadges)->where('type', '!=', 0)->get();

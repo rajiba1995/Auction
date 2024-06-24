@@ -9,9 +9,13 @@ use App\Models\MySellerPackage;
 use App\Models\MySellerWallet;
 use App\Models\MyBuyerWallet;
 use App\Models\WebsiteLogs;
+use App\Models\MyBadge;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException; // Import Exception class
+
+
 class CornController extends Controller
 {
     public function SellerMothlyPackageCheckCron(){
@@ -112,6 +116,8 @@ class CornController extends Controller
         // Query MySellerPackage where expiry_date is within the 1-minute range
         $data = MySellerPackage::whereBetween('expiry_date', [$oneMinuteBefore, $oneMinuteAfter])->get()->toArray();
         // dd($data);
+        $myBadge = MyBadge::whereBetween('expiry_date', [$oneMinuteBefore, $oneMinuteAfter])->get()->toArray();
+        // dd($myBadge);
 
         try{
             DB::beginTransaction();
@@ -149,6 +155,51 @@ class CornController extends Controller
                 $websiteLog->logs_type ="Seller package expiry";
                 $websiteLog->table_name ="my_seller_package && old_seller_package";
                 $websiteLog->response =json_encode($data);
+                // dd('json');
+                $websiteLog->save();
+                }
+            }
+            catch (QueryException $exception) {
+            throw new InvalidArgumentException($exception->getMessage());
+                // $websiteLog =new WebsiteLogs();
+                // $websiteLog->emp_id = NULL;
+                // $websiteLog->logs_type ="Seller package mothly debit & credit";
+                // $websiteLog->table_name ="mysellerpackage && mysellerwallet";
+                // $websiteLog->response =json_encode($exception->getMessage());
+                // $websiteLog->save();
+        }
+
+
+        try{
+            DB::beginTransaction();
+
+                if (!empty($myBadge)) { // Check if the collection is not empty
+                    foreach($myBadge as $item){
+                    $purchaseDate = Carbon::parse($item['created_at'])->format('Y-m-d H:i:s');
+                // Insert into my_old_seller_package
+                DB::table('my_old_badges')->insert([
+                    'user_id' => $item['user_id'],
+                    'badge_id' => $item['badge_id'],
+                    'duration' => $item['duration'],
+                    'expiry_date' => $item['expiry_date'],
+                    'purchase_date' => $purchaseDate,
+                    ]);
+
+                // Delete from MyBadge
+                MyBadge::where('id', $item['id'])->delete();
+                    }
+                }
+
+                DB::commit();
+
+                // Log the operation  
+            
+                if (!empty($myBadge)){
+                $websiteLog =new WebsiteLogs();
+                $websiteLog->emp_id = NULL;
+                $websiteLog->logs_type ="Badge expiry";
+                $websiteLog->table_name ="my_badges && my_old_badges";
+                $websiteLog->response =json_encode($myBadge);
                 // dd('json');
                 $websiteLog->save();
                 }
